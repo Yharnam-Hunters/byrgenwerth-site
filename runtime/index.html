@@ -5,13 +5,13 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   
   <meta name="description" content="Notes of Paleblood, which rebuilds Bloodborne (PS4, CUSA03173 v1.09) as a native PC source port one verified function at a time, and an open place to learn how a console game works and how it is reverse engineered">
-  <link rel="canonical" href="https://yharnam-hunters.github.io/byrgenwerth-site/systems/camera/">
+  <link rel="canonical" href="https://yharnam-hunters.github.io/byrgenwerth-site/runtime/">
   
   
-  <title>Camera — Byrgenwerth</title>
+  <title>Runtime — Byrgenwerth</title>
   
   
-  <link rel="stylesheet" href="../../stylesheets/wiki.css?v=6aa0e2635b">
+  <link rel="stylesheet" href="../stylesheets/wiki.css?v=6aa0e2635b">
   
   
 </head>
@@ -20,7 +20,7 @@
 <!-- ── Header ──────────────────────────────────────────────── -->
 <header class="wk-header">
   <button class="wk-nav-toggle" id="wk-nav-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="wk-nav">☰</button>
-  <a class="wk-wordmark" href="../../">Byrgenwerth<small>notes of Paleblood, rebuilding Bloodborne one verified function at a time</small></a>
+  <a class="wk-wordmark" href="../">Byrgenwerth<small>notes of Paleblood, rebuilding Bloodborne one verified function at a time</small></a>
 
   <div class="wk-header-right">
     
@@ -40,28 +40,28 @@
 
   <!-- Left sidebar -->
   <nav class="wk-nav" id="wk-nav" aria-label="Site navigation">
-    <a href="../../" class="wk-portal-icon" aria-label="Home">
-      <img src="../../assets/bb-icon.png" alt="Byrgenwerth" width="220" height="220">
+    <a href="../" class="wk-portal-icon" aria-label="Home">
+      <img src="../assets/bb-icon.png" alt="Byrgenwerth" width="220" height="220">
     </a>
 
     
       
-      <a class="wk-nav-link" href="../..">Home</a>
+      <a class="wk-nav-link" href="..">Home</a>
       
     
       
         <p class="wk-nav-heading">The Hunt</p>
         
           
-          <a class="wk-nav-link" href="../../devlog/">Devlog</a>
+          <a class="wk-nav-link" href="../devlog/">Devlog</a>
           
         
           
-          <a class="wk-nav-link" href="../../gallery/">Gallery</a>
+          <a class="wk-nav-link" href="../gallery/">Gallery</a>
           
         
           
-          <a class="wk-nav-link" href="../../progress/">Progress</a>
+          <a class="wk-nav-link" href="../progress/">Progress</a>
           
         
       
@@ -70,51 +70,51 @@
         <p class="wk-nav-heading">Systems</p>
         
           
-          <a class="wk-nav-link" href="../">Overview</a>
+          <a class="wk-nav-link" href="../systems/">Overview</a>
           
         
           
-          <a class="wk-nav-link" href="../frame_timing/">Frame timing</a>
+          <a class="wk-nav-link" href="../systems/frame_timing/">Frame timing</a>
           
         
           
-          <a class="wk-nav-link" href="../kernel/">Kernel</a>
+          <a class="wk-nav-link" href="../systems/kernel/">Kernel</a>
           
         
           
-          <a class="wk-nav-link" href="../event/">Event</a>
+          <a class="wk-nav-link" href="../systems/event/">Event</a>
           
         
           
-          <a class="wk-nav-link is-active" href="./">Camera</a>
+          <a class="wk-nav-link" href="../systems/camera/">Camera</a>
           
         
           
-          <a class="wk-nav-link" href="../input/">Input</a>
+          <a class="wk-nav-link" href="../systems/input/">Input</a>
           
         
           
-          <a class="wk-nav-link" href="../character/">Character</a>
+          <a class="wk-nav-link" href="../systems/character/">Character</a>
           
         
           
-          <a class="wk-nav-link" href="../ai/">AI</a>
+          <a class="wk-nav-link" href="../systems/ai/">AI</a>
           
         
           
-          <a class="wk-nav-link" href="../physics/">Physics</a>
+          <a class="wk-nav-link" href="../systems/physics/">Physics</a>
           
         
           
-          <a class="wk-nav-link" href="../render/">Render</a>
+          <a class="wk-nav-link" href="../systems/render/">Render</a>
           
         
           
-          <a class="wk-nav-link" href="../loading/">Loading</a>
+          <a class="wk-nav-link" href="../systems/loading/">Loading</a>
           
         
           
-          <a class="wk-nav-link" href="../audio/">Audio</a>
+          <a class="wk-nav-link" href="../systems/audio/">Audio</a>
           
         
       
@@ -123,27 +123,27 @@
         <p class="wk-nav-heading">How It Works</p>
         
           
-          <a class="wk-nav-link" href="../../ARCHITECTURE/">Architecture</a>
+          <a class="wk-nav-link" href="../ARCHITECTURE/">Architecture</a>
           
         
           
-          <a class="wk-nav-link" href="../../runtime/">Runtime</a>
+          <a class="wk-nav-link is-active" href="./">Runtime</a>
           
         
           
-          <a class="wk-nav-link" href="../../how-the-frame-limiter-works/">The Frame Limiter</a>
+          <a class="wk-nav-link" href="../how-the-frame-limiter-works/">The Frame Limiter</a>
           
         
           
-          <a class="wk-nav-link" href="../../ADDRESS_MAP/">Address Map</a>
+          <a class="wk-nav-link" href="../ADDRESS_MAP/">Address Map</a>
           
         
           
-          <a class="wk-nav-link" href="../../bbport-notes/">bbport Study</a>
+          <a class="wk-nav-link" href="../bbport-notes/">bbport Study</a>
           
         
           
-          <a class="wk-nav-link" href="../../target/">Target</a>
+          <a class="wk-nav-link" href="../target/">Target</a>
           
         
       
@@ -152,25 +152,25 @@
         <p class="wk-nav-heading">For Hunters</p>
         
           
-          <a class="wk-nav-link" href="../../CONTRIBUTING/">Contributing</a>
+          <a class="wk-nav-link" href="../CONTRIBUTING/">Contributing</a>
           
         
           
-          <a class="wk-nav-link" href="../../QUIRKS/">Ghidra & PS4 Quirks</a>
+          <a class="wk-nav-link" href="../QUIRKS/">Ghidra & PS4 Quirks</a>
           
         
           
-          <a class="wk-nav-link" href="../../glossary/">Glossary</a>
+          <a class="wk-nav-link" href="../glossary/">Glossary</a>
           
         
           
-          <a class="wk-nav-link" href="../../CI_SETUP/">CI Setup</a>
+          <a class="wk-nav-link" href="../CI_SETUP/">CI Setup</a>
           
         
       
     
       
-      <a class="wk-nav-link" href="../../credits/">Credits</a>
+      <a class="wk-nav-link" href="../credits/">Credits</a>
       
     
 
@@ -192,7 +192,7 @@
         <div class="wk-stat-fill wk-stat-fill-dim" style="width:0.033%"></div>
       </div>
       <p class="wk-stat-pct">0.033%</p>
-      <p class="wk-stat-link"><a href="../../progress/">View full progress →</a></p>
+      <p class="wk-stat-link"><a href="../progress/">View full progress →</a></p>
     </div>
     
   </nav>
@@ -212,9 +212,9 @@
         <ol class="wk-toc-list" id="wk-toc-list">
           
           <li>
-            <a href="#camera" class="wk-toc-link">Camera</a>
+            <a href="#runtime" class="wk-toc-link">Runtime</a>
             
-            <ol><li><a href="#summary" class="wk-toc-link">Summary</a></li><li><a href="#key-functions" class="wk-toc-link">Key functions</a></li><li><a href="#structs-and-globals" class="wk-toc-link">Structs and globals</a></li><li><a href="#patch-points" class="wk-toc-link">Patch points</a></li><li><a href="#open-questions" class="wk-toc-link">Open questions</a></li></ol>
+            <ol><li><a href="#roadmap" class="wk-toc-link">Roadmap</a></li><li><a href="#where-the-boot-stops-today" class="wk-toc-link">Where the boot stops today</a></li></ol>
             
           </li>
           
@@ -226,21 +226,78 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 6, 2026 16:29:07 UTC">October 6, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 7, 2026 21:01:47 UTC">October 7, 2026</span></p>
       
-      <h1 id="camera">Camera</h1>
-<h2 id="summary">Summary</h2>
-<p>Not documented yet. Scope: camera update, targeting, collision with the world, field of view.</p>
-<h2 id="key-functions">Key functions</h2>
-<p>No functions tracked yet.</p>
-<h2 id="structs-and-globals">Structs and globals</h2>
-<p>None documented yet. Record each as: name, address, size, layout, who reads and writes it.</p>
-<h2 id="patch-points">Patch points</h2>
-<p>None documented yet. Record each as: address, what the original does there, what the replacement or a mod would change, and the risk.</p>
-<h2 id="open-questions">Open questions</h2>
-<ul>
-<li>Everything: this system has not been studied yet.</li>
-</ul>
+      <h1 id="runtime">Runtime</h1>
+<p>Paleblood is a decompilation with its own runtime. The decompilation rewrites the game's code,
+function by function, as readable C++ that is proved to behave like the original. The runtime is
+what that code, and the original executable while it is being <abbr title="A function whose original code no longer runs: a hook sends every call to our C++ version.">replaced</abbr>, runs on: Paleblood's own
+loader and its own versions of the PlayStation 4 system libraries, written from public
+documentation and our own reverse engineering, not taken from any emulator.</p>
+<p>The game does not run on Paleblood yet. It will once the runtime is far enough along the roadmap
+below. Until then, every <abbr title="A function whose original code no longer runs: a hook sends every call to our C++ version.">replaced</abbr> function is checked in the verification <abbr title="tools/harness.py: runs the original function and its replacement natively on the same recorded inputs, outside the game.">harness</abbr>, which runs
+the original function and the replacement side by side on recorded and generated inputs.</p>
+<h2 id="roadmap">Roadmap</h2>
+<p>The order the runtime is built in. Each step is measured by how far the game's own executable
+boots on it.</p>
+<ol>
+<li><strong>Loader</strong> (done). Maps the executable, applies its relocations and binds every system
+   import, either to the game's own bundled modules (its C library and file system library,
+   mapped as guest code) or to the runtime. The verification <abbr title="tools/harness.py: runs the original function and its replacement natively on the same recorded inputs, outside the game.">harness</abbr> uses it too.</li>
+<li><strong>Generic <abbr title="Inputs a replacement records in a real game run (BB_CAPTURE_DIR), replayed by the harness.">capture</abbr>.</strong> Recording a function's inputs from the runtime side, with no recording
+   code inside the <abbr title="A function whose original code no longer runs: a hook sends every call to our C++ version.">replaced</abbr> functions, so new recordings of real play come from the runtime.</li>
+<li><strong>Kernel, threads and memory.</strong> Processes, threads, mutexes and other synchronisation,
+   memory mapping, time.</li>
+<li><strong>Files.</strong> Save data, the game's packed archives, its file system library's needs.</li>
+<li><strong>Input.</strong> Controllers and the signed-in user.</li>
+<li><strong>Audio.</strong> Audio output and the decoders the game uses.</li>
+<li><strong>Video out.</strong> Display buffers and flips.</li>
+<li><strong><abbr title="The PS4's low-level graphics API.">GNM</abbr> and shaders.</strong> The GPU's command interface and the game's shaders: the largest part.
+   Graphics are rebuilt at the level of the game's own graphics layer, not by emulating the
+   console's GPU.</li>
+</ol>
+<h2 id="where-the-boot-stops-today">Where the boot stops today</h2>
+<p>The boot <abbr title="tools/harness.py: runs the original function and its replacement natively on the same recorded inputs, outside the game.">harness</abbr> runs the executable's entry on the runtime and stops at the first system
+function the runtime doesn't implement yet, naming it. Implementing that function is the next
+step of the runtime's work; the boot then gets a little further.</p>
+<table>
+<thead>
+<tr>
+<th>Boot status</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>The executable's system imports</td>
+<td>686</td>
+</tr>
+<tr>
+<td>Provided by the game's own modules (mapped as guest code)</td>
+<td>219</td>
+</tr>
+<tr>
+<td>Implemented by the runtime</td>
+<td>19</td>
+</tr>
+<tr>
+<td>Remaining</td>
+<td>448</td>
+</tr>
+<tr>
+<td>Furthest boot milestone</td>
+<td>loaded (0 of 8)</td>
+</tr>
+<tr>
+<td>The boot stops at</td>
+<td><code>scePthreadAttrGetaffinity</code> (libkernel), called by the game's own <code>libc</code> module while it starts</td>
+</tr>
+</tbody>
+</table>
+<p>Generated by <code>tools/gen_runtime_status.py</code> from a run of Paleblood's boot <abbr title="tools/harness.py: runs the original function and its replacement natively on the same recorded inputs, outside the game.">harness</abbr>. Do not edit.</p>
+<p>Measured on Paleblood's development tree: the runtime's code lands in the public repository as
+it is reviewed. The boot milestones, in order, are the first calls to the system's threads,
+files, input, audio, video out, GPU submission and the first flip.</p>
       
       </div>
 
@@ -354,7 +411,7 @@ var input   = document.getElementById('wk-q');
 var results = document.getElementById('wk-results');
 var docs    = null;
 if (input) {
-  fetch("../../search/search_index.json")
+  fetch("../search/search_index.json")
     .then(function (r) { return r.json(); })
     .then(function (d) { docs = d.docs; });
 
@@ -389,7 +446,7 @@ function onSearch() {
     return (d.title + ' ' + d.text).toLowerCase().indexOf(q) !== -1;
   }).slice(0, 8);
   if (!hits.length) { results.hidden = true; return; }
-  var base = "../..";
+  var base = "..";
   results.innerHTML = hits.map(function (d) {
     var text  = d.text || '';
     var i     = text.toLowerCase().indexOf(q);
