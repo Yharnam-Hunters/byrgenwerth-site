@@ -1,12 +1,12 @@
 {
   "inputs": {
-    "functions_sha256": "785f29fa5179e8c73163723917a78e99648aabe972d79aa61d655ac08b3daee8",
+    "functions_sha256": "b61f4d47a19d4377b1ad8852fb13d9497eef5b2b3702e78c4df9492f0f6b7e73",
     "ghidra_functions_sha256": "fc7e244dc9f211963118a9ab97716de03e0f342421c63cafc9a8ae747abb8ebd"
   },
   "replaced": {
-    "bytes": 14243,
+    "bytes": 14846,
     "bytes_pct": 0.03,
-    "functions": 25,
+    "functions": 29,
     "functions_pct": 0.02
   },
   "schema": 1,
@@ -191,17 +191,17 @@
       "bytes": 679570,
       "end": "0x013b8655",
       "functions": 2928,
-      "replaced_bytes": 16,
+      "replaced_bytes": 187,
       "start": "0x013096c2",
-      "verified_bytes": 16
+      "verified_bytes": 187
     },
     {
       "bytes": 680950,
       "end": "0x014675e8",
       "functions": 3776,
-      "replaced_bytes": 105,
+      "replaced_bytes": 459,
       "start": "0x013b8655",
-      "verified_bytes": 105
+      "verified_bytes": 459
     },
     {
       "bytes": 681944,
@@ -391,9 +391,9 @@
       "bytes": 633547,
       "end": "0x024cebb0",
       "functions": 2778,
-      "replaced_bytes": 2833,
+      "replaced_bytes": 2911,
       "start": "0x0241fc1d",
-      "verified_bytes": 2833
+      "verified_bytes": 2911
     },
     {
       "bytes": 644042,
@@ -544,10 +544,10 @@
       "verified": 1
     },
     "frame_timing": {
-      "replaced": 16,
-      "replaced_bytes": 4514,
-      "tracked": 17,
-      "verified": 7
+      "replaced": 20,
+      "replaced_bytes": 5117,
+      "tracked": 21,
+      "verified": 11
     },
     "input": {
       "replaced": 1,
@@ -579,13 +579,13 @@
     "functions": 157757
   },
   "tracked": {
-    "bytes": 14310,
-    "functions": 26
+    "bytes": 14913,
+    "functions": 30
   },
   "verified": {
-    "bytes": 13077,
+    "bytes": 13680,
     "bytes_pct": 0.03,
-    "functions": 16,
+    "functions": 20,
     "functions_pct": 0.01
   }
 }

@@ -175,19 +175,19 @@
     
     <div class="wk-stats">
       <p class="wk-nav-heading" title="Project stats">Insight</p>
-      <div class="wk-stat-row"><span>Verified</span><span class="wk-stat-val">13,077 B</span></div>
-      <div class="wk-stat-row"><span>Functions</span><span class="wk-stat-val">16</span></div>
-      <div class="wk-stat-row"><span>Replaced</span><span class="wk-stat-val">25</span></div>
+      <div class="wk-stat-row"><span>Verified</span><span class="wk-stat-val">13,680 B</span></div>
+      <div class="wk-stat-row"><span>Functions</span><span class="wk-stat-val">20</span></div>
+      <div class="wk-stat-row"><span>Replaced</span><span class="wk-stat-val">29</span></div>
       <p class="wk-stat-sublabel">Replaced (42.5 MB of code)</p>
-      <div class="wk-stat-track" title="0.0335%">
-        <div class="wk-stat-fill" style="width:0.0335%"></div>
+      <div class="wk-stat-track" title="0.0349%">
+        <div class="wk-stat-fill" style="width:0.0349%"></div>
       </div>
-      <p class="wk-stat-pct">0.0335%</p>
+      <p class="wk-stat-pct">0.0349%</p>
       <p class="wk-stat-sublabel">Verified (42.5 MB of code)</p>
-      <div class="wk-stat-track" title="0.0308%">
-        <div class="wk-stat-fill wk-stat-fill-dim" style="width:0.0308%"></div>
+      <div class="wk-stat-track" title="0.0322%">
+        <div class="wk-stat-fill wk-stat-fill-dim" style="width:0.0322%"></div>
       </div>
-      <p class="wk-stat-pct">0.0308%</p>
+      <p class="wk-stat-pct">0.0322%</p>
       <p class="wk-stat-link"><a href="../../../../../progress/">View full progress →</a></p>
     </div>
     
@@ -210,7 +210,7 @@
           <li>
             <a href="#7-october-2026-going-public-and-two-frames-worth-of-work" class="wk-toc-link">7 October 2026: going public, and two frames' worth of work</a>
             
-            <ol><li><a href="#going-public" class="wk-toc-link">Going public</a></li><li><a href="#the-pad-managers-frame-step" class="wk-toc-link">The pad manager's frame step</a></li><li><a href="#a-render-side-update" class="wk-toc-link">A render-side update</a></li><li><a href="#the-present-and-a-piece-of-middleware" class="wk-toc-link">The present, and a piece of middleware</a></li><li><a href="#physics-and-a-constructor-that-wires-itself-in" class="wk-toc-link">Physics, and a constructor that wires itself in</a></li><li><a href="#the-hunters-prey-the-ai-manager" class="wk-toc-link">The hunters' prey: the AI manager</a></li><li><a href="#a-new-system-characters" class="wk-toc-link">A new system: characters</a></li><li><a href="#a-lesson-about-the-patches" class="wk-toc-link">A lesson about the patches</a></li><li><a href="#next" class="wk-toc-link">Next</a></li></ol>
+            <ol><li><a href="#going-public" class="wk-toc-link">Going public</a></li><li><a href="#the-pad-managers-frame-step" class="wk-toc-link">The pad manager's frame step</a></li><li><a href="#a-render-side-update" class="wk-toc-link">A render-side update</a></li><li><a href="#the-present-and-a-piece-of-middleware" class="wk-toc-link">The present, and a piece of middleware</a></li><li><a href="#playing-it-and-the-task-manager" class="wk-toc-link">Playing it, and the task manager</a></li><li><a href="#physics-and-a-constructor-that-wires-itself-in" class="wk-toc-link">Physics, and a constructor that wires itself in</a></li><li><a href="#the-hunters-prey-the-ai-manager" class="wk-toc-link">The hunters' prey: the AI manager</a></li><li><a href="#a-new-system-characters" class="wk-toc-link">A new system: characters</a></li><li><a href="#a-lesson-about-the-patches" class="wk-toc-link">A lesson about the patches</a></li><li><a href="#next" class="wk-toc-link">Next</a></li></ol>
             
           </li>
           
@@ -257,6 +257,12 @@ assertion removed. Checking them took two new abilities in the test <abbr title=
 returning floating-point values, and three strengthened test cases each time a deliberately
 wrong version slipped through: a NaN, an odd sample count, and a microsecond-exact sleep
 threshold.</p>
+<h2 id="playing-it-and-the-task-manager">Playing it, and the task manager</h2>
+<p>The first real play session with every replacement in place ran at a steady 60 FPS on a
+2560x1440 screen. It also turned up a renderer setting in the runtime that mirrored the bottom of
+the screen into the sky; the runtime now starts at native resolution without its upscaler, and the
+artefact is gone. Then the frame's work itself: the task manager's six small functions that
+bracket every frame, <abbr title="A function whose original code no longer runs: a hook sends every call to our C++ version.">replaced</abbr> and checked against real frames.</p>
 <h2 id="physics-and-a-constructor-that-wires-itself-in">Physics, and a constructor that wires itself in</h2>
 <p>The next frame-rate patched function is a constructor: it builds a physics instance over a set of
 bodies and threads it into the world's shared tables. It runs only while an area loads, so the
