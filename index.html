@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   
-  <meta name="description" content="A native source port of Bloodborne (PS4, CUSA03173 v1.09), function by function">
+  <meta name="description" content="A native source port of Bloodborne (PS4, CUSA03173 v1.09), function by function, and an open place to learn how a console game works and how it is reverse engineered">
   <link rel="canonical" href="https://yharnam-hunters.github.io/byrgenwerth-site/">
   
   
@@ -206,7 +206,7 @@
           <li>
             <a href="#byrgenwerth" class="wk-toc-link">Byrgenwerth</a>
             
-            <ol><li><a href="#why-we-do-this" class="wk-toc-link">Why we do this</a></li><li><a href="#start-here" class="wk-toc-link">Start here</a></li><li><a href="#reference" class="wk-toc-link">Reference</a></li><li><a href="#methodology" class="wk-toc-link">Methodology</a></li><li><a href="#legal" class="wk-toc-link">Legal</a></li></ol>
+            <ol><li><a href="#why-we-do-this" class="wk-toc-link">Why we do this</a></li><li><a href="#a-place-to-learn" class="wk-toc-link">A place to learn</a></li><li><a href="#start-here" class="wk-toc-link">Start here</a></li><li><a href="#reference" class="wk-toc-link">Reference</a></li><li><a href="#methodology" class="wk-toc-link">Methodology</a></li><li><a href="#legal" class="wk-toc-link">Legal</a></li></ol>
             
           </li>
           
@@ -218,7 +218,7 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 7, 2026 14:11:44 UTC">October 7, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 7, 2026 14:47:15 UTC">October 7, 2026</span></p>
       
       <h1 class="wk-visually-hidden" id="byrgenwerth">Byrgenwerth</h1>
 <div class="wk-hero">
@@ -256,6 +256,25 @@
 understood as well as it is loved: every function of the original, read, named, rewritten and
 proved to behave exactly as it did, so that one day it runs natively, at any frame rate, for as
 long as there are hunters to play it.</p>
+<h2 id="a-place-to-learn">A place to learn</h2>
+<p>This wiki is also an educational resource, and that is one of its most important jobs. Every
+page is written so that someone who has never taken a game apart can follow how it is done, and
+see why each step is taken, not only what was found. You do not need a console, a dump or any
+game files to read and learn from it; the project only ever shows how the game's code works, in
+our own words and our own code.</p>
+<p>What you can learn here:</p>
+<ul>
+<li><strong>How a console game is put together</strong>: the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> executable and its libraries, how the game's
+  frame loop paces itself, how its systems (timing, input, rendering, AI, characters) talk to each
+  other. Start with <a href="ARCHITECTURE/">Architecture</a> and <a href="how-the-frame-limiter-works/">How the Frame Limiter Works</a>.</li>
+<li><strong>Reverse engineering in practice</strong>: reading disassembly, telling what a function does from its
+  callers, callees and the memory it touches, and the traps in the tools (<a href="QUIRKS/"><abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr> &amp; <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> Quirks</a>,
+  the <a href="systems/">system pages</a>).</li>
+<li><strong>Proving code correct</strong>: how a rewritten function is checked against the original on real and
+  hand-made inputs, and why deliberately wrong versions must fail (<a href="ARCHITECTURE/#verification">Architecture: Verification</a>).</li>
+<li><strong>The words</strong>: every term of the trade, explained in the <a href="glossary/">Glossary</a>; hover a dotted term anywhere for its meaning.</li>
+</ul>
+<p>The <a href="devlog/">devlog</a> tells the same story as it happened, mistakes included.</p>
 <hr />
 <h2 id="start-here">Start here</h2>
 <div class="wk-quicklinks">
