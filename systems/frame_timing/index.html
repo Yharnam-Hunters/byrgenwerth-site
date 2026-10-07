@@ -175,19 +175,19 @@
     
     <div class="wk-stats">
       <p class="wk-nav-heading" title="Project stats">Insight</p>
-      <div class="wk-stat-row"><span>Verified</span><span class="wk-stat-val">13,680 B</span></div>
-      <div class="wk-stat-row"><span>Functions</span><span class="wk-stat-val">20</span></div>
-      <div class="wk-stat-row"><span>Replaced</span><span class="wk-stat-val">29</span></div>
+      <div class="wk-stat-row"><span>Verified</span><span class="wk-stat-val">14,010 B</span></div>
+      <div class="wk-stat-row"><span>Functions</span><span class="wk-stat-val">21</span></div>
+      <div class="wk-stat-row"><span>Replaced</span><span class="wk-stat-val">30</span></div>
       <p class="wk-stat-sublabel">Replaced (42.5 MB of code)</p>
-      <div class="wk-stat-track" title="0.0349%">
-        <div class="wk-stat-fill" style="width:0.0349%"></div>
+      <div class="wk-stat-track" title="0.0357%">
+        <div class="wk-stat-fill" style="width:0.0357%"></div>
       </div>
-      <p class="wk-stat-pct">0.0349%</p>
+      <p class="wk-stat-pct">0.0357%</p>
       <p class="wk-stat-sublabel">Verified (42.5 MB of code)</p>
-      <div class="wk-stat-track" title="0.0322%">
-        <div class="wk-stat-fill wk-stat-fill-dim" style="width:0.0322%"></div>
+      <div class="wk-stat-track" title="0.033%">
+        <div class="wk-stat-fill wk-stat-fill-dim" style="width:0.033%"></div>
       </div>
-      <p class="wk-stat-pct">0.0322%</p>
+      <p class="wk-stat-pct">0.033%</p>
       <p class="wk-stat-link"><a href="../../progress/">View full progress →</a></p>
     </div>
     
@@ -222,7 +222,7 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 7, 2026 16:48:19 UTC">October 7, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 7, 2026 18:13:43 UTC">October 7, 2026</span></p>
       
       <h1 id="frame-timing">Frame timing</h1>
 <h2 id="summary">Summary</h2>
@@ -310,8 +310,10 @@ twice or half-finished:</p>
 <li>With the busy flag set, it calls the dispatcher (<code>+0x40</code>, virtual <code>+0x30</code>), which runs the
    frame's tasks; then it clears the flag, flushes the second queue and steps the workers again.</li>
 </ol>
-<p>The dispatcher itself is the next thing to study: it is where the game's own per-frame work
-begins.</p>
+<p>The dispatcher (<code>0x0138a370</code>) is the last link: when its group record asks for it, it wakes
+every registered task (76 in Iosefka's Clinic), then fills a job with the record, the task table and
+the group mask and runs it through the same five steps as the workers. Each of those tasks is a
+piece of the game's own per-frame work, the next layer to map.</p>
 <h2 id="key-functions">Key functions</h2>
 <table>
 <thead>
@@ -351,6 +353,13 @@ begins.</p>
 <td><code>frame_timing_task_run_01388c70</code></td>
 <td><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and ran in the game.">verified</abbr></td>
 <td>task manager run: prepare the frame, dispatch through +0x40 (virtual +0x30) with +0x38 set, finish</td>
+</tr>
+<tr>
+<td><code>0x0138a370</code></td>
+<td style="text-align: right;">330</td>
+<td><code>frame_timing_task_dispatch_0138a370</code></td>
+<td><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and ran in the game.">verified</abbr></td>
+<td>task dispatcher (virtual +0x30): wakes registered tasks, updates the group record, runs the job like the worker step</td>
 </tr>
 <tr>
 <td><code>0x013d3520</code></td>
