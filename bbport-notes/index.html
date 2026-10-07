@@ -1,0 +1,708 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  
+  <meta name="description" content="A native source port of Bloodborne (PS4, CUSA03173 v1.09), function by function">
+  <link rel="canonical" href="https://yharnam-hunters.github.io/byrgenwerth-site/bbport-notes/">
+  
+  
+  <title>bbport Study — Byrgenwerth</title>
+  
+  
+  <link rel="stylesheet" href="../stylesheets/wiki.css">
+  
+  
+</head>
+<body>
+
+<!-- ── Header ──────────────────────────────────────────────── -->
+<header class="wk-header">
+  <button class="wk-nav-toggle" id="wk-nav-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="wk-nav">☰</button>
+  <a class="wk-wordmark" href="../">Byrgenwerth<small>notes of Paleblood, a Bloodborne source port</small></a>
+
+  <div class="wk-header-right">
+    
+    <div class="wk-searchbox">
+      <input class="wk-search-input" id="wk-q" type="search"
+             placeholder="Search the archives…  [/]" autocomplete="off" aria-label="Search">
+      <div class="wk-search-results" id="wk-results" hidden role="listbox"></div>
+    </div>
+    <button class="wk-toggle" id="wk-toggle" title="Toggle theme" aria-label="Toggle dark/light">☀</button>
+  </div>
+</header>
+
+<!-- ── Layout ──────────────────────────────────────────────── -->
+<div class="wk-layout">
+
+  <div class="wk-nav-backdrop" id="wk-nav-backdrop" hidden></div>
+
+  <!-- Left sidebar -->
+  <nav class="wk-nav" id="wk-nav" aria-label="Site navigation">
+    <a href="../" class="wk-portal-icon" aria-label="Home">
+      <img src="../assets/bb-icon.png" alt="Byrgenwerth" width="220" height="220">
+    </a>
+
+    
+      
+      <a class="wk-nav-link" href="..">Home</a>
+      
+    
+      
+        <p class="wk-nav-heading">The Hunt</p>
+        
+          
+          <a class="wk-nav-link" href="../devlog/">Devlog</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../gallery/">Gallery</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../progress/">Progress</a>
+          
+        
+      
+    
+      
+        <p class="wk-nav-heading">Systems</p>
+        
+          
+          <a class="wk-nav-link" href="../systems/">Overview</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../systems/frame_timing/">Frame timing</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../systems/kernel/">Kernel</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../systems/event/">Event</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../systems/camera/">Camera</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../systems/input/">Input</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../systems/character/">Character</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../systems/ai/">AI</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../systems/render/">Render</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../systems/loading/">Loading</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../systems/audio/">Audio</a>
+          
+        
+      
+    
+      
+        <p class="wk-nav-heading">How It Works</p>
+        
+          
+          <a class="wk-nav-link" href="../ARCHITECTURE/">Architecture</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../how-the-frame-limiter-works/">The Frame Limiter</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../ADDRESS_MAP/">Address Map</a>
+          
+        
+          
+          <a class="wk-nav-link is-active" href="./">bbport Study</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../target/">Target</a>
+          
+        
+      
+    
+      
+        <p class="wk-nav-heading">For Hunters</p>
+        
+          
+          <a class="wk-nav-link" href="../CONTRIBUTING/">Contributing</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../QUIRKS/">Ghidra & PS4 Quirks</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../glossary/">Glossary</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../CI_SETUP/">CI Setup</a>
+          
+        
+      
+    
+      
+      <a class="wk-nav-link" href="../credits/">Credits</a>
+      
+    
+
+    <!-- Project stats widget: every value from docs/data/progress.json (hooks/progress_extra.py) -->
+    
+    
+    <div class="wk-stats">
+      <p class="wk-nav-heading" title="Project stats">Insight</p>
+      <div class="wk-stat-row"><span>Verified</span><span class="wk-stat-val">9,821 B</span></div>
+      <div class="wk-stat-row"><span>Functions</span><span class="wk-stat-val">13</span></div>
+      <div class="wk-stat-row"><span>Replaced</span><span class="wk-stat-val">22</span></div>
+      <p class="wk-stat-sublabel">Replaced (42.5 MB of code)</p>
+      <div class="wk-stat-track" title="0.0259%">
+        <div class="wk-stat-fill" style="width:0.0259%"></div>
+      </div>
+      <p class="wk-stat-pct">0.0259%</p>
+      <p class="wk-stat-sublabel">Verified (42.5 MB of code)</p>
+      <div class="wk-stat-track" title="0.0231%">
+        <div class="wk-stat-fill wk-stat-fill-dim" style="width:0.0231%"></div>
+      </div>
+      <p class="wk-stat-pct">0.0231%</p>
+      <p class="wk-stat-link"><a href="../progress/">View full progress →</a></p>
+    </div>
+    
+  </nav>
+
+  <!-- Main content -->
+  <main class="wk-main">
+    <div class="wk-article">
+
+      
+      
+      <div class="wk-toc" id="wk-toc">
+        <div class="wk-toc-header">
+          <b>Contents</b>
+          <button class="wk-toc-toggle"
+            onclick="var l=document.getElementById('wk-toc-list');l.hidden=!l.hidden;this.textContent=l.hidden?'[show]':'[hide]'">[hide]</button>
+        </div>
+        <ol class="wk-toc-list" id="wk-toc-list">
+          
+          <li>
+            <a href="#bbport-study" class="wk-toc-link">bbport study</a>
+            
+            <ol><li><a href="#1-eboot-to-flat-image-offline" class="wk-toc-link">1. Eboot to flat image, offline</a></li><li><a href="#2-what-comes-from-shadps4-and-what-is-its-own" class="wk-toc-link">2. What comes from shadPS4 and what is its own</a></li><li><a href="#3-difference-from-anyps5s-relinker" class="wk-toc-link">3. Difference from AnyPS5's relinker</a></li><li><a href="#4-testing-it-needs-on-the-rtx-3070-8-gb" class="wk-toc-link">4. Testing it needs on the RTX 3070 8 GB</a></li><li><a href="#5-can-it-replace-a-game-function-at-an-address" class="wk-toc-link">5. Can it replace a game function at an address?</a></li><li><a href="#6-address-conventions" class="wk-toc-link">6. Address conventions</a></li><li><a href="#7-license" class="wk-toc-link">7. License</a></li><li><a href="#recommendation" class="wk-toc-link">Recommendation</a></li></ol>
+            
+          </li>
+          
+        </ol>
+      </div>
+      
+      
+
+      <div class="wk-article-body">
+      
+      
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 7, 2026 14:11:44 UTC">October 7, 2026</span></p>
+      
+      <h1 id="bbport-study"><abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; our runtime scaffold, as a private fork.">bbport</abbr> study</h1>
+<p>Read-only study of <abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; our runtime scaffold, as a private fork.">bbport</abbr> (<a href="https://github.com/deadinside28/bloodborne_pc">https://github.com/deadinside28/bloodborne_pc</a>), a native
+Linux port of Bloodborne 1.09, to decide whether it is the runtime <abbr title="The runtime that loads the original game and runs it natively: bbport, our fork.">scaffold</abbr> for our
+<abbr title="The game rebuilt from source to run natively on another platform, here Linux on a PC.">source port</abbr>. Studied from a shallow clone at commit <code>4d4d208</code> (2026-10-06, "0.3").
+Nothing was built or run. Statements marked <strong><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and ran in the game.">verified</abbr></strong> were checked against our own
+dump with read-only scripts; the rest come from reading the code and docs.</p>
+<p>The project says it is not related to <abbr title="An open-source PS4 emulator; bbport's renderer and shader recompiler come from it.">shadPS4</abbr> and that questions go to its own Discord.</p>
+<h2 id="1-eboot-to-flat-image-offline">1. Eboot to flat image, offline</h2>
+<p>The step is <code>scripts/prepare.py</code>, plus <code>scripts/link_modules.py</code> for the bundled modules.</p>
+<ol>
+<li>Input is the game folder with the update merged in, as we have it: <code>eboot.bin</code>
+   (a plaintext <abbr title="Signed ELF: the PS4's wrapper around an executable. Ours are fake-signed and unencrypted, so converting them only unwraps them.">SELF</abbr>), <code>sce_module/</code>, <code>sce_sys/param.sfo</code>, <code>dvdroot_ps4/</code>.
+   Encrypted or compressed <abbr title="Signed ELF: the PS4's wrapper around an executable. Ours are fake-signed and unencrypted, so converting them only unwraps them.">SELF</abbr> segments are refused. No decryption exists anywhere.</li>
+<li><code>parse_self</code> rebuilds an <abbr title="Executable and Linkable Format, the standard executable file format on Linux and FreeBSD.">ELF</abbr> header, program headers and segment contents from the
+   <abbr title="Signed ELF: the PS4's wrapper around an executable. Ours are fake-signed and unencrypted, so converting them only unwraps them.">SELF</abbr>'s blocked segments.</li>
+<li>The loadable segments (<code>PT_LOAD</code> and the Sony <code>0x61000010</code>) are copied to their
+   <code>p_vaddr</code> into one flat buffer sized by the highest <code>p_vaddr + p_memsz</code>. That buffer is
+   "the image". Image offset 0 is <code>p_vaddr</code> 0.</li>
+<li><code>scripts/game_check.py</code> pins the SHA-256 of that image to one value. Anything else
+   (base game 1.00, another region or edition) is refused with an explanation.</li>
+<li>The dynamic data (<code>PT_DYNAMIC</code> and the Sony dynlib data segment <code>0x61000000</code>) is parsed:
+   symbol table, string table and both relocation tables.</li>
+<li>Base-relative relocations are kept as such.</li>
+<li>Relocations against symbols the image defines are resolved to offsets.</li>
+<li>Relocations against undefined symbols become imports, named by <abbr title="A PS4 library symbol's identifier: a hash of its name, used instead of the name when linking.">NID</abbr> plus library and
+     module ids, for example <code>pO96TwzOm5E#p#J</code>. <abbr title="PS4 library symbol identifiers: hashes of their names, used instead of names when linking.">NIDs</abbr> are the SHA-1 based hash of the symbol
+     name, so imports are identified by hash; known names come from a hint list.</li>
+<li><code>link_modules.py</code> places <code>libc.prx</code> and <code>libSceFios2.prx</code> (the game's own code) after the
+   <abbr title="eboot.bin, the game's main executable.">eboot</abbr> in the same image and merges their imports into one table. Imports of the unshipped
+   libSceLibcInternal are served by libc.prx's exports of the same <abbr title="A PS4 library symbol's identifier: a hash of its name, used instead of the name when linking.">NID</abbr>.</li>
+<li>The output is <code>out/boot-linked.bin</code> (a small custom format: header, load descriptors,
+   128-byte import names, relocations, the image), a reconstructed <code>eboot.elf</code> (not
+   byte-exact) and JSON reports.</li>
+</ol>
+<p>At run time <code>src/probe.c</code> maps the image into a low host region (the image base is
+<code>0x800000000</code> on the host), applies relocations, binds each import to a function of the
+<abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; our runtime scaffold, as a private fork.">bbport</abbr> runtime by <abbr title="A PS4 library symbol's identifier: a hash of its name, used instead of the name when linking.">NID</abbr>, points unresolved imports at traps that print
+<code>STOP: first unsupported PS4 import</code>, applies <code>patches.bin</code>, and jumps to the entry point.
+The game's x86-64 code runs directly on the CPU. There is no emulation.</p>
+<p><strong>Verified:</strong> the loaded-image hash that <code>game_check.py</code> pins is the hash of our dump, both
+computed from our merged <code>eboot.bin</code> with their parser and from our converted <code>eboot.elf</code>
+(<code>071df19c8880086d97182dbc057bc8cb37badaca57d9112683836b24a0444c0a</code>). Our target is the
+executable <abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; our runtime scaffold, as a private fork.">bbport</abbr> supports. This hash does not depend on which SelfUtil produced the <abbr title="Executable and Linkable Format, the standard executable file format on Linux and FreeBSD.">ELF</abbr>.</p>
+<h2 id="2-what-comes-from-shadps4-and-what-is-its-own">2. What comes from <abbr title="An open-source PS4 emulator; bbport's renderer and shader recompiler come from it.">shadPS4</abbr> and what is its own</h2>
+<p>Vendored from <abbr title="An open-source PS4 emulator; bbport's renderer and shader recompiler come from it.">shadPS4</abbr> commit <code>b4e7ae7</code> (GPL-2.0-or-later), listed in <code>gpu/VENDOR.txt</code>:</p>
+<ul>
+<li><code>video_core</code> and <code>shader_recompiler</code> (the renderer and the <abbr title="Graphics Core Next, the AMD GPU architecture of the PS4; its shaders are recompiled for Vulkan.">GCN</abbr> to SPIR-V recompiler),
+  <code>common</code>, and from the libraries only <code>gnmdriver</code>, <code>videoout</code>, parts of <code>avplayer</code>,
+  <code>videodec</code> utilities and a few kernel and system headers.</li>
+<li>Externals: <code>gcn</code>, <code>sirit</code>, <code>half</code>.</li>
+<li>About 108k lines under <code>gpu/shadps4</code>, with around 290 <code>bbport:</code> markers for local changes.
+  Some recompiler fixes were backported from <abbr title="An open-source PS4 emulator; bbport's renderer and shader recompiler come from it.">shadPS4</abbr> after that commit.</li>
+</ul>
+<p>Its own code:</p>
+<ul>
+<li><code>src/</code>, about 7k lines of C: loader (<code>probe.c</code>) and the runtime that implements the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> OS
+  functions Bloodborne calls: memory, kernel, threads, mutexes, rwlocks, semaphores, files,
+  pad, audio and AJM (ATRAC9 through LibAtrac9), save data, services, content, time.
+  This is not <abbr title="An open-source PS4 emulator; bbport's renderer and shader recompiler come from it.">shadPS4</abbr>'s library layer: <abbr title="An open-source PS4 emulator; bbport's renderer and shader recompiler come from it.">shadPS4</abbr>'s broad HLE is not vendored.</li>
+<li><code>scripts/</code>, about 1.3k lines of Python: conversion, linking, patch compiler, mods.</li>
+<li><code>gpu/shim/</code>, about 5k lines: guest <abbr title="14-byte jumps written over the start of original functions, sending their callers to the replacements.">hooks</abbr>, guest memory model, overlay, settings, copies.</li>
+<li>New GPU modules (two-stage draw pipeline, motion vectors, upscalers), the launcher and
+  packaging.</li>
+</ul>
+<p>Other third-party parts: FSR-Vulkan by FireBurn (MIT), AMD FidelityFX (MIT), LibAtrac9 (MIT),
+Dear ImGui (MIT), dxil-spirv (MIT, build time). AMD's FSR 4 DLLs are not distributed.</p>
+<h2 id="3-difference-from-anyps5s-relinker">3. Difference from AnyPS5's relinker</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>AnyPS5 relinker</th>
+<th><abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; our runtime scaffold, as a private fork.">bbport</abbr></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Target</td>
+<td>PS5 executables (Agc, PPSA ids); the only listed game is a 2D platformer</td>
+<td>One <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> game, Bloodborne 1.09</td>
+</tr>
+<tr>
+<td>Input</td>
+<td>A clean <abbr title="Executable and Linkable Format, the standard executable file format on Linux and FreeBSD.">ELF</abbr> plus its <code>sce_module/</code> ELFs</td>
+<td>The plaintext <abbr title="Signed ELF: the PS4's wrapper around an executable. Ours are fake-signed and unencrypted, so converting them only unwraps them.">SELF</abbr> folder; it does its own <abbr title="Signed ELF: the PS4's wrapper around an executable. Ours are fake-signed and unencrypted, so converting them only unwraps them.">SELF</abbr> parsing</td>
+</tr>
+<tr>
+<td>Output</td>
+<td>A native Linux <abbr title="Executable and Linkable Format, the standard executable file format on Linux and FreeBSD.">ELF</abbr> or Windows PE, with system libraries as dynamically linked shared objects built from a library tree (about 110 <abbr title="A PS4 dynamic library (shared module), like a .so on Linux.">PRX</abbr> libraries declared)</td>
+<td>A flat image and a custom boot file, loaded by a C loader into a running process</td>
+</tr>
+<tr>
+<td>Linking</td>
+<td>Static rewrite of the executable; import filtering and PLT compaction options</td>
+<td>Dynamic: imports bound to host functions at load, unknown imports trap</td>
+</tr>
+<tr>
+<td>Libraries</td>
+<td>Implements many system libraries generically</td>
+<td>Implements only what this game calls</td>
+</tr>
+<tr>
+<td>Graphics</td>
+<td>Shader recompiler to SPIR-V</td>
+<td>Vendored <abbr title="An open-source PS4 emulator; bbport's renderer and shader recompiler come from it.">shadPS4</abbr> renderer, <abbr title="The command packet format the PS4's GPU reads; bbport's renderer decodes it.">PM4</abbr> decoded at run time</td>
+</tr>
+<tr>
+<td>Hooks</td>
+<td>None found</td>
+<td>Ad hoc patch sites (section 5)</td>
+</tr>
+<tr>
+<td>License</td>
+<td>GPL-2.0 only</td>
+<td>GPL-2.0-or-later</td>
+</tr>
+</tbody>
+</table>
+<p>AnyPS5 would give a standalone native executable but has no Bloodborne path and no <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr>
+graphics. <abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; our runtime scaffold, as a private fork.">bbport</abbr> already runs the game. The two are not interchangeable.</p>
+<h2 id="4-testing-it-needs-on-the-rtx-3070-8-gb">4. Testing it needs on the RTX 3070 8 GB</h2>
+<p>Nothing here has been run.</p>
+<ul>
+<li><strong>Dump format:</strong> the game folder dumped from your own console (its files as the console
+  dumped them), named like <code>CUSA03173</code>, with the 1.09 update
+  copied over the base game, replacing files (<code>eboot.bin</code> and <code>sce_sys</code> too). <strong>Verified:</strong>
+  the maintainer's merged dump has that layout and passes <code>game_check.py</code> (<code>problem()</code> returns
+  nothing). <code>BB_GAME_DIR</code> points at it, so the dump is not copied.</li>
+<li><strong>Version:</strong> 1.09, title CUSA03173. The base game alone crashes at start.</li>
+<li><strong>Launch:</strong> <code>git clone --recursive</code>, <code>bash build.sh</code> (GCC, CMake, Ninja, Python 3, glslang,
+  SDL3, Vulkan headers, the libraries in <code>shell.nix</code>), then
+  <code>BB_GAME_DIR=&lt;dump&gt; bash run.sh</code> or the GTK4 launcher. Saves, shader cache and <code>out/</code> go in
+  the repo or in <code>BB_DATA_DIR</code>, so build it outside our repos. <code>run.sh --software</code> selects a
+  software Vulkan driver (lavapipe), useful for tests that must not touch the GPU.
+  <code>probe --cpu-only</code> runs the game code without the GPU library.</li>
+<li><strong>NVIDIA caveats from its own docs:</strong></li>
+<li>The experimental PC memory model does not work properly on NVIDIA (dma-buf mapping with
+    an offset); keep <code>BB_GUEST_IN_PLACE</code> off, which is the default.</li>
+<li>FSR 4.1.1 needs a Valve Vulkan extension that only some Mesa drivers expose, so on NVIDIA
+    expect FSR 3.1. One user reported FSR 3 working on a GTX 1060 and a black window with
+    FSR 4. Start with <code>BB_UPSCALER=fsr3</code> or <code>taa</code>; try FSR 4 afterwards.</li>
+<li>"Live resolution changes" turns on automatically for discrete GPUs with 8 GB or more, which
+    includes a 3070. It costs VRAM and draws; set <code>live_resolution=0</code> first.</li>
+<li>Only an AMD RX 7800 XT on Mesa is tested thoroughly by the author. Treat the 3070 as
+    untested until a first run.</li>
+<li><strong>Unconfirmed:</strong> whether the 8 GB of VRAM is enough with the default memory model, and
+  whether the NVIDIA proprietary driver exposes everything the renderer needs. A first run is
+  the only way to know. It is not scheduled.</li>
+</ul>
+<h2 id="5-can-it-replace-a-game-function-at-an-address">5. Can it replace a game function at an address?</h2>
+<p><strong>Not as a general mechanism today.</strong> What exists:</p>
+<ul>
+<li><code>gpu/shim/bbport_guest_hooks.cpp</code> patches a handful of hard-coded sites. <code>Patch()</code> reads
+  the expected bytes at <code>ImageBase + offset</code>, refuses if they differ (so another game
+  version is not patched), and writes <code>0xcc</code> (int3). A SIGTRAP handler recognizes the site by
+  RIP and does the work in C++: it reads registers, calls a host function, and sets RIP and
+  RSP to resume. The sites are two call sites of the game's <code>memcpy</code>, an allocator's return,
+  a collector entry and a release check.</li>
+<li><code>patches.bin</code> (from XML patches) writes literal bytes at image offsets. Pattern (mask)
+  patches are rejected. Writing a jump by hand through that is possible but the target
+  address of our code is not known at build time.</li>
+<li>The <code>hook_*</code> functions in <code>src/runtime_memory.c</code> are GPU memory notifications, unrelated.</li>
+</ul>
+<p><strong>What a <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> and trampoline layer would need</strong>, in a fork:</p>
+<ol>
+<li>A load-time plug-in point: after relocations and patches, before entering the game, the
+   loader <code>dlopen</code>s a game library and calls its init with the image base. About one small
+   change in <code>probe.c</code>.</li>
+<li>An installer that reads a table of original address and replacement, verifies the original
+   bytes (as <abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; our runtime scaffold, as a private fork.">bbport</abbr> already does), and writes a jump to the replacement. The game is System V
+   AMD64 code, so a C replacement can be jumped to directly. A 5-byte relative jump needs a
+   near target; a 14-byte absolute jump does not; shorter functions fall back to the int3
+   route. The int3 route costs a signal per call and is fine only for cold functions.</li>
+<li>Calling the original from a replacement needs a relocated prologue (an instruction
+   decoder). The differential tester does not need it: it can run the original in place with the
+   <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> off, and the replacement directly, on the same captured state.</li>
+<li>Capture <abbr title="14-byte jumps written over the start of original functions, sending their callers to the replacements.">hooks</abbr> for <code>verify.py</code>: entry and exit snapshots through the same layer.</li>
+</ol>
+<p>Effort, as an estimate and not a measurement: the installer, the plug-in point and a CPU-only
+<abbr title="tools/harness.py: runs the original function and its replacement natively on the same recorded inputs, outside the game.">harness</abbr> are a few days of work for one person, using <code>--cpu-only</code> or lavapipe for tests. The
+continuing cost is rebasing, because upstream changes daily.</p>
+<h2 id="6-address-conventions">6. Address conventions</h2>
+<p>Three conventions, one constant apart. Let V be the <abbr title="Executable and Linkable Format, the standard executable file format on Linux and FreeBSD.">ELF</abbr> <code>p_vaddr</code> in our converted
+<code>eboot.elf</code> (the first <code>PT_LOAD</code> has <code>p_vaddr</code> 0).</p>
+<table>
+<thead>
+<tr>
+<th>Convention</th>
+<th>Address</th>
+<th>Used by</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><abbr title="Executable and Linkable Format, the standard executable file format on Linux and FreeBSD.">ELF</abbr> vaddr, "guest offset"</td>
+<td>V</td>
+<td><abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; our runtime scaffold, as a private fork.">bbport</abbr>'s loader logs ("guest offset 0x..."), its <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> sites, <code>game_check.py</code></td>
+</tr>
+<tr>
+<td><abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> virtual address</td>
+<td>V + 0x400000</td>
+<td>the community XML patches (<abbr title="An open-source PS4 emulator; bbport's renderer and shader recompiler come from it.">shadPS4</abbr> and GoldHEN format), and <code>patches.py</code> (<code>EBOOT_BASE = 0x400000</code>, which subtracts it)</td>
+</tr>
+<tr>
+<td>Host address</td>
+<td>V + 0x800000000</td>
+<td><abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; our runtime scaffold, as a private fork.">bbport</abbr>'s own process (<code>ImageBase</code> in its <abbr title="14-byte jumps written over the start of original functions, sending their callers to the replacements.">hooks</abbr>)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Verified</strong> against our image with read-only scripts:</p>
+<ul>
+<li>All five <abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; our runtime scaffold, as a private fork.">bbport</abbr> <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> sites carry the bytes its code expects at V (for example
+  <code>48 83 c4 18</code> at <code>0x26aa255</code>). At V + 0x400000 they do not.</li>
+<li>The community "Performance Patch" writes <code>C7 45 B4 09 00 00 00</code> at address <code>0x0261B108</code>.
+  At that address minus 0x400000 our image holds <code>c7 45 b4 06 00 00 00</code>, a
+  <code>mov dword [rbp-0x4c], 6</code> that the patch changes to 9. At the raw value it is garbage.</li>
+</ul>
+<p>So the community convention is the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> virtual address with the <abbr title="eboot.bin, the game's main executable.">eboot</abbr> at <code>0x400000</code>.</p>
+<h2 id="7-license">7. License</h2>
+<ul>
+<li><abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; our runtime scaffold, as a private fork.">bbport</abbr>'s <code>LICENSE</code> is the GPL version 2 text. Its README says "GNU GPL v2 or later". 36 files
+  in its own GPU shim, tools and tests carry <code>SPDX-License-Identifier: GPL-2.0-or-later</code>, and the
+  vendored <abbr title="An open-source PS4 emulator; bbport's renderer and shader recompiler come from it.">shadPS4</abbr> code is GPL-2.0-or-later per <code>gpu/VENDOR.txt</code>.</li>
+<li>The loader and runtime in <code>src/</code> and the Python in <code>scripts/</code> carry no per-file header. For
+  them the README is the only statement of "or later". Worth asking the author to add SPDX
+  headers.</li>
+<li>Third-party parts keep their own licenses (MIT for FSR-Vulkan, FidelityFX, LibAtrac9, ImGui).</li>
+<li>AnyPS5 is GPL-2.0 only. Code from it could not be combined with GPL-2.0-or-later code under
+  "or later" terms; we use none of it.</li>
+</ul>
+<p>What it means for us:</p>
+<ul>
+<li>If we vendor or fork <abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; our runtime scaffold, as a private fork.">bbport</abbr>, the combined work is GPL-2.0-or-later. Our code that is loaded
+  into its process (<code>game/</code>, <code>runtime/</code>) should be GPL-2.0-or-later too, so both of our
+  repositories are licensed that way. That covers our own work only.</li>
+<li>The GPL does not grant any right in the game's code, which belongs to its owners. A
+  <abbr title="Rewriting the game's code as readable source that behaves the same as the original, checked by running both; unlike a matching decompilation, the compiled bytes may differ.">functional decompilation</abbr> is derived from that code. Keeping the repositories private and
+  distributing no game content is the working rule; publishing anything is a separate decision.</li>
+</ul>
+<h2 id="recommendation">Recommendation</h2>
+<p><strong>Fork, with a minimal diff.</strong> Use <abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; our runtime scaffold, as a private fork.">bbport</abbr> as the <code>third_party/</code> <abbr title="The runtime that loads the original game and runs it natively: bbport, our fork.">scaffold</abbr>, pinned to a commit,
+as a submodule of our own fork under the private organization.</p>
+<ul>
+<li>As-is is not enough: it has no <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> layer, and there is no way to add one from outside the
+  loader.</li>
+<li>Neither is the worse option: writing our own loader and OS layer repeats thousands of lines
+  that already run this exact executable (<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and ran in the game.">verified</abbr> identical to ours), and the GPU side would
+  have to be rewritten or vendored anyway.</li>
+<li>Keep the fork small: a plug-in point in <code>probe.c</code>, the <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> installer, a CPU-only <abbr title="Inputs a replacement records in a real game run (BB_CAPTURE_DIR), replayed by the harness.">capture</abbr> and
+  call <abbr title="tools/harness.py: runs the original function and its replacement natively on the same recorded inputs, outside the game.">harness</abbr>. Offer the plug-in point upstream. Track upstream by rebasing.</li>
+<li><code>runtime/</code> in our repository stays generic and holds our <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> table and the C interface;
+  <abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; our runtime scaffold, as a private fork.">bbport</abbr> supplies the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> layer.</li>
+</ul>
+<p>Open questions for the maintainer: when to take the first fork commit; whether to ask the
+<abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; our runtime scaffold, as a private fork.">bbport</abbr> author about SPDX headers and the plug-in point; first run on the 3070 (not scheduled).</p>
+      
+      </div>
+
+    </div>
+    <footer class="wk-footer">
+      <p class="wk-footer-motto">Fear the old blood</p>
+      <p>Made by people who love Bloodborne, so that it can be studied, preserved and played
+      natively, one verified function at a time.</p>
+      <p>A fan project. Not affiliated with or endorsed by Sony Interactive Entertainment or
+      FromSoftware. No game files are shared here: bring your own copy.</p>
+    </footer>
+  </main>
+
+</div>
+
+
+<!-- Back to top -->
+<button class="wk-top" id="wk-top" title="Back to top" aria-label="Scroll to top">↑</button>
+
+
+<script>
+(function () {
+'use strict';
+
+/* ── Theme ─────────────────────────────────────────────────── */
+var stored = localStorage.getItem('wk-theme') || 'dark';
+applyTheme(stored);
+document.getElementById('wk-toggle').addEventListener('click', function () {
+  applyTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+});
+function applyTheme(t) {
+  document.documentElement.setAttribute('data-theme', t);
+  localStorage.setItem('wk-theme', t);
+  var btn = document.getElementById('wk-toggle');
+  if (btn) btn.textContent = t === 'dark' ? '☀' : '🌙';
+}
+
+/* ── Address map: a block opens its slice in a pop-up ──────── */
+(function () {
+  var map = document.querySelector('.wk-bankmap');
+  if (!map) return;
+  var modal = document.createElement('div');
+  modal.className = 'wk-slice-modal';
+  modal.setAttribute('role', 'dialog');
+  modal.setAttribute('aria-modal', 'true');
+  document.body.appendChild(modal);
+  function close() { modal.classList.remove('is-open'); }
+  map.addEventListener('click', function (e) {
+    var cell = e.target.closest('a.wk-bank-cell');
+    if (!cell) return;
+    var panel = document.getElementById(cell.getAttribute('href').slice(1));
+    if (!panel) return;
+    e.preventDefault();
+    modal.innerHTML = '';
+    modal.appendChild(panel.cloneNode(true));
+    modal.firstChild.removeAttribute('id');
+    requestAnimationFrame(function () { modal.classList.add('is-open'); });
+  });
+  modal.addEventListener('click', function (e) {
+    if (e.target === modal || e.target.closest('.wk-slice-close')) { e.preventDefault(); close(); }
+  });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+})();
+
+/* ── Mobile nav ────────────────────────────────────────────── */
+var navToggle  = document.getElementById('wk-nav-toggle');
+var navEl      = document.getElementById('wk-nav');
+var navBackdrop = document.getElementById('wk-nav-backdrop');
+function openNav() {
+  navEl.classList.add('is-open');
+  navBackdrop.hidden = false;
+  navToggle.setAttribute('aria-expanded', 'true');
+}
+function closeNav() {
+  navEl.classList.remove('is-open');
+  navBackdrop.hidden = true;
+  navToggle.setAttribute('aria-expanded', 'false');
+}
+if (navToggle && navEl && navBackdrop) {
+  navToggle.addEventListener('click', function () {
+    if (navEl.classList.contains('is-open')) { closeNav(); } else { openNav(); }
+  });
+  navBackdrop.addEventListener('click', closeNav);
+  navEl.addEventListener('click', function (e) {
+    if (e.target.closest('a')) { closeNav(); }
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { closeNav(); }
+  });
+  window.addEventListener('resize', function () {
+    if (window.innerWidth > 720) { closeNav(); }
+  });
+}
+
+/* ── Search ─────────────────────────────────────────────────── */
+var input   = document.getElementById('wk-q');
+var results = document.getElementById('wk-results');
+var docs    = null;
+if (input) {
+  fetch("../search/search_index.json")
+    .then(function (r) { return r.json(); })
+    .then(function (d) { docs = d.docs; });
+
+  input.addEventListener('input', onSearch);
+
+  document.addEventListener('click', function (e) {
+    if (results && !results.contains(e.target) && e.target !== input) results.hidden = true;
+  });
+  input.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { results.hidden = true; this.blur(); }
+    if (e.key === 'Enter' && results && !results.hidden) {
+      var first = results.querySelector('.wk-result');
+      if (first) { first.click(); }
+    }
+  });
+}
+
+/* Press / to focus search */
+document.addEventListener('keydown', function (e) {
+  if (e.key === '/' && document.activeElement !== input &&
+      document.activeElement.tagName !== 'INPUT' &&
+      document.activeElement.tagName !== 'TEXTAREA') {
+    e.preventDefault();
+    if (input) { input.focus(); input.select(); }
+  }
+});
+
+function onSearch() {
+  var q = this.value.trim().toLowerCase();
+  if (!docs || q.length < 2) { results.hidden = true; return; }
+  var hits = docs.filter(function (d) {
+    return (d.title + ' ' + d.text).toLowerCase().indexOf(q) !== -1;
+  }).slice(0, 8);
+  if (!hits.length) { results.hidden = true; return; }
+  var base = "..";
+  results.innerHTML = hits.map(function (d) {
+    var text  = d.text || '';
+    var i     = text.toLowerCase().indexOf(q);
+    var start = Math.max(0, i - 35);
+    var end   = Math.min(text.length, i + q.length + 70);
+    var snip  = (start > 0 ? '…' : '') + text.slice(start, end) + (end < text.length ? '…' : '');
+    var url   = base + '/' + d.location;
+    return '<a class="wk-result" href="' + esc(url) + '" role="option">'
+         + '<div class="wk-result-title">' + esc(d.title || d.location) + '</div>'
+         + '<div class="wk-result-snip">'  + esc(snip) + '</div></a>';
+  }).join('');
+  results.hidden = false;
+}
+
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+/* ── Back to top ────────────────────────────────────────────── */
+var topBtn = document.getElementById('wk-top');
+if (topBtn) {
+  window.addEventListener('scroll', function () {
+    topBtn.classList.toggle('visible', window.scrollY > 400);
+  }, {passive: true});
+  topBtn.addEventListener('click', function () {
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  });
+}
+
+/* ── Copy-to-clipboard ───────────────────────────────────────── */
+document.querySelectorAll('.highlight').forEach(function (block) {
+  var btn = document.createElement('button');
+  btn.className = 'wk-copy-btn';
+  btn.title     = 'Copy code';
+  btn.textContent = '⎘';
+  block.appendChild(btn);
+  btn.addEventListener('click', function () {
+    var pre = block.querySelector('pre');
+    if (!pre) return;
+    navigator.clipboard.writeText(pre.innerText).then(function () {
+      btn.textContent = '✓';
+      btn.classList.add('copied');
+      setTimeout(function () {
+        btn.textContent = '⎘';
+        btn.classList.remove('copied');
+      }, 1500);
+    });
+  });
+});
+
+/* ── Collapsible long code blocks ─────────────────────────────── */
+var COLLAPSE_THRESHOLD = 340;
+document.querySelectorAll('.wk-article-body .highlight').forEach(function (block) {
+  var pre = block.querySelector('pre');
+  if (!pre || pre.scrollHeight <= COLLAPSE_THRESHOLD + 40) return;
+
+  block.classList.add('wk-code-collapsed');
+  var toggle = document.createElement('button');
+  toggle.className = 'wk-code-toggle';
+  toggle.type = 'button';
+  toggle.textContent = 'Show more ▾';
+  toggle.addEventListener('click', function () {
+    var collapsed = block.classList.toggle('wk-code-collapsed');
+    toggle.textContent = collapsed ? 'Show more ▾' : 'Show less ▴';
+    if (collapsed) block.scrollIntoView({block: 'nearest'});
+  });
+  block.insertAdjacentElement('afterend', toggle);
+});
+
+/* ── TOC scroll spy ─────────────────────────────────────────── */
+var tocLinks = document.querySelectorAll('.wk-toc-link');
+if (tocLinks.length && 'IntersectionObserver' in window) {
+  var headings = Array.from(document.querySelectorAll('.wk-article h1, .wk-article h2, .wk-article h3'));
+  var active   = null;
+  var obs = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) {
+        var id  = e.target.id;
+        var lnk = document.querySelector('.wk-toc-link[href="#' + id + '"]');
+        if (lnk && lnk !== active) {
+          if (active) active.classList.remove('is-current');
+          lnk.classList.add('is-current');
+          active = lnk;
+        }
+      }
+    });
+  }, {rootMargin: '-10% 0px -80% 0px'});
+  headings.forEach(function (h) { if (h.id) obs.observe(h); });
+}
+
+
+}());
+</script>
+</body>
+</html>

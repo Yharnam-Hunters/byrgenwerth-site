@@ -1,0 +1,591 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  
+  <meta name="description" content="A native source port of Bloodborne (PS4, CUSA03173 v1.09), function by function">
+  <link rel="canonical" href="https://yharnam-hunters.github.io/byrgenwerth-site/QUIRKS/">
+  
+  
+  <title>Ghidra & PS4 Quirks — Byrgenwerth</title>
+  
+  
+  <link rel="stylesheet" href="../stylesheets/wiki.css">
+  
+  
+</head>
+<body>
+
+<!-- ── Header ──────────────────────────────────────────────── -->
+<header class="wk-header">
+  <button class="wk-nav-toggle" id="wk-nav-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="wk-nav">☰</button>
+  <a class="wk-wordmark" href="../">Byrgenwerth<small>notes of Paleblood, a Bloodborne source port</small></a>
+
+  <div class="wk-header-right">
+    
+    <div class="wk-searchbox">
+      <input class="wk-search-input" id="wk-q" type="search"
+             placeholder="Search the archives…  [/]" autocomplete="off" aria-label="Search">
+      <div class="wk-search-results" id="wk-results" hidden role="listbox"></div>
+    </div>
+    <button class="wk-toggle" id="wk-toggle" title="Toggle theme" aria-label="Toggle dark/light">☀</button>
+  </div>
+</header>
+
+<!-- ── Layout ──────────────────────────────────────────────── -->
+<div class="wk-layout">
+
+  <div class="wk-nav-backdrop" id="wk-nav-backdrop" hidden></div>
+
+  <!-- Left sidebar -->
+  <nav class="wk-nav" id="wk-nav" aria-label="Site navigation">
+    <a href="../" class="wk-portal-icon" aria-label="Home">
+      <img src="../assets/bb-icon.png" alt="Byrgenwerth" width="220" height="220">
+    </a>
+
+    
+      
+      <a class="wk-nav-link" href="..">Home</a>
+      
+    
+      
+        <p class="wk-nav-heading">The Hunt</p>
+        
+          
+          <a class="wk-nav-link" href="../devlog/">Devlog</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../gallery/">Gallery</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../progress/">Progress</a>
+          
+        
+      
+    
+      
+        <p class="wk-nav-heading">Systems</p>
+        
+          
+          <a class="wk-nav-link" href="../systems/">Overview</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../systems/frame_timing/">Frame timing</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../systems/kernel/">Kernel</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../systems/event/">Event</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../systems/camera/">Camera</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../systems/input/">Input</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../systems/character/">Character</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../systems/ai/">AI</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../systems/render/">Render</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../systems/loading/">Loading</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../systems/audio/">Audio</a>
+          
+        
+      
+    
+      
+        <p class="wk-nav-heading">How It Works</p>
+        
+          
+          <a class="wk-nav-link" href="../ARCHITECTURE/">Architecture</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../how-the-frame-limiter-works/">The Frame Limiter</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../ADDRESS_MAP/">Address Map</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../bbport-notes/">bbport Study</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../target/">Target</a>
+          
+        
+      
+    
+      
+        <p class="wk-nav-heading">For Hunters</p>
+        
+          
+          <a class="wk-nav-link" href="../CONTRIBUTING/">Contributing</a>
+          
+        
+          
+          <a class="wk-nav-link is-active" href="./">Ghidra & PS4 Quirks</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../glossary/">Glossary</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../CI_SETUP/">CI Setup</a>
+          
+        
+      
+    
+      
+      <a class="wk-nav-link" href="../credits/">Credits</a>
+      
+    
+
+    <!-- Project stats widget: every value from docs/data/progress.json (hooks/progress_extra.py) -->
+    
+    
+    <div class="wk-stats">
+      <p class="wk-nav-heading" title="Project stats">Insight</p>
+      <div class="wk-stat-row"><span>Verified</span><span class="wk-stat-val">9,821 B</span></div>
+      <div class="wk-stat-row"><span>Functions</span><span class="wk-stat-val">13</span></div>
+      <div class="wk-stat-row"><span>Replaced</span><span class="wk-stat-val">22</span></div>
+      <p class="wk-stat-sublabel">Replaced (42.5 MB of code)</p>
+      <div class="wk-stat-track" title="0.0259%">
+        <div class="wk-stat-fill" style="width:0.0259%"></div>
+      </div>
+      <p class="wk-stat-pct">0.0259%</p>
+      <p class="wk-stat-sublabel">Verified (42.5 MB of code)</p>
+      <div class="wk-stat-track" title="0.0231%">
+        <div class="wk-stat-fill wk-stat-fill-dim" style="width:0.0231%"></div>
+      </div>
+      <p class="wk-stat-pct">0.0231%</p>
+      <p class="wk-stat-link"><a href="../progress/">View full progress →</a></p>
+    </div>
+    
+  </nav>
+
+  <!-- Main content -->
+  <main class="wk-main">
+    <div class="wk-article">
+
+      
+      
+      <div class="wk-toc" id="wk-toc">
+        <div class="wk-toc-header">
+          <b>Contents</b>
+          <button class="wk-toc-toggle"
+            onclick="var l=document.getElementById('wk-toc-list');l.hidden=!l.hidden;this.textContent=l.hidden?'[show]':'[hide]'">[hide]</button>
+        </div>
+        <ol class="wk-toc-list" id="wk-toc-list">
+          
+          <li>
+            <a href="#ghidra-ps4-quirks" class="wk-toc-link">Ghidra &amp; PS4 Quirks</a>
+            
+            <ol><li><a href="#the-converted-executable" class="wk-toc-link">The converted executable</a></li><li><a href="#address-conventions" class="wk-toc-link">Address conventions</a></li><li><a href="#ghidra-itself" class="wk-toc-link">Ghidra itself</a></li><li><a href="#calling-convention" class="wk-toc-link">Calling convention</a></li><li><a href="#cpu" class="wk-toc-link">CPU</a></li><li><a href="#imports-and-system-calls" class="wk-toc-link">Imports and system calls</a></li><li><a href="#hooks" class="wk-toc-link">Hooks</a></li><li><a href="#verification-traps" class="wk-toc-link">Verification traps</a></li><li><a href="#ghidra-hides-code-after-the-engines-fatal-error-call" class="wk-toc-link">Ghidra hides code after the engine's fatal error call</a></li></ol>
+            
+          </li>
+          
+        </ol>
+      </div>
+      
+      
+
+      <div class="wk-article-body">
+      
+      
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 7, 2026 03:01:46 UTC">October 7, 2026</span></p>
+      
+      <h1 id="ghidra-ps4-quirks"><abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr> &amp; <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> Quirks</h1>
+<p class="wk-epigraph">Grant us eyes, grant us eyes! Plant eyes on our brains, to cleanse our beastly idiocy!<cite>Micolash, Host of the Nightmare</cite></p>
+
+<p>Traps in the tools and the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> ABI that cost time. This page is the code repository's <code>QUIRKS.md</code>, copied in by <code>tools/sync_progress.py</code>, so the two never disagree.</p>
+<p>Traps in <abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr> and the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> ABI that cost time. Entries marked <em>unconfirmed</em>
+come from general <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr>/<abbr title="The PS4's operating system, derived from FreeBSD.">Orbis</abbr> knowledge and have not been checked on this target
+yet; confirm or correct them when you hit them.</p>
+<h2 id="the-converted-executable">The converted executable</h2>
+<ul>
+<li>The <abbr title="Executable and Linkable Format, the standard executable file format on Linux and FreeBSD.">ELF</abbr> has no section headers (confirmed). The <abbr title="The PS4's operating system, derived from FreeBSD.">Orbis</abbr> loader (<abbr title="A Ghidra extension that loads PS4 executables and resolves NIDs to names.">GhidraOrbis</abbr>) synthesizes
+  blocks from the program headers: the executable <code>PT_LOAD</code> becomes <code>.text</code>, and its own
+  heuristic splits <code>.rodata</code>, <code>.eh_frame</code> and <code>.eh_frame_hdr</code> off the end of it. The progress
+  denominator is the functions <abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr> finds in that <code>.text</code> block, so it depends on the loader
+  and the analysis. <code>progress.py</code> ties its numbers to the hash of the committed export, and the
+  export prints how many functions fell outside <code>.text</code>. <code>.eh_frame</code> and <code>.eh_frame_hdr</code> are
+  marked executable by the loader; they are data.</li>
+<li>
+<p><code>e_type</code> is <code>0xfe10</code> (confirmed), not <code>ET_EXEC</code> or <code>ET_DYN</code>. The first <code>PT_LOAD</code> has
+  <code>p_vaddr</code> 0, so the file does not say where the game lives; the convention below does.
+  <abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr>'s default for this file type is <em>unconfirmed</em>: always set the image base
+  explicitly on import and check it (the export script refuses any other base).</p>
+</li>
+<li>
+<p>Program headers include Sony types (<code>PT_SCE_*</code>, <code>PT_SCE_DYNLIBDATA</code> and
+  friends) that <abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr> does not understand. The <code>PT_INTERP</code> is
+  <code>/libexec/ld-elf.so.1</code> (confirmed). Dynamic linking data is in a Sony-specific
+  segment, so <abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr> will not resolve imports by itself.</p>
+</li>
+<li>SelfUtil-Patched removes the repeated data before the first segment (at
+  0x4000) and patches the version segment. Another SelfUtil build can produce a
+  different file with different hashes: always check <code>target.sha256</code>.</li>
+</ul>
+<h2 id="address-conventions">Address conventions</h2>
+<p>All addresses in this repository are <strong><abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> virtual addresses: the <abbr title="Executable and Linkable Format, the standard executable file format on Linux and FreeBSD.">ELF</abbr> <code>p_vaddr</code> plus
+<code>0x400000</code></strong>, with <abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr>'s image base set to <code>0x400000</code>. This is what the community
+patches (<abbr title="An open-source PS4 emulator; bbport's renderer and shader recompiler come from it.">shadPS4</abbr> and GoldHEN XML) use, and what <abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; our runtime scaffold, as a private fork.">bbport</abbr>'s patch compiler converts from.</p>
+<p>Three conventions exist, one constant apart. V is the <abbr title="Executable and Linkable Format, the standard executable file format on Linux and FreeBSD.">ELF</abbr> <code>p_vaddr</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Convention</th>
+<th>Address</th>
+<th>Where it appears</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><abbr title="Executable and Linkable Format, the standard executable file format on Linux and FreeBSD.">ELF</abbr> vaddr, "guest offset"</td>
+<td>V</td>
+<td><abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; our runtime scaffold, as a private fork.">bbport</abbr>'s loader logs and <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> sites, its <code>game_check.py</code></td>
+</tr>
+<tr>
+<td><abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> virtual address</td>
+<td>V + 0x400000</td>
+<td><strong>ours</strong>, <abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr>, community XML patches</td>
+</tr>
+<tr>
+<td><abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; our runtime scaffold, as a private fork.">bbport</abbr> host address</td>
+<td>V + 0x800000000</td>
+<td>the running <abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; our runtime scaffold, as a private fork.">bbport</abbr> process</td>
+</tr>
+</tbody>
+</table>
+<p>To convert ours to a <abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; our runtime scaffold, as a private fork.">bbport</abbr> guest offset, subtract <code>0x400000</code>. <code>tools/validate_functions.py</code>
+rejects any address below <code>0x00400000</code>, which catches a base-0 import by mistake.</p>
+<p>Checked against the target image (read-only):
+- <abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; our runtime scaffold, as a private fork.">bbport</abbr>'s five guest-<abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> sites hold their expected bytes at V, not at V + 0x400000.
+- The community "Performance Patch" address <code>0x0261B108</code> minus <code>0x400000</code> holds
+  <code>c7 45 b4 06 00 00 00</code> (<code>mov dword [rbp-0x4c], 6</code>), which the patch changes to 9.</p>
+<p>Tool-independent identity: the loaded image (loadable segments copied to their <code>p_vaddr</code>,
+SHA-256) of this target is
+<code>071df19c8880086d97182dbc057bc8cb37badaca57d9112683836b24a0444c0a</code>, the value <abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; our runtime scaffold, as a private fork.">bbport</abbr> pins.
+It is the same whichever SelfUtil produced the <abbr title="Executable and Linkable Format, the standard executable file format on Linux and FreeBSD.">ELF</abbr>.</p>
+<h2 id="ghidra-itself"><abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr> itself</h2>
+<ul>
+<li><abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr> 12 headless has no Jython: a <code>.py</code> script fails with "<abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr> was not started with
+  PyGhidra". Our scripts are Java GhidraScripts.</li>
+<li><code>support/analyzeHeadless</code> hardcodes <code>MAXMEM=2G</code>. That is too small for this binary; raise it
+  in that file (setup in docs/GHIDRA.md).</li>
+<li>The <abbr title="The PS4's operating system, derived from FreeBSD.">Orbis</abbr> loader replaces an image base of 0 by <code>0x1000000</code> by default. Pass
+  <code>-loader-imageBase 0x400000</code> (<code>-loader-baseAddr</code> is ignored by this loader).</li>
+<li><code>-loader "Orbis ELF"</code> is rejected by headless as an invalid loader name; leave <code>-loader</code> out,
+  the <abbr title="The PS4's operating system, derived from FreeBSD.">Orbis</abbr> loader is picked automatically for this file.</li>
+</ul>
+<h2 id="calling-convention">Calling convention</h2>
+<ul>
+<li><abbr title="The PS4's operating system, derived from FreeBSD.">Orbis</abbr> uses the System V AMD64 ABI: integer arguments in <code>rdi rsi rdx rcx r8 r9</code>,
+  floats in <code>xmm0-xmm7</code>, return in <code>rax:rdx</code> / <code>xmm0:xmm1</code>, callee-saved
+  <code>rbx rbp r12-r15</code>. Variadic callers set <code>al</code> to the number of vector registers.</li>
+<li>Leaf functions use the 128-byte red zone below <code>rsp</code>. <abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr>'s stack analysis
+  can read that as unused or mis-size the frame.</li>
+<li>Optimized code splits and merges functions (tail calls, shared epilogues,
+  cold paths in the same range). A "function" boundary in <abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr> may be wrong.
+  Check the call sites before you claim a size.</li>
+<li>Parameters <abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr> types as <code>undefined8</code> are often pointers or floats in
+  another register class. Read the call sites, not the decompiler's signature.</li>
+<li><abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr> can pick a wrong calling convention for functions that pass a struct or
+  <code>this</code> in an unusual register. Fix the signature before trusting the output.</li>
+</ul>
+<h2 id="cpu">CPU</h2>
+<ul>
+<li>The CPU is an AMD Jaguar: SSE up to 4.2, AVX and F16C, BMI1. No AVX2, BMI2 or
+  FMA3 (<em>unconfirmed</em>). <abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr>'s decompiler does not model every instruction;
+  an <code>unaff_*</code> or <code>CONCAT</code> expression is a sign to read the disassembly.</li>
+<li>Float comparisons that look odd (<code>ucomiss</code> plus parity checks) encode NaN
+  handling that the replacement has to keep.</li>
+</ul>
+<h2 id="imports-and-system-calls">Imports and system calls</h2>
+<ul>
+<li>Library calls are linked by <abbr title="A PS4 library symbol's identifier: a hash of its name, used instead of the name when linking.">NID</abbr> (a hash of the symbol name), not by name.
+  <abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr> shows stubs. Names come from public <abbr title="A PS4 library symbol's identifier: a hash of its name, used instead of the name when linking.">NID</abbr> databases, not from the binary.
+  <em>Unconfirmed for this target's import layout.</em></li>
+<li>System calls go through the libkernel wrappers; <code>rax</code> holds the syscall number.</li>
+</ul>
+<h2 id="hooks">Hooks</h2>
+<ul>
+<li>The <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> is a 14-byte absolute jump (<code>jmp [rip+0]</code> plus the target) written over the start of
+  the original function. Shorter functions cannot be hooked that way.</li>
+<li>Nothing may jump into the first 14 bytes of a hooked function from elsewhere: check the
+  references to the function's start region in <abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr> before hooking.</li>
+<li>A replacement calls library functions through the game's own <abbr title="Tiny stubs that forward calls, here to PS4 library functions.">thunks</abbr> (<code>rt::fn</code>), not through
+  host libraries, so the <abbr title="The runtime that loads the original game and runs it natively: bbport, our fork.">scaffold</abbr> answers them exactly as it answers the original.</li>
+</ul>
+<h2 id="verification-traps">Verification traps</h2>
+<ul>
+<li>A replacement that returns the same value can still differ in memory
+  writes. Write order does not matter but final bytes do: <code>verify.py</code> compares
+  the final byte map.</li>
+<li>Uninitialized padding in structs is copied by the original. Replacement code
+  that zeroes padding fails <code>verify.py</code> on memory writes; decide per case and
+  record it in the function's note.</li>
+</ul>
+<h2 id="ghidra-hides-code-after-the-engines-fatal-error-call"><abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr> hides code after the engine's fatal error call</h2>
+<p><abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr> marks the engine's fatal error function (<code>0x024b55b0</code>, "file, line, message") as
+non-returning, so the bytes after a call to it are not disassembled unless something jumps there.
+The game's code does continue there (a jump to the return, or to another report), which matters
+when a replacement is tested with that function stubbed. If a draft's disassembly has a gap after
+such a call, disassemble the bytes directly (objdump on the <abbr title="Executable and Linkable Format, the standard executable file format on Linux and FreeBSD.">ELF</abbr>) before writing the replacement.
+Example: <code>kernel_condition_wait</code> (<code>0x02483e80</code>) returns -3 after the EINVAL report.</p>
+      
+      </div>
+
+    </div>
+    <footer class="wk-footer">
+      <p class="wk-footer-motto">Fear the old blood</p>
+      <p>Made by people who love Bloodborne, so that it can be studied, preserved and played
+      natively, one verified function at a time.</p>
+      <p>A fan project. Not affiliated with or endorsed by Sony Interactive Entertainment or
+      FromSoftware. No game files are shared here: bring your own copy.</p>
+    </footer>
+  </main>
+
+</div>
+
+
+<!-- Back to top -->
+<button class="wk-top" id="wk-top" title="Back to top" aria-label="Scroll to top">↑</button>
+
+
+<script>
+(function () {
+'use strict';
+
+/* ── Theme ─────────────────────────────────────────────────── */
+var stored = localStorage.getItem('wk-theme') || 'dark';
+applyTheme(stored);
+document.getElementById('wk-toggle').addEventListener('click', function () {
+  applyTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+});
+function applyTheme(t) {
+  document.documentElement.setAttribute('data-theme', t);
+  localStorage.setItem('wk-theme', t);
+  var btn = document.getElementById('wk-toggle');
+  if (btn) btn.textContent = t === 'dark' ? '☀' : '🌙';
+}
+
+/* ── Address map: a block opens its slice in a pop-up ──────── */
+(function () {
+  var map = document.querySelector('.wk-bankmap');
+  if (!map) return;
+  var modal = document.createElement('div');
+  modal.className = 'wk-slice-modal';
+  modal.setAttribute('role', 'dialog');
+  modal.setAttribute('aria-modal', 'true');
+  document.body.appendChild(modal);
+  function close() { modal.classList.remove('is-open'); }
+  map.addEventListener('click', function (e) {
+    var cell = e.target.closest('a.wk-bank-cell');
+    if (!cell) return;
+    var panel = document.getElementById(cell.getAttribute('href').slice(1));
+    if (!panel) return;
+    e.preventDefault();
+    modal.innerHTML = '';
+    modal.appendChild(panel.cloneNode(true));
+    modal.firstChild.removeAttribute('id');
+    requestAnimationFrame(function () { modal.classList.add('is-open'); });
+  });
+  modal.addEventListener('click', function (e) {
+    if (e.target === modal || e.target.closest('.wk-slice-close')) { e.preventDefault(); close(); }
+  });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+})();
+
+/* ── Mobile nav ────────────────────────────────────────────── */
+var navToggle  = document.getElementById('wk-nav-toggle');
+var navEl      = document.getElementById('wk-nav');
+var navBackdrop = document.getElementById('wk-nav-backdrop');
+function openNav() {
+  navEl.classList.add('is-open');
+  navBackdrop.hidden = false;
+  navToggle.setAttribute('aria-expanded', 'true');
+}
+function closeNav() {
+  navEl.classList.remove('is-open');
+  navBackdrop.hidden = true;
+  navToggle.setAttribute('aria-expanded', 'false');
+}
+if (navToggle && navEl && navBackdrop) {
+  navToggle.addEventListener('click', function () {
+    if (navEl.classList.contains('is-open')) { closeNav(); } else { openNav(); }
+  });
+  navBackdrop.addEventListener('click', closeNav);
+  navEl.addEventListener('click', function (e) {
+    if (e.target.closest('a')) { closeNav(); }
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { closeNav(); }
+  });
+  window.addEventListener('resize', function () {
+    if (window.innerWidth > 720) { closeNav(); }
+  });
+}
+
+/* ── Search ─────────────────────────────────────────────────── */
+var input   = document.getElementById('wk-q');
+var results = document.getElementById('wk-results');
+var docs    = null;
+if (input) {
+  fetch("../search/search_index.json")
+    .then(function (r) { return r.json(); })
+    .then(function (d) { docs = d.docs; });
+
+  input.addEventListener('input', onSearch);
+
+  document.addEventListener('click', function (e) {
+    if (results && !results.contains(e.target) && e.target !== input) results.hidden = true;
+  });
+  input.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { results.hidden = true; this.blur(); }
+    if (e.key === 'Enter' && results && !results.hidden) {
+      var first = results.querySelector('.wk-result');
+      if (first) { first.click(); }
+    }
+  });
+}
+
+/* Press / to focus search */
+document.addEventListener('keydown', function (e) {
+  if (e.key === '/' && document.activeElement !== input &&
+      document.activeElement.tagName !== 'INPUT' &&
+      document.activeElement.tagName !== 'TEXTAREA') {
+    e.preventDefault();
+    if (input) { input.focus(); input.select(); }
+  }
+});
+
+function onSearch() {
+  var q = this.value.trim().toLowerCase();
+  if (!docs || q.length < 2) { results.hidden = true; return; }
+  var hits = docs.filter(function (d) {
+    return (d.title + ' ' + d.text).toLowerCase().indexOf(q) !== -1;
+  }).slice(0, 8);
+  if (!hits.length) { results.hidden = true; return; }
+  var base = "..";
+  results.innerHTML = hits.map(function (d) {
+    var text  = d.text || '';
+    var i     = text.toLowerCase().indexOf(q);
+    var start = Math.max(0, i - 35);
+    var end   = Math.min(text.length, i + q.length + 70);
+    var snip  = (start > 0 ? '…' : '') + text.slice(start, end) + (end < text.length ? '…' : '');
+    var url   = base + '/' + d.location;
+    return '<a class="wk-result" href="' + esc(url) + '" role="option">'
+         + '<div class="wk-result-title">' + esc(d.title || d.location) + '</div>'
+         + '<div class="wk-result-snip">'  + esc(snip) + '</div></a>';
+  }).join('');
+  results.hidden = false;
+}
+
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+/* ── Back to top ────────────────────────────────────────────── */
+var topBtn = document.getElementById('wk-top');
+if (topBtn) {
+  window.addEventListener('scroll', function () {
+    topBtn.classList.toggle('visible', window.scrollY > 400);
+  }, {passive: true});
+  topBtn.addEventListener('click', function () {
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  });
+}
+
+/* ── Copy-to-clipboard ───────────────────────────────────────── */
+document.querySelectorAll('.highlight').forEach(function (block) {
+  var btn = document.createElement('button');
+  btn.className = 'wk-copy-btn';
+  btn.title     = 'Copy code';
+  btn.textContent = '⎘';
+  block.appendChild(btn);
+  btn.addEventListener('click', function () {
+    var pre = block.querySelector('pre');
+    if (!pre) return;
+    navigator.clipboard.writeText(pre.innerText).then(function () {
+      btn.textContent = '✓';
+      btn.classList.add('copied');
+      setTimeout(function () {
+        btn.textContent = '⎘';
+        btn.classList.remove('copied');
+      }, 1500);
+    });
+  });
+});
+
+/* ── Collapsible long code blocks ─────────────────────────────── */
+var COLLAPSE_THRESHOLD = 340;
+document.querySelectorAll('.wk-article-body .highlight').forEach(function (block) {
+  var pre = block.querySelector('pre');
+  if (!pre || pre.scrollHeight <= COLLAPSE_THRESHOLD + 40) return;
+
+  block.classList.add('wk-code-collapsed');
+  var toggle = document.createElement('button');
+  toggle.className = 'wk-code-toggle';
+  toggle.type = 'button';
+  toggle.textContent = 'Show more ▾';
+  toggle.addEventListener('click', function () {
+    var collapsed = block.classList.toggle('wk-code-collapsed');
+    toggle.textContent = collapsed ? 'Show more ▾' : 'Show less ▴';
+    if (collapsed) block.scrollIntoView({block: 'nearest'});
+  });
+  block.insertAdjacentElement('afterend', toggle);
+});
+
+/* ── TOC scroll spy ─────────────────────────────────────────── */
+var tocLinks = document.querySelectorAll('.wk-toc-link');
+if (tocLinks.length && 'IntersectionObserver' in window) {
+  var headings = Array.from(document.querySelectorAll('.wk-article h1, .wk-article h2, .wk-article h3'));
+  var active   = null;
+  var obs = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) {
+        var id  = e.target.id;
+        var lnk = document.querySelector('.wk-toc-link[href="#' + id + '"]');
+        if (lnk && lnk !== active) {
+          if (active) active.classList.remove('is-current');
+          lnk.classList.add('is-current');
+          active = lnk;
+        }
+      }
+    });
+  }, {rootMargin: '-10% 0px -80% 0px'});
+  headings.forEach(function (h) { if (h.id) obs.observe(h); });
+}
+
+
+}());
+</script>
+</body>
+</html>

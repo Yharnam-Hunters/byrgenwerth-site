@@ -1,0 +1,599 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  
+  <meta name="description" content="A native source port of Bloodborne (PS4, CUSA03173 v1.09), function by function">
+  <link rel="canonical" href="https://yharnam-hunters.github.io/byrgenwerth-site/ARCHITECTURE/">
+  
+  
+  <title>Architecture — Byrgenwerth</title>
+  
+  
+  <link rel="stylesheet" href="../stylesheets/wiki.css">
+  
+  
+</head>
+<body>
+
+<!-- ── Header ──────────────────────────────────────────────── -->
+<header class="wk-header">
+  <button class="wk-nav-toggle" id="wk-nav-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="wk-nav">☰</button>
+  <a class="wk-wordmark" href="../">Byrgenwerth<small>notes of Paleblood, a Bloodborne source port</small></a>
+
+  <div class="wk-header-right">
+    
+    <div class="wk-searchbox">
+      <input class="wk-search-input" id="wk-q" type="search"
+             placeholder="Search the archives…  [/]" autocomplete="off" aria-label="Search">
+      <div class="wk-search-results" id="wk-results" hidden role="listbox"></div>
+    </div>
+    <button class="wk-toggle" id="wk-toggle" title="Toggle theme" aria-label="Toggle dark/light">☀</button>
+  </div>
+</header>
+
+<!-- ── Layout ──────────────────────────────────────────────── -->
+<div class="wk-layout">
+
+  <div class="wk-nav-backdrop" id="wk-nav-backdrop" hidden></div>
+
+  <!-- Left sidebar -->
+  <nav class="wk-nav" id="wk-nav" aria-label="Site navigation">
+    <a href="../" class="wk-portal-icon" aria-label="Home">
+      <img src="../assets/bb-icon.png" alt="Byrgenwerth" width="220" height="220">
+    </a>
+
+    
+      
+      <a class="wk-nav-link" href="..">Home</a>
+      
+    
+      
+        <p class="wk-nav-heading">The Hunt</p>
+        
+          
+          <a class="wk-nav-link" href="../devlog/">Devlog</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../gallery/">Gallery</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../progress/">Progress</a>
+          
+        
+      
+    
+      
+        <p class="wk-nav-heading">Systems</p>
+        
+          
+          <a class="wk-nav-link" href="../systems/">Overview</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../systems/frame_timing/">Frame timing</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../systems/kernel/">Kernel</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../systems/event/">Event</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../systems/camera/">Camera</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../systems/input/">Input</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../systems/character/">Character</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../systems/ai/">AI</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../systems/render/">Render</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../systems/loading/">Loading</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../systems/audio/">Audio</a>
+          
+        
+      
+    
+      
+        <p class="wk-nav-heading">How It Works</p>
+        
+          
+          <a class="wk-nav-link is-active" href="./">Architecture</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../how-the-frame-limiter-works/">The Frame Limiter</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../ADDRESS_MAP/">Address Map</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../bbport-notes/">bbport Study</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../target/">Target</a>
+          
+        
+      
+    
+      
+        <p class="wk-nav-heading">For Hunters</p>
+        
+          
+          <a class="wk-nav-link" href="../CONTRIBUTING/">Contributing</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../QUIRKS/">Ghidra & PS4 Quirks</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../glossary/">Glossary</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../CI_SETUP/">CI Setup</a>
+          
+        
+      
+    
+      
+      <a class="wk-nav-link" href="../credits/">Credits</a>
+      
+    
+
+    <!-- Project stats widget: every value from docs/data/progress.json (hooks/progress_extra.py) -->
+    
+    
+    <div class="wk-stats">
+      <p class="wk-nav-heading" title="Project stats">Insight</p>
+      <div class="wk-stat-row"><span>Verified</span><span class="wk-stat-val">9,821 B</span></div>
+      <div class="wk-stat-row"><span>Functions</span><span class="wk-stat-val">13</span></div>
+      <div class="wk-stat-row"><span>Replaced</span><span class="wk-stat-val">22</span></div>
+      <p class="wk-stat-sublabel">Replaced (42.5 MB of code)</p>
+      <div class="wk-stat-track" title="0.0259%">
+        <div class="wk-stat-fill" style="width:0.0259%"></div>
+      </div>
+      <p class="wk-stat-pct">0.0259%</p>
+      <p class="wk-stat-sublabel">Verified (42.5 MB of code)</p>
+      <div class="wk-stat-track" title="0.0231%">
+        <div class="wk-stat-fill wk-stat-fill-dim" style="width:0.0231%"></div>
+      </div>
+      <p class="wk-stat-pct">0.0231%</p>
+      <p class="wk-stat-link"><a href="../progress/">View full progress →</a></p>
+    </div>
+    
+  </nav>
+
+  <!-- Main content -->
+  <main class="wk-main">
+    <div class="wk-article">
+
+      
+      
+      <div class="wk-toc" id="wk-toc">
+        <div class="wk-toc-header">
+          <b>Contents</b>
+          <button class="wk-toc-toggle"
+            onclick="var l=document.getElementById('wk-toc-list');l.hidden=!l.hidden;this.textContent=l.hidden?'[show]':'[hide]'">[hide]</button>
+        </div>
+        <ol class="wk-toc-list" id="wk-toc-list">
+          
+          <li>
+            <a href="#port-architecture" class="wk-toc-link">Port Architecture</a>
+            
+            <ol><li><a href="#at-a-glance-dump-scaffold-hooks-game" class="wk-toc-link">At a glance: dump → scaffold → hooks → game</a></li><li><a href="#the-scaffold-bbport" class="wk-toc-link">The scaffold: bbport</a></li><li><a href="#the-hook-layer" class="wk-toc-link">The hook layer</a></li><li><a href="#the-frame-pipeline" class="wk-toc-link">The frame pipeline</a></li><li><a href="#verification" class="wk-toc-link">Verification</a></li><li><a href="#addresses" class="wk-toc-link">Addresses</a></li><li><a href="#unreplaced-next-targets" class="wk-toc-link">Unreplaced (next targets)</a></li></ol>
+            
+          </li>
+          
+        </ol>
+      </div>
+      
+      
+
+      <div class="wk-article-body">
+      
+      
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 7, 2026 03:11:45 UTC">October 7, 2026</span></p>
+      
+      <h1 id="port-architecture">Port Architecture</h1>
+<p>How Paleblood runs the game today, and how a function moves from original code to <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and ran in the game.">verified</abbr> C++.</p>
+<h2 id="at-a-glance-dump-scaffold-hooks-game">At a glance: dump → <abbr title="The runtime that loads the original game and runs it natively: bbport, our fork.">scaffold</abbr> → <abbr title="14-byte jumps written over the start of original functions, sending their callers to the replacements.">hooks</abbr> → game</h2>
+<p><svg class="wk-diagram" viewBox="0 0 560 410" role="img" aria-label="From your own dump to the game running with replacements">
+<defs><marker id="wk-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="wk-diag-arrowhead"></path></marker></defs>
+<path d="M138,76 L138,94" class="wk-diag-edge" marker-end="url(#wk-arrow)"></path>
+<path d="M138,150 L138,168" class="wk-diag-edge" marker-end="url(#wk-arrow)"></path>
+<path d="M138,224 L138,242" class="wk-diag-edge" marker-end="url(#wk-arrow)"></path>
+<path d="M256,270 L280,270" class="wk-diag-edge" marker-end="url(#wk-arrow)"></path>
+<path d="M138,298 L138,316" class="wk-diag-edge" marker-end="url(#wk-arrow)"></path>
+<path d="M256,122 L280,122" class="wk-diag-edge" marker-end="url(#wk-arrow)"></path>
+<g class="wk-diag-box wk-diag-matched">
+<rect x="20" y="20" width="236" height="56" rx="6"></rect>
+<text x="138" y="43" text-anchor="middle" class="wk-diag-title">Your own pkgs</text>
+<text x="138" y="61" text-anchor="middle" class="wk-diag-sub">base + 1.09 update</text>
+</g>
+<g class="wk-diag-box wk-diag-matched">
+<rect x="20" y="94" width="236" height="56" rx="6"></rect>
+<text x="138" y="117" text-anchor="middle" class="wk-diag-title">prepare_dump.sh</text>
+<text x="138" y="135" text-anchor="middle" class="wk-diag-sub">extract, merge, SELF to ELF, hash check</text>
+</g>
+<g class="wk-diag-box wk-diag-matched">
+<rect x="20" y="168" width="236" height="56" rx="6"></rect>
+<text x="138" y="191" text-anchor="middle" class="wk-diag-title">bbport prepare.py</text>
+<text x="138" y="209" text-anchor="middle" class="wk-diag-sub">flat image of the executable</text>
+</g>
+<g class="wk-diag-box wk-diag-matched">
+<rect x="20" y="242" width="236" height="56" rx="6"></rect>
+<text x="138" y="265" text-anchor="middle" class="wk-diag-title">bbport loader</text>
+<text x="138" y="283" text-anchor="middle" class="wk-diag-sub">map, relocate, patch, bind imports</text>
+</g>
+<g class="wk-diag-box wk-diag-matched">
+<rect x="280" y="242" width="236" height="56" rx="6"></rect>
+<text x="398" y="265" text-anchor="middle" class="wk-diag-title">libbbgame.so</text>
+<text x="398" y="283" text-anchor="middle" class="wk-diag-sub">BB_GAME_LIB: bbgame_init installs hooks</text>
+</g>
+<g class="wk-diag-box wk-diag-matched">
+<rect x="20" y="316" width="236" height="56" rx="6"></rect>
+<text x="138" y="339" text-anchor="middle" class="wk-diag-title">The game runs natively</text>
+<text x="138" y="357" text-anchor="middle" class="wk-diag-sub">original code + C++ replacements</text>
+</g>
+<g class="wk-diag-box wk-diag-matched">
+<rect x="280" y="94" width="236" height="56" rx="6"></rect>
+<text x="398" y="117" text-anchor="middle" class="wk-diag-title">Ghidra + GhidraOrbis</text>
+<text x="398" y="135" text-anchor="middle" class="wk-diag-sub">eboot.elf: names and sizes into symbols/</text>
+</g>
+</svg></p>
+<p>The game is not rebuilt from scratch and then started. It runs from the first frame as the original executable, loaded natively on a PC by a runtime <abbr title="The runtime that loads the original game and runs it natively: bbport, our fork.">scaffold</abbr>, and functions are swapped for C++ one at a time while it keeps running. Every <abbr title="A function whose original code no longer runs: a hook sends every call to our C++ version.">replaced</abbr> function is one less piece of original code; the endpoint is a game with no original code left.</p>
+<h2 id="the-scaffold-bbport">The <abbr title="The runtime that loads the original game and runs it natively: bbport, our fork.">scaffold</abbr>: <abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; our runtime scaffold, as a private fork.">bbport</abbr></h2>
+<p>The <abbr title="The runtime that loads the original game and runs it natively: bbport, our fork.">scaffold</abbr> is a private fork of <a href="../bbport-notes/"><abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; our runtime scaffold, as a private fork.">bbport</abbr></a>, a native Linux port of Bloodborne 1.09 by deadinside28. It converts the executable offline into a flat memory image, links in the game's own libc and Fios2 modules, binds every <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> library import to a small runtime written for this game, and renders through a renderer derived from <abbr title="An open-source PS4 emulator; bbport's renderer and shader recompiler come from it.">shadPS4</abbr>. The game's x86-64 code runs directly on the CPU: there is no emulation.</p>
+<p>Our fork adds one thing: a game library. With <code>BB_GAME_LIB</code> set, the loader loads <code>libbbgame.so</code> after relocating and patching the image and before any game code runs, and calls its <code>bbgame_init</code>.</p>
+<h2 id="the-hook-layer">The <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> layer</h2>
+<p><code>bbgame_init</code> reads the <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> table generated from <code>game/hooks.csv</code> and asks the loader to write a <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> at each original function: a 14-byte absolute jump to the C++ replacement. From then on every caller, wherever it is in the game, lands in the replacement. The replacement reaches game memory and other game functions through <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> addresses (<code>rt::ptr</code>, <code>rt::fn</code>), and calls <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> library functions through the game's own <abbr title="Tiny stubs that forward calls, here to PS4 library functions.">thunks</abbr>, so the <abbr title="The runtime that loads the original game and runs it natively: bbport, our fork.">scaffold</abbr> answers them exactly as it answers the original.</p>
+<p>Two rules keep this safe: a function shorter than the jump cannot be hooked, and nothing may jump into the bytes the <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> overwrites. The loader refuses the library when the <abbr title="The runtime that loads the original game and runs it natively: bbport, our fork.">scaffold</abbr>'s executable check is skipped, because every address is only valid for the one executable both projects pin.</p>
+<h2 id="the-frame-pipeline">The frame pipeline</h2>
+<p>The first system <abbr title="A function whose original code no longer runs: a hook sends every call to our C++ version.">replaced</abbr>. Solid boxes are <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and ran in the game.">verified</abbr> C++; dashed boxes are still original code.</p>
+<p><svg class="wk-diagram" viewBox="0 0 560 336" role="img" aria-label="The per-frame pipeline: frame step, limiter, task update">
+<defs><marker id="wk-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="wk-diag-arrowhead"></path></marker></defs>
+<path d="M138,76 L138,94" class="wk-diag-edge" marker-end="url(#wk-arrow)"></path>
+<path d="M256,122 L280,122" class="wk-diag-edge" marker-end="url(#wk-arrow)"></path>
+<path d="M138,150 L138,168" class="wk-diag-edge" marker-end="url(#wk-arrow)"></path>
+<path d="M256,196 L280,196" class="wk-diag-edge" marker-end="url(#wk-arrow)"></path>
+<path d="M138,224 L138,242" class="wk-diag-edge" marker-end="url(#wk-arrow)"></path>
+<path d="M20,270 L6,270 L6,48 L20,48" class="wk-diag-edge" marker-end="url(#wk-arrow)"></path>
+<text x="0" y="159" class="wk-diag-edge-label" text-anchor="start">next frame</text>
+<g class="wk-diag-box wk-diag-matched">
+<rect x="20" y="20" width="236" height="56" rx="6"></rect>
+<text x="138" y="43" text-anchor="middle" class="wk-diag-title">frame_timing_frame_step</text>
+<text x="138" y="61" text-anchor="middle" class="wk-diag-sub">0x02418d20 · once per frame</text>
+</g>
+<g class="wk-diag-box wk-diag-unmatched">
+<rect x="20" y="94" width="236" height="56" rx="6"></rect>
+<text x="138" y="117" text-anchor="middle" class="wk-diag-title">SprjWindow running?</text>
+<text x="138" y="135" text-anchor="middle" class="wk-diag-sub">else the game ends</text>
+</g>
+<g class="wk-diag-box wk-diag-matched">
+<rect x="280" y="94" width="236" height="56" rx="6"></rect>
+<text x="398" y="117" text-anchor="middle" class="wk-diag-title">frame_timing_flipper_init</text>
+<text x="398" y="135" text-anchor="middle" class="wk-diag-sub">0x02434520 · first frame: Game.FlipMode</text>
+</g>
+<g class="wk-diag-box wk-diag-matched">
+<rect x="20" y="168" width="236" height="56" rx="6"></rect>
+<text x="138" y="191" text-anchor="middle" class="wk-diag-title">frame_timing_pace_frame</text>
+<text x="138" y="209" text-anchor="middle" class="wk-diag-sub">0x02434770 · the frame limiter</text>
+</g>
+<g class="wk-diag-box wk-diag-matched">
+<rect x="280" y="168" width="236" height="56" rx="6"></rect>
+<text x="398" y="191" text-anchor="middle" class="wk-diag-title">wait out the frame</text>
+<text x="398" y="209" text-anchor="middle" class="wk-diag-sub">gettimeofday spin (1/30 or 1/60 s)</text>
+</g>
+<g class="wk-diag-box wk-diag-unmatched">
+<rect x="20" y="242" width="236" height="56" rx="6"></rect>
+<text x="138" y="265" text-anchor="middle" class="wk-diag-title">task update</text>
+<text x="138" y="283" text-anchor="middle" class="wk-diag-sub">0x024512a0 · the game's frame of work</text>
+</g>
+</svg></p>
+<p>Once per frame the frame step checks that the window is running, creates the <code>SprjFlipper</code> on the first frame (its constructor reads <code>Game.FlipMode</code>), lets the flipper's limiter wait out the frame, and runs the game's task update. The full walk-through is in <a href="../how-the-frame-limiter-works/">How the Frame Limiter Works</a>.</p>
+<h2 id="verification">Verification</h2>
+<p><svg class="wk-diagram" viewBox="0 0 560 410" role="img" aria-label="How a replacement is verified against the original">
+<defs><marker id="wk-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="wk-diag-arrowhead"></path></marker></defs>
+<path d="M138,76 L138,94" class="wk-diag-edge" marker-end="url(#wk-arrow)"></path>
+<path d="M398,76 L398,122 L138,122 L138,168" class="wk-diag-edge" marker-end="url(#wk-arrow)"></path>
+<path d="M138,150 L138,168" class="wk-diag-edge" marker-end="url(#wk-arrow)"></path>
+<path d="M138,224 L138,242" class="wk-diag-edge" marker-end="url(#wk-arrow)"></path>
+<path d="M256,270 L280,270" class="wk-diag-edge" marker-end="url(#wk-arrow)"></path>
+<path d="M138,298 L138,316" class="wk-diag-edge" marker-end="url(#wk-arrow)"></path>
+<g class="wk-diag-box wk-diag-matched">
+<rect x="20" y="20" width="236" height="56" rx="6"></rect>
+<text x="138" y="43" text-anchor="middle" class="wk-diag-title">Game run (BB_CAPTURE_DIR)</text>
+<text x="138" y="61" text-anchor="middle" class="wk-diag-sub">replacements record their inputs</text>
+</g>
+<g class="wk-diag-box wk-diag-matched">
+<rect x="280" y="20" width="236" height="56" rx="6"></rect>
+<text x="398" y="43" text-anchor="middle" class="wk-diag-title">Edge-case generators</text>
+<text x="398" y="61" text-anchor="middle" class="wk-diag-sub">what a short run does not reach</text>
+</g>
+<g class="wk-diag-box wk-diag-matched">
+<rect x="20" y="94" width="236" height="56" rx="6"></rect>
+<text x="138" y="117" text-anchor="middle" class="wk-diag-title">Capture library</text>
+<text x="138" y="135" text-anchor="middle" class="wk-diag-sub">captures/<function>/<run>_NNNN.json</text>
+</g>
+<g class="wk-diag-box wk-diag-matched">
+<rect x="20" y="168" width="236" height="56" rx="6"></rect>
+<text x="138" y="191" text-anchor="middle" class="wk-diag-title">harness.py</text>
+<text x="138" y="209" text-anchor="middle" class="wk-diag-sub">original and replacement, same inputs</text>
+</g>
+<g class="wk-diag-box wk-diag-matched">
+<rect x="20" y="242" width="236" height="56" rx="6"></rect>
+<text x="138" y="265" text-anchor="middle" class="wk-diag-title">verify.py compare</text>
+<text x="138" y="283" text-anchor="middle" class="wk-diag-sub">returns, registers, bytes, calls</text>
+</g>
+<g class="wk-diag-box wk-diag-matched">
+<rect x="280" y="242" width="236" height="56" rx="6"></rect>
+<text x="398" y="265" text-anchor="middle" class="wk-diag-title">Mutation test</text>
+<text x="398" y="283" text-anchor="middle" class="wk-diag-sub">wrong variants must fail</text>
+</g>
+<g class="wk-diag-box wk-diag-matched">
+<rect x="20" y="316" width="236" height="56" rx="6"></rect>
+<text x="138" y="339" text-anchor="middle" class="wk-diag-title">verified</text>
+<text x="138" y="357" text-anchor="middle" class="wk-diag-sub">plus an in-game run</text>
+</g>
+</svg></p>
+<p>A replacement is checked against the original outside the game. Replacements record their inputs during real game runs into a <abbr title="Inputs a replacement records in a real game run (BB_CAPTURE_DIR), replayed by the harness.">capture</abbr> library; hand-written <abbr title="Hand-written inputs for situations a short game run does not reach.">edge cases</abbr> cover the corners. The <abbr title="tools/harness.py: runs the original function and its replacement natively on the same recorded inputs, outside the game.">harness</abbr> maps the executable from your own dump, scripts every library call the function makes, runs the original and the replacement on the same inputs, and compares return values, callee-saved registers, every byte written and every library call. Deliberately wrong versions of the replacement must fail; if one passes, the cases are too weak and get fixed first. A function is <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and ran in the game.">verified</abbr> only after that and a game run with it in place.</p>
+<h2 id="addresses">Addresses</h2>
+<p>Every address in this wiki is a <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> virtual address with the executable at <code>0x400000</code>, the convention of the community patches. <abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; our runtime scaffold, as a private fork.">bbport</abbr>'s own logs use offsets from 0 (subtract <code>0x400000</code>). See <a href="../QUIRKS/"><abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr> &amp; <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> Quirks</a>.</p>
+<h2 id="unreplaced-next-targets">Unreplaced (next targets)</h2>
+<p>The queue lives in the code repository (<code>NEXT.md</code>): the frame step and the flipper's constructor next, then the rest of frame timing.</p>
+      
+      </div>
+
+    </div>
+    <footer class="wk-footer">
+      <p class="wk-footer-motto">Fear the old blood</p>
+      <p>Made by people who love Bloodborne, so that it can be studied, preserved and played
+      natively, one verified function at a time.</p>
+      <p>A fan project. Not affiliated with or endorsed by Sony Interactive Entertainment or
+      FromSoftware. No game files are shared here: bring your own copy.</p>
+    </footer>
+  </main>
+
+</div>
+
+
+<!-- Back to top -->
+<button class="wk-top" id="wk-top" title="Back to top" aria-label="Scroll to top">↑</button>
+
+
+<script>
+(function () {
+'use strict';
+
+/* ── Theme ─────────────────────────────────────────────────── */
+var stored = localStorage.getItem('wk-theme') || 'dark';
+applyTheme(stored);
+document.getElementById('wk-toggle').addEventListener('click', function () {
+  applyTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+});
+function applyTheme(t) {
+  document.documentElement.setAttribute('data-theme', t);
+  localStorage.setItem('wk-theme', t);
+  var btn = document.getElementById('wk-toggle');
+  if (btn) btn.textContent = t === 'dark' ? '☀' : '🌙';
+}
+
+/* ── Address map: a block opens its slice in a pop-up ──────── */
+(function () {
+  var map = document.querySelector('.wk-bankmap');
+  if (!map) return;
+  var modal = document.createElement('div');
+  modal.className = 'wk-slice-modal';
+  modal.setAttribute('role', 'dialog');
+  modal.setAttribute('aria-modal', 'true');
+  document.body.appendChild(modal);
+  function close() { modal.classList.remove('is-open'); }
+  map.addEventListener('click', function (e) {
+    var cell = e.target.closest('a.wk-bank-cell');
+    if (!cell) return;
+    var panel = document.getElementById(cell.getAttribute('href').slice(1));
+    if (!panel) return;
+    e.preventDefault();
+    modal.innerHTML = '';
+    modal.appendChild(panel.cloneNode(true));
+    modal.firstChild.removeAttribute('id');
+    requestAnimationFrame(function () { modal.classList.add('is-open'); });
+  });
+  modal.addEventListener('click', function (e) {
+    if (e.target === modal || e.target.closest('.wk-slice-close')) { e.preventDefault(); close(); }
+  });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+})();
+
+/* ── Mobile nav ────────────────────────────────────────────── */
+var navToggle  = document.getElementById('wk-nav-toggle');
+var navEl      = document.getElementById('wk-nav');
+var navBackdrop = document.getElementById('wk-nav-backdrop');
+function openNav() {
+  navEl.classList.add('is-open');
+  navBackdrop.hidden = false;
+  navToggle.setAttribute('aria-expanded', 'true');
+}
+function closeNav() {
+  navEl.classList.remove('is-open');
+  navBackdrop.hidden = true;
+  navToggle.setAttribute('aria-expanded', 'false');
+}
+if (navToggle && navEl && navBackdrop) {
+  navToggle.addEventListener('click', function () {
+    if (navEl.classList.contains('is-open')) { closeNav(); } else { openNav(); }
+  });
+  navBackdrop.addEventListener('click', closeNav);
+  navEl.addEventListener('click', function (e) {
+    if (e.target.closest('a')) { closeNav(); }
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { closeNav(); }
+  });
+  window.addEventListener('resize', function () {
+    if (window.innerWidth > 720) { closeNav(); }
+  });
+}
+
+/* ── Search ─────────────────────────────────────────────────── */
+var input   = document.getElementById('wk-q');
+var results = document.getElementById('wk-results');
+var docs    = null;
+if (input) {
+  fetch("../search/search_index.json")
+    .then(function (r) { return r.json(); })
+    .then(function (d) { docs = d.docs; });
+
+  input.addEventListener('input', onSearch);
+
+  document.addEventListener('click', function (e) {
+    if (results && !results.contains(e.target) && e.target !== input) results.hidden = true;
+  });
+  input.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { results.hidden = true; this.blur(); }
+    if (e.key === 'Enter' && results && !results.hidden) {
+      var first = results.querySelector('.wk-result');
+      if (first) { first.click(); }
+    }
+  });
+}
+
+/* Press / to focus search */
+document.addEventListener('keydown', function (e) {
+  if (e.key === '/' && document.activeElement !== input &&
+      document.activeElement.tagName !== 'INPUT' &&
+      document.activeElement.tagName !== 'TEXTAREA') {
+    e.preventDefault();
+    if (input) { input.focus(); input.select(); }
+  }
+});
+
+function onSearch() {
+  var q = this.value.trim().toLowerCase();
+  if (!docs || q.length < 2) { results.hidden = true; return; }
+  var hits = docs.filter(function (d) {
+    return (d.title + ' ' + d.text).toLowerCase().indexOf(q) !== -1;
+  }).slice(0, 8);
+  if (!hits.length) { results.hidden = true; return; }
+  var base = "..";
+  results.innerHTML = hits.map(function (d) {
+    var text  = d.text || '';
+    var i     = text.toLowerCase().indexOf(q);
+    var start = Math.max(0, i - 35);
+    var end   = Math.min(text.length, i + q.length + 70);
+    var snip  = (start > 0 ? '…' : '') + text.slice(start, end) + (end < text.length ? '…' : '');
+    var url   = base + '/' + d.location;
+    return '<a class="wk-result" href="' + esc(url) + '" role="option">'
+         + '<div class="wk-result-title">' + esc(d.title || d.location) + '</div>'
+         + '<div class="wk-result-snip">'  + esc(snip) + '</div></a>';
+  }).join('');
+  results.hidden = false;
+}
+
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+/* ── Back to top ────────────────────────────────────────────── */
+var topBtn = document.getElementById('wk-top');
+if (topBtn) {
+  window.addEventListener('scroll', function () {
+    topBtn.classList.toggle('visible', window.scrollY > 400);
+  }, {passive: true});
+  topBtn.addEventListener('click', function () {
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  });
+}
+
+/* ── Copy-to-clipboard ───────────────────────────────────────── */
+document.querySelectorAll('.highlight').forEach(function (block) {
+  var btn = document.createElement('button');
+  btn.className = 'wk-copy-btn';
+  btn.title     = 'Copy code';
+  btn.textContent = '⎘';
+  block.appendChild(btn);
+  btn.addEventListener('click', function () {
+    var pre = block.querySelector('pre');
+    if (!pre) return;
+    navigator.clipboard.writeText(pre.innerText).then(function () {
+      btn.textContent = '✓';
+      btn.classList.add('copied');
+      setTimeout(function () {
+        btn.textContent = '⎘';
+        btn.classList.remove('copied');
+      }, 1500);
+    });
+  });
+});
+
+/* ── Collapsible long code blocks ─────────────────────────────── */
+var COLLAPSE_THRESHOLD = 340;
+document.querySelectorAll('.wk-article-body .highlight').forEach(function (block) {
+  var pre = block.querySelector('pre');
+  if (!pre || pre.scrollHeight <= COLLAPSE_THRESHOLD + 40) return;
+
+  block.classList.add('wk-code-collapsed');
+  var toggle = document.createElement('button');
+  toggle.className = 'wk-code-toggle';
+  toggle.type = 'button';
+  toggle.textContent = 'Show more ▾';
+  toggle.addEventListener('click', function () {
+    var collapsed = block.classList.toggle('wk-code-collapsed');
+    toggle.textContent = collapsed ? 'Show more ▾' : 'Show less ▴';
+    if (collapsed) block.scrollIntoView({block: 'nearest'});
+  });
+  block.insertAdjacentElement('afterend', toggle);
+});
+
+/* ── TOC scroll spy ─────────────────────────────────────────── */
+var tocLinks = document.querySelectorAll('.wk-toc-link');
+if (tocLinks.length && 'IntersectionObserver' in window) {
+  var headings = Array.from(document.querySelectorAll('.wk-article h1, .wk-article h2, .wk-article h3'));
+  var active   = null;
+  var obs = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) {
+        var id  = e.target.id;
+        var lnk = document.querySelector('.wk-toc-link[href="#' + id + '"]');
+        if (lnk && lnk !== active) {
+          if (active) active.classList.remove('is-current');
+          lnk.classList.add('is-current');
+          active = lnk;
+        }
+      }
+    });
+  }, {rootMargin: '-10% 0px -80% 0px'});
+  headings.forEach(function (h) { if (h.id) obs.observe(h); });
+}
+
+
+}());
+</script>
+</body>
+</html>

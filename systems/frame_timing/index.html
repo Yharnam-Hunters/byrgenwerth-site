@@ -1,0 +1,695 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  
+  <meta name="description" content="A native source port of Bloodborne (PS4, CUSA03173 v1.09), function by function">
+  <link rel="canonical" href="https://yharnam-hunters.github.io/byrgenwerth-site/systems/frame_timing/">
+  
+  
+  <title>Frame timing — Byrgenwerth</title>
+  
+  
+  <link rel="stylesheet" href="../../stylesheets/wiki.css">
+  
+  
+</head>
+<body>
+
+<!-- ── Header ──────────────────────────────────────────────── -->
+<header class="wk-header">
+  <button class="wk-nav-toggle" id="wk-nav-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="wk-nav">☰</button>
+  <a class="wk-wordmark" href="../../">Byrgenwerth<small>notes of Paleblood, a Bloodborne source port</small></a>
+
+  <div class="wk-header-right">
+    
+    <div class="wk-searchbox">
+      <input class="wk-search-input" id="wk-q" type="search"
+             placeholder="Search the archives…  [/]" autocomplete="off" aria-label="Search">
+      <div class="wk-search-results" id="wk-results" hidden role="listbox"></div>
+    </div>
+    <button class="wk-toggle" id="wk-toggle" title="Toggle theme" aria-label="Toggle dark/light">☀</button>
+  </div>
+</header>
+
+<!-- ── Layout ──────────────────────────────────────────────── -->
+<div class="wk-layout">
+
+  <div class="wk-nav-backdrop" id="wk-nav-backdrop" hidden></div>
+
+  <!-- Left sidebar -->
+  <nav class="wk-nav" id="wk-nav" aria-label="Site navigation">
+    <a href="../../" class="wk-portal-icon" aria-label="Home">
+      <img src="../../assets/bb-icon.png" alt="Byrgenwerth" width="220" height="220">
+    </a>
+
+    
+      
+      <a class="wk-nav-link" href="../..">Home</a>
+      
+    
+      
+        <p class="wk-nav-heading">The Hunt</p>
+        
+          
+          <a class="wk-nav-link" href="../../devlog/">Devlog</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../gallery/">Gallery</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../progress/">Progress</a>
+          
+        
+      
+    
+      
+        <p class="wk-nav-heading">Systems</p>
+        
+          
+          <a class="wk-nav-link" href="../">Overview</a>
+          
+        
+          
+          <a class="wk-nav-link is-active" href="./">Frame timing</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../kernel/">Kernel</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../event/">Event</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../camera/">Camera</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../input/">Input</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../character/">Character</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../ai/">AI</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../render/">Render</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../loading/">Loading</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../audio/">Audio</a>
+          
+        
+      
+    
+      
+        <p class="wk-nav-heading">How It Works</p>
+        
+          
+          <a class="wk-nav-link" href="../../ARCHITECTURE/">Architecture</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../how-the-frame-limiter-works/">The Frame Limiter</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../ADDRESS_MAP/">Address Map</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../bbport-notes/">bbport Study</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../target/">Target</a>
+          
+        
+      
+    
+      
+        <p class="wk-nav-heading">For Hunters</p>
+        
+          
+          <a class="wk-nav-link" href="../../CONTRIBUTING/">Contributing</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../QUIRKS/">Ghidra & PS4 Quirks</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../glossary/">Glossary</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../CI_SETUP/">CI Setup</a>
+          
+        
+      
+    
+      
+      <a class="wk-nav-link" href="../../credits/">Credits</a>
+      
+    
+
+    <!-- Project stats widget: every value from docs/data/progress.json (hooks/progress_extra.py) -->
+    
+    
+    <div class="wk-stats">
+      <p class="wk-nav-heading" title="Project stats">Insight</p>
+      <div class="wk-stat-row"><span>Verified</span><span class="wk-stat-val">9,821 B</span></div>
+      <div class="wk-stat-row"><span>Functions</span><span class="wk-stat-val">13</span></div>
+      <div class="wk-stat-row"><span>Replaced</span><span class="wk-stat-val">22</span></div>
+      <p class="wk-stat-sublabel">Replaced (42.5 MB of code)</p>
+      <div class="wk-stat-track" title="0.0259%">
+        <div class="wk-stat-fill" style="width:0.0259%"></div>
+      </div>
+      <p class="wk-stat-pct">0.0259%</p>
+      <p class="wk-stat-sublabel">Verified (42.5 MB of code)</p>
+      <div class="wk-stat-track" title="0.0231%">
+        <div class="wk-stat-fill wk-stat-fill-dim" style="width:0.0231%"></div>
+      </div>
+      <p class="wk-stat-pct">0.0231%</p>
+      <p class="wk-stat-link"><a href="../../progress/">View full progress →</a></p>
+    </div>
+    
+  </nav>
+
+  <!-- Main content -->
+  <main class="wk-main">
+    <div class="wk-article">
+
+      
+      
+      <div class="wk-toc" id="wk-toc">
+        <div class="wk-toc-header">
+          <b>Contents</b>
+          <button class="wk-toc-toggle"
+            onclick="var l=document.getElementById('wk-toc-list');l.hidden=!l.hidden;this.textContent=l.hidden?'[show]':'[hide]'">[hide]</button>
+        </div>
+        <ol class="wk-toc-list" id="wk-toc-list">
+          
+          <li>
+            <a href="#frame-timing" class="wk-toc-link">Frame timing</a>
+            
+            <ol><li><a href="#summary" class="wk-toc-link">Summary</a></li><li><a href="#key-functions" class="wk-toc-link">Key functions</a></li><li><a href="#structs-and-globals" class="wk-toc-link">Structs and globals</a></li><li><a href="#patch-points" class="wk-toc-link">Patch points</a></li><li><a href="#our-option-bb_target_fps" class="wk-toc-link">Our option: BB_TARGET_FPS</a></li><li><a href="#open-questions" class="wk-toc-link">Open questions</a></li></ol>
+            
+          </li>
+          
+        </ol>
+      </div>
+      
+      
+
+      <div class="wk-article-body">
+      
+      
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 7, 2026 07:31:44 UTC">October 7, 2026</span></p>
+      
+      <h1 id="frame-timing">Frame timing</h1>
+<h2 id="summary">Summary</h2>
+<p>Scope: frame pacing, delta time, vsync and the main loop's time step.</p>
+<p><svg class="wk-diagram" viewBox="0 0 560 336" role="img" aria-label="The per-frame pipeline: frame step, limiter, task update">
+<defs><marker id="wk-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="wk-diag-arrowhead"></path></marker></defs>
+<path d="M138,76 L138,94" class="wk-diag-edge" marker-end="url(#wk-arrow)"></path>
+<path d="M256,122 L280,122" class="wk-diag-edge" marker-end="url(#wk-arrow)"></path>
+<path d="M138,150 L138,168" class="wk-diag-edge" marker-end="url(#wk-arrow)"></path>
+<path d="M256,196 L280,196" class="wk-diag-edge" marker-end="url(#wk-arrow)"></path>
+<path d="M138,224 L138,242" class="wk-diag-edge" marker-end="url(#wk-arrow)"></path>
+<path d="M20,270 L6,270 L6,48 L20,48" class="wk-diag-edge" marker-end="url(#wk-arrow)"></path>
+<text x="0" y="159" class="wk-diag-edge-label" text-anchor="start">next frame</text>
+<g class="wk-diag-box wk-diag-matched">
+<rect x="20" y="20" width="236" height="56" rx="6"></rect>
+<text x="138" y="43" text-anchor="middle" class="wk-diag-title">frame_timing_frame_step</text>
+<text x="138" y="61" text-anchor="middle" class="wk-diag-sub">0x02418d20 · once per frame</text>
+</g>
+<g class="wk-diag-box wk-diag-unmatched">
+<rect x="20" y="94" width="236" height="56" rx="6"></rect>
+<text x="138" y="117" text-anchor="middle" class="wk-diag-title">SprjWindow running?</text>
+<text x="138" y="135" text-anchor="middle" class="wk-diag-sub">else the game ends</text>
+</g>
+<g class="wk-diag-box wk-diag-matched">
+<rect x="280" y="94" width="236" height="56" rx="6"></rect>
+<text x="398" y="117" text-anchor="middle" class="wk-diag-title">frame_timing_flipper_init</text>
+<text x="398" y="135" text-anchor="middle" class="wk-diag-sub">0x02434520 · first frame: Game.FlipMode</text>
+</g>
+<g class="wk-diag-box wk-diag-matched">
+<rect x="20" y="168" width="236" height="56" rx="6"></rect>
+<text x="138" y="191" text-anchor="middle" class="wk-diag-title">frame_timing_pace_frame</text>
+<text x="138" y="209" text-anchor="middle" class="wk-diag-sub">0x02434770 · the frame limiter</text>
+</g>
+<g class="wk-diag-box wk-diag-matched">
+<rect x="280" y="168" width="236" height="56" rx="6"></rect>
+<text x="398" y="191" text-anchor="middle" class="wk-diag-title">wait out the frame</text>
+<text x="398" y="209" text-anchor="middle" class="wk-diag-sub">gettimeofday spin (1/30 or 1/60 s)</text>
+</g>
+<g class="wk-diag-box wk-diag-unmatched">
+<rect x="20" y="242" width="236" height="56" rx="6"></rect>
+<text x="138" y="265" text-anchor="middle" class="wk-diag-title">task update</text>
+<text x="138" y="283" text-anchor="middle" class="wk-diag-sub">0x024512a0 · the game's frame of work</text>
+</g>
+</svg></p>
+<p><strong>The frame limiter</strong> is <code>frame_timing_pace_frame</code> (<code>0x02434770</code>), a method of the
+<code>SprjFlipper</code> singleton, called once per frame from <code>frame_timing_frame_step</code> (<code>0x02418d20</code>).
+The frame step checks that the <code>SprjWindow</code> is running, creates the flipper on first use
+(<code>frame_timing_flipper_init</code>, <code>0x02434520</code>), runs the limiter, then the task update with a
+small 1/30 s descriptor, asks a quit gate and a quit query, and returns whether the game keeps
+running. Both the limiter and the frame step are <abbr title="A function whose original code no longer runs: a hook sends every call to our C++ version.">replaced</abbr> and <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and ran in the game.">verified</abbr>.</p>
+<p>The limiter:</p>
+<ul>
+<li>applies the flip mode, read from the config value <code>Game.FlipMode</code> by the constructor (a
+  pending mode at <code>+0xc</code> replaces the current one at <code>+0x8</code> when <code>+0x276</code> is set). Modes 0 and
+  1: sync interval 2, 1/30 s; mode 2: sync interval 1, 1/60 s; modes 3 and 4: sync interval 1,
+  1/30 s. The frame interval is a float at <code>+0x18</code>, the sync interval at <code>+0x10</code>;</li>
+<li>reads the time with <code>gettimeofday</code> in microseconds;</li>
+<li>waits out the frame's budget, shortened when recent frames ran late. A switch in the build
+  (<code>0x013e3980</code>, always 1) selects the spinning wait, which polls the clock without sleeping
+  (hundreds of thousands of reads in a long frame); a sleeping wait is compiled in but unused;</li>
+<li>keeps the last 32 frame times in a ring (index at <code>+0x260</code>) and derives a frame rate from
+  their average (<code>+0x2b8</code>).</li>
+</ul>
+<p><code>0x004632d0</code> is a small <code>gettimeofday</code> helper in microseconds that the stock game never calls:
+nothing calls it directly, and no relocated pointer (vtable or table slot) points at it. The
+frame-rate patches overwrite it and its neighbours with their own code (a code cave), so it is
+not <abbr title="A function whose original code no longer runs: a hook sends every call to our C++ version.">replaced</abbr>.</p>
+<p><strong>Correction (2026-10-06).</strong> The millisecond clock <code>frame_timing_get_monotonic_ms</code>
+(<code>0x0111a7f0</code>), its microsecond twin <code>0x0111a760</code> and the sleep wrapper <code>0x0111a880</code> are not on
+the limiter's path. All 52 of their callers sit in one region (<code>0x0110e...</code>-<code>0x0121b...</code>) that
+shares its own helpers, and no frame-rate patch touches any of them: they look like the timing
+layer of a separate subsystem (unidentified; possibly middleware). Their system label may move
+once that subsystem is known.</p>
+<h2 id="key-functions">Key functions</h2>
+<table>
+<thead>
+<tr>
+<th>Address</th>
+<th style="text-align: right;">Size</th>
+<th>Name</th>
+<th>Status</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>0x004632d0</code></td>
+<td style="text-align: right;">67</td>
+<td><code>frame_timing_get_time_us</code></td>
+<td>original</td>
+<td>dead in the stock game: only unwind entries refer to it; the community frame-rate patches overwrite it as a code cave (gettimeofday in microseconds)</td>
+</tr>
+<tr>
+<td><code>0x0111a7f0</code></td>
+<td style="text-align: right;">131</td>
+<td><code>frame_timing_get_monotonic_ms</code></td>
+<td><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and ran in the game.">verified</abbr></td>
+<td>Milliseconds since its first call from CLOCK_MONOTONIC; keeps the first seconds in the clock state object</td>
+</tr>
+<tr>
+<td><code>0x013d3520</code></td>
+<td style="text-align: right;">87</td>
+<td><code>frame_timing_task_013d3520</code></td>
+<td><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and ran in the game.">verified</abbr></td>
+<td>per-frame task: passes the frame-time descriptor and its seconds to three parts; Uncap FPS++ edits it</td>
+</tr>
+<tr>
+<td><code>0x01f6a9f0</code></td>
+<td style="text-align: right;">121</td>
+<td><code>frame_timing_until_idle_01f6a9f0</code></td>
+<td><abbr title="A function whose original code no longer runs: a hook sends every call to our C++ version.">replaced</abbr></td>
+<td>state method: advance the owner one fixed step while busy (1/30 s; 1/60 s in the 60 FPS patches) (a Chalice Dungeon state machine: built next to SprjHolygrail; not reached by the routes yet)</td>
+</tr>
+<tr>
+<td><code>0x0200d8a0</code></td>
+<td style="text-align: right;">137</td>
+<td><code>frame_timing_until_idle_0200d8a0</code></td>
+<td><abbr title="A function whose original code no longer runs: a hook sends every call to our C++ version.">replaced</abbr></td>
+<td>state method: advance the owner one fixed step while busy (1/30 s; 1/60 s in the 60 FPS patches) (a Chalice Dungeon state machine: built next to SprjHolygrail; not reached by the routes yet)</td>
+</tr>
+<tr>
+<td><code>0x0200e100</code></td>
+<td style="text-align: right;">121</td>
+<td><code>frame_timing_until_idle_0200e100</code></td>
+<td><abbr title="A function whose original code no longer runs: a hook sends every call to our C++ version.">replaced</abbr></td>
+<td>state method: advance the owner one fixed step while busy (1/30 s; 1/60 s in the 60 FPS patches) (a Chalice Dungeon state machine: built next to SprjHolygrail; not reached by the routes yet)</td>
+</tr>
+<tr>
+<td><code>0x0200e270</code></td>
+<td style="text-align: right;">151</td>
+<td><code>frame_timing_request_7_0200e270</code></td>
+<td><abbr title="A function whose original code no longer runs: a hook sends every call to our C++ version.">replaced</abbr></td>
+<td>state method: when idle in states 2..5, request 7 and advance the owner one fixed step (a Chalice Dungeon state machine: built next to SprjHolygrail; not reached by the routes yet)</td>
+</tr>
+<tr>
+<td><code>0x02012610</code></td>
+<td style="text-align: right;">121</td>
+<td><code>frame_timing_until_idle_02012610</code></td>
+<td><abbr title="A function whose original code no longer runs: a hook sends every call to our C++ version.">replaced</abbr></td>
+<td>state method: advance the owner one fixed step while busy (1/30 s; 1/60 s in the 60 FPS patches) (a Chalice Dungeon state machine: built next to SprjHolygrail; not reached by the routes yet)</td>
+</tr>
+<tr>
+<td><code>0x02012780</code></td>
+<td style="text-align: right;">122</td>
+<td><code>frame_timing_request_10_02012780</code></td>
+<td><abbr title="A function whose original code no longer runs: a hook sends every call to our C++ version.">replaced</abbr></td>
+<td>state method: when idle, request 10 and advance the owner one fixed step (a Chalice Dungeon state machine: built next to SprjHolygrail; not reached by the routes yet)</td>
+</tr>
+<tr>
+<td><code>0x020128f0</code></td>
+<td style="text-align: right;">121</td>
+<td><code>frame_timing_until_idle_020128f0</code></td>
+<td><abbr title="A function whose original code no longer runs: a hook sends every call to our C++ version.">replaced</abbr></td>
+<td>state method: advance the owner one fixed step while busy (1/30 s; 1/60 s in the 60 FPS patches) (a Chalice Dungeon state machine: built next to SprjHolygrail; not reached by the routes yet)</td>
+</tr>
+<tr>
+<td><code>0x02012a60</code></td>
+<td style="text-align: right;">151</td>
+<td><code>frame_timing_request_7_02012a60</code></td>
+<td><abbr title="A function whose original code no longer runs: a hook sends every call to our C++ version.">replaced</abbr></td>
+<td>state method: when idle in states 2..5, request 7 and advance the owner one fixed step (a Chalice Dungeon state machine: built next to SprjHolygrail; not reached by the routes yet)</td>
+</tr>
+<tr>
+<td><code>0x02012bf0</code></td>
+<td style="text-align: right;">121</td>
+<td><code>frame_timing_until_idle_02012bf0</code></td>
+<td><abbr title="A function whose original code no longer runs: a hook sends every call to our C++ version.">replaced</abbr></td>
+<td>state method: advance the owner one fixed step while busy (1/30 s; 1/60 s in the 60 FPS patches) (a Chalice Dungeon state machine: built next to SprjHolygrail; not reached by the routes yet)</td>
+</tr>
+<tr>
+<td><code>0x02418d20</code></td>
+<td style="text-align: right;">467</td>
+<td><code>frame_timing_frame_step</code></td>
+<td><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and ran in the game.">verified</abbr></td>
+<td>Per frame: <abbr title="The game's window object, named in the executable's own assertion strings.">SprjWindow</abbr> running check; creates <abbr title="The game's frame-pacing object, named in the executable's own assertion strings.">SprjFlipper</abbr>; calls the limiter; runs the task update; returns running and not quitting</td>
+</tr>
+<tr>
+<td><code>0x02434520</code></td>
+<td style="text-align: right;">552</td>
+<td><code>frame_timing_flipper_init</code></td>
+<td><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and ran in the game.">verified</abbr></td>
+<td><abbr title="The game's frame-pacing object, named in the executable's own assertion strings.">SprjFlipper</abbr> constructor: reads Game.FlipMode (default 4; pending default 3; clamped to 4); unset in the shipped config</td>
+</tr>
+<tr>
+<td><code>0x02434770</code></td>
+<td style="text-align: right;">2077</td>
+<td><code>frame_timing_pace_frame</code></td>
+<td><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and ran in the game.">verified</abbr></td>
+<td>Frame limiter: target interval at +0x18 (1/30 or 1/60 s); sleeps then spins; 32-frame ring; every FPS patch edits it</td>
+</tr>
+</tbody>
+</table>
+<h2 id="structs-and-globals">Structs and globals</h2>
+<ul>
+<li>Clock state object, reached through the pointer at <code>0x056d6ae8</code>. Field <code>+0x10</code>: the
+  seconds of the first clock call (32-bit), written once by the first call of either clock
+  wrapper and read by every later call. The rest of the object is not documented.</li>
+</ul>
+<h2 id="patch-points">Patch points</h2>
+<p>The community frame-rate patches (Kyo; Lance McDonald and Kyo for <code>Uncap FPS++</code>) edit three of
+our functions; disassembling the limiter with and without each patch shows exactly what they do:</p>
+<ul>
+<li><strong>Limiter</strong> (<code>0x02434770</code>): the flip-mode switch always takes one entry (mode 2 for 30 and 60,
+  mode 0 for uncapped) with patched values: interval 1/30 s (30), 1/60 s (60) or 1/240 s
+  (uncapped), and a zero <abbr title="Vertical blank: the gap between two screen refreshes, when a frame is shown.">vblank</abbr> word (<code>+0x268</code>). Every override is skipped: the reset flag
+  (<code>+0x2c4</code>), the two override counters (<code>+0x2bc</code>, <code>+0x2c0</code>) and the two clear flags (<code>+0x271</code>,
+  <code>+0x272</code>). At the end the sync interval (<code>+0x10</code>) is kept on late frames instead of zeroed.</li>
+<li><strong>Frame step</strong> (<code>0x02418d20</code>): the frame time passed to the task update starts at 1/60 s (30:
+  1/30 s), and when the flipper's interval is not 1/30 s it becomes the measured frame time
+  (<code>+0x264</code>) clamped to [interval, 1/30 s]. This is the patches' delta time: the game logic
+  advances by how long the frame really took. The patch drops the SprjTask check to make room.</li>
+<li><strong>Flipper constructor</strong> (<code>0x02434520</code>): the first interval is 1/60 s (60 and 90).</li>
+<li>They also edit 59 other functions; 12 of them are dead code in the stock game (no caller, no
+  relocated pointer). Many of the rest pass the same 1/30 s frame-time descriptor to an owner
+  object, which the 60 FPS patches change to 1/60 s.</li>
+</ul>
+<p>The patches also rewrite dozens of shared constants in the data segment (the 1/30 s step at
+<code>0x04d29170</code> becomes 1/60 s, 1/90 s or, uncapped, 1/60 s), which code we have not <abbr title="A function whose original code no longer runs: a hook sends every call to our C++ version.">replaced</abbr> reads
+too. <code>BB_TARGET_FPS</code> covers only the <abbr title="A function whose original code no longer runs: a hook sends every call to our C++ version.">replaced</abbr> functions, so it is meant to run together with
+the patch; option checks run both sides on the patched image for that reason.</p>
+<p><code>tools/patch_overlap.py</code> maps every patch line to the function it falls in, and lists the
+patches that do nothing while our <abbr title="14-byte jumps written over the start of original functions, sending their callers to the replacements.">hooks</abbr> are installed.</p>
+<h2 id="our-option-bb_target_fps">Our option: BB_TARGET_FPS</h2>
+<p><code>BB_TARGET_FPS=30</code>, <code>60</code> or <code>uncapped</code> does in code what <code>30 FPS++</code>, <code>60 FPS++</code> and
+<code>Uncap FPS++</code> do in the three functions above. Unset keeps the original behaviour exactly.</p>
+<p>Each part is checked against the patch itself: <code>tools/verify.py run --patch FILE:NAME --env
+BB_TARGET_FPS=...</code> runs the original with the patch's bytes applied against our replacement with
+the option, on the <abbr title="Hand-written inputs for situations a short game run does not reach.">edge cases</abbr> and on frames recorded in the game at 60 FPS.</p>
+<p>An earlier version only changed the limiter. Because the hooked frame step no longer ran the
+patches' delta-time code, at 60 FPS the game logic would still have been told every frame lasts
+1/30 s; checking against the patches found that, and that the limiter's own settings differed.</p>
+<p>The other functions the patches edit are not <abbr title="A function whose original code no longer runs: a hook sends every call to our C++ version.">replaced</abbr> yet, so for 60 FPS the community patch is
+still needed for them (<code>BB_FPS=60</code> in the <abbr title="The runtime that loads the original game and runs it natively: bbport, our fork.">scaffold</abbr>); its edits inside our three functions do not
+run, and our option does their part. The frame rate has not been measured on a real display yet.</p>
+<p>A second option, <code>BB_LIMITER_WAIT=sleep</code>, makes the limiter use the sleeping wait the game
+carries but never selects: it sleeps until about 5 ms before the frame's end and spins the
+rest, so a fast machine does not keep a core busy waiting.</p>
+<h2 id="open-questions">Open questions</h2>
+<ul>
+<li>What <code>+0x14</code> and the counters at <code>+0x268</code> / <code>+0x26c</code> mean (the latter set how many recent
+  late frames the catch-up sums).</li>
+<li>Which subsystem the <code>0x0111a...</code> clock layer belongs to.</li>
+<li>What each live function the 60 FPS patches edit belongs to, and which run in gameplay.</li>
+</ul>
+      
+      </div>
+
+    </div>
+    <footer class="wk-footer">
+      <p class="wk-footer-motto">Fear the old blood</p>
+      <p>Made by people who love Bloodborne, so that it can be studied, preserved and played
+      natively, one verified function at a time.</p>
+      <p>A fan project. Not affiliated with or endorsed by Sony Interactive Entertainment or
+      FromSoftware. No game files are shared here: bring your own copy.</p>
+    </footer>
+  </main>
+
+</div>
+
+
+<!-- Back to top -->
+<button class="wk-top" id="wk-top" title="Back to top" aria-label="Scroll to top">↑</button>
+
+
+<script>
+(function () {
+'use strict';
+
+/* ── Theme ─────────────────────────────────────────────────── */
+var stored = localStorage.getItem('wk-theme') || 'dark';
+applyTheme(stored);
+document.getElementById('wk-toggle').addEventListener('click', function () {
+  applyTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+});
+function applyTheme(t) {
+  document.documentElement.setAttribute('data-theme', t);
+  localStorage.setItem('wk-theme', t);
+  var btn = document.getElementById('wk-toggle');
+  if (btn) btn.textContent = t === 'dark' ? '☀' : '🌙';
+}
+
+/* ── Address map: a block opens its slice in a pop-up ──────── */
+(function () {
+  var map = document.querySelector('.wk-bankmap');
+  if (!map) return;
+  var modal = document.createElement('div');
+  modal.className = 'wk-slice-modal';
+  modal.setAttribute('role', 'dialog');
+  modal.setAttribute('aria-modal', 'true');
+  document.body.appendChild(modal);
+  function close() { modal.classList.remove('is-open'); }
+  map.addEventListener('click', function (e) {
+    var cell = e.target.closest('a.wk-bank-cell');
+    if (!cell) return;
+    var panel = document.getElementById(cell.getAttribute('href').slice(1));
+    if (!panel) return;
+    e.preventDefault();
+    modal.innerHTML = '';
+    modal.appendChild(panel.cloneNode(true));
+    modal.firstChild.removeAttribute('id');
+    requestAnimationFrame(function () { modal.classList.add('is-open'); });
+  });
+  modal.addEventListener('click', function (e) {
+    if (e.target === modal || e.target.closest('.wk-slice-close')) { e.preventDefault(); close(); }
+  });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+})();
+
+/* ── Mobile nav ────────────────────────────────────────────── */
+var navToggle  = document.getElementById('wk-nav-toggle');
+var navEl      = document.getElementById('wk-nav');
+var navBackdrop = document.getElementById('wk-nav-backdrop');
+function openNav() {
+  navEl.classList.add('is-open');
+  navBackdrop.hidden = false;
+  navToggle.setAttribute('aria-expanded', 'true');
+}
+function closeNav() {
+  navEl.classList.remove('is-open');
+  navBackdrop.hidden = true;
+  navToggle.setAttribute('aria-expanded', 'false');
+}
+if (navToggle && navEl && navBackdrop) {
+  navToggle.addEventListener('click', function () {
+    if (navEl.classList.contains('is-open')) { closeNav(); } else { openNav(); }
+  });
+  navBackdrop.addEventListener('click', closeNav);
+  navEl.addEventListener('click', function (e) {
+    if (e.target.closest('a')) { closeNav(); }
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { closeNav(); }
+  });
+  window.addEventListener('resize', function () {
+    if (window.innerWidth > 720) { closeNav(); }
+  });
+}
+
+/* ── Search ─────────────────────────────────────────────────── */
+var input   = document.getElementById('wk-q');
+var results = document.getElementById('wk-results');
+var docs    = null;
+if (input) {
+  fetch("../../search/search_index.json")
+    .then(function (r) { return r.json(); })
+    .then(function (d) { docs = d.docs; });
+
+  input.addEventListener('input', onSearch);
+
+  document.addEventListener('click', function (e) {
+    if (results && !results.contains(e.target) && e.target !== input) results.hidden = true;
+  });
+  input.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { results.hidden = true; this.blur(); }
+    if (e.key === 'Enter' && results && !results.hidden) {
+      var first = results.querySelector('.wk-result');
+      if (first) { first.click(); }
+    }
+  });
+}
+
+/* Press / to focus search */
+document.addEventListener('keydown', function (e) {
+  if (e.key === '/' && document.activeElement !== input &&
+      document.activeElement.tagName !== 'INPUT' &&
+      document.activeElement.tagName !== 'TEXTAREA') {
+    e.preventDefault();
+    if (input) { input.focus(); input.select(); }
+  }
+});
+
+function onSearch() {
+  var q = this.value.trim().toLowerCase();
+  if (!docs || q.length < 2) { results.hidden = true; return; }
+  var hits = docs.filter(function (d) {
+    return (d.title + ' ' + d.text).toLowerCase().indexOf(q) !== -1;
+  }).slice(0, 8);
+  if (!hits.length) { results.hidden = true; return; }
+  var base = "../..";
+  results.innerHTML = hits.map(function (d) {
+    var text  = d.text || '';
+    var i     = text.toLowerCase().indexOf(q);
+    var start = Math.max(0, i - 35);
+    var end   = Math.min(text.length, i + q.length + 70);
+    var snip  = (start > 0 ? '…' : '') + text.slice(start, end) + (end < text.length ? '…' : '');
+    var url   = base + '/' + d.location;
+    return '<a class="wk-result" href="' + esc(url) + '" role="option">'
+         + '<div class="wk-result-title">' + esc(d.title || d.location) + '</div>'
+         + '<div class="wk-result-snip">'  + esc(snip) + '</div></a>';
+  }).join('');
+  results.hidden = false;
+}
+
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+/* ── Back to top ────────────────────────────────────────────── */
+var topBtn = document.getElementById('wk-top');
+if (topBtn) {
+  window.addEventListener('scroll', function () {
+    topBtn.classList.toggle('visible', window.scrollY > 400);
+  }, {passive: true});
+  topBtn.addEventListener('click', function () {
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  });
+}
+
+/* ── Copy-to-clipboard ───────────────────────────────────────── */
+document.querySelectorAll('.highlight').forEach(function (block) {
+  var btn = document.createElement('button');
+  btn.className = 'wk-copy-btn';
+  btn.title     = 'Copy code';
+  btn.textContent = '⎘';
+  block.appendChild(btn);
+  btn.addEventListener('click', function () {
+    var pre = block.querySelector('pre');
+    if (!pre) return;
+    navigator.clipboard.writeText(pre.innerText).then(function () {
+      btn.textContent = '✓';
+      btn.classList.add('copied');
+      setTimeout(function () {
+        btn.textContent = '⎘';
+        btn.classList.remove('copied');
+      }, 1500);
+    });
+  });
+});
+
+/* ── Collapsible long code blocks ─────────────────────────────── */
+var COLLAPSE_THRESHOLD = 340;
+document.querySelectorAll('.wk-article-body .highlight').forEach(function (block) {
+  var pre = block.querySelector('pre');
+  if (!pre || pre.scrollHeight <= COLLAPSE_THRESHOLD + 40) return;
+
+  block.classList.add('wk-code-collapsed');
+  var toggle = document.createElement('button');
+  toggle.className = 'wk-code-toggle';
+  toggle.type = 'button';
+  toggle.textContent = 'Show more ▾';
+  toggle.addEventListener('click', function () {
+    var collapsed = block.classList.toggle('wk-code-collapsed');
+    toggle.textContent = collapsed ? 'Show more ▾' : 'Show less ▴';
+    if (collapsed) block.scrollIntoView({block: 'nearest'});
+  });
+  block.insertAdjacentElement('afterend', toggle);
+});
+
+/* ── TOC scroll spy ─────────────────────────────────────────── */
+var tocLinks = document.querySelectorAll('.wk-toc-link');
+if (tocLinks.length && 'IntersectionObserver' in window) {
+  var headings = Array.from(document.querySelectorAll('.wk-article h1, .wk-article h2, .wk-article h3'));
+  var active   = null;
+  var obs = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) {
+        var id  = e.target.id;
+        var lnk = document.querySelector('.wk-toc-link[href="#' + id + '"]');
+        if (lnk && lnk !== active) {
+          if (active) active.classList.remove('is-current');
+          lnk.classList.add('is-current');
+          active = lnk;
+        }
+      }
+    });
+  }, {rootMargin: '-10% 0px -80% 0px'});
+  headings.forEach(function (h) { if (h.id) obs.observe(h); });
+}
+
+
+}());
+</script>
+</body>
+</html>

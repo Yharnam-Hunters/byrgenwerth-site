@@ -1,0 +1,527 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  
+  <meta name="description" content="A native source port of Bloodborne (PS4, CUSA03173 v1.09), function by function">
+  <link rel="canonical" href="https://yharnam-hunters.github.io/byrgenwerth-site/systems/render/">
+  
+  
+  <title>Render — Byrgenwerth</title>
+  
+  
+  <link rel="stylesheet" href="../../stylesheets/wiki.css">
+  
+  
+</head>
+<body>
+
+<!-- ── Header ──────────────────────────────────────────────── -->
+<header class="wk-header">
+  <button class="wk-nav-toggle" id="wk-nav-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="wk-nav">☰</button>
+  <a class="wk-wordmark" href="../../">Byrgenwerth<small>notes of Paleblood, a Bloodborne source port</small></a>
+
+  <div class="wk-header-right">
+    
+    <div class="wk-searchbox">
+      <input class="wk-search-input" id="wk-q" type="search"
+             placeholder="Search the archives…  [/]" autocomplete="off" aria-label="Search">
+      <div class="wk-search-results" id="wk-results" hidden role="listbox"></div>
+    </div>
+    <button class="wk-toggle" id="wk-toggle" title="Toggle theme" aria-label="Toggle dark/light">☀</button>
+  </div>
+</header>
+
+<!-- ── Layout ──────────────────────────────────────────────── -->
+<div class="wk-layout">
+
+  <div class="wk-nav-backdrop" id="wk-nav-backdrop" hidden></div>
+
+  <!-- Left sidebar -->
+  <nav class="wk-nav" id="wk-nav" aria-label="Site navigation">
+    <a href="../../" class="wk-portal-icon" aria-label="Home">
+      <img src="../../assets/bb-icon.png" alt="Byrgenwerth" width="220" height="220">
+    </a>
+
+    
+      
+      <a class="wk-nav-link" href="../..">Home</a>
+      
+    
+      
+        <p class="wk-nav-heading">The Hunt</p>
+        
+          
+          <a class="wk-nav-link" href="../../devlog/">Devlog</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../gallery/">Gallery</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../progress/">Progress</a>
+          
+        
+      
+    
+      
+        <p class="wk-nav-heading">Systems</p>
+        
+          
+          <a class="wk-nav-link" href="../">Overview</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../frame_timing/">Frame timing</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../kernel/">Kernel</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../event/">Event</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../camera/">Camera</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../input/">Input</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../character/">Character</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../ai/">AI</a>
+          
+        
+          
+          <a class="wk-nav-link is-active" href="./">Render</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../loading/">Loading</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../audio/">Audio</a>
+          
+        
+      
+    
+      
+        <p class="wk-nav-heading">How It Works</p>
+        
+          
+          <a class="wk-nav-link" href="../../ARCHITECTURE/">Architecture</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../how-the-frame-limiter-works/">The Frame Limiter</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../ADDRESS_MAP/">Address Map</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../bbport-notes/">bbport Study</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../target/">Target</a>
+          
+        
+      
+    
+      
+        <p class="wk-nav-heading">For Hunters</p>
+        
+          
+          <a class="wk-nav-link" href="../../CONTRIBUTING/">Contributing</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../QUIRKS/">Ghidra & PS4 Quirks</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../glossary/">Glossary</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../CI_SETUP/">CI Setup</a>
+          
+        
+      
+    
+      
+      <a class="wk-nav-link" href="../../credits/">Credits</a>
+      
+    
+
+    <!-- Project stats widget: every value from docs/data/progress.json (hooks/progress_extra.py) -->
+    
+    
+    <div class="wk-stats">
+      <p class="wk-nav-heading" title="Project stats">Insight</p>
+      <div class="wk-stat-row"><span>Verified</span><span class="wk-stat-val">9,821 B</span></div>
+      <div class="wk-stat-row"><span>Functions</span><span class="wk-stat-val">13</span></div>
+      <div class="wk-stat-row"><span>Replaced</span><span class="wk-stat-val">22</span></div>
+      <p class="wk-stat-sublabel">Replaced (42.5 MB of code)</p>
+      <div class="wk-stat-track" title="0.0259%">
+        <div class="wk-stat-fill" style="width:0.0259%"></div>
+      </div>
+      <p class="wk-stat-pct">0.0259%</p>
+      <p class="wk-stat-sublabel">Verified (42.5 MB of code)</p>
+      <div class="wk-stat-track" title="0.0231%">
+        <div class="wk-stat-fill wk-stat-fill-dim" style="width:0.0231%"></div>
+      </div>
+      <p class="wk-stat-pct">0.0231%</p>
+      <p class="wk-stat-link"><a href="../../progress/">View full progress →</a></p>
+    </div>
+    
+  </nav>
+
+  <!-- Main content -->
+  <main class="wk-main">
+    <div class="wk-article">
+
+      
+      
+      <div class="wk-toc" id="wk-toc">
+        <div class="wk-toc-header">
+          <b>Contents</b>
+          <button class="wk-toc-toggle"
+            onclick="var l=document.getElementById('wk-toc-list');l.hidden=!l.hidden;this.textContent=l.hidden?'[show]':'[hide]'">[hide]</button>
+        </div>
+        <ol class="wk-toc-list" id="wk-toc-list">
+          
+          <li>
+            <a href="#render" class="wk-toc-link">Render</a>
+            
+            <ol><li><a href="#summary" class="wk-toc-link">Summary</a></li><li><a href="#key-functions" class="wk-toc-link">Key functions</a></li><li><a href="#structs-and-globals" class="wk-toc-link">Structs and globals</a></li><li><a href="#patch-points" class="wk-toc-link">Patch points</a></li><li><a href="#open-questions" class="wk-toc-link">Open questions</a></li></ol>
+            
+          </li>
+          
+        </ol>
+      </div>
+      
+      
+
+      <div class="wk-article-body">
+      
+      
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 7, 2026 12:11:01 UTC">October 7, 2026</span></p>
+      
+      <h1 id="render">Render</h1>
+<h2 id="summary">Summary</h2>
+<p><code>render_frame_update_02377bd0</code> (<code>0x02377bd0</code>) runs once a frame. It walks a list of
+reference-counted objects and updates each one; an object whose update says it is finished
+loses its reference (destroyed at the last one; an underflow is reported as
+"DLReferenceCountObject: Invalid Unref() call") and its node is unlinked and freed. It then
+updates a <code>RendMan</code>-side child (<code>RendMan</code>: singleton <code>0x05940298</code>) and steps another child by a
+frame time of 1/30 s, or 0 while that child is held.</p>
+<p><code>render_swap_chain_present</code> (<code>0x025b2fb0</code>, the graphics framework's <code>GXSwapChainCtrl</code>) paces
+each present: it waits until the requested number of 60 Hz vblanks has passed since the last
+one (sleeping until 17 ms before that time, then polling the clock), maps the interval to a
+flip mode and presents. In Iosefka's Clinic the game presents with interval 1 and does not wait
+here; the frame limiter sets the pace.</p>
+<p><code>render_yebis_get_recursive_sample_parameters</code> (<code>0x00fbc3e0</code>) belongs to YEBIS, the
+post-processing middleware: its <code>GPUTexUtil_GetRecursiveSampleParameters</code> works out how many
+recursive passes a blur needs, how many samples the last one takes and how far apart the first
+one samples, with the middleware's own assertions.</p>
+<p>Scope still to map: draw submission, <abbr title="The PS4's low-level graphics API.">GNM</abbr> command buffers, shaders, post-processing.</p>
+<h2 id="key-functions">Key functions</h2>
+<table>
+<thead>
+<tr>
+<th>Address</th>
+<th style="text-align: right;">Size</th>
+<th>Name</th>
+<th>Status</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>0x00fbc3e0</code></td>
+<td style="text-align: right;">670</td>
+<td><code>render_yebis_get_recursive_sample_parameters</code></td>
+<td><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and ran in the game.">verified</abbr></td>
+<td>YEBIS GPUTexUtil_GetRecursiveSampleParameters: blur pass count, last-pass samples and scale; the FPS patches drop its first assertion</td>
+</tr>
+<tr>
+<td><code>0x02377bd0</code></td>
+<td style="text-align: right;">399</td>
+<td><code>render_frame_update_02377bd0</code></td>
+<td><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and ran in the game.">verified</abbr></td>
+<td>per-frame: ages a list of ref-counted objects, updates RendMan-side child, steps another child by 1/30 s (Uncap: measured frame time)</td>
+</tr>
+<tr>
+<td><code>0x025b2fb0</code></td>
+<td style="text-align: right;">768</td>
+<td><code>render_swap_chain_present</code></td>
+<td><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and ran in the game.">verified</abbr></td>
+<td>GXSwapChainCtrl present: waits for the present interval in 60 Hz vblanks, maps it to a flip mode, presents (Uncap: mode 0)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="structs-and-globals">Structs and globals</h2>
+<ul>
+<li>The update's owner: list sentinel <code>+0x10</code> (next <code>+0x0</code>, prev <code>+0x8</code>, object <code>+0x10</code>), count
+  <code>+0x18</code>, allocator <code>+0x20</code> (frees nodes through vtable slot <code>+0x70</code>), children at <code>+0x70</code>
+  (stepped through vtable slot <code>+0x40</code>) and <code>+0x80</code>, the held flag <code>+0x8c</code>, a byte <code>+0x98</code> copied
+  into the <code>+0x70</code> child each frame.</li>
+<li>Reference-counted objects: vtable slot 0 destroys, count at <code>+0x8</code> (atomic).</li>
+</ul>
+<h2 id="patch-points">Patch points</h2>
+<ul>
+<li><code>Uncap FPS++</code> makes the <code>+0x70</code> child's step the flipper's measured frame time (<code>+0x264</code>)
+  whatever the held flag says, through a small code cave inside the function, and drops the
+  <code>RendMan</code> check. The 1/30 s it reads otherwise is the shared constant at <code>0x04d29170</code>, which
+  the 60, 90 and uncapped patches rewrite in the data segment.</li>
+<li><code>Uncap FPS++</code> presents with flip mode 0 (no <abbr title="Vertical blank: the gap between two screen refreshes, when a frame is shown.">vblank</abbr> sync) at the end of <code>0x025b2fb0</code>.</li>
+<li>Every frame-rate patch removes the first assertion of <code>0x00fbc3e0</code> (at least 3 base samples):
+  at higher frame rates the blur gets fewer samples.</li>
+</ul>
+<h2 id="open-questions">Open questions</h2>
+<ul>
+<li>Everything: this system has not been studied yet.</li>
+</ul>
+      
+      </div>
+
+    </div>
+    <footer class="wk-footer">
+      <p class="wk-footer-motto">Fear the old blood</p>
+      <p>Made by people who love Bloodborne, so that it can be studied, preserved and played
+      natively, one verified function at a time.</p>
+      <p>A fan project. Not affiliated with or endorsed by Sony Interactive Entertainment or
+      FromSoftware. No game files are shared here: bring your own copy.</p>
+    </footer>
+  </main>
+
+</div>
+
+
+<!-- Back to top -->
+<button class="wk-top" id="wk-top" title="Back to top" aria-label="Scroll to top">↑</button>
+
+
+<script>
+(function () {
+'use strict';
+
+/* ── Theme ─────────────────────────────────────────────────── */
+var stored = localStorage.getItem('wk-theme') || 'dark';
+applyTheme(stored);
+document.getElementById('wk-toggle').addEventListener('click', function () {
+  applyTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+});
+function applyTheme(t) {
+  document.documentElement.setAttribute('data-theme', t);
+  localStorage.setItem('wk-theme', t);
+  var btn = document.getElementById('wk-toggle');
+  if (btn) btn.textContent = t === 'dark' ? '☀' : '🌙';
+}
+
+/* ── Address map: a block opens its slice in a pop-up ──────── */
+(function () {
+  var map = document.querySelector('.wk-bankmap');
+  if (!map) return;
+  var modal = document.createElement('div');
+  modal.className = 'wk-slice-modal';
+  modal.setAttribute('role', 'dialog');
+  modal.setAttribute('aria-modal', 'true');
+  document.body.appendChild(modal);
+  function close() { modal.classList.remove('is-open'); }
+  map.addEventListener('click', function (e) {
+    var cell = e.target.closest('a.wk-bank-cell');
+    if (!cell) return;
+    var panel = document.getElementById(cell.getAttribute('href').slice(1));
+    if (!panel) return;
+    e.preventDefault();
+    modal.innerHTML = '';
+    modal.appendChild(panel.cloneNode(true));
+    modal.firstChild.removeAttribute('id');
+    requestAnimationFrame(function () { modal.classList.add('is-open'); });
+  });
+  modal.addEventListener('click', function (e) {
+    if (e.target === modal || e.target.closest('.wk-slice-close')) { e.preventDefault(); close(); }
+  });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+})();
+
+/* ── Mobile nav ────────────────────────────────────────────── */
+var navToggle  = document.getElementById('wk-nav-toggle');
+var navEl      = document.getElementById('wk-nav');
+var navBackdrop = document.getElementById('wk-nav-backdrop');
+function openNav() {
+  navEl.classList.add('is-open');
+  navBackdrop.hidden = false;
+  navToggle.setAttribute('aria-expanded', 'true');
+}
+function closeNav() {
+  navEl.classList.remove('is-open');
+  navBackdrop.hidden = true;
+  navToggle.setAttribute('aria-expanded', 'false');
+}
+if (navToggle && navEl && navBackdrop) {
+  navToggle.addEventListener('click', function () {
+    if (navEl.classList.contains('is-open')) { closeNav(); } else { openNav(); }
+  });
+  navBackdrop.addEventListener('click', closeNav);
+  navEl.addEventListener('click', function (e) {
+    if (e.target.closest('a')) { closeNav(); }
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { closeNav(); }
+  });
+  window.addEventListener('resize', function () {
+    if (window.innerWidth > 720) { closeNav(); }
+  });
+}
+
+/* ── Search ─────────────────────────────────────────────────── */
+var input   = document.getElementById('wk-q');
+var results = document.getElementById('wk-results');
+var docs    = null;
+if (input) {
+  fetch("../../search/search_index.json")
+    .then(function (r) { return r.json(); })
+    .then(function (d) { docs = d.docs; });
+
+  input.addEventListener('input', onSearch);
+
+  document.addEventListener('click', function (e) {
+    if (results && !results.contains(e.target) && e.target !== input) results.hidden = true;
+  });
+  input.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { results.hidden = true; this.blur(); }
+    if (e.key === 'Enter' && results && !results.hidden) {
+      var first = results.querySelector('.wk-result');
+      if (first) { first.click(); }
+    }
+  });
+}
+
+/* Press / to focus search */
+document.addEventListener('keydown', function (e) {
+  if (e.key === '/' && document.activeElement !== input &&
+      document.activeElement.tagName !== 'INPUT' &&
+      document.activeElement.tagName !== 'TEXTAREA') {
+    e.preventDefault();
+    if (input) { input.focus(); input.select(); }
+  }
+});
+
+function onSearch() {
+  var q = this.value.trim().toLowerCase();
+  if (!docs || q.length < 2) { results.hidden = true; return; }
+  var hits = docs.filter(function (d) {
+    return (d.title + ' ' + d.text).toLowerCase().indexOf(q) !== -1;
+  }).slice(0, 8);
+  if (!hits.length) { results.hidden = true; return; }
+  var base = "../..";
+  results.innerHTML = hits.map(function (d) {
+    var text  = d.text || '';
+    var i     = text.toLowerCase().indexOf(q);
+    var start = Math.max(0, i - 35);
+    var end   = Math.min(text.length, i + q.length + 70);
+    var snip  = (start > 0 ? '…' : '') + text.slice(start, end) + (end < text.length ? '…' : '');
+    var url   = base + '/' + d.location;
+    return '<a class="wk-result" href="' + esc(url) + '" role="option">'
+         + '<div class="wk-result-title">' + esc(d.title || d.location) + '</div>'
+         + '<div class="wk-result-snip">'  + esc(snip) + '</div></a>';
+  }).join('');
+  results.hidden = false;
+}
+
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+/* ── Back to top ────────────────────────────────────────────── */
+var topBtn = document.getElementById('wk-top');
+if (topBtn) {
+  window.addEventListener('scroll', function () {
+    topBtn.classList.toggle('visible', window.scrollY > 400);
+  }, {passive: true});
+  topBtn.addEventListener('click', function () {
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  });
+}
+
+/* ── Copy-to-clipboard ───────────────────────────────────────── */
+document.querySelectorAll('.highlight').forEach(function (block) {
+  var btn = document.createElement('button');
+  btn.className = 'wk-copy-btn';
+  btn.title     = 'Copy code';
+  btn.textContent = '⎘';
+  block.appendChild(btn);
+  btn.addEventListener('click', function () {
+    var pre = block.querySelector('pre');
+    if (!pre) return;
+    navigator.clipboard.writeText(pre.innerText).then(function () {
+      btn.textContent = '✓';
+      btn.classList.add('copied');
+      setTimeout(function () {
+        btn.textContent = '⎘';
+        btn.classList.remove('copied');
+      }, 1500);
+    });
+  });
+});
+
+/* ── Collapsible long code blocks ─────────────────────────────── */
+var COLLAPSE_THRESHOLD = 340;
+document.querySelectorAll('.wk-article-body .highlight').forEach(function (block) {
+  var pre = block.querySelector('pre');
+  if (!pre || pre.scrollHeight <= COLLAPSE_THRESHOLD + 40) return;
+
+  block.classList.add('wk-code-collapsed');
+  var toggle = document.createElement('button');
+  toggle.className = 'wk-code-toggle';
+  toggle.type = 'button';
+  toggle.textContent = 'Show more ▾';
+  toggle.addEventListener('click', function () {
+    var collapsed = block.classList.toggle('wk-code-collapsed');
+    toggle.textContent = collapsed ? 'Show more ▾' : 'Show less ▴';
+    if (collapsed) block.scrollIntoView({block: 'nearest'});
+  });
+  block.insertAdjacentElement('afterend', toggle);
+});
+
+/* ── TOC scroll spy ─────────────────────────────────────────── */
+var tocLinks = document.querySelectorAll('.wk-toc-link');
+if (tocLinks.length && 'IntersectionObserver' in window) {
+  var headings = Array.from(document.querySelectorAll('.wk-article h1, .wk-article h2, .wk-article h3'));
+  var active   = null;
+  var obs = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) {
+        var id  = e.target.id;
+        var lnk = document.querySelector('.wk-toc-link[href="#' + id + '"]');
+        if (lnk && lnk !== active) {
+          if (active) active.classList.remove('is-current');
+          lnk.classList.add('is-current');
+          active = lnk;
+        }
+      }
+    });
+  }, {rootMargin: '-10% 0px -80% 0px'});
+  headings.forEach(function (h) { if (h.id) obs.observe(h); });
+}
+
+
+}());
+</script>
+</body>
+</html>

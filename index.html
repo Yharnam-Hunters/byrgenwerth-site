@@ -1,0 +1,675 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  
+  <meta name="description" content="A native source port of Bloodborne (PS4, CUSA03173 v1.09), function by function">
+  <link rel="canonical" href="https://yharnam-hunters.github.io/byrgenwerth-site/">
+  
+  
+  <title>Home — Byrgenwerth</title>
+  
+  
+  <link rel="stylesheet" href="stylesheets/wiki.css">
+  
+  
+</head>
+<body>
+
+<!-- ── Header ──────────────────────────────────────────────── -->
+<header class="wk-header">
+  <button class="wk-nav-toggle" id="wk-nav-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="wk-nav">☰</button>
+  <a class="wk-wordmark" href="./">Byrgenwerth<small>notes of Paleblood, a Bloodborne source port</small></a>
+
+  <div class="wk-header-right">
+    
+    <div class="wk-searchbox">
+      <input class="wk-search-input" id="wk-q" type="search"
+             placeholder="Search the archives…  [/]" autocomplete="off" aria-label="Search">
+      <div class="wk-search-results" id="wk-results" hidden role="listbox"></div>
+    </div>
+    <button class="wk-toggle" id="wk-toggle" title="Toggle theme" aria-label="Toggle dark/light">☀</button>
+  </div>
+</header>
+
+<!-- ── Layout ──────────────────────────────────────────────── -->
+<div class="wk-layout">
+
+  <div class="wk-nav-backdrop" id="wk-nav-backdrop" hidden></div>
+
+  <!-- Left sidebar -->
+  <nav class="wk-nav" id="wk-nav" aria-label="Site navigation">
+    <a href="./" class="wk-portal-icon" aria-label="Home">
+      <img src="assets/bb-icon.png" alt="Byrgenwerth" width="220" height="220">
+    </a>
+
+    
+      
+      <a class="wk-nav-link is-active" href=".">Home</a>
+      
+    
+      
+        <p class="wk-nav-heading">The Hunt</p>
+        
+          
+          <a class="wk-nav-link" href="devlog/">Devlog</a>
+          
+        
+          
+          <a class="wk-nav-link" href="gallery/">Gallery</a>
+          
+        
+          
+          <a class="wk-nav-link" href="progress/">Progress</a>
+          
+        
+      
+    
+      
+        <p class="wk-nav-heading">Systems</p>
+        
+          
+          <a class="wk-nav-link" href="systems/">Overview</a>
+          
+        
+          
+          <a class="wk-nav-link" href="systems/frame_timing/">Frame timing</a>
+          
+        
+          
+          <a class="wk-nav-link" href="systems/kernel/">Kernel</a>
+          
+        
+          
+          <a class="wk-nav-link" href="systems/event/">Event</a>
+          
+        
+          
+          <a class="wk-nav-link" href="systems/camera/">Camera</a>
+          
+        
+          
+          <a class="wk-nav-link" href="systems/input/">Input</a>
+          
+        
+          
+          <a class="wk-nav-link" href="systems/character/">Character</a>
+          
+        
+          
+          <a class="wk-nav-link" href="systems/ai/">AI</a>
+          
+        
+          
+          <a class="wk-nav-link" href="systems/render/">Render</a>
+          
+        
+          
+          <a class="wk-nav-link" href="systems/loading/">Loading</a>
+          
+        
+          
+          <a class="wk-nav-link" href="systems/audio/">Audio</a>
+          
+        
+      
+    
+      
+        <p class="wk-nav-heading">How It Works</p>
+        
+          
+          <a class="wk-nav-link" href="ARCHITECTURE/">Architecture</a>
+          
+        
+          
+          <a class="wk-nav-link" href="how-the-frame-limiter-works/">The Frame Limiter</a>
+          
+        
+          
+          <a class="wk-nav-link" href="ADDRESS_MAP/">Address Map</a>
+          
+        
+          
+          <a class="wk-nav-link" href="bbport-notes/">bbport Study</a>
+          
+        
+          
+          <a class="wk-nav-link" href="target/">Target</a>
+          
+        
+      
+    
+      
+        <p class="wk-nav-heading">For Hunters</p>
+        
+          
+          <a class="wk-nav-link" href="CONTRIBUTING/">Contributing</a>
+          
+        
+          
+          <a class="wk-nav-link" href="QUIRKS/">Ghidra & PS4 Quirks</a>
+          
+        
+          
+          <a class="wk-nav-link" href="glossary/">Glossary</a>
+          
+        
+          
+          <a class="wk-nav-link" href="CI_SETUP/">CI Setup</a>
+          
+        
+      
+    
+      
+      <a class="wk-nav-link" href="credits/">Credits</a>
+      
+    
+
+    <!-- Project stats widget: every value from docs/data/progress.json (hooks/progress_extra.py) -->
+    
+    
+    <div class="wk-stats">
+      <p class="wk-nav-heading" title="Project stats">Insight</p>
+      <div class="wk-stat-row"><span>Verified</span><span class="wk-stat-val">9,821 B</span></div>
+      <div class="wk-stat-row"><span>Functions</span><span class="wk-stat-val">13</span></div>
+      <div class="wk-stat-row"><span>Replaced</span><span class="wk-stat-val">22</span></div>
+      <p class="wk-stat-sublabel">Replaced (42.5 MB of code)</p>
+      <div class="wk-stat-track" title="0.0259%">
+        <div class="wk-stat-fill" style="width:0.0259%"></div>
+      </div>
+      <p class="wk-stat-pct">0.0259%</p>
+      <p class="wk-stat-sublabel">Verified (42.5 MB of code)</p>
+      <div class="wk-stat-track" title="0.0231%">
+        <div class="wk-stat-fill wk-stat-fill-dim" style="width:0.0231%"></div>
+      </div>
+      <p class="wk-stat-pct">0.0231%</p>
+      <p class="wk-stat-link"><a href="progress/">View full progress →</a></p>
+    </div>
+    
+  </nav>
+
+  <!-- Main content -->
+  <main class="wk-main">
+    <div class="wk-article">
+
+      
+      
+      <div class="wk-toc" id="wk-toc">
+        <div class="wk-toc-header">
+          <b>Contents</b>
+          <button class="wk-toc-toggle"
+            onclick="var l=document.getElementById('wk-toc-list');l.hidden=!l.hidden;this.textContent=l.hidden?'[show]':'[hide]'">[hide]</button>
+        </div>
+        <ol class="wk-toc-list" id="wk-toc-list">
+          
+          <li>
+            <a href="#byrgenwerth" class="wk-toc-link">Byrgenwerth</a>
+            
+            <ol><li><a href="#why-we-do-this" class="wk-toc-link">Why we do this</a></li><li><a href="#start-here" class="wk-toc-link">Start here</a></li><li><a href="#reference" class="wk-toc-link">Reference</a></li><li><a href="#methodology" class="wk-toc-link">Methodology</a></li><li><a href="#legal" class="wk-toc-link">Legal</a></li></ol>
+            
+          </li>
+          
+        </ol>
+      </div>
+      
+      
+
+      <div class="wk-article-body">
+      
+      
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 7, 2026 14:11:44 UTC">October 7, 2026</span></p>
+      
+      <h1 class="wk-visually-hidden" id="byrgenwerth">Byrgenwerth</h1>
+<div class="wk-hero">
+  <div class="wk-hero-text">
+    <p class="wk-hero-title">Bloodborne</p>
+    <p class="wk-hero-sub">Paleblood: a native source port, rebuilt one verified function at a time</p>
+    <blockquote>We are born of the blood, made men by the blood, undone by the blood. Our eyes are
+    yet to open&hellip; Fear the old blood.<cite>Master Willem / The Blood Minister</cite></blockquote>
+  </div>
+</div>
+
+<p><strong>Paleblood</strong> is a <abbr title="Rewriting the game's code as readable source that behaves the same as the original, checked by running both; unlike a matching decompilation, the compiled bytes may differ.">functional decompilation</abbr> and native <abbr title="The game rebuilt from source to run natively on another platform, here Linux on a PC.">source port</abbr> of <em>Bloodborne</em> (<abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr>, CUSA03173, version 1.09): the game's code, function by function, rewritten as readable C++ that runs natively on a PC and does exactly what the original did.</p>
+<div class="wk-stat-tiles">
+  <div class="wk-stat-tile"><span class="wk-stat-tile-val">9,821</span><span class="wk-stat-tile-label">bytes verified</span></div>
+  <div class="wk-stat-tile"><span class="wk-stat-tile-val">0.0231%</span><span class="wk-stat-tile-label">of all game code</span></div>
+  <div class="wk-stat-tile"><span class="wk-stat-tile-val">13</span><span class="wk-stat-tile-label">functions verified</span></div>
+  <div class="wk-stat-tile"><span class="wk-stat-tile-val">157,757</span><span class="wk-stat-tile-label">functions in the game</span></div>
+</div>
+
+<p><svg class="wk-sparkline" viewBox="0 0 720 200" role="img"
+     aria-label="Bytes of verified replacement code by day, 4,711 to 9,821">
+  <polygon points="8,172 8.0,97.2 712.0,16.0 712,172" class="wk-spark-area"></polygon>
+  <polyline points="8.0,97.2 712.0,16.0" class="wk-spark-line"></polyline>
+  <circle cx="8.0" cy="97.2" r="2.5" class="wk-spark-dot"><title>2026-10-06: 4,711 bytes verified, 9 functions</title></circle><circle cx="712.0" cy="16.0" r="2.5" class="wk-spark-dot"><title>2026-10-07: 9,821 bytes verified, 13 functions</title></circle>
+  <text x="8" y="192" class="wk-spark-label">2026-10-06 — 4,711 B</text>
+  <text x="712" y="192" class="wk-spark-label" text-anchor="end">2026-10-07 — 9,821 B</text>
+</svg></p>
+<p class="wk-page-meta">Verified replacement code by day — see the <a href="devlog/">devlog</a> for the story behind each step.</p>
+
+<div class="admonition note">
+<p class="admonition-title">This project is not affiliated with or endorsed by Sony Interactive Entertainment or FromSoftware in any way.</p>
+</div>
+<h2 id="why-we-do-this">Why we do this</h2>
+<p>Because we love this game. Yharnam deserves to outlive the hardware it was made for, and to be
+understood as well as it is loved: every function of the original, read, named, rewritten and
+proved to behave exactly as it did, so that one day it runs natively, at any frame rate, for as
+long as there are hunters to play it.</p>
+<hr />
+<h2 id="start-here">Start here</h2>
+<div class="wk-quicklinks">
+
+<a class="wk-ql-box wk-ql-devlog" href="devlog/">
+  <span class="wk-ql-label">Devlog</span>
+  <span class="wk-ql-sub">Day-by-day notes</span>
+</a>
+
+<a class="wk-ql-box wk-ql-progress" href="progress/">
+  <span class="wk-ql-label">Progress</span>
+  <span class="wk-ql-sub">Replaced and verified functions</span>
+</a>
+
+<a class="wk-ql-box wk-ql-arch" href="ARCHITECTURE/">
+  <span class="wk-ql-label">Architecture</span>
+  <span class="wk-ql-sub">How the port runs the game</span>
+</a>
+
+<a class="wk-ql-box wk-ql-contrib" href="CONTRIBUTING/">
+  <span class="wk-ql-label">Contributing</span>
+  <span class="wk-ql-sub">How to help</span>
+</a>
+
+</div>
+
+<hr />
+<h2 id="reference">Reference</h2>
+<h3 id="where-the-work-is">Where the work is</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th style="text-align: right;">Functions</th>
+<th style="text-align: right;">Bytes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Target (<abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr> export)</td>
+<td style="text-align: right;">157,757</td>
+<td style="text-align: right;">42,487,347</td>
+</tr>
+<tr>
+<td>Replaced</td>
+<td style="text-align: right;">22 (0.01%)</td>
+<td style="text-align: right;">10,987 (0.03%)</td>
+</tr>
+<tr>
+<td>Verified</td>
+<td style="text-align: right;">13 (0.01%)</td>
+<td style="text-align: right;">9,821 (0.02%)</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>System</th>
+<th style="text-align: right;">Tracked</th>
+<th style="text-align: right;">Replaced</th>
+<th style="text-align: right;">Verified</th>
+<th style="text-align: right;">Replaced bytes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ai</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2,693</td>
+</tr>
+<tr>
+<td>audio</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td>camera</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td>character</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">979</td>
+</tr>
+<tr>
+<td>event</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">368</td>
+</tr>
+<tr>
+<td>frame_timing</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">4,480</td>
+</tr>
+<tr>
+<td>input</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">426</td>
+</tr>
+<tr>
+<td>kernel</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">204</td>
+</tr>
+<tr>
+<td>loading</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td>render</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">1,837</td>
+</tr>
+</tbody>
+</table>
+<p>Generated by <code>tools/sync_progress.py</code> from the code repo. Do not edit.</p>
+<p>The executable's code, slice by slice, is on the <a href="ADDRESS_MAP/">Address Map</a>; every tracked function with its status is on its <a href="systems/">system page</a>.</p>
+<h3 id="key-documents">Key documents</h3>
+<table>
+<thead>
+<tr>
+<th>Document</th>
+<th>What it covers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="ARCHITECTURE/">Architecture</a></td>
+<td>The <abbr title="The runtime that loads the original game and runs it natively: bbport, our fork.">scaffold</abbr>, the <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> layer, the frame pipeline, verification</td>
+</tr>
+<tr>
+<td><a href="how-the-frame-limiter-works/">How the Frame Limiter Works</a></td>
+<td>The first system <abbr title="A function whose original code no longer runs: a hook sends every call to our C++ version.">replaced</abbr>, step by step</td>
+</tr>
+<tr>
+<td><a href="glossary/">Glossary</a></td>
+<td><abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> and port terms explained</td>
+</tr>
+<tr>
+<td><a href="QUIRKS/"><abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr> &amp; <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> Quirks</a></td>
+<td>Traps in the tools and the ABI</td>
+</tr>
+<tr>
+<td><a href="CONTRIBUTING/">Contributing</a></td>
+<td>Joining, the first pull request, the rules</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="methodology">Methodology</h2>
+<p>Each function goes through five steps before it is marked <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and ran in the game.">verified</abbr>:</p>
+<ol>
+<li><strong>Analyze</strong> — <abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr> with the <abbr title="A Ghidra extension that loads PS4 executables and resolves NIDs to names.">GhidraOrbis</abbr> loader finds the function in your own dump; its callers, callees and the memory it touches are read from the disassembly, not only the decompiler.</li>
+<li><strong>Name</strong> — it gets a name and a system in the shared function table, so every contributor's <abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr> shows the same names.</li>
+<li><strong>Replace</strong> — a C++ version is written, faithful to the original instruction by instruction, and a <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> sends every call to it.</li>
+<li><strong>Verify</strong> — the <abbr title="tools/harness.py: runs the original function and its replacement natively on the same recorded inputs, outside the game.">harness</abbr> runs the original and the replacement on the same inputs, recorded in real game runs and written by hand for the corners, and compares return values, registers, every byte written and every library call. Deliberately wrong versions must fail.</li>
+<li><strong>Play</strong> — the game runs with the replacement and behaves as it does without it.</li>
+</ol>
+<hr />
+<h2 id="legal">Legal</h2>
+<p>Tools and source only — no game files, no extracted assets, no decompiler dumps. Everything starts from your own console and your own copy: to contribute or verify you need Bloodborne (CUSA03173, EU) with the 1.09 update, dumped from your own <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr>. The project does not provide or point to game files, pkgs, firmware, keys or decryption tools.</p>
+<p><strong>Loaded image SHA-256 of the target executable:</strong>
+<div class="language-text highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>071df19c8880086d97182dbc057bc8cb37badaca57d9112683836b24a0444c0a
+</code></pre></div></p>
+      
+      </div>
+
+    </div>
+    <footer class="wk-footer">
+      <p class="wk-footer-motto">Fear the old blood</p>
+      <p>Made by people who love Bloodborne, so that it can be studied, preserved and played
+      natively, one verified function at a time.</p>
+      <p>A fan project. Not affiliated with or endorsed by Sony Interactive Entertainment or
+      FromSoftware. No game files are shared here: bring your own copy.</p>
+    </footer>
+  </main>
+
+</div>
+
+
+<!-- Back to top -->
+<button class="wk-top" id="wk-top" title="Back to top" aria-label="Scroll to top">↑</button>
+
+
+<script>
+(function () {
+'use strict';
+
+/* ── Theme ─────────────────────────────────────────────────── */
+var stored = localStorage.getItem('wk-theme') || 'dark';
+applyTheme(stored);
+document.getElementById('wk-toggle').addEventListener('click', function () {
+  applyTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+});
+function applyTheme(t) {
+  document.documentElement.setAttribute('data-theme', t);
+  localStorage.setItem('wk-theme', t);
+  var btn = document.getElementById('wk-toggle');
+  if (btn) btn.textContent = t === 'dark' ? '☀' : '🌙';
+}
+
+/* ── Address map: a block opens its slice in a pop-up ──────── */
+(function () {
+  var map = document.querySelector('.wk-bankmap');
+  if (!map) return;
+  var modal = document.createElement('div');
+  modal.className = 'wk-slice-modal';
+  modal.setAttribute('role', 'dialog');
+  modal.setAttribute('aria-modal', 'true');
+  document.body.appendChild(modal);
+  function close() { modal.classList.remove('is-open'); }
+  map.addEventListener('click', function (e) {
+    var cell = e.target.closest('a.wk-bank-cell');
+    if (!cell) return;
+    var panel = document.getElementById(cell.getAttribute('href').slice(1));
+    if (!panel) return;
+    e.preventDefault();
+    modal.innerHTML = '';
+    modal.appendChild(panel.cloneNode(true));
+    modal.firstChild.removeAttribute('id');
+    requestAnimationFrame(function () { modal.classList.add('is-open'); });
+  });
+  modal.addEventListener('click', function (e) {
+    if (e.target === modal || e.target.closest('.wk-slice-close')) { e.preventDefault(); close(); }
+  });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+})();
+
+/* ── Mobile nav ────────────────────────────────────────────── */
+var navToggle  = document.getElementById('wk-nav-toggle');
+var navEl      = document.getElementById('wk-nav');
+var navBackdrop = document.getElementById('wk-nav-backdrop');
+function openNav() {
+  navEl.classList.add('is-open');
+  navBackdrop.hidden = false;
+  navToggle.setAttribute('aria-expanded', 'true');
+}
+function closeNav() {
+  navEl.classList.remove('is-open');
+  navBackdrop.hidden = true;
+  navToggle.setAttribute('aria-expanded', 'false');
+}
+if (navToggle && navEl && navBackdrop) {
+  navToggle.addEventListener('click', function () {
+    if (navEl.classList.contains('is-open')) { closeNav(); } else { openNav(); }
+  });
+  navBackdrop.addEventListener('click', closeNav);
+  navEl.addEventListener('click', function (e) {
+    if (e.target.closest('a')) { closeNav(); }
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { closeNav(); }
+  });
+  window.addEventListener('resize', function () {
+    if (window.innerWidth > 720) { closeNav(); }
+  });
+}
+
+/* ── Search ─────────────────────────────────────────────────── */
+var input   = document.getElementById('wk-q');
+var results = document.getElementById('wk-results');
+var docs    = null;
+if (input) {
+  fetch("search/search_index.json")
+    .then(function (r) { return r.json(); })
+    .then(function (d) { docs = d.docs; });
+
+  input.addEventListener('input', onSearch);
+
+  document.addEventListener('click', function (e) {
+    if (results && !results.contains(e.target) && e.target !== input) results.hidden = true;
+  });
+  input.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { results.hidden = true; this.blur(); }
+    if (e.key === 'Enter' && results && !results.hidden) {
+      var first = results.querySelector('.wk-result');
+      if (first) { first.click(); }
+    }
+  });
+}
+
+/* Press / to focus search */
+document.addEventListener('keydown', function (e) {
+  if (e.key === '/' && document.activeElement !== input &&
+      document.activeElement.tagName !== 'INPUT' &&
+      document.activeElement.tagName !== 'TEXTAREA') {
+    e.preventDefault();
+    if (input) { input.focus(); input.select(); }
+  }
+});
+
+function onSearch() {
+  var q = this.value.trim().toLowerCase();
+  if (!docs || q.length < 2) { results.hidden = true; return; }
+  var hits = docs.filter(function (d) {
+    return (d.title + ' ' + d.text).toLowerCase().indexOf(q) !== -1;
+  }).slice(0, 8);
+  if (!hits.length) { results.hidden = true; return; }
+  var base = ".";
+  results.innerHTML = hits.map(function (d) {
+    var text  = d.text || '';
+    var i     = text.toLowerCase().indexOf(q);
+    var start = Math.max(0, i - 35);
+    var end   = Math.min(text.length, i + q.length + 70);
+    var snip  = (start > 0 ? '…' : '') + text.slice(start, end) + (end < text.length ? '…' : '');
+    var url   = base + '/' + d.location;
+    return '<a class="wk-result" href="' + esc(url) + '" role="option">'
+         + '<div class="wk-result-title">' + esc(d.title || d.location) + '</div>'
+         + '<div class="wk-result-snip">'  + esc(snip) + '</div></a>';
+  }).join('');
+  results.hidden = false;
+}
+
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+/* ── Back to top ────────────────────────────────────────────── */
+var topBtn = document.getElementById('wk-top');
+if (topBtn) {
+  window.addEventListener('scroll', function () {
+    topBtn.classList.toggle('visible', window.scrollY > 400);
+  }, {passive: true});
+  topBtn.addEventListener('click', function () {
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  });
+}
+
+/* ── Copy-to-clipboard ───────────────────────────────────────── */
+document.querySelectorAll('.highlight').forEach(function (block) {
+  var btn = document.createElement('button');
+  btn.className = 'wk-copy-btn';
+  btn.title     = 'Copy code';
+  btn.textContent = '⎘';
+  block.appendChild(btn);
+  btn.addEventListener('click', function () {
+    var pre = block.querySelector('pre');
+    if (!pre) return;
+    navigator.clipboard.writeText(pre.innerText).then(function () {
+      btn.textContent = '✓';
+      btn.classList.add('copied');
+      setTimeout(function () {
+        btn.textContent = '⎘';
+        btn.classList.remove('copied');
+      }, 1500);
+    });
+  });
+});
+
+/* ── Collapsible long code blocks ─────────────────────────────── */
+var COLLAPSE_THRESHOLD = 340;
+document.querySelectorAll('.wk-article-body .highlight').forEach(function (block) {
+  var pre = block.querySelector('pre');
+  if (!pre || pre.scrollHeight <= COLLAPSE_THRESHOLD + 40) return;
+
+  block.classList.add('wk-code-collapsed');
+  var toggle = document.createElement('button');
+  toggle.className = 'wk-code-toggle';
+  toggle.type = 'button';
+  toggle.textContent = 'Show more ▾';
+  toggle.addEventListener('click', function () {
+    var collapsed = block.classList.toggle('wk-code-collapsed');
+    toggle.textContent = collapsed ? 'Show more ▾' : 'Show less ▴';
+    if (collapsed) block.scrollIntoView({block: 'nearest'});
+  });
+  block.insertAdjacentElement('afterend', toggle);
+});
+
+/* ── TOC scroll spy ─────────────────────────────────────────── */
+var tocLinks = document.querySelectorAll('.wk-toc-link');
+if (tocLinks.length && 'IntersectionObserver' in window) {
+  var headings = Array.from(document.querySelectorAll('.wk-article h1, .wk-article h2, .wk-article h3'));
+  var active   = null;
+  var obs = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) {
+        var id  = e.target.id;
+        var lnk = document.querySelector('.wk-toc-link[href="#' + id + '"]');
+        if (lnk && lnk !== active) {
+          if (active) active.classList.remove('is-current');
+          lnk.classList.add('is-current');
+          active = lnk;
+        }
+      }
+    });
+  }, {rootMargin: '-10% 0px -80% 0px'});
+  headings.forEach(function (h) { if (h.id) obs.observe(h); });
+}
+
+
+}());
+</script>
+</body>
+</html>

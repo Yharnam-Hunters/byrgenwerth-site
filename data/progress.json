@@ -1,0 +1,585 @@
+{
+  "inputs": {
+    "functions_sha256": "784e794b39f8942f508cb3916472a3e00a93f87fda38adbc333a15132ece5133",
+    "ghidra_functions_sha256": "fc7e244dc9f211963118a9ab97716de03e0f342421c63cafc9a8ae747abb8ebd"
+  },
+  "replaced": {
+    "bytes": 10987,
+    "bytes_pct": 0.03,
+    "functions": 22,
+    "functions_pct": 0.01
+  },
+  "schema": 1,
+  "slices": [
+    {
+      "bytes": 677719,
+      "end": "0x004aefb3",
+      "functions": 2710,
+      "replaced_bytes": 0,
+      "start": "0x00400020",
+      "verified_bytes": 0
+    },
+    {
+      "bytes": 685578,
+      "end": "0x0055df46",
+      "functions": 2013,
+      "replaced_bytes": 0,
+      "start": "0x004aefb3",
+      "verified_bytes": 0
+    },
+    {
+      "bytes": 695273,
+      "end": "0x0060ced9",
+      "functions": 1940,
+      "replaced_bytes": 0,
+      "start": "0x0055df46",
+      "verified_bytes": 0
+    },
+    {
+      "bytes": 655944,
+      "end": "0x006bbe6c",
+      "functions": 3508,
+      "replaced_bytes": 0,
+      "start": "0x0060ced9",
+      "verified_bytes": 0
+    },
+    {
+      "bytes": 631863,
+      "end": "0x0076adff",
+      "functions": 1705,
+      "replaced_bytes": 0,
+      "start": "0x006bbe6c",
+      "verified_bytes": 0
+    },
+    {
+      "bytes": 571662,
+      "end": "0x00819d92",
+      "functions": 1021,
+      "replaced_bytes": 0,
+      "start": "0x0076adff",
+      "verified_bytes": 0
+    },
+    {
+      "bytes": 697805,
+      "end": "0x008c8d25",
+      "functions": 2052,
+      "replaced_bytes": 0,
+      "start": "0x00819d92",
+      "verified_bytes": 0
+    },
+    {
+      "bytes": 683321,
+      "end": "0x00977cb8",
+      "functions": 1708,
+      "replaced_bytes": 0,
+      "start": "0x008c8d25",
+      "verified_bytes": 0
+    },
+    {
+      "bytes": 689377,
+      "end": "0x00a26c4b",
+      "functions": 2497,
+      "replaced_bytes": 0,
+      "start": "0x00977cb8",
+      "verified_bytes": 0
+    },
+    {
+      "bytes": 690537,
+      "end": "0x00ad5bde",
+      "functions": 1634,
+      "replaced_bytes": 0,
+      "start": "0x00a26c4b",
+      "verified_bytes": 0
+    },
+    {
+      "bytes": 705734,
+      "end": "0x00b84b71",
+      "functions": 1385,
+      "replaced_bytes": 0,
+      "start": "0x00ad5bde",
+      "verified_bytes": 0
+    },
+    {
+      "bytes": 685226,
+      "end": "0x00c33b04",
+      "functions": 1089,
+      "replaced_bytes": 0,
+      "start": "0x00b84b71",
+      "verified_bytes": 0
+    },
+    {
+      "bytes": 695975,
+      "end": "0x00ce2a97",
+      "functions": 1205,
+      "replaced_bytes": 0,
+      "start": "0x00c33b04",
+      "verified_bytes": 0
+    },
+    {
+      "bytes": 692610,
+      "end": "0x00d91a2a",
+      "functions": 2283,
+      "replaced_bytes": 0,
+      "start": "0x00ce2a97",
+      "verified_bytes": 0
+    },
+    {
+      "bytes": 691508,
+      "end": "0x00e409bd",
+      "functions": 1898,
+      "replaced_bytes": 0,
+      "start": "0x00d91a2a",
+      "verified_bytes": 0
+    },
+    {
+      "bytes": 693117,
+      "end": "0x00eef950",
+      "functions": 2013,
+      "replaced_bytes": 0,
+      "start": "0x00e409bd",
+      "verified_bytes": 0
+    },
+    {
+      "bytes": 695954,
+      "end": "0x00f9e8e3",
+      "functions": 1606,
+      "replaced_bytes": 0,
+      "start": "0x00eef950",
+      "verified_bytes": 0
+    },
+    {
+      "bytes": 692297,
+      "end": "0x0104d876",
+      "functions": 1744,
+      "replaced_bytes": 670,
+      "start": "0x00f9e8e3",
+      "verified_bytes": 670
+    },
+    {
+      "bytes": 665988,
+      "end": "0x010fc809",
+      "functions": 3128,
+      "replaced_bytes": 0,
+      "start": "0x0104d876",
+      "verified_bytes": 0
+    },
+    {
+      "bytes": 680961,
+      "end": "0x011ab79c",
+      "functions": 2503,
+      "replaced_bytes": 131,
+      "start": "0x010fc809",
+      "verified_bytes": 131
+    },
+    {
+      "bytes": 677827,
+      "end": "0x0125a72f",
+      "functions": 2746,
+      "replaced_bytes": 0,
+      "start": "0x011ab79c",
+      "verified_bytes": 0
+    },
+    {
+      "bytes": 688769,
+      "end": "0x013096c2",
+      "functions": 1137,
+      "replaced_bytes": 0,
+      "start": "0x0125a72f",
+      "verified_bytes": 0
+    },
+    {
+      "bytes": 679570,
+      "end": "0x013b8655",
+      "functions": 2928,
+      "replaced_bytes": 0,
+      "start": "0x013096c2",
+      "verified_bytes": 0
+    },
+    {
+      "bytes": 680950,
+      "end": "0x014675e8",
+      "functions": 3776,
+      "replaced_bytes": 87,
+      "start": "0x013b8655",
+      "verified_bytes": 87
+    },
+    {
+      "bytes": 681944,
+      "end": "0x0151657b",
+      "functions": 2543,
+      "replaced_bytes": 0,
+      "start": "0x014675e8",
+      "verified_bytes": 0
+    },
+    {
+      "bytes": 693329,
+      "end": "0x015c550e",
+      "functions": 1419,
+      "replaced_bytes": 0,
+      "start": "0x0151657b",
+      "verified_bytes": 0
+    },
+    {
+      "bytes": 642357,
+      "end": "0x016744a1",
+      "functions": 2364,
+      "replaced_bytes": 0,
+      "start": "0x015c550e",
+      "verified_bytes": 0
+    },
+    {
+      "bytes": 633453,
+      "end": "0x01723434",
+      "functions": 2619,
+      "replaced_bytes": 368,
+      "start": "0x016744a1",
+      "verified_bytes": 368
+    },
+    {
+      "bytes": 623399,
+      "end": "0x017d23c7",
+      "functions": 2461,
+      "replaced_bytes": 0,
+      "start": "0x01723434",
+      "verified_bytes": 0
+    },
+    {
+      "bytes": 655898,
+      "end": "0x0188135a",
+      "functions": 2642,
+      "replaced_bytes": 0,
+      "start": "0x017d23c7",
+      "verified_bytes": 0
+    },
+    {
+      "bytes": 662340,
+      "end": "0x019302ed",
+      "functions": 2242,
+      "replaced_bytes": 0,
+      "start": "0x0188135a",
+      "verified_bytes": 0
+    },
+    {
+      "bytes": 655294,
+      "end": "0x019df280",
+      "functions": 2086,
+      "replaced_bytes": 426,
+      "start": "0x019302ed",
+      "verified_bytes": 426
+    },
+    {
+      "bytes": 512044,
+      "end": "0x01a8e213",
+      "functions": 2101,
+      "replaced_bytes": 0,
+      "start": "0x019df280",
+      "verified_bytes": 0
+    },
+    {
+      "bytes": 543829,
+      "end": "0x01b3d1a6",
+      "functions": 1978,
+      "replaced_bytes": 0,
+      "start": "0x01a8e213",
+      "verified_bytes": 0
+    },
+    {
+      "bytes": 618402,
+      "end": "0x01bec139",
+      "functions": 2324,
+      "replaced_bytes": 0,
+      "start": "0x01b3d1a6",
+      "verified_bytes": 0
+    },
+    {
+      "bytes": 649235,
+      "end": "0x01c9b0cc",
+      "functions": 1966,
+      "replaced_bytes": 0,
+      "start": "0x01bec139",
+      "verified_bytes": 0
+    },
+    {
+      "bytes": 661825,
+      "end": "0x01d4a05f",
+      "functions": 2201,
+      "replaced_bytes": 979,
+      "start": "0x01c9b0cc",
+      "verified_bytes": 979
+    },
+    {
+      "bytes": 670187,
+      "end": "0x01df8ff2",
+      "functions": 3052,
+      "replaced_bytes": 0,
+      "start": "0x01d4a05f",
+      "verified_bytes": 0
+    },
+    {
+      "bytes": 661877,
+      "end": "0x01ea7f85",
+      "functions": 2530,
+      "replaced_bytes": 0,
+      "start": "0x01df8ff2",
+      "verified_bytes": 0
+    },
+    {
+      "bytes": 656173,
+      "end": "0x01f56f18",
+      "functions": 3295,
+      "replaced_bytes": 0,
+      "start": "0x01ea7f85",
+      "verified_bytes": 0
+    },
+    {
+      "bytes": 667458,
+      "end": "0x02005eab",
+      "functions": 3535,
+      "replaced_bytes": 121,
+      "start": "0x01f56f18",
+      "verified_bytes": 0
+    },
+    {
+      "bytes": 663085,
+      "end": "0x020b4e3e",
+      "functions": 3110,
+      "replaced_bytes": 1045,
+      "start": "0x02005eab",
+      "verified_bytes": 0
+    },
+    {
+      "bytes": 651167,
+      "end": "0x02163dd1",
+      "functions": 3049,
+      "replaced_bytes": 0,
+      "start": "0x020b4e3e",
+      "verified_bytes": 0
+    },
+    {
+      "bytes": 654865,
+      "end": "0x02212d64",
+      "functions": 2496,
+      "replaced_bytes": 0,
+      "start": "0x02163dd1",
+      "verified_bytes": 0
+    },
+    {
+      "bytes": 666516,
+      "end": "0x022c1cf7",
+      "functions": 2020,
+      "replaced_bytes": 2693,
+      "start": "0x02212d64",
+      "verified_bytes": 2693
+    },
+    {
+      "bytes": 621046,
+      "end": "0x02370c8a",
+      "functions": 2621,
+      "replaced_bytes": 0,
+      "start": "0x022c1cf7",
+      "verified_bytes": 0
+    },
+    {
+      "bytes": 641524,
+      "end": "0x0241fc1d",
+      "functions": 3034,
+      "replaced_bytes": 866,
+      "start": "0x02370c8a",
+      "verified_bytes": 866
+    },
+    {
+      "bytes": 633547,
+      "end": "0x024cebb0",
+      "functions": 2778,
+      "replaced_bytes": 2833,
+      "start": "0x0241fc1d",
+      "verified_bytes": 2833
+    },
+    {
+      "bytes": 644042,
+      "end": "0x0257db43",
+      "functions": 2095,
+      "replaced_bytes": 0,
+      "start": "0x024cebb0",
+      "verified_bytes": 0
+    },
+    {
+      "bytes": 687218,
+      "end": "0x0262cad6",
+      "functions": 1399,
+      "replaced_bytes": 768,
+      "start": "0x0257db43",
+      "verified_bytes": 768
+    },
+    {
+      "bytes": 691670,
+      "end": "0x026dba69",
+      "functions": 1148,
+      "replaced_bytes": 0,
+      "start": "0x0262cad6",
+      "verified_bytes": 0
+    },
+    {
+      "bytes": 679649,
+      "end": "0x0278a9fc",
+      "functions": 2077,
+      "replaced_bytes": 0,
+      "start": "0x026dba69",
+      "verified_bytes": 0
+    },
+    {
+      "bytes": 664958,
+      "end": "0x0283998f",
+      "functions": 5064,
+      "replaced_bytes": 0,
+      "start": "0x0278a9fc",
+      "verified_bytes": 0
+    },
+    {
+      "bytes": 679755,
+      "end": "0x028e8922",
+      "functions": 3755,
+      "replaced_bytes": 0,
+      "start": "0x0283998f",
+      "verified_bytes": 0
+    },
+    {
+      "bytes": 684456,
+      "end": "0x029978b5",
+      "functions": 1930,
+      "replaced_bytes": 0,
+      "start": "0x028e8922",
+      "verified_bytes": 0
+    },
+    {
+      "bytes": 672121,
+      "end": "0x02a46848",
+      "functions": 3217,
+      "replaced_bytes": 0,
+      "start": "0x029978b5",
+      "verified_bytes": 0
+    },
+    {
+      "bytes": 657317,
+      "end": "0x02af57db",
+      "functions": 3151,
+      "replaced_bytes": 0,
+      "start": "0x02a46848",
+      "verified_bytes": 0
+    },
+    {
+      "bytes": 675356,
+      "end": "0x02ba476e",
+      "functions": 3018,
+      "replaced_bytes": 0,
+      "start": "0x02af57db",
+      "verified_bytes": 0
+    },
+    {
+      "bytes": 655704,
+      "end": "0x02c53701",
+      "functions": 4023,
+      "replaced_bytes": 0,
+      "start": "0x02ba476e",
+      "verified_bytes": 0
+    },
+    {
+      "bytes": 672319,
+      "end": "0x02d02694",
+      "functions": 3472,
+      "replaced_bytes": 0,
+      "start": "0x02c53701",
+      "verified_bytes": 0
+    },
+    {
+      "bytes": 669214,
+      "end": "0x02db1627",
+      "functions": 4163,
+      "replaced_bytes": 0,
+      "start": "0x02d02694",
+      "verified_bytes": 0
+    },
+    {
+      "bytes": 674231,
+      "end": "0x02e605ba",
+      "functions": 3535,
+      "replaced_bytes": 0,
+      "start": "0x02db1627",
+      "verified_bytes": 0
+    },
+    {
+      "bytes": 667236,
+      "end": "0x02f0f54d",
+      "functions": 2718,
+      "replaced_bytes": 0,
+      "start": "0x02e605ba",
+      "verified_bytes": 0
+    },
+    {
+      "bytes": 685742,
+      "end": "0x02fbe4a5",
+      "functions": 2297,
+      "replaced_bytes": 0,
+      "start": "0x02f0f54d",
+      "verified_bytes": 0
+    }
+  ],
+  "systems": {
+    "ai": {
+      "replaced": 1,
+      "replaced_bytes": 2693,
+      "tracked": 1,
+      "verified": 1
+    },
+    "character": {
+      "replaced": 1,
+      "replaced_bytes": 979,
+      "tracked": 1,
+      "verified": 1
+    },
+    "event": {
+      "replaced": 1,
+      "replaced_bytes": 368,
+      "tracked": 1,
+      "verified": 1
+    },
+    "frame_timing": {
+      "replaced": 14,
+      "replaced_bytes": 4480,
+      "tracked": 15,
+      "verified": 5
+    },
+    "input": {
+      "replaced": 1,
+      "replaced_bytes": 426,
+      "tracked": 1,
+      "verified": 1
+    },
+    "kernel": {
+      "replaced": 1,
+      "replaced_bytes": 204,
+      "tracked": 1,
+      "verified": 1
+    },
+    "render": {
+      "replaced": 3,
+      "replaced_bytes": 1837,
+      "tracked": 3,
+      "verified": 3
+    }
+  },
+  "total": {
+    "bytes": 42487347,
+    "functions": 157757
+  },
+  "tracked": {
+    "bytes": 11054,
+    "functions": 23
+  },
+  "verified": {
+    "bytes": 9821,
+    "bytes_pct": 0.02,
+    "functions": 13,
+    "functions_pct": 0.01
+  }
+}
