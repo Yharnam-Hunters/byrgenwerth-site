@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   
-  <meta name="description" content="A native source port of Bloodborne (PS4, CUSA03173 v1.09), function by function, and an open place to learn how a console game works and how it is reverse engineered">
+  <meta name="description" content="Notes of Paleblood, which rebuilds Bloodborne (PS4, CUSA03173 v1.09) as a native PC source port one verified function at a time, and an open place to learn how a console game works and how it is reverse engineered">
   <link rel="canonical" href="https://yharnam-hunters.github.io/byrgenwerth-site/">
   
   
@@ -20,7 +20,7 @@
 <!-- ── Header ──────────────────────────────────────────────── -->
 <header class="wk-header">
   <button class="wk-nav-toggle" id="wk-nav-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="wk-nav">☰</button>
-  <a class="wk-wordmark" href="./">Byrgenwerth<small>notes of Paleblood, a Bloodborne source port</small></a>
+  <a class="wk-wordmark" href="./">Byrgenwerth<small>notes of Paleblood, rebuilding Bloodborne one verified function at a time</small></a>
 
   <div class="wk-header-right">
     
@@ -222,19 +222,20 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 7, 2026 14:47:15 UTC">October 7, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 7, 2026 16:56:55 UTC">October 7, 2026</span></p>
       
       <h1 class="wk-visually-hidden" id="byrgenwerth">Byrgenwerth</h1>
 <div class="wk-hero">
   <div class="wk-hero-text">
     <p class="wk-hero-title">Bloodborne</p>
-    <p class="wk-hero-sub">Paleblood: a native source port, rebuilt one verified function at a time</p>
+    <p class="wk-hero-sub">Paleblood rebuilds Bloodborne as a native PC source port, one verified function at a time</p>
     <blockquote>We are born of the blood, made men by the blood, undone by the blood. Our eyes are
     yet to open&hellip; Fear the old blood.<cite>Master Willem / The Blood Minister</cite></blockquote>
   </div>
 </div>
 
-<p><strong>Paleblood</strong> is a <abbr title="Rewriting the game's code as readable source that behaves the same as the original, checked by running both; unlike a matching decompilation, the compiled bytes may differ.">functional decompilation</abbr> and native <abbr title="The game rebuilt from source to run natively on another platform, here Linux on a PC.">source port</abbr> of <em>Bloodborne</em> (<abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr>, CUSA03173, version 1.09): the game's code, function by function, rewritten as readable C++ that runs natively on a PC and does exactly what the original did.</p>
+<p><strong>Paleblood</strong> rebuilds <em>Bloodborne</em> (<abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr>, CUSA03173, version 1.09) as a native PC <abbr title="The game rebuilt from source to run natively on another platform, here Linux on a PC.">source port</abbr>, one <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and ran in the game.">verified</abbr> function at a time: a <abbr title="Rewriting the game's code as readable source that behaves the same as the original, checked by running both; unlike a matching decompilation, the compiled bytes may differ.">functional decompilation</abbr>, the game's code rewritten function by function as readable C++ that does exactly what the original did.</p>
+<p>Today it runs on <a href="bbport-notes/"><abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; our runtime scaffold, as a private fork.">bbport</abbr></a>, which loads the original executable with Paleblood's replacements hooked in: 20 of 157,757 functions are <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and ran in the game.">verified</abbr> (0.01%).</p>
 <div class="wk-stat-tiles">
   <div class="wk-stat-tile"><span class="wk-stat-tile-val">13,680</span><span class="wk-stat-tile-label">bytes verified</span></div>
   <div class="wk-stat-tile"><span class="wk-stat-tile-val">0.0322%</span><span class="wk-stat-tile-label">of all game code</span></div>
