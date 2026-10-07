@@ -1,12 +1,12 @@
 {
   "inputs": {
-    "functions_sha256": "784e794b39f8942f508cb3916472a3e00a93f87fda38adbc333a15132ece5133",
+    "functions_sha256": "5c412ab6c0259acfc1197c3346192ef214c396b11b12f5e5fc2430b71906d441",
     "ghidra_functions_sha256": "fc7e244dc9f211963118a9ab97716de03e0f342421c63cafc9a8ae747abb8ebd"
   },
   "replaced": {
-    "bytes": 10987,
+    "bytes": 14209,
     "bytes_pct": 0.03,
-    "functions": 22,
+    "functions": 23,
     "functions_pct": 0.01
   },
   "schema": 1,
@@ -295,9 +295,9 @@
       "bytes": 649235,
       "end": "0x01c9b0cc",
       "functions": 1966,
-      "replaced_bytes": 0,
+      "replaced_bytes": 3222,
       "start": "0x01bec139",
-      "verified_bytes": 0
+      "verified_bytes": 3222
     },
     {
       "bytes": 661825,
@@ -561,6 +561,12 @@
       "tracked": 1,
       "verified": 1
     },
+    "physics": {
+      "replaced": 1,
+      "replaced_bytes": 3222,
+      "tracked": 1,
+      "verified": 1
+    },
     "render": {
       "replaced": 3,
       "replaced_bytes": 1837,
@@ -573,13 +579,13 @@
     "functions": 157757
   },
   "tracked": {
-    "bytes": 11054,
-    "functions": 23
+    "bytes": 14276,
+    "functions": 24
   },
   "verified": {
-    "bytes": 9821,
-    "bytes_pct": 0.02,
-    "functions": 13,
+    "bytes": 13043,
+    "bytes_pct": 0.03,
+    "functions": 14,
     "functions_pct": 0.01
   }
 }
