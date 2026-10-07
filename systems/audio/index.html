@@ -175,19 +175,19 @@
     
     <div class="wk-stats">
       <p class="wk-nav-heading" title="Project stats">Insight</p>
-      <div class="wk-stat-row"><span>Verified</span><span class="wk-stat-val">13,043 B</span></div>
-      <div class="wk-stat-row"><span>Functions</span><span class="wk-stat-val">14</span></div>
-      <div class="wk-stat-row"><span>Replaced</span><span class="wk-stat-val">23</span></div>
+      <div class="wk-stat-row"><span>Verified</span><span class="wk-stat-val">13,077 B</span></div>
+      <div class="wk-stat-row"><span>Functions</span><span class="wk-stat-val">16</span></div>
+      <div class="wk-stat-row"><span>Replaced</span><span class="wk-stat-val">25</span></div>
       <p class="wk-stat-sublabel">Replaced (42.5 MB of code)</p>
-      <div class="wk-stat-track" title="0.0334%">
-        <div class="wk-stat-fill" style="width:0.0334%"></div>
+      <div class="wk-stat-track" title="0.0335%">
+        <div class="wk-stat-fill" style="width:0.0335%"></div>
       </div>
-      <p class="wk-stat-pct">0.0334%</p>
+      <p class="wk-stat-pct">0.0335%</p>
       <p class="wk-stat-sublabel">Verified (42.5 MB of code)</p>
-      <div class="wk-stat-track" title="0.0307%">
-        <div class="wk-stat-fill wk-stat-fill-dim" style="width:0.0307%"></div>
+      <div class="wk-stat-track" title="0.0308%">
+        <div class="wk-stat-fill wk-stat-fill-dim" style="width:0.0308%"></div>
       </div>
-      <p class="wk-stat-pct">0.0307%</p>
+      <p class="wk-stat-pct">0.0308%</p>
       <p class="wk-stat-link"><a href="../../progress/">View full progress →</a></p>
     </div>
     
@@ -305,6 +305,20 @@ function applyTheme(t) {
 var navToggle  = document.getElementById('wk-nav-toggle');
 var navEl      = document.getElementById('wk-nav');
 var navBackdrop = document.getElementById('wk-nav-backdrop');
+
+/* The sidebar is set, not scrolled: step through the fitting levels (wiki.css) until it fits. */
+function fitNav() {
+  if (!navEl || window.matchMedia('(max-width: 720px)').matches) return;
+  for (var i = 1; i <= 6; i++) navEl.classList.remove('wk-fit-' + i);
+  navEl.classList.remove('wk-fit-scroll');
+  for (var level = 1; level <= 6 && navEl.scrollHeight > navEl.clientHeight + 1; level++) {
+    navEl.classList.add('wk-fit-' + level);
+  }
+  if (navEl.scrollHeight > navEl.clientHeight + 1) navEl.classList.add('wk-fit-scroll');
+}
+fitNav();
+window.addEventListener('resize', fitNav);
+window.addEventListener('load', fitNav);
 function openNav() {
   navEl.classList.add('is-open');
   navBackdrop.hidden = false;

@@ -1,13 +1,13 @@
 {
   "inputs": {
-    "functions_sha256": "5c412ab6c0259acfc1197c3346192ef214c396b11b12f5e5fc2430b71906d441",
+    "functions_sha256": "785f29fa5179e8c73163723917a78e99648aabe972d79aa61d655ac08b3daee8",
     "ghidra_functions_sha256": "fc7e244dc9f211963118a9ab97716de03e0f342421c63cafc9a8ae747abb8ebd"
   },
   "replaced": {
-    "bytes": 14209,
+    "bytes": 14243,
     "bytes_pct": 0.03,
-    "functions": 23,
-    "functions_pct": 0.01
+    "functions": 25,
+    "functions_pct": 0.02
   },
   "schema": 1,
   "slices": [
@@ -191,17 +191,17 @@
       "bytes": 679570,
       "end": "0x013b8655",
       "functions": 2928,
-      "replaced_bytes": 0,
+      "replaced_bytes": 16,
       "start": "0x013096c2",
-      "verified_bytes": 0
+      "verified_bytes": 16
     },
     {
       "bytes": 680950,
       "end": "0x014675e8",
       "functions": 3776,
-      "replaced_bytes": 87,
+      "replaced_bytes": 105,
       "start": "0x013b8655",
-      "verified_bytes": 87
+      "verified_bytes": 105
     },
     {
       "bytes": 681944,
@@ -544,10 +544,10 @@
       "verified": 1
     },
     "frame_timing": {
-      "replaced": 14,
-      "replaced_bytes": 4480,
-      "tracked": 15,
-      "verified": 5
+      "replaced": 16,
+      "replaced_bytes": 4514,
+      "tracked": 17,
+      "verified": 7
     },
     "input": {
       "replaced": 1,
@@ -579,13 +579,13 @@
     "functions": 157757
   },
   "tracked": {
-    "bytes": 14276,
-    "functions": 24
+    "bytes": 14310,
+    "functions": 26
   },
   "verified": {
-    "bytes": 13043,
+    "bytes": 13077,
     "bytes_pct": 0.03,
-    "functions": 14,
+    "functions": 16,
     "functions_pct": 0.01
   }
 }

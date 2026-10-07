@@ -1484,14 +1484,19 @@ table th { font-family: "Cinzel", Georgia, serif; font-weight: 600; letter-spaci
 .wk-portal-icon + .wk-nav-link { margin-top: 6px; }
 .wk-stats { margin-top: 12px; padding-bottom: 6px; }
 .wk-stats .wk-nav-heading { padding: 8px 8px 4px; }
-@media (max-height: 1040px) {
-  .wk-stats .wk-stat-sublabel, .wk-stats .wk-stat-track, .wk-stats .wk-stat-pct { display: none; }
-}
-@media (max-height: 900px) {
-  .wk-stats { display: none; }
-  .wk-nav-heading { padding-top: 9px; }
-}
-@media (max-height: 760px) {
-  .wk-portal-icon img { max-height: 150px; object-fit: cover; }
-}
-@media (max-width: 720px) { .wk-nav { overflow-y: auto; } .wk-stats { display: block; } }
+/* Fitting levels, set by the script in main.html until the sidebar fits the window (never a
+   scrollbar): 1 hides the stats' fine print, 2 tightens the menu, 3 uses smaller type, 4 hides
+   the stats, 5 shortens the picture, 6 hides it; only a window too short for all of that gets a
+   scrolling menu rather than cut-off entries. */
+.wk-nav.wk-fit-1 .wk-stats .wk-stat-sublabel, .wk-nav.wk-fit-1 .wk-stats .wk-stat-track,
+.wk-nav.wk-fit-1 .wk-stats .wk-stat-pct { display: none; }
+.wk-nav.wk-fit-2 .wk-nav-heading { padding-top: 8px; padding-bottom: 2px; }
+.wk-nav.wk-fit-2 .wk-nav-link { padding-top: 1px; padding-bottom: 1px; }
+.wk-nav.wk-fit-2 .wk-stats { margin-top: 8px; }
+.wk-nav.wk-fit-3 .wk-nav-link { font-size: 12.5px; line-height: 1.3; padding-top: 0; padding-bottom: 0; }
+.wk-nav.wk-fit-3 .wk-nav-heading { padding-top: 6px; padding-bottom: 1px; font-size: 10px; }
+.wk-nav.wk-fit-4 .wk-stats { display: none; }
+.wk-nav.wk-fit-5 .wk-portal-icon img { max-height: 90px; object-fit: cover; object-position: 50% 30%; }
+.wk-nav.wk-fit-6 .wk-portal-icon { display: none; }
+.wk-nav.wk-fit-scroll { overflow-y: auto; }
+@media (max-width: 720px) { .wk-nav { overflow-y: auto; } .wk-nav .wk-stats { display: block; } }

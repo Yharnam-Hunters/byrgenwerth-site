@@ -175,19 +175,19 @@
     
     <div class="wk-stats">
       <p class="wk-nav-heading" title="Project stats">Insight</p>
-      <div class="wk-stat-row"><span>Verified</span><span class="wk-stat-val">13,043 B</span></div>
-      <div class="wk-stat-row"><span>Functions</span><span class="wk-stat-val">14</span></div>
-      <div class="wk-stat-row"><span>Replaced</span><span class="wk-stat-val">23</span></div>
+      <div class="wk-stat-row"><span>Verified</span><span class="wk-stat-val">13,077 B</span></div>
+      <div class="wk-stat-row"><span>Functions</span><span class="wk-stat-val">16</span></div>
+      <div class="wk-stat-row"><span>Replaced</span><span class="wk-stat-val">25</span></div>
       <p class="wk-stat-sublabel">Replaced (42.5 MB of code)</p>
-      <div class="wk-stat-track" title="0.0334%">
-        <div class="wk-stat-fill" style="width:0.0334%"></div>
+      <div class="wk-stat-track" title="0.0335%">
+        <div class="wk-stat-fill" style="width:0.0335%"></div>
       </div>
-      <p class="wk-stat-pct">0.0334%</p>
+      <p class="wk-stat-pct">0.0335%</p>
       <p class="wk-stat-sublabel">Verified (42.5 MB of code)</p>
-      <div class="wk-stat-track" title="0.0307%">
-        <div class="wk-stat-fill wk-stat-fill-dim" style="width:0.0307%"></div>
+      <div class="wk-stat-track" title="0.0308%">
+        <div class="wk-stat-fill wk-stat-fill-dim" style="width:0.0308%"></div>
       </div>
-      <p class="wk-stat-pct">0.0307%</p>
+      <p class="wk-stat-pct">0.0308%</p>
       <p class="wk-stat-link"><a href="../progress/">View full progress →</a></p>
     </div>
     
@@ -210,7 +210,7 @@
           <li>
             <a href="#ghidra-ps4-quirks" class="wk-toc-link">Ghidra &amp; PS4 Quirks</a>
             
-            <ol><li><a href="#the-converted-executable" class="wk-toc-link">The converted executable</a></li><li><a href="#address-conventions" class="wk-toc-link">Address conventions</a></li><li><a href="#ghidra-itself" class="wk-toc-link">Ghidra itself</a></li><li><a href="#calling-convention" class="wk-toc-link">Calling convention</a></li><li><a href="#cpu" class="wk-toc-link">CPU</a></li><li><a href="#imports-and-system-calls" class="wk-toc-link">Imports and system calls</a></li><li><a href="#hooks" class="wk-toc-link">Hooks</a></li><li><a href="#verification-traps" class="wk-toc-link">Verification traps</a></li><li><a href="#ghidra-hides-code-after-the-engines-fatal-error-call" class="wk-toc-link">Ghidra hides code after the engine's fatal error call</a></li></ol>
+            <ol><li><a href="#the-converted-executable" class="wk-toc-link">The converted executable</a></li><li><a href="#address-conventions" class="wk-toc-link">Address conventions</a></li><li><a href="#ghidra-itself" class="wk-toc-link">Ghidra itself</a></li><li><a href="#calling-convention" class="wk-toc-link">Calling convention</a></li><li><a href="#cpu" class="wk-toc-link">CPU</a></li><li><a href="#imports-and-system-calls" class="wk-toc-link">Imports and system calls</a></li><li><a href="#hooks" class="wk-toc-link">Hooks</a></li><li><a href="#verification-traps" class="wk-toc-link">Verification traps</a></li><li><a href="#ghidra-hides-code-after-the-engines-fatal-error-call" class="wk-toc-link">Ghidra hides code after the engine's fatal error call</a></li><li><a href="#a-community-patch-edit-that-calls-into-the-middle-of-another-function" class="wk-toc-link">A community patch edit that calls into the middle of another function</a></li></ol>
             
           </li>
           
@@ -363,6 +363,15 @@ The game's code does continue there (a jump to the return, or to another report)
 when a replacement is tested with that function stubbed. If a draft's disassembly has a gap after
 such a call, disassemble the bytes directly (objdump on the <abbr title="Executable and Linkable Format, the standard executable file format on Linux and FreeBSD.">ELF</abbr>) before writing the replacement.
 Example: <code>kernel_condition_wait</code> (<code>0x02483e80</code>) returns -3 after the EINVAL report.</p>
+<h2 id="a-community-patch-edit-that-calls-into-the-middle-of-another-function">A community patch edit that calls into the middle of another function</h2>
+<p><code>Uncap FPS++</code> replaces <code>vmovss xmm4, [0x04d29e74]</code> (1/30 s) at <code>0x02715d71</code>, in
+<code>0x02713870</code>, with <code>call 0x027166f7</code> and three <code>nop</code>s. In v1.09, <code>0x027166f7</code> is in the middle
+of a static initialiser (<code>0x02716680</code>, 231 bytes), just before an engine fatal-error call and
+stores to globals; no line of any patch in the file writes code there. Run that way, the block
+would call the fatal error, overwrite the initialiser's globals and return through an epilogue
+whose pushes never happened. The patched block is a cold path placed after the function's
+return, so it may simply never run. There is nothing faithful to replicate: a replacement keeps
+the stock 1/30 s there, and the option check for <code>Uncap FPS++</code> cannot cover that block.</p>
       
       </div>
 
@@ -431,6 +440,20 @@ function applyTheme(t) {
 var navToggle  = document.getElementById('wk-nav-toggle');
 var navEl      = document.getElementById('wk-nav');
 var navBackdrop = document.getElementById('wk-nav-backdrop');
+
+/* The sidebar is set, not scrolled: step through the fitting levels (wiki.css) until it fits. */
+function fitNav() {
+  if (!navEl || window.matchMedia('(max-width: 720px)').matches) return;
+  for (var i = 1; i <= 6; i++) navEl.classList.remove('wk-fit-' + i);
+  navEl.classList.remove('wk-fit-scroll');
+  for (var level = 1; level <= 6 && navEl.scrollHeight > navEl.clientHeight + 1; level++) {
+    navEl.classList.add('wk-fit-' + level);
+  }
+  if (navEl.scrollHeight > navEl.clientHeight + 1) navEl.classList.add('wk-fit-scroll');
+}
+fitNav();
+window.addEventListener('resize', fitNav);
+window.addEventListener('load', fitNav);
 function openNav() {
   navEl.classList.add('is-open');
   navBackdrop.hidden = false;
