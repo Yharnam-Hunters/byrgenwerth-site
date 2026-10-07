@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   
-  <meta name="description" content="Notes of Paleblood, which rebuilds Bloodborne (PS4, CUSA03173 v1.09) as a native PC source port one verified function at a time, and an open place to learn how a console game works and how it is reverse engineered">
+  <meta name="description" content="Notes of Paleblood, a decompilation of Bloodborne (PS4, CUSA03173 v1.09) with its own runtime, one verified function at a time, and an open place to learn how a console game works and how it is reverse engineered">
   <link rel="canonical" href="https://yharnam-hunters.github.io/byrgenwerth-site/devlog/">
   
   
@@ -139,7 +139,7 @@
           
         
           
-          <a class="wk-nav-link" href="../bbport-notes/">bbport Study</a>
+          <a class="wk-nav-link" href="../bbport-notes/">bbport Study (history)</a>
           
         
           
@@ -226,16 +226,16 @@
       
 <div>
   <h1 id="devlog">Devlog</h1>
-<p>Notes on the Bloodborne <abbr title="The game rebuilt from source to run natively on another platform, here Linux on a PC.">source port</abbr>, one post per working day, split by topic.
+<p>Notes on Paleblood, one post per working day, split by topic.
 Written in plain English — if a term is new, check the <a href="../glossary/">Glossary</a> first.</p>
   
   <div class="wk-blog-entry">
     
     <p class="wk-post-meta"><time datetime="2026-10-07 00:00:00+00:00">2026-10-07</time></p>
     
-    <div class="wk-blog-excerpt"><h2 id="7-october-2026-a-new-direction-our-own-runtime"><a class="toclink" href="2026/10/07/7-october-2026-a-new-direction-our-own-runtime/">7 October 2026: a new direction, our own runtime</a></h2>
-<p>Paleblood is a decompilation with its own runtime. The borrowed runtimes it used so far are
-being removed, and the game will not run on Paleblood until our own runtime is far enough along.</p>
+    <div class="wk-blog-excerpt"><h2 id="7-october-2026-a-new-direction-our-own-runtime"><a class="toclink" href="2026/10/07/7-october-2026-a-new-direction-our-own-runtime/">7 October 2026: a new direction, our own <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr></a></h2>
+<p>Paleblood is a decompilation with its own <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>. The borrowed runtimes it used so far are
+being removed, and the game will not run on Paleblood until our own <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> is far enough along.</p>
 </div>
     
     <p class="wk-read-more"><a href="2026/10/07/7-october-2026-a-new-direction-our-own-runtime/">Continue reading →</a></p>
@@ -248,7 +248,7 @@ being removed, and the game will not run on Paleblood until our own runtime is f
     
     <div class="wk-blog-excerpt"><h2 id="7-october-2026-going-public-and-two-frames-worth-of-work"><a class="toclink" href="2026/10/07/7-october-2026-going-public-and-two-frames-worth-of-work/">7 October 2026: going public, and two frames' worth of work</a></h2>
 <p>The code repository went public today, with a clean history, open contributions and branch
-protection, and two more functions that run every frame are rebuilt and <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and ran in the game.">verified</abbr>.</p>
+protection, and two more functions that run every frame are rebuilt and <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>.</p>
 </div>
     
     <p class="wk-read-more"><a href="2026/10/07/7-october-2026-going-public-and-two-frames-worth-of-work/">Continue reading →</a></p>
@@ -260,8 +260,8 @@ protection, and two more functions that run every frame are rebuilt and <abbr ti
     <p class="wk-post-meta"><time datetime="2026-10-06 00:00:00+00:00">2026-10-06</time></p>
     
     <div class="wk-blog-excerpt"><h2 id="6-october-2026-from-an-empty-repository-to-the-frame-loop"><a class="toclink" href="2026/10/06/6-october-2026-from-an-empty-repository-to-the-frame-loop/">6 October 2026: from an empty repository to the frame loop</a></h2>
-<p>The first day: the target prepared, both repositories and their tooling, a runtime for the
-original executable, the first <abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr> export, and the game's frame loop rewritten as <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and ran in the game.">verified</abbr>
+<p>The first day: the target prepared, both repositories and their tooling, a <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> for the
+original executable, the first <abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr> export, and the game's frame loop rewritten as <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>
 C++, from the clock up to the function that runs every frame. By evening, scripted routes
 carried unattended test runs through the menus and character creation into the game.</p>
 <p><img alt="The title menu, rendered by the port on a virtual display with five replaced functions in place" src="../assets/screens/title-menu.jpg" /></p>

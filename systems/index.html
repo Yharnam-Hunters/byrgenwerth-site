@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   
-  <meta name="description" content="Notes of Paleblood, which rebuilds Bloodborne (PS4, CUSA03173 v1.09) as a native PC source port one verified function at a time, and an open place to learn how a console game works and how it is reverse engineered">
+  <meta name="description" content="Notes of Paleblood, a decompilation of Bloodborne (PS4, CUSA03173 v1.09) with its own runtime, one verified function at a time, and an open place to learn how a console game works and how it is reverse engineered">
   <link rel="canonical" href="https://yharnam-hunters.github.io/byrgenwerth-site/systems/">
   
   
@@ -139,7 +139,7 @@
           
         
           
-          <a class="wk-nav-link" href="../bbport-notes/">bbport Study</a>
+          <a class="wk-nav-link" href="../bbport-notes/">bbport Study (history)</a>
           
         
           
@@ -253,18 +253,25 @@ globals, patch points and open questions. The function tables are generated from
 <td style="text-align: right;">15,176 (0.04%)</td>
 </tr>
 <tr>
+<td>Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></td>
+<td style="text-align: right;">21 (0.01%)</td>
+<td style="text-align: right;">14,010 (0.03%)</td>
+</tr>
+<tr>
 <td>Verified</td>
 <td style="text-align: right;">21 (0.01%)</td>
 <td style="text-align: right;">14,010 (0.03%)</td>
 </tr>
 </tbody>
 </table>
+<p>Each row includes the next: <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> functions are also <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr> and <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr>.</p>
 <table>
 <thead>
 <tr>
 <th>System</th>
 <th style="text-align: right;">Tracked</th>
 <th style="text-align: right;">Replaced</th>
+<th style="text-align: right;">Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></th>
 <th style="text-align: right;">Verified</th>
 <th style="text-align: right;">Replaced bytes</th>
 </tr>
@@ -272,6 +279,7 @@ globals, patch points and open questions. The function tables are generated from
 <tbody>
 <tr>
 <td>ai</td>
+<td style="text-align: right;">1</td>
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">1</td>
@@ -283,9 +291,11 @@ globals, patch points and open questions. The function tables are generated from
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
 </tr>
 <tr>
 <td>camera</td>
+<td style="text-align: right;">0</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">0</td>
@@ -296,10 +306,12 @@ globals, patch points and open questions. The function tables are generated from
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
 <td style="text-align: right;">979</td>
 </tr>
 <tr>
 <td>event</td>
+<td style="text-align: right;">1</td>
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">1</td>
@@ -310,6 +322,7 @@ globals, patch points and open questions. The function tables are generated from
 <td style="text-align: right;">22</td>
 <td style="text-align: right;">21</td>
 <td style="text-align: right;">12</td>
+<td style="text-align: right;">12</td>
 <td style="text-align: right;">5,447</td>
 </tr>
 <tr>
@@ -317,10 +330,12 @@ globals, patch points and open questions. The function tables are generated from
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
 <td style="text-align: right;">426</td>
 </tr>
 <tr>
 <td>kernel</td>
+<td style="text-align: right;">1</td>
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">1</td>
@@ -332,9 +347,11 @@ globals, patch points and open questions. The function tables are generated from
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
 </tr>
 <tr>
 <td>physics</td>
+<td style="text-align: right;">1</td>
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">1</td>
@@ -342,6 +359,7 @@ globals, patch points and open questions. The function tables are generated from
 </tr>
 <tr>
 <td>render</td>
+<td style="text-align: right;">3</td>
 <td style="text-align: right;">3</td>
 <td style="text-align: right;">3</td>
 <td style="text-align: right;">3</td>

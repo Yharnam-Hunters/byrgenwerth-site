@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   
-  <meta name="description" content="Notes of Paleblood, which rebuilds Bloodborne (PS4, CUSA03173 v1.09) as a native PC source port one verified function at a time, and an open place to learn how a console game works and how it is reverse engineered">
+  <meta name="description" content="Notes of Paleblood, a decompilation of Bloodborne (PS4, CUSA03173 v1.09) with its own runtime, one verified function at a time, and an open place to learn how a console game works and how it is reverse engineered">
   <link rel="canonical" href="https://yharnam-hunters.github.io/byrgenwerth-site/QUIRKS/">
   
   
@@ -139,7 +139,7 @@
           
         
           
-          <a class="wk-nav-link" href="../bbport-notes/">bbport Study</a>
+          <a class="wk-nav-link" href="../bbport-notes/">bbport Study (history)</a>
           
         
           
@@ -237,13 +237,13 @@ come from general <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running
 yet; confirm or correct them when you hit them.</p>
 <h2 id="the-converted-executable">The converted executable</h2>
 <ul>
-<li>The <abbr title="Executable and Linkable Format, the standard executable file format on Linux and FreeBSD.">ELF</abbr> has no section headers (confirmed). The <abbr title="The PS4's operating system, derived from FreeBSD.">Orbis</abbr> loader (<abbr title="A Ghidra extension that loads PS4 executables and resolves NIDs to names.">GhidraOrbis</abbr>) synthesizes
+<li>The <abbr title="Executable and Linkable Format, the standard executable file format on Linux and FreeBSD.">ELF</abbr> has no section headers (confirmed). The <abbr title="The PS4's operating system, derived from FreeBSD.">Orbis</abbr> <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> (<abbr title="A Ghidra extension that loads PS4 executables and resolves NIDs to names.">GhidraOrbis</abbr>) synthesizes
   blocks from the program headers: the executable <code>PT_LOAD</code> becomes <code>.text</code>, and its own
   heuristic splits <code>.rodata</code>, <code>.eh_frame</code> and <code>.eh_frame_hdr</code> off the end of it. The progress
-  denominator is the functions <abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr> finds in that <code>.text</code> block, so it depends on the loader
+  denominator is the functions <abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr> finds in that <code>.text</code> block, so it depends on the <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr>
   and the analysis. <code>progress.py</code> ties its numbers to the hash of the committed export, and the
   export prints how many functions fell outside <code>.text</code>. <code>.eh_frame</code> and <code>.eh_frame_hdr</code> are
-  marked executable by the loader; they are data.</li>
+  marked executable by the <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr>; they are data.</li>
 <li>
 <p><code>e_type</code> is <code>0xfe10</code> (confirmed), not <code>ET_EXEC</code> or <code>ET_DYN</code>. The first <code>PT_LOAD</code> has
   <code>p_vaddr</code> 0, so the file does not say where the game lives; the convention below does.
@@ -263,7 +263,7 @@ yet; confirm or correct them when you hit them.</p>
 <h2 id="address-conventions">Address conventions</h2>
 <p>All addresses in this repository are <strong><abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> virtual addresses: the <abbr title="Executable and Linkable Format, the standard executable file format on Linux and FreeBSD.">ELF</abbr> <code>p_vaddr</code> plus
 <code>0x400000</code></strong>, with <abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr>'s image base set to <code>0x400000</code>. This is what the community
-patches (<abbr title="An open-source PS4 emulator; bbport's renderer and shader recompiler come from it.">shadPS4</abbr> and GoldHEN XML) use, and what <abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; our runtime scaffold, as a private fork.">bbport</abbr>'s patch compiler converts from.</p>
+patches (<abbr title="An open-source PS4 emulator; bbport's renderer and shader recompiler come from it. Paleblood uses none of its code.">shadPS4</abbr> and GoldHEN XML) use, and what <abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; the borrowed runtime Paleblood used until October 2026 (a public fork), being removed.">bbport</abbr>'s patch compiler converts from.</p>
 <p>Three conventions exist, one constant apart. V is the <abbr title="Executable and Linkable Format, the standard executable file format on Linux and FreeBSD.">ELF</abbr> <code>p_vaddr</code>.</p>
 <table>
 <thead>
@@ -277,7 +277,7 @@ patches (<abbr title="An open-source PS4 emulator; bbport's renderer and shader 
 <tr>
 <td><abbr title="Executable and Linkable Format, the standard executable file format on Linux and FreeBSD.">ELF</abbr> vaddr, "guest offset"</td>
 <td>V</td>
-<td><abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; our runtime scaffold, as a private fork.">bbport</abbr>'s loader logs and <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> sites, its <code>game_check.py</code></td>
+<td><abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; the borrowed runtime Paleblood used until October 2026 (a public fork), being removed.">bbport</abbr>'s <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> logs and <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> sites, its <code>game_check.py</code></td>
 </tr>
 <tr>
 <td><abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> virtual address</td>
@@ -285,21 +285,21 @@ patches (<abbr title="An open-source PS4 emulator; bbport's renderer and shader 
 <td><strong>ours</strong>, <abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr>, community XML patches</td>
 </tr>
 <tr>
-<td><abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; our runtime scaffold, as a private fork.">bbport</abbr> host address</td>
+<td><abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; the borrowed runtime Paleblood used until October 2026 (a public fork), being removed.">bbport</abbr> host address</td>
 <td>V + 0x800000000</td>
-<td>the running <abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; our runtime scaffold, as a private fork.">bbport</abbr> process</td>
+<td>the running <abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; the borrowed runtime Paleblood used until October 2026 (a public fork), being removed.">bbport</abbr> process</td>
 </tr>
 </tbody>
 </table>
-<p>To convert ours to a <abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; our runtime scaffold, as a private fork.">bbport</abbr> guest offset, subtract <code>0x400000</code>. <code>tools/validate_functions.py</code>
+<p>To convert ours to a <abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; the borrowed runtime Paleblood used until October 2026 (a public fork), being removed.">bbport</abbr> guest offset, subtract <code>0x400000</code>. <code>tools/validate_functions.py</code>
 rejects any address below <code>0x00400000</code>, which catches a base-0 import by mistake.</p>
 <p>Checked against the target image (read-only):
-- <abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; our runtime scaffold, as a private fork.">bbport</abbr>'s five guest-<abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> sites hold their expected bytes at V, not at V + 0x400000.
+- <abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; the borrowed runtime Paleblood used until October 2026 (a public fork), being removed.">bbport</abbr>'s five guest-<abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> sites hold their expected bytes at V, not at V + 0x400000.
 - The community "Performance Patch" address <code>0x0261B108</code> minus <code>0x400000</code> holds
   <code>c7 45 b4 06 00 00 00</code> (<code>mov dword [rbp-0x4c], 6</code>), which the patch changes to 9.</p>
 <p>Tool-independent identity: the loaded image (loadable segments copied to their <code>p_vaddr</code>,
 SHA-256) of this target is
-<code>071df19c8880086d97182dbc057bc8cb37badaca57d9112683836b24a0444c0a</code>, the value <abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; our runtime scaffold, as a private fork.">bbport</abbr> pins.
+<code>071df19c8880086d97182dbc057bc8cb37badaca57d9112683836b24a0444c0a</code>, the value <abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; the borrowed runtime Paleblood used until October 2026 (a public fork), being removed.">bbport</abbr> pins.
 It is the same whichever SelfUtil produced the <abbr title="Executable and Linkable Format, the standard executable file format on Linux and FreeBSD.">ELF</abbr>.</p>
 <h2 id="ghidra-itself"><abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr> itself</h2>
 <ul>
@@ -307,10 +307,10 @@ It is the same whichever SelfUtil produced the <abbr title="Executable and Linka
   PyGhidra". Our scripts are Java GhidraScripts.</li>
 <li><code>support/analyzeHeadless</code> hardcodes <code>MAXMEM=2G</code>. That is too small for this binary; raise it
   in that file (setup in docs/GHIDRA.md).</li>
-<li>The <abbr title="The PS4's operating system, derived from FreeBSD.">Orbis</abbr> loader replaces an image base of 0 by <code>0x1000000</code> by default. Pass
-  <code>-loader-imageBase 0x400000</code> (<code>-loader-baseAddr</code> is ignored by this loader).</li>
-<li><code>-loader "Orbis ELF"</code> is rejected by headless as an invalid loader name; leave <code>-loader</code> out,
-  the <abbr title="The PS4's operating system, derived from FreeBSD.">Orbis</abbr> loader is picked automatically for this file.</li>
+<li>The <abbr title="The PS4's operating system, derived from FreeBSD.">Orbis</abbr> <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> replaces an image base of 0 by <code>0x1000000</code> by default. Pass
+  <code>-loader-imageBase 0x400000</code> (<code>-loader-baseAddr</code> is ignored by this <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr>).</li>
+<li><code>-loader "Orbis ELF"</code> is rejected by headless as an invalid <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> name; leave <code>-loader</code> out,
+  the <abbr title="The PS4's operating system, derived from FreeBSD.">Orbis</abbr> <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> is picked automatically for this file.</li>
 </ul>
 <h2 id="calling-convention">Calling convention</h2>
 <ul>
@@ -348,8 +348,9 @@ It is the same whichever SelfUtil produced the <abbr title="Executable and Linka
   the original function. Shorter functions cannot be hooked that way.</li>
 <li>Nothing may jump into the first 14 bytes of a hooked function from elsewhere: check the
   references to the function's start region in <abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr> before hooking.</li>
-<li>A replacement calls library functions through the game's own <abbr title="Tiny stubs that forward calls, here to PS4 library functions.">thunks</abbr> (<code>rt::fn</code>), not through
-  host libraries, so the <abbr title="The runtime that loads the original game and runs it natively: bbport, our fork.">scaffold</abbr> answers them exactly as it answers the original.</li>
+<li>A replacement calls library functions through the game's own <abbr title="Tiny stubs that forward calls, here to PS4 library functions.">thunks</abbr> (declared with
+  <code>RT_ORIGINAL</code>), not through host libraries, so whatever answers the original's calls (the
+  verification <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr>'s stubs, or the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>) answers the replacement's the same way.</li>
 </ul>
 <h2 id="verification-traps">Verification traps</h2>
 <ul>

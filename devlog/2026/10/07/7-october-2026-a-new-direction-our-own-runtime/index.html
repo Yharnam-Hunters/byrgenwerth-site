@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   
-  <meta name="description" content="Notes of Paleblood, which rebuilds Bloodborne (PS4, CUSA03173 v1.09) as a native PC source port one verified function at a time, and an open place to learn how a console game works and how it is reverse engineered">
+  <meta name="description" content="Notes of Paleblood, a decompilation of Bloodborne (PS4, CUSA03173 v1.09) with its own runtime, one verified function at a time, and an open place to learn how a console game works and how it is reverse engineered">
   <link rel="canonical" href="https://yharnam-hunters.github.io/byrgenwerth-site/devlog/2026/10/07/7-october-2026-a-new-direction-our-own-runtime/">
   
   
@@ -139,7 +139,7 @@
           
         
           
-          <a class="wk-nav-link" href="../../../../../bbport-notes/">bbport Study</a>
+          <a class="wk-nav-link" href="../../../../../bbport-notes/">bbport Study (history)</a>
           
         
           
@@ -214,7 +214,7 @@
           <li>
             <a href="#7-october-2026-a-new-direction-our-own-runtime" class="wk-toc-link">7 October 2026: a new direction, our own runtime</a>
             
-            <ol><li><a href="#what-changes" class="wk-toc-link">What changes</a></li><li><a href="#what-it-means-for-playing" class="wk-toc-link">What it means for playing</a></li><li><a href="#coming-next-a-readability-gate" class="wk-toc-link">Coming next: a readability gate</a></li></ol>
+            <ol><li><a href="#what-changes" class="wk-toc-link">What changes</a></li><li><a href="#what-it-means-for-playing" class="wk-toc-link">What it means for playing</a></li><li><a href="#a-readability-gate" class="wk-toc-link">A readability gate</a></li></ol>
             
           </li>
           
@@ -233,33 +233,33 @@
   </p>
   
   
-  <h1 id="7-october-2026-a-new-direction-our-own-runtime">7 October 2026: a new direction, our own runtime</h1>
-<p>Paleblood is a decompilation with its own runtime. The borrowed runtimes it used so far are
-being removed, and the game will not run on Paleblood until our own runtime is far enough along.</p>
+  <h1 id="7-october-2026-a-new-direction-our-own-runtime">7 October 2026: a new direction, our own <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr></h1>
+<p>Paleblood is a decompilation with its own <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>. The borrowed runtimes it used so far are
+being removed, and the game will not run on Paleblood until our own <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> is far enough along.</p>
 <!-- more -->
 
 <h2 id="what-changes">What changes</h2>
-<p>Until now, Paleblood's rewritten functions were tried in the game on a borrowed runtime: a fork
-of <abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; our runtime scaffold, as a private fork.">bbport</abbr>, which carries graphics code taken from the <abbr title="An open-source PS4 emulator; bbport's renderer and shader recompiler come from it.">shadPS4</abbr> emulator. That got the first functions <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and ran in the game.">verified</abbr>
+<p>Until now, Paleblood's rewritten functions were tried in the game on a borrowed <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>: a fork
+of <abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; the borrowed runtime Paleblood used until October 2026 (a public fork), being removed.">bbport</abbr>, which carries graphics code taken from the <abbr title="An open-source PS4 emulator; bbport's renderer and shader recompiler come from it. Paleblood uses none of its code.">shadPS4</abbr> emulator. That got the first functions <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>
 quickly, but it tied the project to code that isn't ours. From today Paleblood builds its own
-runtime instead, and <abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; our runtime scaffold, as a private fork.">bbport</abbr> and <abbr title="An open-source PS4 emulator; bbport's renderer and shader recompiler come from it.">shadPS4</abbr> are being removed from the project entirely. They stay
+<abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> instead, and <abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; the borrowed runtime Paleblood used until October 2026 (a public fork), being removed.">bbport</abbr> and <abbr title="An open-source PS4 emulator; bbport's renderer and shader recompiler come from it. Paleblood uses none of its code.">shadPS4</abbr> are being removed from the project entirely. They stay
 in the credits as part of its history.</p>
-<p>The runtime is written clean-room: from public documentation, our own reverse engineering and
+<p>The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> is written clean-room: from public documentation, our own reverse engineering and
 what we observe, never from another emulator's code. Its first piece is done. Paleblood now has
-its own loader, which maps the game's executable exactly as the old runtime prepared it, byte for
-byte, and the verification <abbr title="tools/harness.py: runs the original function and its replacement natively on the same recorded inputs, outside the game.">harness</abbr> already runs on it. Every function <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and ran in the game.">verified</abbr> so far is being
-checked again on the new loader, case for case, before the old runtime goes.</p>
+its own <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr>, which maps the game's executable exactly as the old <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> prepared it, byte for
+byte, and the verification <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr> already runs on it. Every function <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> so far was checked
+again on the new <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr>, case for case, and gives the same results as on the old <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>.</p>
 <h2 id="what-it-means-for-playing">What it means for playing</h2>
-<p>The game won't run on Paleblood for a while. Running it needs the runtime's whole roadmap:
+<p>The game won't run on Paleblood for a while. Running it needs the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>'s whole roadmap:
 threads and memory, files, input, audio, video out, and the graphics, the largest part. The
 <a href="../../../../../runtime/">Runtime</a> page lists the roadmap and shows how far the game's executable gets
-on our runtime today: its own C library starts up and stops at the first system function we
+on our <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> today: its own C library starts up and stops at the first system function we
 haven't written yet.</p>
 <p>Meanwhile the decompilation goes on as before: functions are rewritten and proved against the
-original in the verification <abbr title="tools/harness.py: runs the original function and its replacement natively on the same recorded inputs, outside the game.">harness</abbr>, on inputs recorded earlier and on generated <abbr title="Hand-written inputs for situations a short game run does not reach.">edge cases</abbr>.</p>
-<h2 id="coming-next-a-readability-gate">Coming next: a readability gate</h2>
+original in the verification <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr>, on inputs recorded earlier and on generated <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr>.</p>
+<h2 id="a-readability-gate">A readability gate</h2>
 <p>After a critique of the rewritten code, readability becomes a hard requirement rather than a
-later clean-up. A function will only reach the main branch when it is both <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and ran in the game.">verified</abbr> and readable:
+later clean-up; the gate went in the same evening. A function will only reach the main branch when it is both <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> and readable:
 named structures instead of raw offsets, named calls instead of addresses, named constants, and
 no test plumbing inside the game's code. The functions rewritten so far are being brought up to
 that standard first, each one checked again and reviewed independently.</p>

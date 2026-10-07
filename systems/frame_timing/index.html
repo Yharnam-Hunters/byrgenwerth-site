@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   
-  <meta name="description" content="Notes of Paleblood, which rebuilds Bloodborne (PS4, CUSA03173 v1.09) as a native PC source port one verified function at a time, and an open place to learn how a console game works and how it is reverse engineered">
+  <meta name="description" content="Notes of Paleblood, a decompilation of Bloodborne (PS4, CUSA03173 v1.09) with its own runtime, one verified function at a time, and an open place to learn how a console game works and how it is reverse engineered">
   <link rel="canonical" href="https://yharnam-hunters.github.io/byrgenwerth-site/systems/frame_timing/">
   
   
@@ -139,7 +139,7 @@
           
         
           
-          <a class="wk-nav-link" href="../../bbport-notes/">bbport Study</a>
+          <a class="wk-nav-link" href="../../bbport-notes/">bbport Study (history)</a>
           
         
           
@@ -226,7 +226,7 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 7, 2026 18:13:43 UTC">October 7, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 7, 2026 22:05:30 UTC">October 7, 2026</span></p>
       
       <h1 id="frame-timing">Frame timing</h1>
 <h2 id="summary">Summary</h2>
@@ -276,7 +276,7 @@
 The frame step checks that the <code>SprjWindow</code> is running, creates the flipper on first use
 (<code>frame_timing_flipper_init</code>, <code>0x02434520</code>), runs the limiter, then the task update with a
 small 1/30 s descriptor, asks a quit gate and a quit query, and returns whether the game keeps
-running. Both the limiter and the frame step are <abbr title="A function whose original code no longer runs: a hook sends every call to our C++ version.">replaced</abbr> and <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and ran in the game.">verified</abbr>.</p>
+running. Both the limiter and the frame step are <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> and <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>.</p>
 <p>The limiter:</p>
 <ul>
 <li>applies the flip mode, read from the config value <code>Game.FlipMode</code> by the constructor (a
@@ -293,7 +293,7 @@ running. Both the limiter and the frame step are <abbr title="A function whose o
 <p><code>0x004632d0</code> is a small <code>gettimeofday</code> helper in microseconds that the stock game never calls:
 nothing calls it directly, and no relocated pointer (vtable or table slot) points at it. The
 frame-rate patches overwrite it and its neighbours with their own code (a code cave), so it is
-not <abbr title="A function whose original code no longer runs: a hook sends every call to our C++ version.">replaced</abbr>.</p>
+not <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr>.</p>
 <p><strong>Correction (2026-10-06).</strong> The millisecond clock <code>frame_timing_get_monotonic_ms</code>
 (<code>0x0111a7f0</code>), its microsecond twin <code>0x0111a760</code> and the sleep wrapper <code>0x0111a880</code> are not on
 the limiter's path. All 52 of their callers sit in one region (<code>0x0110e...</code>-<code>0x0121b...</code>) that
@@ -341,147 +341,147 @@ piece of the game's own per-frame work, the next layer to map.</p>
 <td><code>0x0111a7f0</code></td>
 <td style="text-align: right;">131</td>
 <td><code>frame_timing_get_monotonic_ms</code></td>
-<td><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and ran in the game.">verified</abbr></td>
+<td><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></td>
 <td>Milliseconds since its first call from CLOCK_MONOTONIC; keeps the first seconds in the clock state object</td>
 </tr>
 <tr>
 <td><code>0x01388c60</code></td>
 <td style="text-align: right;">16</td>
 <td><code>frame_timing_task_run_all_01388c60</code></td>
-<td><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and ran in the game.">verified</abbr></td>
+<td><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></td>
 <td>task manager: run the tasks of every group (0x01388c70 with -1)</td>
 </tr>
 <tr>
 <td><code>0x01388c70</code></td>
 <td style="text-align: right;">171</td>
 <td><code>frame_timing_task_run_01388c70</code></td>
-<td><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and ran in the game.">verified</abbr></td>
+<td><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></td>
 <td>task manager run: prepare the frame, dispatch through +0x40 (virtual +0x30) with +0x38 set, finish</td>
 </tr>
 <tr>
 <td><code>0x0138a370</code></td>
 <td style="text-align: right;">330</td>
 <td><code>frame_timing_task_dispatch_0138a370</code></td>
-<td><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and ran in the game.">verified</abbr></td>
+<td><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></td>
 <td>task dispatcher (virtual +0x30): wakes registered tasks, updates the group record, runs the job like the worker step</td>
 </tr>
 <tr>
 <td><code>0x013d3520</code></td>
 <td style="text-align: right;">87</td>
 <td><code>frame_timing_task_013d3520</code></td>
-<td><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and ran in the game.">verified</abbr></td>
+<td><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></td>
 <td>per-frame task: passes the frame-time descriptor and its seconds to three parts; Uncap FPS++ edits it</td>
 </tr>
 <tr>
 <td><code>0x0143e490</code></td>
 <td style="text-align: right;">174</td>
 <td><code>frame_timing_task_flush_queue_0143e490</code></td>
-<td><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and ran in the game.">verified</abbr></td>
+<td><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></td>
 <td>task manager queue flush: lock, run, destroy and free every queued object, empty the list, unlock</td>
 </tr>
 <tr>
 <td><code>0x0143f9f0</code></td>
 <td style="text-align: right;">18</td>
 <td><code>frame_timing_task_set_frame_value_0143f9f0</code></td>
-<td><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and ran in the game.">verified</abbr></td>
+<td><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></td>
 <td>task manager: copies the float at +0x8 of the frame information to the global 0x058b7e08</td>
 </tr>
 <tr>
 <td><code>0x014400a0</code></td>
 <td style="text-align: right;">180</td>
 <td><code>frame_timing_task_workers_step_014400a0</code></td>
-<td><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and ran in the game.">verified</abbr></td>
+<td><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></td>
 <td>task manager workers: three rounds over the worker queues +0x58, +0x68, +0x60</td>
 </tr>
 <tr>
 <td><code>0x01f6a9f0</code></td>
 <td style="text-align: right;">121</td>
 <td><code>frame_timing_until_idle_01f6a9f0</code></td>
-<td><abbr title="A function whose original code no longer runs: a hook sends every call to our C++ version.">replaced</abbr></td>
+<td><abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr></td>
 <td>state method: advance the owner one fixed step while busy (1/30 s; 1/60 s in the 60 FPS patches) (a Chalice Dungeon state machine: built next to SprjHolygrail; not reached by the routes yet)</td>
 </tr>
 <tr>
 <td><code>0x0200d8a0</code></td>
 <td style="text-align: right;">137</td>
 <td><code>frame_timing_until_idle_0200d8a0</code></td>
-<td><abbr title="A function whose original code no longer runs: a hook sends every call to our C++ version.">replaced</abbr></td>
+<td><abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr></td>
 <td>state method: advance the owner one fixed step while busy (1/30 s; 1/60 s in the 60 FPS patches) (a Chalice Dungeon state machine: built next to SprjHolygrail; not reached by the routes yet)</td>
 </tr>
 <tr>
 <td><code>0x0200e100</code></td>
 <td style="text-align: right;">121</td>
 <td><code>frame_timing_until_idle_0200e100</code></td>
-<td><abbr title="A function whose original code no longer runs: a hook sends every call to our C++ version.">replaced</abbr></td>
+<td><abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr></td>
 <td>state method: advance the owner one fixed step while busy (1/30 s; 1/60 s in the 60 FPS patches) (a Chalice Dungeon state machine: built next to SprjHolygrail; not reached by the routes yet)</td>
 </tr>
 <tr>
 <td><code>0x0200e270</code></td>
 <td style="text-align: right;">151</td>
 <td><code>frame_timing_request_7_0200e270</code></td>
-<td><abbr title="A function whose original code no longer runs: a hook sends every call to our C++ version.">replaced</abbr></td>
+<td><abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr></td>
 <td>state method: when idle in states 2..5, request 7 and advance the owner one fixed step (a Chalice Dungeon state machine: built next to SprjHolygrail; not reached by the routes yet)</td>
 </tr>
 <tr>
 <td><code>0x02012610</code></td>
 <td style="text-align: right;">121</td>
 <td><code>frame_timing_until_idle_02012610</code></td>
-<td><abbr title="A function whose original code no longer runs: a hook sends every call to our C++ version.">replaced</abbr></td>
+<td><abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr></td>
 <td>state method: advance the owner one fixed step while busy (1/30 s; 1/60 s in the 60 FPS patches) (a Chalice Dungeon state machine: built next to SprjHolygrail; not reached by the routes yet)</td>
 </tr>
 <tr>
 <td><code>0x02012780</code></td>
 <td style="text-align: right;">122</td>
 <td><code>frame_timing_request_10_02012780</code></td>
-<td><abbr title="A function whose original code no longer runs: a hook sends every call to our C++ version.">replaced</abbr></td>
+<td><abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr></td>
 <td>state method: when idle, request 10 and advance the owner one fixed step (a Chalice Dungeon state machine: built next to SprjHolygrail; not reached by the routes yet)</td>
 </tr>
 <tr>
 <td><code>0x020128f0</code></td>
 <td style="text-align: right;">121</td>
 <td><code>frame_timing_until_idle_020128f0</code></td>
-<td><abbr title="A function whose original code no longer runs: a hook sends every call to our C++ version.">replaced</abbr></td>
+<td><abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr></td>
 <td>state method: advance the owner one fixed step while busy (1/30 s; 1/60 s in the 60 FPS patches) (a Chalice Dungeon state machine: built next to SprjHolygrail; not reached by the routes yet)</td>
 </tr>
 <tr>
 <td><code>0x02012a60</code></td>
 <td style="text-align: right;">151</td>
 <td><code>frame_timing_request_7_02012a60</code></td>
-<td><abbr title="A function whose original code no longer runs: a hook sends every call to our C++ version.">replaced</abbr></td>
+<td><abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr></td>
 <td>state method: when idle in states 2..5, request 7 and advance the owner one fixed step (a Chalice Dungeon state machine: built next to SprjHolygrail; not reached by the routes yet)</td>
 </tr>
 <tr>
 <td><code>0x02012bf0</code></td>
 <td style="text-align: right;">121</td>
 <td><code>frame_timing_until_idle_02012bf0</code></td>
-<td><abbr title="A function whose original code no longer runs: a hook sends every call to our C++ version.">replaced</abbr></td>
+<td><abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr></td>
 <td>state method: advance the owner one fixed step while busy (1/30 s; 1/60 s in the 60 FPS patches) (a Chalice Dungeon state machine: built next to SprjHolygrail; not reached by the routes yet)</td>
 </tr>
 <tr>
 <td><code>0x02418d20</code></td>
 <td style="text-align: right;">467</td>
 <td><code>frame_timing_frame_step</code></td>
-<td><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and ran in the game.">verified</abbr></td>
+<td><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></td>
 <td>Per frame: <abbr title="The game's window object, named in the executable's own assertion strings.">SprjWindow</abbr> running check; creates <abbr title="The game's frame-pacing object, named in the executable's own assertion strings.">SprjFlipper</abbr>; calls the limiter; runs the task update; returns running and not quitting</td>
 </tr>
 <tr>
 <td><code>0x02434520</code></td>
 <td style="text-align: right;">552</td>
 <td><code>frame_timing_flipper_init</code></td>
-<td><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and ran in the game.">verified</abbr></td>
+<td><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></td>
 <td><abbr title="The game's frame-pacing object, named in the executable's own assertion strings.">SprjFlipper</abbr> constructor: reads Game.FlipMode (default 4; pending default 3; clamped to 4); unset in the shipped config</td>
 </tr>
 <tr>
 <td><code>0x02434770</code></td>
 <td style="text-align: right;">2077</td>
 <td><code>frame_timing_pace_frame</code></td>
-<td><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and ran in the game.">verified</abbr></td>
+<td><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></td>
 <td>Frame limiter: target interval at +0x18 (1/30 or 1/60 s); sleeps then spins; 32-frame ring; every FPS patch edits it</td>
 </tr>
 <tr>
 <td><code>0x024512a0</code></td>
 <td style="text-align: right;">78</td>
 <td><code>frame_timing_task_frame_024512a0</code></td>
-<td><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and ran in the game.">verified</abbr></td>
+<td><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></td>
 <td>task manager frame entry from the frame step: FD4TaskManager singleton, then 0x01388c60</td>
 </tr>
 </tbody>
@@ -511,8 +511,8 @@ our functions; disassembling the limiter with and without each patch shows exact
   object, which the 60 FPS patches change to 1/60 s.</li>
 </ul>
 <p>The patches also rewrite dozens of shared constants in the data segment (the 1/30 s step at
-<code>0x04d29170</code> becomes 1/60 s, 1/90 s or, uncapped, 1/60 s), which code we have not <abbr title="A function whose original code no longer runs: a hook sends every call to our C++ version.">replaced</abbr> reads
-too. <code>BB_TARGET_FPS</code> covers only the <abbr title="A function whose original code no longer runs: a hook sends every call to our C++ version.">replaced</abbr> functions, so it is meant to run together with
+<code>0x04d29170</code> becomes 1/60 s, 1/90 s or, uncapped, 1/60 s), which code we have not <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> reads
+too. <code>BB_TARGET_FPS</code> covers only the <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> functions, so it is meant to run together with
 the patch; option checks run both sides on the patched image for that reason.</p>
 <p><code>tools/patch_overlap.py</code> maps every patch line to the function it falls in, and lists the
 patches that do nothing while our <abbr title="14-byte jumps written over the start of original functions, sending their callers to the replacements.">hooks</abbr> are installed.</p>
@@ -521,13 +521,13 @@ patches that do nothing while our <abbr title="14-byte jumps written over the st
 <code>Uncap FPS++</code> do in the three functions above. Unset keeps the original behaviour exactly.</p>
 <p>Each part is checked against the patch itself: <code>tools/verify.py run --patch FILE:NAME --env
 BB_TARGET_FPS=...</code> runs the original with the patch's bytes applied against our replacement with
-the option, on the <abbr title="Hand-written inputs for situations a short game run does not reach.">edge cases</abbr> and on frames recorded in the game at 60 FPS.</p>
+the option, on the <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr> and on frames recorded in the game at 60 FPS.</p>
 <p>An earlier version only changed the limiter. Because the hooked frame step no longer ran the
 patches' delta-time code, at 60 FPS the game logic would still have been told every frame lasts
 1/30 s; checking against the patches found that, and that the limiter's own settings differed.</p>
-<p>The other functions the patches edit are not <abbr title="A function whose original code no longer runs: a hook sends every call to our C++ version.">replaced</abbr> yet, so for 60 FPS the community patch is
-still needed for them (<code>BB_FPS=60</code> in the <abbr title="The runtime that loads the original game and runs it natively: bbport, our fork.">scaffold</abbr>); its edits inside our three functions do not
-run, and our option does their part. The frame rate has not been measured on a real display yet.</p>
+<p>The other functions the patches edit are not <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> yet, so a 60 FPS game would still need the
+community patch for them; its edits inside our three functions do not run, and our option does
+their part. The frame rate has not been measured on a real display.</p>
 <p>A second option, <code>BB_LIMITER_WAIT=sleep</code>, makes the limiter use the sleeping wait the game
 carries but never selects: it sleeps until about 5 ms before the frame's end and spins the
 rest, so a fast machine does not keep a core busy waiting.</p>

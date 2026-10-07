@@ -26,6 +26,5 @@
     "first flip"
   ],
   "outcome": "unimplemented",
-  "phase": "libc.elf",
-  "schema": 2
+  "phase": "libc.elf"
 }

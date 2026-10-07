@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   
-  <meta name="description" content="Notes of Paleblood, which rebuilds Bloodborne (PS4, CUSA03173 v1.09) as a native PC source port one verified function at a time, and an open place to learn how a console game works and how it is reverse engineered">
+  <meta name="description" content="Notes of Paleblood, a decompilation of Bloodborne (PS4, CUSA03173 v1.09) with its own runtime, one verified function at a time, and an open place to learn how a console game works and how it is reverse engineered">
   <link rel="canonical" href="https://yharnam-hunters.github.io/byrgenwerth-site/devlog/2026/10/07/7-october-2026-going-public-and-two-frames-worth-of-work/">
   
   
@@ -139,7 +139,7 @@
           
         
           
-          <a class="wk-nav-link" href="../../../../../bbport-notes/">bbport Study</a>
+          <a class="wk-nav-link" href="../../../../../bbport-notes/">bbport Study (history)</a>
           
         
           
@@ -235,14 +235,20 @@
   
   <h1 id="7-october-2026-going-public-and-two-frames-worth-of-work">7 October 2026: going public, and two frames' worth of work</h1>
 <p>The code repository went public today, with a clean history, open contributions and branch
-protection, and two more functions that run every frame are rebuilt and <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and ran in the game.">verified</abbr>.</p>
+protection, and two more functions that run every frame are rebuilt and <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>.</p>
 <!-- more -->
 
+<div class="admonition note">
+<p class="admonition-title">Later the same day</p>
+<p>The project's direction changed on 7 October: Paleblood is now a decompilation with its own
+<abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>, and the borrowed <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> this post describes is being removed. See
+<a href="../7-october-2026-a-new-direction-our-own-runtime/">a new direction</a>.</p>
+</div>
 <h2 id="going-public">Going public</h2>
 <p>The port's code now lives in a fresh public repository with a clean starting history, its
-runtime fork beside it, and the old repositories kept private as archives. Anyone can fork,
+<abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> fork beside it, and the old repositories kept private as archives. Anyone can fork,
 claim a function and open a pull request; every pull request carries a short session report
-that this wiki is written from. Backups run on their own: every ten commits a <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and ran in the game.">verified</abbr> bundle
+that this wiki is written from. Backups run on their own: every ten commits a <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> bundle
 and a copy in the archive.</p>
 <h2 id="the-pad-managers-frame-step">The pad manager's frame step</h2>
 <p>Once a frame the pad manager marks two of its map entries and, when its owner is ready, advances
@@ -257,22 +263,22 @@ code cave to read the measured frame time instead.</p>
 <p>Two more functions that run every frame: the swap chain's present, which waits for its <abbr title="Vertical blank: the gap between two screen refreshes, when a frame is shown.">vblank</abbr>
 and picks a flip mode (the uncapped patch simply asks for no <abbr title="Vertical blank: the gap between two screen refreshes, when a frame is shown.">vblank</abbr> sync), and a sampling helper
 from YEBIS, the post-processing middleware the game ships with, whose only patch is one
-assertion removed. Checking them took two new abilities in the test <abbr title="tools/harness.py: runs the original function and its replacement natively on the same recorded inputs, outside the game.">harness</abbr>, passing and
+assertion removed. Checking them took two new abilities in the test <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr>, passing and
 returning floating-point values, and three strengthened test cases each time a deliberately
 wrong version slipped through: a NaN, an odd sample count, and a microsecond-exact sleep
 threshold.</p>
 <h2 id="playing-it-and-the-task-manager">Playing it, and the task manager</h2>
 <p>The first real play session with every replacement in place ran at a steady 60 FPS on a
-2560x1440 screen. It also turned up a renderer setting in the runtime that mirrored the bottom of
-the screen into the sky; the runtime now starts at native resolution without its upscaler, and the
+2560x1440 screen. It also turned up a renderer setting in the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> that mirrored the bottom of
+the screen into the sky; the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> now starts at native resolution without its upscaler, and the
 artefact is gone. Then the frame's work itself: the task manager's six small functions that
-bracket every frame, <abbr title="A function whose original code no longer runs: a hook sends every call to our C++ version.">replaced</abbr> and checked against real frames.</p>
+bracket every frame, <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> and checked against real frames.</p>
 <h2 id="physics-and-a-constructor-that-wires-itself-in">Physics, and a constructor that wires itself in</h2>
 <p>The next frame-rate patched function is a constructor: it builds a physics instance over a set of
 bodies and threads it into the world's shared tables. It runs only while an area loads, so the
-recordings come from the clinic's loading. The <abbr title="tools/harness.py: runs the original function and its replacement natively on the same recorded inputs, outside the game.">harness</abbr> learned to pass arguments on the stack, and
+recordings come from the clinic's loading. The <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr> learned to pass arguments on the stack, and
 the recordings now come from a shared recorder. The first recordings crashed both sides in the
-<abbr title="tools/harness.py: runs the original function and its replacement natively on the same recorded inputs, outside the game.">harness</abbr>, which led to finding that some objects live in the executable's own memory and have to be
+<abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr>, which led to finding that some objects live in the executable's own memory and have to be
 recorded by address. Four wrong versions slipped through at first; each one led to a sharper case.</p>
 <h2 id="the-hunters-prey-the-ai-manager">The hunters' prey: the AI manager</h2>
 <p>The biggest function so far: the Havok AI manager's per-frame update. It steps the AI world by a
@@ -282,8 +288,8 @@ real trees and render state, and ten deliberately wrong versions all fail.</p>
 <h2 id="a-new-system-characters">A new system: characters</h2>
 <p>The first function from the character code: a per-frame update that, among other things,
 regenerates what looks like stamina. The frame-rate patches pin its frame time to a constant
-(1/27 s at 30 FPS, 1/54 s at 60). It reads thread-local storage, so the test <abbr title="tools/harness.py: runs the original function and its replacement natively on the same recorded inputs, outside the game.">harness</abbr> now does
-what the runtime's loader does (game code reads its thread pointer through another segment
+(1/27 s at 30 FPS, 1/54 s at 60). It reads thread-local storage, so the test <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr> now does
+what the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>'s <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> does (game code reads its thread pointer through another segment
 register), and stubbed game functions can return floats. Four deliberately wrong versions slipped
 through at first. One was a genuine twin of the original; the other three needed new cases: two
 NaNs with different payloads, a maximum below the stamina floor, and a string of exactly eight

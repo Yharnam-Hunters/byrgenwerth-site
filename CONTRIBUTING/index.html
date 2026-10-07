@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   
-  <meta name="description" content="Notes of Paleblood, which rebuilds Bloodborne (PS4, CUSA03173 v1.09) as a native PC source port one verified function at a time, and an open place to learn how a console game works and how it is reverse engineered">
+  <meta name="description" content="Notes of Paleblood, a decompilation of Bloodborne (PS4, CUSA03173 v1.09) with its own runtime, one verified function at a time, and an open place to learn how a console game works and how it is reverse engineered">
   <link rel="canonical" href="https://yharnam-hunters.github.io/byrgenwerth-site/CONTRIBUTING/">
   
   
@@ -139,7 +139,7 @@
           
         
           
-          <a class="wk-nav-link" href="../bbport-notes/">bbport Study</a>
+          <a class="wk-nav-link" href="../bbport-notes/">bbport Study (history)</a>
           
         
           
@@ -226,7 +226,7 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 7, 2026 14:11:44 UTC">October 7, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 7, 2026 22:05:30 UTC">October 7, 2026</span></p>
       
       <h1 id="contributing">Contributing</h1>
 <p class="wk-epigraph">Tonight, Gehrman joins the hunt.<cite>Gehrman, the First Hunter</cite></p>
@@ -239,8 +239,9 @@ Questions go in <a href="https://github.com/Yharnam-Hunters/Paleblood/discussion
 <ul>
 <li><strong>Name functions</strong> — the good first issues: small functions with a clear purpose, identified from their callers and the library calls they make, named in the shared function table.</li>
 <li><strong>Document a system</strong> — a page here per system: summary, key functions, structures, patch points, open questions.</li>
-<li><strong>Replace functions</strong> — C++ replacements, <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and ran in the game.">verified</abbr> against the original with the <abbr title="tools/harness.py: runs the original function and its replacement natively on the same recorded inputs, outside the game.">harness</abbr>.</li>
-<li><strong>Tooling</strong> — the <abbr title="tools/harness.py: runs the original function and its replacement natively on the same recorded inputs, outside the game.">harness</abbr>, the <abbr title="Inputs a replacement records in a real game run (BB_CAPTURE_DIR), replayed by the harness.">capture</abbr> library, the <abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr> scripts.</li>
+<li><strong>Replace functions</strong> — readable C++ replacements, <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> against the original with the <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr> and reviewed independently.</li>
+<li><strong>Build the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr></strong> — the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> system functions Paleblood's <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> implements, claimable per system call group (issues labelled <code>runtime</code>).</li>
+<li><strong>Tooling</strong> — the <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr>, the <abbr title="Inputs recorded while the game ran, replayed by the harness.">capture</abbr> library, the <abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr> scripts.</li>
 </ul>
 <h2 id="your-own-copy">Your own copy</h2>
 <p>Everything starts from your own console and your own copy of the game: Bloodborne (CUSA03173,
@@ -252,8 +253,8 @@ posted, and may lead to a ban.</p>
 <ul>
 <li><strong>No game files.</strong> Ever. No executables, assets, decompiler output or extracted data in commits, issues, pull requests or Discussions.</li>
 <li><strong>No screenshots or clips of the game</strong> in the code repositories, their issues, pull requests or Discussions. (The gallery here shows the maintainer's own recordings of test runs.)</li>
-<li><strong>Verified means <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and ran in the game.">verified</abbr>.</strong> A replacement that "looks right" is not done until the <abbr title="tools/harness.py: runs the original function and its replacement natively on the same recorded inputs, outside the game.">harness</abbr> finds no difference on recorded and <abbr title="Hand-written inputs for situations a short game run does not reach.">edge cases</abbr>, deliberately wrong versions fail, and the game runs with it.</li>
-<li><strong>Say how you know.</strong> When you name a function, say how you inferred what it does: its callers, its library calls, what changes in the game.</li>
+<li><strong>Verified and readable.</strong> A replacement that "looks right" is not done until the <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr> finds no difference on recorded and <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr>, deliberately wrong versions fail, it reads well (the code repository's STYLE.md), and an independent reviewer has approved it.</li>
+<li><strong>Say how you know.</strong> When you name a function, say how you inferred what it does: its callers, its library calls, the memory it touches. A name says what is known and no more.</li>
 <li><strong>One pull request per function or cluster</strong>, with the disclosures CONTRIBUTING.md asks for.</li>
 </ul>
 <h2 id="getting-started">Getting started</h2>

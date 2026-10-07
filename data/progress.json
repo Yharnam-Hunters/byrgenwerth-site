@@ -1,4 +1,10 @@
 {
+  "edge_verified": {
+    "bytes": 14010,
+    "bytes_pct": 0.03,
+    "functions": 21,
+    "functions_pct": 0.01
+  },
   "inputs": {
     "functions_sha256": "1d155c776b9f13c583dc337c09825c166decfba4124006e621cc652eb1c8689c",
     "ghidra_functions_sha256": "fc7e244dc9f211963118a9ab97716de03e0f342421c63cafc9a8ae747abb8ebd"
@@ -8,6 +14,26 @@
     "bytes_pct": 0.04,
     "functions": 30,
     "functions_pct": 0.02
+  },
+  "runtime": {
+    "fault": null,
+    "first_unimplemented": {
+      "caller": "libc.elf",
+      "library": "libkernel",
+      "nid": "8+s5BzZjxSg",
+      "returns_to": "libc.elf+0x81ad5",
+      "symbol": "scePthreadAttrGetaffinity"
+    },
+    "imports_bundled": 219,
+    "imports_covered": 238,
+    "imports_implemented": 19,
+    "imports_pct": 34.69,
+    "imports_remaining": 448,
+    "imports_total": 686,
+    "milestone": "loaded",
+    "milestone_index": 0,
+    "milestones": 8,
+    "outcome": "unimplemented"
   },
   "schema": 1,
   "slices": [
@@ -526,48 +552,56 @@
   ],
   "systems": {
     "ai": {
+      "edge_verified": 1,
       "replaced": 1,
       "replaced_bytes": 2693,
       "tracked": 1,
       "verified": 1
     },
     "character": {
+      "edge_verified": 1,
       "replaced": 1,
       "replaced_bytes": 979,
       "tracked": 1,
       "verified": 1
     },
     "event": {
+      "edge_verified": 1,
       "replaced": 1,
       "replaced_bytes": 368,
       "tracked": 1,
       "verified": 1
     },
     "frame_timing": {
+      "edge_verified": 12,
       "replaced": 21,
       "replaced_bytes": 5447,
       "tracked": 22,
       "verified": 12
     },
     "input": {
+      "edge_verified": 1,
       "replaced": 1,
       "replaced_bytes": 426,
       "tracked": 1,
       "verified": 1
     },
     "kernel": {
+      "edge_verified": 1,
       "replaced": 1,
       "replaced_bytes": 204,
       "tracked": 1,
       "verified": 1
     },
     "physics": {
+      "edge_verified": 1,
       "replaced": 1,
       "replaced_bytes": 3222,
       "tracked": 1,
       "verified": 1
     },
     "render": {
+      "edge_verified": 3,
       "replaced": 3,
       "replaced_bytes": 1837,
       "tracked": 3,

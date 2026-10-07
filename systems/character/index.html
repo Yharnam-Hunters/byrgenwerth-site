@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   
-  <meta name="description" content="Notes of Paleblood, which rebuilds Bloodborne (PS4, CUSA03173 v1.09) as a native PC source port one verified function at a time, and an open place to learn how a console game works and how it is reverse engineered">
+  <meta name="description" content="Notes of Paleblood, a decompilation of Bloodborne (PS4, CUSA03173 v1.09) with its own runtime, one verified function at a time, and an open place to learn how a console game works and how it is reverse engineered">
   <link rel="canonical" href="https://yharnam-hunters.github.io/byrgenwerth-site/systems/character/">
   
   
@@ -139,7 +139,7 @@
           
         
           
-          <a class="wk-nav-link" href="../../bbport-notes/">bbport Study</a>
+          <a class="wk-nav-link" href="../../bbport-notes/">bbport Study (history)</a>
           
         
           
@@ -262,7 +262,7 @@ the other per-frame updates.</p>
 <td><code>0x01cbdb20</code></td>
 <td style="text-align: right;">979</td>
 <td><code>character_frame_update_01cbdb20</code></td>
-<td><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and ran in the game.">verified</abbr></td>
+<td><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></td>
 <td>per-frame character update: throw animation event, points stat regeneration (stamina-like, -50..max), time-step descriptor; the 30/60 FPS patches fix its frame time</td>
 </tr>
 </tbody>
@@ -278,7 +278,7 @@ the other per-frame updates.</p>
 </ul>
 <h2 id="patch-points">Patch points</h2>
 <ul>
-<li>The frame time read from <code>+0xe0</code> is <abbr title="A function whose original code no longer runs: a hook sends every call to our C++ version.">replaced</abbr> by a constant: 1/27 s (<code>30 FPS++</code>), 1/54 s
+<li>The frame time read from <code>+0xe0</code> is <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> by a constant: 1/27 s (<code>30 FPS++</code>), 1/54 s
   (<code>60 FPS++</code>), 1/50 s (<code>60FPS (no deltatime)</code>), 1/80 s (<code>90 FPS++</code>); <code>Uncap FPS++</code> keeps the
   real one. <code>BB_TARGET_FPS</code> does the same for 30 and 60. A fixed time slightly longer than one
   frame (1/27 instead of 1/30) speeds regeneration up a little; why the patch authors chose it

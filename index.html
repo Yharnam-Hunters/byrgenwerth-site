@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   
-  <meta name="description" content="Notes of Paleblood, which rebuilds Bloodborne (PS4, CUSA03173 v1.09) as a native PC source port one verified function at a time, and an open place to learn how a console game works and how it is reverse engineered">
+  <meta name="description" content="Notes of Paleblood, a decompilation of Bloodborne (PS4, CUSA03173 v1.09) with its own runtime, one verified function at a time, and an open place to learn how a console game works and how it is reverse engineered">
   <link rel="canonical" href="https://yharnam-hunters.github.io/byrgenwerth-site/">
   
   
@@ -139,7 +139,7 @@
           
         
           
-          <a class="wk-nav-link" href="bbport-notes/">bbport Study</a>
+          <a class="wk-nav-link" href="bbport-notes/">bbport Study (history)</a>
           
         
           
@@ -214,7 +214,7 @@
           <li>
             <a href="#byrgenwerth" class="wk-toc-link">Byrgenwerth</a>
             
-            <ol><li><a href="#why-we-do-this" class="wk-toc-link">Why we do this</a></li><li><a href="#a-place-to-learn" class="wk-toc-link">A place to learn</a></li><li><a href="#start-here" class="wk-toc-link">Start here</a></li><li><a href="#reference" class="wk-toc-link">Reference</a></li><li><a href="#methodology" class="wk-toc-link">Methodology</a></li><li><a href="#legal" class="wk-toc-link">Legal</a></li></ol>
+            <ol><li><a href="#why-we-do-this" class="wk-toc-link">Why we do this</a></li><li><a href="#the-goal" class="wk-toc-link">The goal</a></li><li><a href="#a-place-to-learn" class="wk-toc-link">A place to learn</a></li><li><a href="#start-here" class="wk-toc-link">Start here</a></li><li><a href="#reference" class="wk-toc-link">Reference</a></li><li><a href="#methodology" class="wk-toc-link">Methodology</a></li><li><a href="#legal" class="wk-toc-link">Legal</a></li></ol>
             
           </li>
           
@@ -226,25 +226,25 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 7, 2026 21:01:47 UTC">October 7, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 7, 2026 22:05:30 UTC">October 7, 2026</span></p>
       
       <h1 class="wk-visually-hidden" id="byrgenwerth">Byrgenwerth</h1>
 <div class="wk-hero">
   <div class="wk-hero-text">
     <p class="wk-hero-title">Bloodborne</p>
-    <p class="wk-hero-sub">Paleblood rebuilds Bloodborne as a native PC source port, one verified function at a time</p>
+    <p class="wk-hero-sub">Paleblood is a decompilation of Bloodborne with its own runtime, one verified function at a time</p>
     <blockquote>We are born of the blood, made men by the blood, undone by the blood. Our eyes are
     yet to open&hellip; Fear the old blood.<cite>Master Willem / The Blood Minister</cite></blockquote>
   </div>
 </div>
 
-<p><strong>Paleblood</strong> rebuilds <em>Bloodborne</em> (<abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr>, CUSA03173, version 1.09) as a native PC <abbr title="The game rebuilt from source to run natively on another platform, here Linux on a PC.">source port</abbr>, one <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and ran in the game.">verified</abbr> function at a time: a <abbr title="Rewriting the game's code as readable source that behaves the same as the original, checked by running both; unlike a matching decompilation, the compiled bytes may differ.">functional decompilation</abbr>, the game's code rewritten function by function as readable C++ that does exactly what the original did.</p>
-<p>Today it runs on <a href="bbport-notes/"><abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; our runtime scaffold, as a private fork.">bbport</abbr></a>, which loads the original executable with Paleblood's replacements hooked in: 21 of 157,757 functions are <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and ran in the game.">verified</abbr> (0.01%).</p>
+<p><strong>Paleblood</strong> is a decompilation of <em>Bloodborne</em> (<abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr>, CUSA03173, version 1.09) with its own <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>: a <abbr title="Rewriting the game's code as readable source that behaves the same as the original, checked by running both; unlike a matching decompilation, the compiled bytes may differ.">functional decompilation</abbr>, the game's code rewritten function by function as readable C++ that does exactly what the original did, and a <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> of our own for that code to run on.</p>
+<p>The game doesn't run on Paleblood yet: 21 of 157,757 functions are <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> (0.01%). On <a href="runtime/">our own <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr></a> the executable's boot gets as far as <code>scePthreadAttrGetaffinity</code> (libkernel, called by libc.elf), with 238 of 686 system imports provided.</p>
 <div class="admonition warning">
 <p class="admonition-title">Transition in progress</p>
-<p>Paleblood is becoming a decompilation with its own runtime: the borrowed runtime (<abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; our runtime scaffold, as a private fork.">bbport</abbr>,
-with the <abbr title="An open-source PS4 emulator; bbport's renderer and shader recompiler come from it.">shadPS4</abbr> graphics code it carries) is being removed, and the game won't run on Paleblood
-until our own runtime is far enough along. Some pages still describe the old setup while
+<p>Paleblood is becoming a decompilation with its own <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>: the borrowed <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> (<abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; the borrowed runtime Paleblood used until October 2026 (a public fork), being removed.">bbport</abbr>,
+with the <abbr title="An open-source PS4 emulator; bbport's renderer and shader recompiler come from it. Paleblood uses none of its code.">shadPS4</abbr> graphics code it carries) is being removed, and the game won't run on Paleblood
+until our own <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> is far enough along. Some pages still describe the old setup while
 they are updated. See the <a href="devlog/2026/10/07/7-october-2026-a-new-direction-our-own-runtime/">announcement</a> and the
 <a href="runtime/">Runtime</a> page.</p>
 </div>
@@ -253,6 +253,8 @@ they are updated. See the <a href="devlog/2026/10/07/7-october-2026-a-new-direct
   <div class="wk-stat-tile"><span class="wk-stat-tile-val">0.0330%</span><span class="wk-stat-tile-label">of all game code</span></div>
   <div class="wk-stat-tile"><span class="wk-stat-tile-val">21</span><span class="wk-stat-tile-label">functions verified</span></div>
   <div class="wk-stat-tile"><span class="wk-stat-tile-val">157,757</span><span class="wk-stat-tile-label">functions in the game</span></div>
+  <div class="wk-stat-tile"><span class="wk-stat-tile-val">238 / 686</span><span class="wk-stat-tile-label">system imports provided</span></div>
+  <div class="wk-stat-tile"><span class="wk-stat-tile-val">loaded</span><span class="wk-stat-tile-label">boot milestone (0 of 8)</span></div>
 </div>
 
 <p><svg class="wk-sparkline" viewBox="0 0 720 200" role="img"
@@ -273,6 +275,22 @@ they are updated. See the <a href="devlog/2026/10/07/7-october-2026-a-new-direct
 understood as well as it is loved: every function of the original, read, named, rewritten and
 proved to behave exactly as it did, so that one day it runs natively, at any frame rate, for as
 long as there are hunters to play it.</p>
+<h2 id="the-goal">The goal</h2>
+<p>A complete <abbr title="The game rebuilt from source to run natively on another platform: where Paleblood is headed, not what it is today.">source port</abbr> of <em>Bloodborne</em> for the PC. When the hunt is over, every function of the
+game's 1.09 executable will have been rewritten as readable C++ and proved to behave exactly like
+the original, and the game will run natively on Paleblood's own <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>: no <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr>, no emulator, no
+original executable, only the game's data from your own copy. Because it will be source, the
+game can be read, understood, preserved, fixed and modded like any other program, at any frame
+rate and resolution.</p>
+<p>Two tracks get there, side by side:</p>
+<ul>
+<li><strong>Decompilation:</strong> functions rewritten as readable C++ and proved against the original in the
+  verification <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr>, on inputs recorded earlier and on generated <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr>.</li>
+<li><strong>Runtime:</strong> our own <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> (done), then generic input <abbr title="Inputs recorded while the game ran, replayed by the harness.">capture</abbr>, kernel, threads and memory,
+  files, input, audio, video out, and the graphics, rebuilt at the engine's own level rather than
+  by emulating the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr>'s GPU (<a href="runtime/">Runtime</a>).</li>
+</ul>
+<p>The game does not run on Paleblood until the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> is far enough along that road.</p>
 <h2 id="a-place-to-learn">A place to learn</h2>
 <p>This wiki is also an educational resource, and that is one of its most important jobs. Every
 page is written so that someone who has never taken a game apart can follow how it is done, and
@@ -306,9 +324,9 @@ our own words and our own code.</p>
   <span class="wk-ql-sub">Replaced and verified functions</span>
 </a>
 
-<a class="wk-ql-box wk-ql-arch" href="ARCHITECTURE/">
-  <span class="wk-ql-label">Architecture</span>
-  <span class="wk-ql-sub">How the port runs the game</span>
+<a class="wk-ql-box wk-ql-arch" href="runtime/">
+  <span class="wk-ql-label">Runtime</span>
+  <span class="wk-ql-sub">Our own runtime and how far it boots</span>
 </a>
 
 <a class="wk-ql-box wk-ql-contrib" href="CONTRIBUTING/">
@@ -341,18 +359,25 @@ our own words and our own code.</p>
 <td style="text-align: right;">15,176 (0.04%)</td>
 </tr>
 <tr>
+<td>Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></td>
+<td style="text-align: right;">21 (0.01%)</td>
+<td style="text-align: right;">14,010 (0.03%)</td>
+</tr>
+<tr>
 <td>Verified</td>
 <td style="text-align: right;">21 (0.01%)</td>
 <td style="text-align: right;">14,010 (0.03%)</td>
 </tr>
 </tbody>
 </table>
+<p>Each row includes the next: <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> functions are also <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr> and <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr>.</p>
 <table>
 <thead>
 <tr>
 <th>System</th>
 <th style="text-align: right;">Tracked</th>
 <th style="text-align: right;">Replaced</th>
+<th style="text-align: right;">Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></th>
 <th style="text-align: right;">Verified</th>
 <th style="text-align: right;">Replaced bytes</th>
 </tr>
@@ -360,6 +385,7 @@ our own words and our own code.</p>
 <tbody>
 <tr>
 <td>ai</td>
+<td style="text-align: right;">1</td>
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">1</td>
@@ -371,9 +397,11 @@ our own words and our own code.</p>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
 </tr>
 <tr>
 <td>camera</td>
+<td style="text-align: right;">0</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">0</td>
@@ -384,10 +412,12 @@ our own words and our own code.</p>
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
 <td style="text-align: right;">979</td>
 </tr>
 <tr>
 <td>event</td>
+<td style="text-align: right;">1</td>
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">1</td>
@@ -398,6 +428,7 @@ our own words and our own code.</p>
 <td style="text-align: right;">22</td>
 <td style="text-align: right;">21</td>
 <td style="text-align: right;">12</td>
+<td style="text-align: right;">12</td>
 <td style="text-align: right;">5,447</td>
 </tr>
 <tr>
@@ -405,10 +436,12 @@ our own words and our own code.</p>
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
 <td style="text-align: right;">426</td>
 </tr>
 <tr>
 <td>kernel</td>
+<td style="text-align: right;">1</td>
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">1</td>
@@ -420,9 +453,11 @@ our own words and our own code.</p>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
 </tr>
 <tr>
 <td>physics</td>
+<td style="text-align: right;">1</td>
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">1</td>
@@ -430,6 +465,7 @@ our own words and our own code.</p>
 </tr>
 <tr>
 <td>render</td>
+<td style="text-align: right;">3</td>
 <td style="text-align: right;">3</td>
 <td style="text-align: right;">3</td>
 <td style="text-align: right;">3</td>
@@ -450,15 +486,19 @@ our own words and our own code.</p>
 <tbody>
 <tr>
 <td><a href="ARCHITECTURE/">Architecture</a></td>
-<td>The <abbr title="The runtime that loads the original game and runs it natively: bbport, our fork.">scaffold</abbr>, the <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> layer, the frame pipeline, verification</td>
+<td>The two tracks, the verification <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr>, the frame pipeline</td>
+</tr>
+<tr>
+<td><a href="runtime/">Runtime</a></td>
+<td>Our own <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>: the roadmap and how far the game's executable boots on it</td>
 </tr>
 <tr>
 <td><a href="how-the-frame-limiter-works/">How the Frame Limiter Works</a></td>
-<td>The first system <abbr title="A function whose original code no longer runs: a hook sends every call to our C++ version.">replaced</abbr>, step by step</td>
+<td>The first system <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr>, step by step</td>
 </tr>
 <tr>
 <td><a href="glossary/">Glossary</a></td>
-<td><abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> and port terms explained</td>
+<td><abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> and project terms explained</td>
 </tr>
 <tr>
 <td><a href="QUIRKS/"><abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr> &amp; <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> Quirks</a></td>
@@ -472,13 +512,13 @@ our own words and our own code.</p>
 </table>
 <hr />
 <h2 id="methodology">Methodology</h2>
-<p>Each function goes through five steps before it is marked <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and ran in the game.">verified</abbr>:</p>
+<p>Each function goes through five steps before it is marked <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>:</p>
 <ol>
-<li><strong>Analyze</strong> — <abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr> with the <abbr title="A Ghidra extension that loads PS4 executables and resolves NIDs to names.">GhidraOrbis</abbr> loader finds the function in your own dump; its callers, callees and the memory it touches are read from the disassembly, not only the decompiler.</li>
+<li><strong>Analyze</strong> — <abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr> with the <abbr title="A Ghidra extension that loads PS4 executables and resolves NIDs to names.">GhidraOrbis</abbr> <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> finds the function in your own dump; its callers, callees and the memory it touches are read from the disassembly, not only the decompiler.</li>
 <li><strong>Name</strong> — it gets a name and a system in the shared function table, so every contributor's <abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr> shows the same names.</li>
-<li><strong>Replace</strong> — a C++ version is written, faithful to the original instruction by instruction, and a <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> sends every call to it.</li>
-<li><strong>Verify</strong> — the <abbr title="tools/harness.py: runs the original function and its replacement natively on the same recorded inputs, outside the game.">harness</abbr> runs the original and the replacement on the same inputs, recorded in real game runs and written by hand for the corners, and compares return values, registers, every byte written and every library call. Deliberately wrong versions must fail.</li>
-<li><strong>Play</strong> — the game runs with the replacement and behaves as it does without it.</li>
+<li><strong>Rewrite</strong> — a readable C++ version: named structures instead of raw offsets, named calls instead of addresses, named constants, faithful to what the original does.</li>
+<li><strong>Verify</strong> — the <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr> runs the original and the replacement on the same inputs, recorded in earlier game runs and generated for the corners, and compares return values, registers, every byte written and every library call. Deliberately wrong versions must fail.</li>
+<li><strong>Review</strong> — an independent reviewer checks the verification and the readability. A function whose code no recording reaches yet is <em><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></em> until one does.</li>
 </ol>
 <hr />
 <h2 id="legal">Legal</h2>

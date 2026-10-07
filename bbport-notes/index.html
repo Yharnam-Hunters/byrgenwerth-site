@@ -4,11 +4,11 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   
-  <meta name="description" content="Notes of Paleblood, which rebuilds Bloodborne (PS4, CUSA03173 v1.09) as a native PC source port one verified function at a time, and an open place to learn how a console game works and how it is reverse engineered">
+  <meta name="description" content="Notes of Paleblood, a decompilation of Bloodborne (PS4, CUSA03173 v1.09) with its own runtime, one verified function at a time, and an open place to learn how a console game works and how it is reverse engineered">
   <link rel="canonical" href="https://yharnam-hunters.github.io/byrgenwerth-site/bbport-notes/">
   
   
-  <title>bbport Study — Byrgenwerth</title>
+  <title>bbport Study (history) — Byrgenwerth</title>
   
   
   <link rel="stylesheet" href="../stylesheets/wiki.css?v=6aa0e2635b">
@@ -139,7 +139,7 @@
           
         
           
-          <a class="wk-nav-link is-active" href="./">bbport Study</a>
+          <a class="wk-nav-link is-active" href="./">bbport Study (history)</a>
           
         
           
@@ -228,13 +228,13 @@
       
       <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 7, 2026 16:56:55 UTC">October 7, 2026</span></p>
       
-      <h1 id="bbport-study"><abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; our runtime scaffold, as a private fork.">bbport</abbr> study</h1>
-<p>Read-only study of <abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; our runtime scaffold, as a private fork.">bbport</abbr> (<a href="https://github.com/deadinside28/bloodborne_pc">https://github.com/deadinside28/bloodborne_pc</a>), a native
-Linux port of Bloodborne 1.09, to decide whether it is the runtime <abbr title="The runtime that loads the original game and runs it natively: bbport, our fork.">scaffold</abbr> for the
-<abbr title="The game rebuilt from source to run natively on another platform, here Linux on a PC.">source port</abbr> we are building. Studied from a shallow clone at commit <code>4d4d208</code> (2026-10-06, "0.3").
-Nothing was built or run. Statements marked <strong><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and ran in the game.">verified</abbr></strong> were checked against our own
+      <h1 id="bbport-study"><abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; the borrowed runtime Paleblood used until October 2026 (a public fork), being removed.">bbport</abbr> study</h1>
+<p>Read-only study of <abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; the borrowed runtime Paleblood used until October 2026 (a public fork), being removed.">bbport</abbr> (<a href="https://github.com/deadinside28/bloodborne_pc">https://github.com/deadinside28/bloodborne_pc</a>), a native
+Linux port of Bloodborne 1.09, to decide whether it is the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> scaffold for the
+<abbr title="The game rebuilt from source to run natively on another platform: where Paleblood is headed, not what it is today.">source port</abbr> we are building. Studied from a shallow clone at commit <code>4d4d208</code> (2026-10-06, "0.3").
+Nothing was built or run. Statements marked <strong><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></strong> were checked against our own
 dump with read-only scripts; the rest come from reading the code and docs.</p>
-<p>The project says it is not related to <abbr title="An open-source PS4 emulator; bbport's renderer and shader recompiler come from it.">shadPS4</abbr> and that questions go to its own Discord.</p>
+<p>The project says it is not related to <abbr title="An open-source PS4 emulator; bbport's renderer and shader recompiler come from it. Paleblood uses none of its code.">shadPS4</abbr> and that questions go to its own Discord.</p>
 <h2 id="1-eboot-to-flat-image-offline">1. Eboot to flat image, offline</h2>
 <p>The step is <code>scripts/prepare.py</code>, plus <code>scripts/link_modules.py</code> for the bundled modules.</p>
 <ol>
@@ -264,29 +264,29 @@ dump with read-only scripts; the rest come from reading the code and docs.</p>
 </ol>
 <p>At run time <code>src/probe.c</code> maps the image into a low host region (the image base is
 <code>0x800000000</code> on the host), applies relocations, binds each import to a function of the
-<abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; our runtime scaffold, as a private fork.">bbport</abbr> runtime by <abbr title="A PS4 library symbol's identifier: a hash of its name, used instead of the name when linking.">NID</abbr>, points unresolved imports at traps that print
+<abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; the borrowed runtime Paleblood used until October 2026 (a public fork), being removed.">bbport</abbr> <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> by <abbr title="A PS4 library symbol's identifier: a hash of its name, used instead of the name when linking.">NID</abbr>, points unresolved imports at traps that print
 <code>STOP: first unsupported PS4 import</code>, applies <code>patches.bin</code>, and jumps to the entry point.
 The game's x86-64 code runs directly on the CPU. There is no emulation.</p>
 <p><strong>Verified:</strong> the loaded-image hash that <code>game_check.py</code> pins is the hash of our dump, both
 computed from our merged <code>eboot.bin</code> with their parser and from our converted <code>eboot.elf</code>
 (<code>071df19c8880086d97182dbc057bc8cb37badaca57d9112683836b24a0444c0a</code>). Our target is the
-executable <abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; our runtime scaffold, as a private fork.">bbport</abbr> supports. This hash does not depend on which SelfUtil produced the <abbr title="Executable and Linkable Format, the standard executable file format on Linux and FreeBSD.">ELF</abbr>.</p>
-<h2 id="2-what-comes-from-shadps4-and-what-is-its-own">2. What comes from <abbr title="An open-source PS4 emulator; bbport's renderer and shader recompiler come from it.">shadPS4</abbr> and what is its own</h2>
-<p>Vendored from <abbr title="An open-source PS4 emulator; bbport's renderer and shader recompiler come from it.">shadPS4</abbr> commit <code>b4e7ae7</code> (GPL-2.0-or-later), listed in <code>gpu/VENDOR.txt</code>:</p>
+executable <abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; the borrowed runtime Paleblood used until October 2026 (a public fork), being removed.">bbport</abbr> supports. This hash does not depend on which SelfUtil produced the <abbr title="Executable and Linkable Format, the standard executable file format on Linux and FreeBSD.">ELF</abbr>.</p>
+<h2 id="2-what-comes-from-shadps4-and-what-is-its-own">2. What comes from <abbr title="An open-source PS4 emulator; bbport's renderer and shader recompiler come from it. Paleblood uses none of its code.">shadPS4</abbr> and what is its own</h2>
+<p>Vendored from <abbr title="An open-source PS4 emulator; bbport's renderer and shader recompiler come from it. Paleblood uses none of its code.">shadPS4</abbr> commit <code>b4e7ae7</code> (GPL-2.0-or-later), listed in <code>gpu/VENDOR.txt</code>:</p>
 <ul>
-<li><code>video_core</code> and <code>shader_recompiler</code> (the renderer and the <abbr title="Graphics Core Next, the AMD GPU architecture of the PS4; its shaders are recompiled for Vulkan.">GCN</abbr> to SPIR-V recompiler),
+<li><code>video_core</code> and <code>shader_recompiler</code> (the renderer and the <abbr title="Graphics Core Next, the AMD GPU architecture of the PS4.">GCN</abbr> to SPIR-V recompiler),
   <code>common</code>, and from the libraries only <code>gnmdriver</code>, <code>videoout</code>, parts of <code>avplayer</code>,
   <code>videodec</code> utilities and a few kernel and system headers.</li>
 <li>Externals: <code>gcn</code>, <code>sirit</code>, <code>half</code>.</li>
 <li>About 108k lines under <code>gpu/shadps4</code>, with around 290 <code>bbport:</code> markers for local changes.
-  Some recompiler fixes were backported from <abbr title="An open-source PS4 emulator; bbport's renderer and shader recompiler come from it.">shadPS4</abbr> after that commit.</li>
+  Some recompiler fixes were backported from <abbr title="An open-source PS4 emulator; bbport's renderer and shader recompiler come from it. Paleblood uses none of its code.">shadPS4</abbr> after that commit.</li>
 </ul>
 <p>Its own code:</p>
 <ul>
-<li><code>src/</code>, about 7k lines of C: loader (<code>probe.c</code>) and the runtime that implements the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> OS
+<li><code>src/</code>, about 7k lines of C: <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> (<code>probe.c</code>) and the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> that implements the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> OS
   functions Bloodborne calls: memory, kernel, threads, mutexes, rwlocks, semaphores, files,
   pad, audio and AJM (ATRAC9 through LibAtrac9), save data, services, content, time.
-  This is not <abbr title="An open-source PS4 emulator; bbport's renderer and shader recompiler come from it.">shadPS4</abbr>'s library layer: <abbr title="An open-source PS4 emulator; bbport's renderer and shader recompiler come from it.">shadPS4</abbr>'s broad HLE is not vendored.</li>
+  This is not <abbr title="An open-source PS4 emulator; bbport's renderer and shader recompiler come from it. Paleblood uses none of its code.">shadPS4</abbr>'s library layer: <abbr title="An open-source PS4 emulator; bbport's renderer and shader recompiler come from it. Paleblood uses none of its code.">shadPS4</abbr>'s broad HLE is not vendored.</li>
 <li><code>scripts/</code>, about 1.3k lines of Python: conversion, linking, patch compiler, mods.</li>
 <li><code>gpu/shim/</code>, about 5k lines: guest <abbr title="14-byte jumps written over the start of original functions, sending their callers to the replacements.">hooks</abbr>, guest memory model, overlay, settings, copies.</li>
 <li>New GPU modules (two-stage draw pipeline, motion vectors, upscalers), the launcher and
@@ -300,7 +300,7 @@ Dear ImGui (MIT), dxil-spirv (MIT, build time). AMD's FSR 4 DLLs are not distrib
 <tr>
 <th></th>
 <th>AnyPS5 relinker</th>
-<th><abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; our runtime scaffold, as a private fork.">bbport</abbr></th>
+<th><abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; the borrowed runtime Paleblood used until October 2026 (a public fork), being removed.">bbport</abbr></th>
 </tr>
 </thead>
 <tbody>
@@ -317,7 +317,7 @@ Dear ImGui (MIT), dxil-spirv (MIT, build time). AMD's FSR 4 DLLs are not distrib
 <tr>
 <td>Output</td>
 <td>A native Linux <abbr title="Executable and Linkable Format, the standard executable file format on Linux and FreeBSD.">ELF</abbr> or Windows PE, with system libraries as dynamically linked shared objects built from a library tree (about 110 <abbr title="A PS4 dynamic library (shared module), like a .so on Linux.">PRX</abbr> libraries declared)</td>
-<td>A flat image and a custom boot file, loaded by a C loader into a running process</td>
+<td>A flat image and a custom boot file, loaded by a C <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> into a running process</td>
 </tr>
 <tr>
 <td>Linking</td>
@@ -332,7 +332,7 @@ Dear ImGui (MIT), dxil-spirv (MIT, build time). AMD's FSR 4 DLLs are not distrib
 <tr>
 <td>Graphics</td>
 <td>Shader recompiler to SPIR-V</td>
-<td>Vendored <abbr title="An open-source PS4 emulator; bbport's renderer and shader recompiler come from it.">shadPS4</abbr> renderer, <abbr title="The command packet format the PS4's GPU reads; bbport's renderer decodes it.">PM4</abbr> decoded at run time</td>
+<td>Vendored <abbr title="An open-source PS4 emulator; bbport's renderer and shader recompiler come from it. Paleblood uses none of its code.">shadPS4</abbr> renderer, <abbr title="The command packet format the PS4's GPU reads.">PM4</abbr> decoded at run time</td>
 </tr>
 <tr>
 <td>Hooks</td>
@@ -347,7 +347,7 @@ Dear ImGui (MIT), dxil-spirv (MIT, build time). AMD's FSR 4 DLLs are not distrib
 </tbody>
 </table>
 <p>AnyPS5 would give a standalone native executable but has no Bloodborne path and no <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr>
-graphics. <abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; our runtime scaffold, as a private fork.">bbport</abbr> already runs the game. The two are not interchangeable.</p>
+graphics. <abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; the borrowed runtime Paleblood used until October 2026 (a public fork), being removed.">bbport</abbr> already runs the game. The two are not interchangeable.</p>
 <h2 id="4-testing-it-needs-on-the-rtx-3070-8-gb">4. Testing it needs on the RTX 3070 8 GB</h2>
 <p>Nothing here has been run.</p>
 <ul>
@@ -394,10 +394,10 @@ graphics. <abbr title="A native Linux port of Bloodborne 1.09 that runs the orig
 <p><strong>What a <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> and trampoline layer would need</strong>, in a fork:</p>
 <ol>
 <li>A load-time plug-in point: after relocations and patches, before entering the game, the
-   loader <code>dlopen</code>s a game library and calls its init with the image base. About one small
+   <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> <code>dlopen</code>s a game library and calls its init with the image base. About one small
    change in <code>probe.c</code>.</li>
 <li>An installer that reads a table of original address and replacement, verifies the original
-   bytes (as <abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; our runtime scaffold, as a private fork.">bbport</abbr> already does), and writes a jump to the replacement. The game is System V
+   bytes (as <abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; the borrowed runtime Paleblood used until October 2026 (a public fork), being removed.">bbport</abbr> already does), and writes a jump to the replacement. The game is System V
    AMD64 code, so a C replacement can be jumped to directly. A 5-byte relative jump needs a
    near target; a 14-byte absolute jump does not; shorter functions fall back to the int3
    route. The int3 route costs a signal per call and is fine only for cold functions.</li>
@@ -407,7 +407,7 @@ graphics. <abbr title="A native Linux port of Bloodborne 1.09 that runs the orig
 <li>Capture <abbr title="14-byte jumps written over the start of original functions, sending their callers to the replacements.">hooks</abbr> for <code>verify.py</code>: entry and exit snapshots through the same layer.</li>
 </ol>
 <p>Effort, as an estimate and not a measurement: the installer, the plug-in point and a CPU-only
-<abbr title="tools/harness.py: runs the original function and its replacement natively on the same recorded inputs, outside the game.">harness</abbr> are a few days of work for one person, using <code>--cpu-only</code> or lavapipe for tests. The
+<abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr> are a few days of work for one person, using <code>--cpu-only</code> or lavapipe for tests. The
 continuing cost is rebasing, because upstream changes daily.</p>
 <h2 id="6-address-conventions">6. Address conventions</h2>
 <p>Three conventions, one constant apart. Let V be the <abbr title="Executable and Linkable Format, the standard executable file format on Linux and FreeBSD.">ELF</abbr> <code>p_vaddr</code> in our converted
@@ -424,23 +424,23 @@ continuing cost is rebasing, because upstream changes daily.</p>
 <tr>
 <td><abbr title="Executable and Linkable Format, the standard executable file format on Linux and FreeBSD.">ELF</abbr> vaddr, "guest offset"</td>
 <td>V</td>
-<td><abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; our runtime scaffold, as a private fork.">bbport</abbr>'s loader logs ("guest offset 0x..."), its <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> sites, <code>game_check.py</code></td>
+<td><abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; the borrowed runtime Paleblood used until October 2026 (a public fork), being removed.">bbport</abbr>'s <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> logs ("guest offset 0x..."), its <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> sites, <code>game_check.py</code></td>
 </tr>
 <tr>
 <td><abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> virtual address</td>
 <td>V + 0x400000</td>
-<td>the community XML patches (<abbr title="An open-source PS4 emulator; bbport's renderer and shader recompiler come from it.">shadPS4</abbr> and GoldHEN format), and <code>patches.py</code> (<code>EBOOT_BASE = 0x400000</code>, which subtracts it)</td>
+<td>the community XML patches (<abbr title="An open-source PS4 emulator; bbport's renderer and shader recompiler come from it. Paleblood uses none of its code.">shadPS4</abbr> and GoldHEN format), and <code>patches.py</code> (<code>EBOOT_BASE = 0x400000</code>, which subtracts it)</td>
 </tr>
 <tr>
 <td>Host address</td>
 <td>V + 0x800000000</td>
-<td><abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; our runtime scaffold, as a private fork.">bbport</abbr>'s own process (<code>ImageBase</code> in its <abbr title="14-byte jumps written over the start of original functions, sending their callers to the replacements.">hooks</abbr>)</td>
+<td><abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; the borrowed runtime Paleblood used until October 2026 (a public fork), being removed.">bbport</abbr>'s own process (<code>ImageBase</code> in its <abbr title="14-byte jumps written over the start of original functions, sending their callers to the replacements.">hooks</abbr>)</td>
 </tr>
 </tbody>
 </table>
 <p><strong>Verified</strong> against our image with read-only scripts:</p>
 <ul>
-<li>All five <abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; our runtime scaffold, as a private fork.">bbport</abbr> <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> sites carry the bytes its code expects at V (for example
+<li>All five <abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; the borrowed runtime Paleblood used until October 2026 (a public fork), being removed.">bbport</abbr> <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> sites carry the bytes its code expects at V (for example
   <code>48 83 c4 18</code> at <code>0x26aa255</code>). At V + 0x400000 they do not.</li>
 <li>The community "Performance Patch" writes <code>C7 45 B4 09 00 00 00</code> at address <code>0x0261B108</code>.
   At that address minus 0x400000 our image holds <code>c7 45 b4 06 00 00 00</code>, a
@@ -449,10 +449,10 @@ continuing cost is rebasing, because upstream changes daily.</p>
 <p>So the community convention is the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> virtual address with the <abbr title="eboot.bin, the game's main executable.">eboot</abbr> at <code>0x400000</code>.</p>
 <h2 id="7-license">7. License</h2>
 <ul>
-<li><abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; our runtime scaffold, as a private fork.">bbport</abbr>'s <code>LICENSE</code> is the GPL version 2 text. Its README says "GNU GPL v2 or later". 36 files
+<li><abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; the borrowed runtime Paleblood used until October 2026 (a public fork), being removed.">bbport</abbr>'s <code>LICENSE</code> is the GPL version 2 text. Its README says "GNU GPL v2 or later". 36 files
   in its own GPU shim, tools and tests carry <code>SPDX-License-Identifier: GPL-2.0-or-later</code>, and the
-  vendored <abbr title="An open-source PS4 emulator; bbport's renderer and shader recompiler come from it.">shadPS4</abbr> code is GPL-2.0-or-later per <code>gpu/VENDOR.txt</code>.</li>
-<li>The loader and runtime in <code>src/</code> and the Python in <code>scripts/</code> carry no per-file header. For
+  vendored <abbr title="An open-source PS4 emulator; bbport's renderer and shader recompiler come from it. Paleblood uses none of its code.">shadPS4</abbr> code is GPL-2.0-or-later per <code>gpu/VENDOR.txt</code>.</li>
+<li>The <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> and <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> in <code>src/</code> and the Python in <code>scripts/</code> carry no per-file header. For
   them the README is the only statement of "or later". Worth asking the author to add SPDX
   headers.</li>
 <li>Third-party parts keep their own licenses (MIT for FSR-Vulkan, FidelityFX, LibAtrac9, ImGui).</li>
@@ -461,7 +461,7 @@ continuing cost is rebasing, because upstream changes daily.</p>
 </ul>
 <p>What it means for us:</p>
 <ul>
-<li>If we vendor or fork <abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; our runtime scaffold, as a private fork.">bbport</abbr>, the combined work is GPL-2.0-or-later. Our code that is loaded
+<li>If we vendor or fork <abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; the borrowed runtime Paleblood used until October 2026 (a public fork), being removed.">bbport</abbr>, the combined work is GPL-2.0-or-later. Our code that is loaded
   into its process (<code>game/</code>, <code>runtime/</code>) should be GPL-2.0-or-later too, so both of our
   repositories are licensed that way. That covers our own work only.</li>
 <li>The GPL does not grant any right in the game's code, which belongs to its owners. A
@@ -469,21 +469,21 @@ continuing cost is rebasing, because upstream changes daily.</p>
   distributing no game content is the working rule; publishing anything is a separate decision.</li>
 </ul>
 <h2 id="recommendation">Recommendation</h2>
-<p><strong>Fork, with a minimal diff.</strong> Use <abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; our runtime scaffold, as a private fork.">bbport</abbr> as the <code>third_party/</code> <abbr title="The runtime that loads the original game and runs it natively: bbport, our fork.">scaffold</abbr>, pinned to a commit,
+<p><strong>Fork, with a minimal diff.</strong> Use <abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; the borrowed runtime Paleblood used until October 2026 (a public fork), being removed.">bbport</abbr> as the <code>third_party/</code> scaffold, pinned to a commit,
 as a submodule of our own fork under the private organization.</p>
 <ul>
 <li>As-is is not enough: it has no <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> layer, and there is no way to add one from outside the
-  loader.</li>
-<li>Neither is the worse option: writing our own loader and OS layer repeats thousands of lines
-  that already run this exact executable (<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and ran in the game.">verified</abbr> identical to ours), and the GPU side would
+  <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr>.</li>
+<li>Neither is the worse option: writing our own <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> and OS layer repeats thousands of lines
+  that already run this exact executable (<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> identical to ours), and the GPU side would
   have to be rewritten or vendored anyway.</li>
-<li>Keep the fork small: a plug-in point in <code>probe.c</code>, the <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> installer, a CPU-only <abbr title="Inputs a replacement records in a real game run (BB_CAPTURE_DIR), replayed by the harness.">capture</abbr> and
-  call <abbr title="tools/harness.py: runs the original function and its replacement natively on the same recorded inputs, outside the game.">harness</abbr>. Offer the plug-in point upstream. Track upstream by rebasing.</li>
+<li>Keep the fork small: a plug-in point in <code>probe.c</code>, the <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> installer, a CPU-only <abbr title="Inputs recorded while the game ran, replayed by the harness.">capture</abbr> and
+  call <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr>. Offer the plug-in point upstream. Track upstream by rebasing.</li>
 <li><code>runtime/</code> in our repository stays generic and holds our <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> table and the C interface;
-  <abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; our runtime scaffold, as a private fork.">bbport</abbr> supplies the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> layer.</li>
+  <abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; the borrowed runtime Paleblood used until October 2026 (a public fork), being removed.">bbport</abbr> supplies the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> layer.</li>
 </ul>
 <p>Open questions for the maintainer: when to take the first fork commit; whether to ask the
-<abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; our runtime scaffold, as a private fork.">bbport</abbr> author about SPDX headers and the plug-in point; first run on the 3070 (not scheduled).</p>
+<abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; the borrowed runtime Paleblood used until October 2026 (a public fork), being removed.">bbport</abbr> author about SPDX headers and the plug-in point; first run on the 3070 (not scheduled).</p>
       
       </div>
 

@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   
-  <meta name="description" content="Notes of Paleblood, which rebuilds Bloodborne (PS4, CUSA03173 v1.09) as a native PC source port one verified function at a time, and an open place to learn how a console game works and how it is reverse engineered">
+  <meta name="description" content="Notes of Paleblood, a decompilation of Bloodborne (PS4, CUSA03173 v1.09) with its own runtime, one verified function at a time, and an open place to learn how a console game works and how it is reverse engineered">
   <link rel="canonical" href="https://yharnam-hunters.github.io/byrgenwerth-site/how-the-frame-limiter-works/">
   
   
@@ -139,7 +139,7 @@
           
         
           
-          <a class="wk-nav-link" href="../bbport-notes/">bbport Study</a>
+          <a class="wk-nav-link" href="../bbport-notes/">bbport Study (history)</a>
           
         
           
@@ -229,7 +229,7 @@
       <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 7, 2026 01:47:15 UTC">October 7, 2026</span></p>
       
       <h1 id="how-the-frame-limiter-works">How the Frame Limiter Works</h1>
-<p>The first system of Bloodborne <abbr title="A function whose original code no longer runs: a hook sends every call to our C++ version.">replaced</abbr> in C++ is the one that decides how long each frame lasts. This page walks through it as the original does it, and as the replacement now does it, exactly the same way.</p>
+<p>The first system of Bloodborne <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> in C++ is the one that decides how long each frame lasts. This page walks through it as the original does it, and as the replacement now does it, exactly the same way.</p>
 <p><svg class="wk-diagram" viewBox="0 0 560 336" role="img" aria-label="The per-frame pipeline: frame step, limiter, task update">
 <defs><marker id="wk-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="wk-diag-arrowhead"></path></marker></defs>
 <path d="M138,76 L138,94" class="wk-diag-edge" marker-end="url(#wk-arrow)"></path>

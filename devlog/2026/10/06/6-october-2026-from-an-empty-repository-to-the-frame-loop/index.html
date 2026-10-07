@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   
-  <meta name="description" content="Notes of Paleblood, which rebuilds Bloodborne (PS4, CUSA03173 v1.09) as a native PC source port one verified function at a time, and an open place to learn how a console game works and how it is reverse engineered">
+  <meta name="description" content="Notes of Paleblood, a decompilation of Bloodborne (PS4, CUSA03173 v1.09) with its own runtime, one verified function at a time, and an open place to learn how a console game works and how it is reverse engineered">
   <link rel="canonical" href="https://yharnam-hunters.github.io/byrgenwerth-site/devlog/2026/10/06/6-october-2026-from-an-empty-repository-to-the-frame-loop/">
   
   
@@ -139,7 +139,7 @@
           
         
           
-          <a class="wk-nav-link" href="../../../../../bbport-notes/">bbport Study</a>
+          <a class="wk-nav-link" href="../../../../../bbport-notes/">bbport Study (history)</a>
           
         
           
@@ -234,13 +234,19 @@
   
   
   <h1 id="6-october-2026-from-an-empty-repository-to-the-frame-loop">6 October 2026: from an empty repository to the frame loop</h1>
-<p>The first day: the target prepared, both repositories and their tooling, a runtime for the
-original executable, the first <abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr> export, and the game's frame loop rewritten as <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and ran in the game.">verified</abbr>
+<p>The first day: the target prepared, both repositories and their tooling, a <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> for the
+original executable, the first <abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr> export, and the game's frame loop rewritten as <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>
 C++, from the clock up to the function that runs every frame. By evening, scripted routes
 carried unattended test runs through the menus and character creation into the game.</p>
 <p><img alt="The title menu, rendered by the port on a virtual display with five replaced functions in place" src="../../../../../assets/screens/title-menu.jpg" /></p>
 <!-- more -->
 
+<div class="admonition note">
+<p class="admonition-title">Since then</p>
+<p>The project's direction changed the next day, 7 October: Paleblood is now a decompilation with its own
+<abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>, and the borrowed <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> this post describes is being removed. See
+<a href="../../07/7-october-2026-a-new-direction-our-own-runtime/">a new direction</a>.</p>
+</div>
 <h2 id="the-target">The target</h2>
 <p>Both packages extracted without keys and merged. The update's <code>param.sfo</code> reports the 1.09 app
 version. All eight executables (the <abbr title="eboot.bin, the game's main executable.">eboot</abbr> and seven <abbr title="A PS4 dynamic library (shared module), like a .so on Linux.">PRX</abbr> modules) were fake-signed SELFs with no
@@ -256,28 +262,28 @@ encrypted segments, and converting them to <abbr title="Executable and Linkable 
 <p>The converted <abbr title="eboot.bin, the game's main executable.">eboot</abbr> has no section headers, so there is no <code>.text</code> to measure. The progress
 denominator is the set of functions <abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr> finds in executable blocks, tied to the hash of the
 committed export.</p>
-<h2 id="bbport-the-runtime"><abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; our runtime scaffold, as a private fork.">bbport</abbr>, the runtime</h2>
-<p><abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; our runtime scaffold, as a private fork.">bbport</abbr> runs the original executable natively on Linux. It converts the <abbr title="eboot.bin, the game's main executable.">eboot</abbr> offline into a
+<h2 id="bbport-the-runtime"><abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; the borrowed runtime Paleblood used until October 2026 (a public fork), being removed.">bbport</abbr>, the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr></h2>
+<p><abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; the borrowed runtime Paleblood used until October 2026 (a public fork), being removed.">bbport</abbr> runs the original executable natively on Linux. It converts the <abbr title="eboot.bin, the game's main executable.">eboot</abbr> offline into a
 flat image, links the game's own libc and Fios2 modules into it, and binds every <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> import
-to a small runtime. Graphics come from a vendored <abbr title="An open-source PS4 emulator; bbport's renderer and shader recompiler come from it.">shadPS4</abbr> renderer. The loaded-image hash it
+to a small <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>. Graphics come from a vendored <abbr title="An open-source PS4 emulator; bbport's renderer and shader recompiler come from it. Paleblood uses none of its code.">shadPS4</abbr> renderer. The loaded-image hash it
 pins is the hash of our dump, so it runs exactly our target. Details are on the
-<a href="../../../../../bbport-notes/"><abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; our runtime scaffold, as a private fork.">bbport</abbr> study</a> page.</p>
-<p>It had no general way to replace a function, so our private fork adds one: the loader loads a
+<a href="../../../../../bbport-notes/"><abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; the borrowed runtime Paleblood used until October 2026 (a public fork), being removed.">bbport</abbr> study</a> page.</p>
+<p>It had no general way to replace a function, so our private fork adds one: the <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> loads a
 game library before any game code runs, and the library asks it to put a jump at the start of
 each function it replaces. Everything this project writes builds into that library.</p>
-<p><abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; our runtime scaffold, as a private fork.">bbport</abbr> is GPL-2.0-or-later and contains <abbr title="An open-source PS4 emulator; bbport's renderer and shader recompiler come from it.">shadPS4</abbr> code, and our code runs in its process, so both
+<p><abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; the borrowed runtime Paleblood used until October 2026 (a public fork), being removed.">bbport</abbr> is GPL-2.0-or-later and contains <abbr title="An open-source PS4 emulator; bbport's renderer and shader recompiler come from it. Paleblood uses none of its code.">shadPS4</abbr> code, and our code runs in its process, so both
 repositories are GPL-2.0-or-later.</p>
 <h2 id="one-address-convention">One address convention</h2>
-<p>Three conventions are in use, one constant apart: the <abbr title="Executable and Linkable Format, the standard executable file format on Linux and FreeBSD.">ELF</abbr> virtual address (<abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; our runtime scaffold, as a private fork.">bbport</abbr>'s "guest
-offset"), the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> virtual address at base <code>0x400000</code> (the community patches), and <abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; our runtime scaffold, as a private fork.">bbport</abbr>'s
-host address. Checking real bytes settled it: <abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; our runtime scaffold, as a private fork.">bbport</abbr>'s <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> sites match at the <abbr title="Executable and Linkable Format, the standard executable file format on Linux and FreeBSD.">ELF</abbr> address,
+<p>Three conventions are in use, one constant apart: the <abbr title="Executable and Linkable Format, the standard executable file format on Linux and FreeBSD.">ELF</abbr> virtual address (<abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; the borrowed runtime Paleblood used until October 2026 (a public fork), being removed.">bbport</abbr>'s "guest
+offset"), the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> virtual address at base <code>0x400000</code> (the community patches), and <abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; the borrowed runtime Paleblood used until October 2026 (a public fork), being removed.">bbport</abbr>'s
+host address. Checking real bytes settled it: <abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; the borrowed runtime Paleblood used until October 2026 (a public fork), being removed.">bbport</abbr>'s <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> sites match at the <abbr title="Executable and Linkable Format, the standard executable file format on Linux and FreeBSD.">ELF</abbr> address,
 and a community patch only lands on a sensible instruction after subtracting <code>0x400000</code>.
 Everything here uses the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> virtual address, with <abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr>'s image base at <code>0x400000</code>.</p>
 <h2 id="the-first-ghidra-export">The first <abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr> export</h2>
-<p><abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr> 12.0.3 with the <abbr title="A Ghidra extension that loads PS4 executables and resolves NIDs to names.">GhidraOrbis</abbr> loader imported the <abbr title="eboot.bin, the game's main executable.">eboot</abbr> and finished full auto-analysis in
+<p><abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr> 12.0.3 with the <abbr title="A Ghidra extension that loads PS4 executables and resolves NIDs to names.">GhidraOrbis</abbr> <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> imported the <abbr title="eboot.bin, the game's main executable.">eboot</abbr> and finished full auto-analysis in
 about 26 minutes. It found 157,757 functions in <code>.text</code>, 42,487,347 bytes, not counting 9,302
 <abbr title="Tiny stubs that forward calls, here to PS4 library functions.">thunks</abbr>. All 671 imports resolved to names through the <abbr title="A PS4 library symbol's identifier: a hash of its name, used instead of the name when linking.">NID</abbr> database.</p>
-<p>The loader decides where <code>.text</code> ends with a heuristic, and on a small module it put almost all
+<p>The <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> decides where <code>.text</code> ends with a heuristic, and on a small module it put almost all
 the code into <code>.rodata</code>, where nothing gets analyzed. So the export needed a check that does not
 depend on <abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr> at all: the unwind table. It lists 162,959 functions. 155,000 of them are
 functions in the export, and the other 7,959 are all <abbr title="Tiny stubs that forward calls, here to PS4 library functions.">thunks</abbr>, which the export skips on purpose.
@@ -292,10 +298,10 @@ that wraps.</p>
 <code>verify.py</code>; each must fail. Then the game runs with the <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> installed, the replacement
 records its real inputs as it goes, and those recordings are compared too: over 30,000 calls in
 90 seconds here, and the game reached the title menu exactly as it does without the <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr>.</p>
-<p>Two bugs were caught before anything was marked <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and ran in the game.">verified</abbr>: the recording code dropped half of
+<p>Two bugs were caught before anything was marked <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>: the recording code dropped half of
 each clock value, and the tester counted cases from two runs as one when they shared names.</p>
 <p>With the monitors off, the desktop throttles a game window to one frame a second. A virtual
-display (<abbr title="X virtual framebuffer: a display with no monitor, used for game runs while the screens are off.">Xvfb</abbr>) fixes that for test runs, at about 15 frames a second on the title screen.</p>
+display (<abbr title="X virtual framebuffer: a display with no monitor, used for the game runs on the old runtime.">Xvfb</abbr>) fixes that for test runs, at about 15 frames a second on the title screen.</p>
 <h2 id="finding-the-frame-limiter">Finding the frame limiter</h2>
 <p>The plan was to walk outward from the millisecond clock to the frame limiter. But the clock and
 its two neighbours have 52 callers, all in one stretch of the executable and none touched by any
@@ -305,7 +311,7 @@ who already found the limiter. Mapping every patched address to its function, th
 functions that both read the clock and sleep, left one that every frame-rate patch edits:
 <code>0x02434770</code>, now <code>frame_timing_pace_frame</code>. The
 <a href="../../../../../how-the-frame-limiter-works/">frame limiter article</a> explains how it works.</p>
-<h2 id="the-limiter-replaced-and-the-first-option">The limiter, <abbr title="A function whose original code no longer runs: a hook sends every call to our C++ version.">replaced</abbr>, and the first option</h2>
+<h2 id="the-limiter-replaced-and-the-first-option">The limiter, <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr>, and the first option</h2>
 <p>The replacement follows the original instruction by instruction, down to how it converts
 between integers and floating point and how each comparison treats NaN. Twenty-six hand-written
 cases cover every mode; four deliberately wrong versions all fail, after two of them first got
@@ -317,7 +323,7 @@ series.</p>
 <p><code>BB_TARGET_FPS</code> set to <code>30</code>, <code>60</code> or <code>uncapped</code> changes the limiter in code, the way the
 community patches change it with byte edits. Unset, nothing changes. It covers only the limiter:
 the patches also fix many places where the game assumes 30 frames a second, and those still need
-the patch until they are <abbr title="A function whose original code no longer runs: a hook sends every call to our C++ version.">replaced</abbr> too. <code>BB_LIMITER_WAIT=sleep</code> makes the limiter sleep instead
+the patch until they are <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> too. <code>BB_LIMITER_WAIT=sleep</code> makes the limiter sleep instead
 of spinning while it waits. Both wait for a measurement on a real screen.</p>
 <h2 id="the-frame-step-and-the-flipper">The frame step and the flipper</h2>
 <p><code>frame_timing_frame_step</code> is the function the main loop calls once per frame. It asks the
@@ -329,12 +335,12 @@ whose table slot points at the real function the game called. It matched on ever
 frame.</p>
 <p><code>frame_timing_flipper_init</code> builds the frame-pacing object. It reads the config value
 <code>Game.FlipMode</code> twice through the game's own string class; the shipped config leaves it unset,
-which is why the game runs the 30 FPS mode. Verified on the recorded call and nine <abbr title="Hand-written inputs for situations a short game run does not reach.">edge cases</abbr>.</p>
-<p>The microsecond time helper the frame-rate patches edit is <abbr title="A function whose original code no longer runs: a hook sends every call to our C++ version.">replaced</abbr> too, but the game never
+which is why the game runs the 30 FPS mode. Verified on the recorded call and nine <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr>.</p>
+<p>The microsecond time helper the frame-rate patches edit is <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> too, but the game never
 calls it before the title menu, so it waits for a run that gets further.</p>
 <h2 id="getting-into-the-game">Getting into the game</h2>
 <p>Every run so far stopped at the title, so functions used only in gameplay had nothing to
-record. <code>run_game.sh</code> now plays a route: a list of timed button presses fed to <abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; our runtime scaffold, as a private fork.">bbport</abbr>'s pad
+record. <code>run_game.sh</code> now plays a route: a list of timed button presses fed to <abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; the borrowed runtime Paleblood used until October 2026 (a public fork), being removed.">bbport</abbr>'s pad
 input, and <code>BB_RECORD</code> saves a clip of the run (there is one in the <a href="../../../../../gallery/">gallery</a>).
 The first route picks Play Offline and New Game and reaches the brightness screen.</p>
 <p><img alt="Play Offline selected by the route" src="../../../../../assets/screens/title-play-offline.jpg" /></p>
@@ -345,13 +351,13 @@ read by OCR, and can press a button while they wait. Keyboard input types the ch
 The second route got through the controls setup, the opening cutscene, character creation and
 the contract, which saves the game; a shorter route loads that save, skips the transfusion
 cutscene and wakes the hunter in Iosefka's Clinic about two minutes after start, with every
-<abbr title="A function whose original code no longer runs: a hook sends every call to our C++ version.">replaced</abbr> function in place.</p>
+<abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> function in place.</p>
 <p><img alt="Character creation, the name typed by the route" src="../../../../../assets/screens/character-creation.jpg" /></p>
 <p><img alt="Gameplay: Iosefka's Clinic" src="../../../../../assets/screens/iosefkas-clinic.jpg" /></p>
-<p>One thing broke on the way: with every <abbr title="A function whose original code no longer runs: a hook sends every call to our C++ version.">replaced</abbr> function recording its inputs, the game crashed
+<p>One thing broke on the way: with every <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> function recording its inputs, the game crashed
 in the opening cutscene. Switching <abbr title="14-byte jumps written over the start of original functions, sending their callers to the replacements.">hooks</abbr> off one by one showed the replacements were not at
 fault; the recordings were. The limiter's recordings run to megabytes per frame, and with the
-frame step recording too, frames got slow enough to trip a problem in the runtime. Runs now
+frame step recording too, frames got slow enough to trip a problem in the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>. Runs now
 record only the functions they are collecting for.</p>
 <h2 id="the-frame-rate-option-corrected">The frame-rate option, corrected</h2>
 <p>A function nothing calls turned out to be a code cave: the time helper the frame-rate patches
@@ -360,20 +366,20 @@ led to a closer look at what the patches do to the functions we did replace, by 
 each with and without the patch.</p>
 <p>They do more than the limiter: they also make the frame step hand the game the measured frame
 time instead of a fixed 1/30 s. Our hooked frame step had switched that off, so the first version
-of <code>BB_TARGET_FPS=60</code> would have run the game logic twice as fast. The test <abbr title="tools/harness.py: runs the original function and its replacement natively on the same recorded inputs, outside the game.">harness</abbr> can now apply
+of <code>BB_TARGET_FPS=60</code> would have run the game logic twice as fast. The test <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr> can now apply
 a patch to the original code, so each part of the option is checked against the patch itself:
-all <abbr title="Hand-written inputs for situations a short game run does not reach.">edge cases</abbr>, every deliberately wrong version caught, and frames recorded at 60 FPS in the
+all <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr>, every deliberately wrong version caught, and frames recorded at 60 FPS in the
 game match. A real-screen measurement waits for the display plug.</p>
 <h2 id="counting-calls-and-three-more-functions">Counting calls, and three more functions</h2>
 <p>Of the 59 functions the frame-rate patches touch outside frame timing, 12 turned out to be dead
-code and 47 live. To find which of the live ones the game actually runs, the runtime can now
+code and 47 live. To find which of the live ones the game actually runs, the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> can now
 count calls to original functions without replacing them: a short jump at each entry to a
 counter that then runs the original. One gameplay run in Iosefka's Clinic showed 13 of them
 running, several every frame.</p>
 <p>Nine of the others are small state methods that advance an owner by a fixed 1/30 s step; they
 are built next to the game's Chalice Dungeon singleton and do not run in the clinic. They are
-<abbr title="A function whose original code no longer runs: a hook sends every call to our C++ version.">replaced</abbr> and checked against the 60 FPS patch, and wait for a save that reaches the Chalice
-Dungeons. A per-frame task that hands the frame time to its parts is <abbr title="A function whose original code no longer runs: a hook sends every call to our C++ version.">replaced</abbr> and <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and ran in the game.">verified</abbr>,
+<abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> and checked against the 60 FPS patch, and wait for a save that reaches the Chalice
+Dungeons. A per-frame task that hands the frame time to its parts is <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> and <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>,
 including what the uncapped patch does to it through a code cave. And the engine's condition
 variable wait is the first function of a new system, the engine's kernel layer: the patches put
 a return over its timed wait that would crash if it ran, and every wait the game made was
@@ -384,11 +390,11 @@ written from the listing alone got one path wrong until the bytes were read dire
 <h2 id="workflow">Workflow</h2>
 <p>The work no longer waits on the maintainer between steps: a target queue, a standing procedure,
 a smoke test of the whole pipeline at the start of each session, a lock that keeps two projects
-off the GPU at the same time, and one game run records inputs for every <abbr title="A function whose original code no longer runs: a hook sends every call to our C++ version.">replaced</abbr> function at
+off the GPU at the same time, and one game run records inputs for every <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> function at
 once. Checking the limiter's recordings used to keep a core busy for four minutes; with a native
 answer for the clock reads, the executable loaded once and low priority, it takes under one.</p>
 <p>Replacements may start from a draft of the decompiler's output, kept on the maintainer's machine
-and never committed. What is committed is the renamed, readable, <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and ran in the game.">verified</abbr> version.</p>
+and never committed. What is committed is the renamed, readable, <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> version.</p>
 <h2 id="this-wiki">This wiki</h2>
 <p>It took on the look and features of the ChronoRET wiki, a new icon, a
 <a href="../../../../../gallery/">gallery</a> of the test runs, and this devlog now has one post per day.</p>
