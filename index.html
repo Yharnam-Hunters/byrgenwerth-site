@@ -131,6 +131,10 @@
           
         
           
+          <a class="wk-nav-link" href="runtime-syscalls/">Runtime system calls</a>
+          
+        
+          
           <a class="wk-nav-link" href="how-the-frame-limiter-works/">The Frame Limiter</a>
           
         
@@ -179,8 +183,8 @@
     
     <div class="wk-stats">
       <p class="wk-nav-heading" title="Project stats">Insight</p>
-      <div class="wk-stat-row"><span>Verified</span><span class="wk-stat-val">14,010 B</span></div>
-      <div class="wk-stat-row"><span>Functions</span><span class="wk-stat-val">21</span></div>
+      <div class="wk-stat-row"><span>Verified</span><span class="wk-stat-val">11,933 B</span></div>
+      <div class="wk-stat-row"><span>Functions</span><span class="wk-stat-val">20</span></div>
       <div class="wk-stat-row"><span>Replaced</span><span class="wk-stat-val">30</span></div>
       <p class="wk-stat-sublabel">Replaced (42.5 MB of code)</p>
       <div class="wk-stat-track" title="0.0357%">
@@ -188,10 +192,10 @@
       </div>
       <p class="wk-stat-pct">0.0357%</p>
       <p class="wk-stat-sublabel">Verified (42.5 MB of code)</p>
-      <div class="wk-stat-track" title="0.033%">
-        <div class="wk-stat-fill wk-stat-fill-dim" style="width:0.033%"></div>
+      <div class="wk-stat-track" title="0.0281%">
+        <div class="wk-stat-fill wk-stat-fill-dim" style="width:0.0281%"></div>
       </div>
-      <p class="wk-stat-pct">0.033%</p>
+      <p class="wk-stat-pct">0.0281%</p>
       <p class="wk-stat-link"><a href="progress/">View full progress →</a></p>
     </div>
     
@@ -239,31 +243,31 @@
 </div>
 
 <p><strong>Paleblood</strong> is a decompilation of <em>Bloodborne</em> (<abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr>, CUSA03173, version 1.09) with its own <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>: a <abbr title="Rewriting the game's code as readable source that behaves the same as the original, checked by running both; unlike a matching decompilation, the compiled bytes may differ.">functional decompilation</abbr>, the game's code rewritten function by function as readable C++ that does exactly what the original did, and a <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> of our own for that code to run on.</p>
-<p>The game doesn't run on Paleblood yet: 21 of 157,757 functions are <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> (0.01%). On <a href="runtime/">our own <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr></a> the executable's boot gets as far as <code>scePthreadAttrGetaffinity</code> (libkernel, called by libc.elf), with 238 of 686 system imports provided.</p>
+<p>The game doesn't run on Paleblood yet: 20 of 157,757 functions are <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> (0.01%). On <a href="runtime/">our own <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr></a> the executable's boot gets as far as <code>scePthreadAttrGetaffinity</code> (libkernel, called by libc.elf), with 238 of 686 system imports provided.</p>
 <div class="admonition warning">
 <p class="admonition-title">Transition in progress</p>
 <p>Paleblood is becoming a decompilation with its own <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>: the borrowed <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> (<abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; the borrowed runtime Paleblood used until October 2026 (a public fork), being removed.">bbport</abbr>,
 with the <abbr title="An open-source PS4 emulator; bbport's renderer and shader recompiler come from it. Paleblood uses none of its code.">shadPS4</abbr> graphics code it carries) is being removed, and the game won't run on Paleblood
 until our own <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> is far enough along. Some pages still describe the old setup while
-they are updated. See the <a href="devlog/2026/10/07/7-october-2026-a-new-direction-our-own-runtime/">announcement</a> and the
+they are updated. See the <a href="devlog/posts/2026-10-07-new-direction/">announcement</a> and the
 <a href="runtime/">Runtime</a> page.</p>
 </div>
 <div class="wk-stat-tiles">
-  <div class="wk-stat-tile"><span class="wk-stat-tile-val">14,010</span><span class="wk-stat-tile-label">bytes verified</span></div>
-  <div class="wk-stat-tile"><span class="wk-stat-tile-val">0.0330%</span><span class="wk-stat-tile-label">of all game code</span></div>
-  <div class="wk-stat-tile"><span class="wk-stat-tile-val">21</span><span class="wk-stat-tile-label">functions verified</span></div>
+  <div class="wk-stat-tile"><span class="wk-stat-tile-val">11,933</span><span class="wk-stat-tile-label">bytes verified</span></div>
+  <div class="wk-stat-tile"><span class="wk-stat-tile-val">0.0281%</span><span class="wk-stat-tile-label">of all game code</span></div>
+  <div class="wk-stat-tile"><span class="wk-stat-tile-val">20</span><span class="wk-stat-tile-label">functions verified</span></div>
   <div class="wk-stat-tile"><span class="wk-stat-tile-val">157,757</span><span class="wk-stat-tile-label">functions in the game</span></div>
   <div class="wk-stat-tile"><span class="wk-stat-tile-val">238 / 686</span><span class="wk-stat-tile-label">system imports provided</span></div>
   <div class="wk-stat-tile"><span class="wk-stat-tile-val">loaded</span><span class="wk-stat-tile-label">boot milestone (0 of 8)</span></div>
 </div>
 
 <p><svg class="wk-sparkline" viewBox="0 0 720 200" role="img"
-     aria-label="Bytes of verified replacement code by day, 4,711 to 14,010">
-  <polygon points="8,172 8.0,119.5 712.0,16.0 712,172" class="wk-spark-area"></polygon>
-  <polyline points="8.0,119.5 712.0,16.0" class="wk-spark-line"></polyline>
-  <circle cx="8.0" cy="119.5" r="2.5" class="wk-spark-dot"><title>2026-10-06: 4,711 bytes verified, 9 functions</title></circle><circle cx="712.0" cy="16.0" r="2.5" class="wk-spark-dot"><title>2026-10-07: 14,010 bytes verified, 21 functions</title></circle>
+     aria-label="Bytes of verified replacement code by day, 4,711 to 11,933">
+  <polygon points="8,172 8.0,110.4 360.0,16.0 712.0,16.0 712,172" class="wk-spark-area"></polygon>
+  <polyline points="8.0,110.4 360.0,16.0 712.0,16.0" class="wk-spark-line"></polyline>
+  <circle cx="8.0" cy="110.4" r="2.5" class="wk-spark-dot"><title>2026-10-06: 4,711 bytes verified, 9 functions</title></circle><circle cx="360.0" cy="16.0" r="2.5" class="wk-spark-dot"><title>2026-10-07: 11,933 bytes verified, 20 functions</title></circle><circle cx="712.0" cy="16.0" r="2.5" class="wk-spark-dot"><title>2026-10-09: 11,933 bytes verified, 20 functions</title></circle>
   <text x="8" y="192" class="wk-spark-label">2026-10-06 — 4,711 B</text>
-  <text x="712" y="192" class="wk-spark-label" text-anchor="end">2026-10-07 — 14,010 B</text>
+  <text x="712" y="192" class="wk-spark-label" text-anchor="end">2026-10-09 — 11,933 B</text>
 </svg></p>
 <p class="wk-page-meta">Verified replacement code by day — see the <a href="devlog/">devlog</a> for the story behind each step.</p>
 
@@ -360,13 +364,13 @@ our own words and our own code.</p>
 </tr>
 <tr>
 <td>Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></td>
-<td style="text-align: right;">21 (0.01%)</td>
-<td style="text-align: right;">14,010 (0.03%)</td>
+<td style="text-align: right;">30 (0.02%)</td>
+<td style="text-align: right;">15,176 (0.04%)</td>
 </tr>
 <tr>
 <td>Verified</td>
-<td style="text-align: right;">21 (0.01%)</td>
-<td style="text-align: right;">14,010 (0.03%)</td>
+<td style="text-align: right;">20 (0.01%)</td>
+<td style="text-align: right;">11,933 (0.03%)</td>
 </tr>
 </tbody>
 </table>
@@ -427,8 +431,8 @@ our own words and our own code.</p>
 <td>frame_timing</td>
 <td style="text-align: right;">22</td>
 <td style="text-align: right;">21</td>
-<td style="text-align: right;">12</td>
-<td style="text-align: right;">12</td>
+<td style="text-align: right;">21</td>
+<td style="text-align: right;">11</td>
 <td style="text-align: right;">5,447</td>
 </tr>
 <tr>

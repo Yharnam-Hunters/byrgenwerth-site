@@ -131,6 +131,10 @@
           
         
           
+          <a class="wk-nav-link" href="../../runtime-syscalls/">Runtime system calls</a>
+          
+        
+          
           <a class="wk-nav-link" href="../../how-the-frame-limiter-works/">The Frame Limiter</a>
           
         
@@ -179,8 +183,8 @@
     
     <div class="wk-stats">
       <p class="wk-nav-heading" title="Project stats">Insight</p>
-      <div class="wk-stat-row"><span>Verified</span><span class="wk-stat-val">14,010 B</span></div>
-      <div class="wk-stat-row"><span>Functions</span><span class="wk-stat-val">21</span></div>
+      <div class="wk-stat-row"><span>Verified</span><span class="wk-stat-val">11,933 B</span></div>
+      <div class="wk-stat-row"><span>Functions</span><span class="wk-stat-val">20</span></div>
       <div class="wk-stat-row"><span>Replaced</span><span class="wk-stat-val">30</span></div>
       <p class="wk-stat-sublabel">Replaced (42.5 MB of code)</p>
       <div class="wk-stat-track" title="0.0357%">
@@ -188,10 +192,10 @@
       </div>
       <p class="wk-stat-pct">0.0357%</p>
       <p class="wk-stat-sublabel">Verified (42.5 MB of code)</p>
-      <div class="wk-stat-track" title="0.033%">
-        <div class="wk-stat-fill wk-stat-fill-dim" style="width:0.033%"></div>
+      <div class="wk-stat-track" title="0.0281%">
+        <div class="wk-stat-fill wk-stat-fill-dim" style="width:0.0281%"></div>
       </div>
-      <p class="wk-stat-pct">0.033%</p>
+      <p class="wk-stat-pct">0.0281%</p>
       <p class="wk-stat-link"><a href="../../progress/">View full progress →</a></p>
     </div>
     
@@ -226,7 +230,7 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 7, 2026 22:05:30 UTC">October 7, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 9, 2026 22:10:12 UTC">October 9, 2026</span></p>
       
       <h1 id="frame-timing">Frame timing</h1>
 <h2 id="summary">Summary</h2>
@@ -255,12 +259,12 @@
 <text x="398" y="117" text-anchor="middle" class="wk-diag-title">frame_timing_flipper_init</text>
 <text x="398" y="135" text-anchor="middle" class="wk-diag-sub">0x02434520 · first frame: Game.FlipMode</text>
 </g>
-<g class="wk-diag-box wk-diag-matched">
+<g class="wk-diag-box wk-diag-unmatched">
 <rect x="20" y="168" width="236" height="56" rx="6"></rect>
 <text x="138" y="191" text-anchor="middle" class="wk-diag-title">frame_timing_pace_frame</text>
 <text x="138" y="209" text-anchor="middle" class="wk-diag-sub">0x02434770 · the frame limiter</text>
 </g>
-<g class="wk-diag-box wk-diag-matched">
+<g class="wk-diag-box wk-diag-unmatched">
 <rect x="280" y="168" width="236" height="56" rx="6"></rect>
 <text x="398" y="191" text-anchor="middle" class="wk-diag-title">wait out the frame</text>
 <text x="398" y="209" text-anchor="middle" class="wk-diag-sub">gettimeofday spin (1/30 or 1/60 s)</text>
@@ -290,6 +294,10 @@ running. Both the limiter and the frame step are <abbr title="A function with a 
 <li>keeps the last 32 frame times in a ring (index at <code>+0x260</code>) and derives a frame rate from
   their average (<code>+0x2b8</code>).</li>
 </ul>
+<p><code>gettimeofday</code> supplies wall time, so it is not guaranteed to be monotonic. The frame limiter's
+confirmed call passes a null timezone pointer. The game's separate <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> clock helper invokes
+<code>sceKernelClockGettime</code> with ID <code>4</code>, identified as <code>CLOCK_MONOTONIC</code>; that does not establish the
+IDs accepted by the imported libc <code>clock_gettime</code> wrapper. See the <a href="../../runtime-syscalls/"><abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> system-call notes</a>.</p>
 <p><code>0x004632d0</code> is a small <code>gettimeofday</code> helper in microseconds that the stock game never calls:
 nothing calls it directly, and no relocated pointer (vtable or table slot) points at it. The
 frame-rate patches overwrite it and its neighbours with their own code (a code cave), so it is
@@ -397,63 +405,63 @@ piece of the game's own per-frame work, the next layer to map.</p>
 <td><code>0x01f6a9f0</code></td>
 <td style="text-align: right;">121</td>
 <td><code>frame_timing_until_idle_01f6a9f0</code></td>
-<td><abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr></td>
+<td><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></td>
 <td>state method: advance the owner one fixed step while busy (1/30 s; 1/60 s in the 60 FPS patches) (a Chalice Dungeon state machine: built next to SprjHolygrail; not reached by the routes yet)</td>
 </tr>
 <tr>
 <td><code>0x0200d8a0</code></td>
 <td style="text-align: right;">137</td>
 <td><code>frame_timing_until_idle_0200d8a0</code></td>
-<td><abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr></td>
+<td><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></td>
 <td>state method: advance the owner one fixed step while busy (1/30 s; 1/60 s in the 60 FPS patches) (a Chalice Dungeon state machine: built next to SprjHolygrail; not reached by the routes yet)</td>
 </tr>
 <tr>
 <td><code>0x0200e100</code></td>
 <td style="text-align: right;">121</td>
 <td><code>frame_timing_until_idle_0200e100</code></td>
-<td><abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr></td>
+<td><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></td>
 <td>state method: advance the owner one fixed step while busy (1/30 s; 1/60 s in the 60 FPS patches) (a Chalice Dungeon state machine: built next to SprjHolygrail; not reached by the routes yet)</td>
 </tr>
 <tr>
 <td><code>0x0200e270</code></td>
 <td style="text-align: right;">151</td>
 <td><code>frame_timing_request_7_0200e270</code></td>
-<td><abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr></td>
+<td><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></td>
 <td>state method: when idle in states 2..5, request 7 and advance the owner one fixed step (a Chalice Dungeon state machine: built next to SprjHolygrail; not reached by the routes yet)</td>
 </tr>
 <tr>
 <td><code>0x02012610</code></td>
 <td style="text-align: right;">121</td>
 <td><code>frame_timing_until_idle_02012610</code></td>
-<td><abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr></td>
+<td><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></td>
 <td>state method: advance the owner one fixed step while busy (1/30 s; 1/60 s in the 60 FPS patches) (a Chalice Dungeon state machine: built next to SprjHolygrail; not reached by the routes yet)</td>
 </tr>
 <tr>
 <td><code>0x02012780</code></td>
 <td style="text-align: right;">122</td>
 <td><code>frame_timing_request_10_02012780</code></td>
-<td><abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr></td>
+<td><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></td>
 <td>state method: when idle, request 10 and advance the owner one fixed step (a Chalice Dungeon state machine: built next to SprjHolygrail; not reached by the routes yet)</td>
 </tr>
 <tr>
 <td><code>0x020128f0</code></td>
 <td style="text-align: right;">121</td>
 <td><code>frame_timing_until_idle_020128f0</code></td>
-<td><abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr></td>
+<td><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></td>
 <td>state method: advance the owner one fixed step while busy (1/30 s; 1/60 s in the 60 FPS patches) (a Chalice Dungeon state machine: built next to SprjHolygrail; not reached by the routes yet)</td>
 </tr>
 <tr>
 <td><code>0x02012a60</code></td>
 <td style="text-align: right;">151</td>
 <td><code>frame_timing_request_7_02012a60</code></td>
-<td><abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr></td>
+<td><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></td>
 <td>state method: when idle in states 2..5, request 7 and advance the owner one fixed step (a Chalice Dungeon state machine: built next to SprjHolygrail; not reached by the routes yet)</td>
 </tr>
 <tr>
 <td><code>0x02012bf0</code></td>
 <td style="text-align: right;">121</td>
 <td><code>frame_timing_until_idle_02012bf0</code></td>
-<td><abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr></td>
+<td><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></td>
 <td>state method: advance the owner one fixed step while busy (1/30 s; 1/60 s in the 60 FPS patches) (a Chalice Dungeon state machine: built next to SprjHolygrail; not reached by the routes yet)</td>
 </tr>
 <tr>
@@ -474,7 +482,7 @@ piece of the game's own per-frame work, the next layer to map.</p>
 <td><code>0x02434770</code></td>
 <td style="text-align: right;">2077</td>
 <td><code>frame_timing_pace_frame</code></td>
-<td><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></td>
+<td><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></td>
 <td>Frame limiter: target interval at +0x18 (1/30 or 1/60 s); sleeps then spins; 32-frame ring; every FPS patch edits it</td>
 </tr>
 <tr>

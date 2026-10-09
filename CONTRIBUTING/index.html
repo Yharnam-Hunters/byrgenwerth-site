@@ -131,6 +131,10 @@
           
         
           
+          <a class="wk-nav-link" href="../runtime-syscalls/">Runtime system calls</a>
+          
+        
+          
           <a class="wk-nav-link" href="../how-the-frame-limiter-works/">The Frame Limiter</a>
           
         
@@ -179,8 +183,8 @@
     
     <div class="wk-stats">
       <p class="wk-nav-heading" title="Project stats">Insight</p>
-      <div class="wk-stat-row"><span>Verified</span><span class="wk-stat-val">14,010 B</span></div>
-      <div class="wk-stat-row"><span>Functions</span><span class="wk-stat-val">21</span></div>
+      <div class="wk-stat-row"><span>Verified</span><span class="wk-stat-val">11,933 B</span></div>
+      <div class="wk-stat-row"><span>Functions</span><span class="wk-stat-val">20</span></div>
       <div class="wk-stat-row"><span>Replaced</span><span class="wk-stat-val">30</span></div>
       <p class="wk-stat-sublabel">Replaced (42.5 MB of code)</p>
       <div class="wk-stat-track" title="0.0357%">
@@ -188,10 +192,10 @@
       </div>
       <p class="wk-stat-pct">0.0357%</p>
       <p class="wk-stat-sublabel">Verified (42.5 MB of code)</p>
-      <div class="wk-stat-track" title="0.033%">
-        <div class="wk-stat-fill wk-stat-fill-dim" style="width:0.033%"></div>
+      <div class="wk-stat-track" title="0.0281%">
+        <div class="wk-stat-fill wk-stat-fill-dim" style="width:0.0281%"></div>
       </div>
-      <p class="wk-stat-pct">0.033%</p>
+      <p class="wk-stat-pct">0.0281%</p>
       <p class="wk-stat-link"><a href="../progress/">View full progress →</a></p>
     </div>
     
@@ -226,7 +230,7 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 7, 2026 22:05:30 UTC">October 7, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 9, 2026 22:10:12 UTC">October 9, 2026</span></p>
       
       <h1 id="contributing">Contributing</h1>
 <p class="wk-epigraph">Tonight, Gehrman joins the hunt.<cite>Gehrman, the First Hunter</cite></p>
@@ -240,15 +244,15 @@ Questions go in <a href="https://github.com/Yharnam-Hunters/Paleblood/discussion
 <li><strong>Name functions</strong> — the good first issues: small functions with a clear purpose, identified from their callers and the library calls they make, named in the shared function table.</li>
 <li><strong>Document a system</strong> — a page here per system: summary, key functions, structures, patch points, open questions.</li>
 <li><strong>Replace functions</strong> — readable C++ replacements, <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> against the original with the <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr> and reviewed independently.</li>
-<li><strong>Build the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr></strong> — the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> system functions Paleblood's <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> implements, claimable per system call group (issues labelled <code>runtime</code>).</li>
+<li><strong>Build the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr></strong> — claim a call or tightly related group in <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/34">issue #34</a>, then use a <code>runtime/&lt;function&gt;</code> branch to implement it in <code>RT_SYSLIB</code> with unit tests. Runtime-only work is clean-room, needs no game dump or <abbr title="Inputs recorded while the game ran, replayed by the harness.">captures</abbr>, and receives maintainer boot verification after merge; see the <a href="../runtime-syscalls/"><abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> syscall notes</a> and full workflow in Paleblood's contribution guide.</li>
 <li><strong>Tooling</strong> — the <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr>, the <abbr title="Inputs recorded while the game ran, replayed by the harness.">capture</abbr> library, the <abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr> scripts.</li>
 </ul>
 <h2 id="your-own-copy">Your own copy</h2>
-<p>Everything starts from your own console and your own copy of the game: Bloodborne (CUSA03173,
-EU) with the 1.09 update, dumped from your own <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr>. Every tool works only on that dump, on your
-machine. The project does not provide or point to game files, pkgs, firmware, keys or
-decryption tools. Requests for game files, or links to them, are removed wherever they are
-posted, and may lead to a ban.</p>
+<p>Decompilation work starts from your own console and your own copy of the game: Bloodborne
+(CUSA03173, EU) with the 1.09 update, dumped from your own <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr>. Runtime-only contributions do not
+need a dump, <abbr title="Inputs recorded while the game ran, replayed by the harness.">captures</abbr>, or any game files. The project does not provide or point to game files,
+pkgs, firmware, keys or decryption tools. Requests for game files, or links to them, are removed
+wherever they are posted, and may lead to a ban.</p>
 <h2 id="ground-rules">Ground rules</h2>
 <ul>
 <li><strong>No game files.</strong> Ever. No executables, assets, decompiler output or extracted data in commits, issues, pull requests or Discussions.</li>
@@ -260,8 +264,9 @@ posted, and may lead to a ban.</p>
 <h2 id="getting-started">Getting started</h2>
 <ol>
 <li>Fork <a href="https://github.com/Yharnam-Hunters/Paleblood">Paleblood</a> on GitHub and run <code>tools/install_hooks.sh</code> in your clone.</li>
-<li>Follow ONBOARDING.md: from your own dump to <abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr> with the shared names in under an hour.</li>
-<li>Pick an issue labelled <code>good first issue</code> and comment that you take it.</li>
+<li>For decompilation, follow ONBOARDING.md from your own dump to <abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr>. For <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> work, read the syscall notes and claim one function or related group in issue #34; use a branch named <code>runtime/&lt;function&gt;</code>.</li>
+<li>Keep one function or tightly related group per PR. Add <code>RT_SYSLIB</code> unit cases and include evidence, confirmed behavior, unresolved questions, and test results in the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> report.</li>
+<li>Runtime-only PRs run the compiler matrix, RT_SYSLIB tests, and repository policy checks without requiring a dump, <abbr title="Inputs recorded while the game ran, replayed by the harness.">captures</abbr>, or function-level <code>verify.py</code>. After merge, a maintainer runs <code>tools/boot.py</code> locally and posts the result on the PR.</li>
 </ol>
       
       </div>
