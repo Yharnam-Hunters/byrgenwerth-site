@@ -218,7 +218,7 @@
           <li>
             <a href="#9-october-2026-a-path-for-runtime-contributors" class="wk-toc-link">9 October 2026: a path for runtime contributors</a>
             
-            <ol><li><a href="#facts-before-implementations" class="wk-toc-link">Facts before implementations</a></li><li><a href="#a-smaller-runtime-pull-request" class="wk-toc-link">A smaller runtime pull request</a></li><li><a href="#contributor-tooling" class="wk-toc-link">Contributor tooling</a></li></ol>
+            <ol><li><a href="#facts-before-implementations" class="wk-toc-link">Facts before implementations</a></li><li><a href="#a-smaller-runtime-pull-request" class="wk-toc-link">A smaller runtime pull request</a></li><li><a href="#contributor-tooling" class="wk-toc-link">Contributor tooling</a></li><li><a href="#loading-imports-before-behavior" class="wk-toc-link">Loading: imports before behavior</a></li></ol>
             
           </li>
           
@@ -264,6 +264,11 @@ the pull request. No game files or <abbr title="Inputs recorded while the game r
 <p>The shared Git <abbr title="14-byte jumps written over the start of original functions, sending their callers to the replacements.">hooks</abbr> now dispatch through the active worktree, so linked worktrees run the
 checks installed for their own branch. This merge changes no function verification or <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>
 boot progress. Wiki progress was checked against the latest merged Paleblood revision.</p>
+<h2 id="loading-imports-before-behavior">Loading: imports before behavior</h2>
+<p>The loading map now separates the executable's linked file and PlayGo interfaces from behavior
+that has actually been observed. Its bundled Fios module is mapped, while the current <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>
+boot still stops before the first file milestone. The page records those boundaries and leaves
+archive access, PlayGo flow, and target-specific error paths as open questions.</p>
   
   <p class="wk-post-back"><a href="../../../../">← Back to devlog</a></p>
 </article>

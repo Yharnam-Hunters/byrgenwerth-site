@@ -230,20 +230,57 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 6, 2026 16:29:07 UTC">October 6, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 9, 2026 23:56:36 UTC">October 9, 2026</span></p>
       
       <h1 id="loading">Loading</h1>
 <h2 id="summary">Summary</h2>
-<p>Not documented yet. Scope: asset and map streaming, archives, load screens.</p>
+<p>The executable's file interface is split across imports from <code>libkernel</code>, <code>libc</code>, and its bundled
+<code>libSceFios2</code> module. The import table also names <code>libScePlayGo</code> calls for chunk and install
+state. The bundled Fios module is mapped as guest code; its exports provide imports used by the
+executable and bundled C library.</p>
+<p>These rows describe link dependencies, not a trace of calls made during a load. The latest boot
+evidence stops at <code>scePthreadAttrGetaffinity</code>, before the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>'s first file milestone. Asset,
+archive, map, and load-screen behavior therefore remains unobserved on Paleblood's <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>.</p>
 <h2 id="key-functions">Key functions</h2>
 <p>No functions tracked yet.</p>
+<p>The import table records interfaces the executable and its bundled modules can call:</p>
+<ul>
+<li><code>libSceFios2</code> imports from the executable: <code>sceFiosDHOpen</code>, <code>sceFiosDHOpenSync</code>,
+  <code>sceFiosDHReadSync</code>, <code>sceFiosDHCloseSync</code>, <code>sceFiosDirectoryCreate</code>, <code>sceFiosFHOpenSync</code>,
+  <code>sceFiosFHCloseSync</code>, <code>sceFiosFHReadSync</code>, <code>sceFiosFHWriteSync</code>, <code>sceFiosFHSeek</code>,
+  <code>sceFiosFHTell</code>, <code>sceFiosFHSyncSync</code>, <code>sceFiosStatSync</code>, <code>sceFiosFileDeleteSync</code>,
+  <code>sceFiosOpDelete</code>, <code>sceFiosOpGetActualCount</code>, and <code>sceFiosOpWait</code>. The bundled C library also
+  imports <code>sceFiosDeleteSync</code>, <code>sceFiosFHOpenWithModeSync</code>, <code>sceFiosIsValidHandle</code>,
+  <code>sceFiosRenameSync</code>, <code>sceFiosFHReadSync</code>, <code>sceFiosFHSeek</code>, <code>sceFiosFHCloseSync</code>, and
+  <code>sceFiosFHWriteSync</code>.</li>
+<li>File-facing <code>libkernel</code> imports include <code>sceKernelOpen</code>, <code>sceKernelRead</code>, <code>sceKernelLseek</code>,
+  <code>sceKernelClose</code>, and <code>sceKernelFstat</code>.</li>
+<li>File-facing <code>libc</code> imports include <code>fopen</code>, <code>fread</code>, <code>fseek</code>, <code>ftell</code>, <code>rewind</code>, <code>fwrite</code>,
+  and <code>fclose</code>.</li>
+<li><code>libScePlayGo</code>: <code>scePlayGoInitialize</code>, <code>scePlayGoOpen</code>, <code>scePlayGoGetChunkId</code>,
+  <code>scePlayGoGetLocus</code>, and <code>scePlayGoSetInstallSpeed</code>. No module or <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> provider is recorded
+  for these imports in the current source.</li>
+</ul>
+<p>The exact imported names and providers are in <code>symbols/imports.csv</code>; the list alone does not show
+which calls run, their arguments, or their results.</p>
 <h2 id="structs-and-globals">Structs and globals</h2>
-<p>None documented yet. Record each as: name, address, size, layout, who reads and writes it.</p>
+<p>No file-handle, Fios operation, archive-index, or PlayGo structure layout has been <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> for
+the target. Record a structure only after its size and accessed fields are supported by source
+analysis or a matching observation. No system-wide global is currently tied to this path.</p>
 <h2 id="patch-points">Patch points</h2>
-<p>None documented yet. Record each as: address, what the original does there, what the replacement or a mod would change, and the risk.</p>
+<p>No loading-specific patch point has been established. A patch should be documented here only
+after its address is mapped to a loading function and its effect is checked against the stock
+path.</p>
 <h2 id="open-questions">Open questions</h2>
 <ul>
-<li>Everything: this system has not been studied yet.</li>
+<li>Which file imports are reached during startup and the order in which they run; the current boot
+  stops before the file milestone.</li>
+<li>How Fios file and directory handles are opened, used, and closed, including the relationship
+  between synchronous calls and <code>sceFiosOp*</code> operations.</li>
+<li>How PlayGo chunk identifiers and install locations affect asset or map streaming.</li>
+<li>How the game's archive and mount layers translate paths into file operations. Document access
+  behavior only; archive contents and extracted files are out of scope.</li>
+<li>Which target-specific error and cancellation paths callers rely on.</li>
 </ul>
       
       </div>
