@@ -206,34 +206,99 @@
     <div class="wk-article">
 
       
-      
-      <div class="wk-toc" id="wk-toc">
-        <div class="wk-toc-header">
-          <b>Contents</b>
-          <button class="wk-toc-toggle"
-            onclick="var l=document.getElementById('wk-toc-list');l.hidden=!l.hidden;this.textContent=l.hidden?'[show]':'[hide]'">[hide]</button>
-        </div>
-        <ol class="wk-toc-list" id="wk-toc-list">
-          
-          <li>
-            <a href="#devlog" class="wk-toc-link">Devlog</a>
-            
-          </li>
-          
-        </ol>
-      </div>
-      
-      
+
+<div class="wk-toc wk-blog-toc" id="wk-toc">
+  <div class="wk-toc-header">
+    <b>Days</b>
+    <button class="wk-toc-toggle"
+      onclick="var l=document.getElementById('wk-toc-list');l.hidden=!l.hidden;this.textContent=l.hidden?'[show]':'[hide]'">[hide]</button>
+  </div>
+  <ol class="wk-toc-list" id="wk-toc-list">
+    
+    <li><a href="2026/10/09/9-october-2026-a-path-for-runtime-contributors/" class="wk-toc-link">9 October 2026: a path for runtime contributors</a></li>
+    
+    <li><a href="2026/10/07/7-october-2026-a-new-direction-our-own-runtime/" class="wk-toc-link">7 October 2026: a new direction, our own runtime</a></li>
+    
+    <li><a href="2026/10/07/7-october-2026-going-public-and-two-frames-worth-of-work/" class="wk-toc-link">7 October 2026: going public, and two frames' worth of work</a></li>
+    
+    <li><a href="2026/10/06/6-october-2026-from-an-empty-repository-to-the-frame-loop/" class="wk-toc-link">6 October 2026: from an empty repository to the frame loop</a></li>
+    
+  </ol>
+</div>
+
+
 
       <div class="wk-article-body">
       
-      
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 7, 2026 22:05:30 UTC">October 7, 2026</span></p>
-      
-      <h1 id="devlog">Devlog</h1>
+<div>
+  <h1 id="devlog">Devlog</h1>
 <p>Notes on Paleblood, one post per working day, split by topic.
 Written in plain English — if a term is new, check the <a href="../glossary/">Glossary</a> first.</p>
-      
+  
+  <div class="wk-blog-entry">
+    
+    <p class="wk-post-meta"><time datetime="2026-10-09 00:00:00+00:00">2026-10-09</time></p>
+    
+    <div class="wk-blog-excerpt"><h2 id="9-october-2026-a-path-for-runtime-contributors"><a class="toclink" href="2026/10/09/9-october-2026-a-path-for-runtime-contributors/">9 October 2026: a path for <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> contributors</a></h2>
+<p>The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> contribution route for issue #34 is prepared for review. A syscall contribution can
+be developed and tested without a game dump or recorded <abbr title="Inputs recorded while the game ran, replayed by the harness.">captures</abbr>; the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> and system-library
+tests run in CI, while the maintainer checks boot progress locally after merge.</p>
+</div>
+    
+    <p class="wk-read-more"><a href="2026/10/09/9-october-2026-a-path-for-runtime-contributors/">Continue reading →</a></p>
+    
+  </div>
+  
+  <div class="wk-blog-entry">
+    
+    <p class="wk-post-meta"><time datetime="2026-10-07 00:00:00+00:00">2026-10-07</time></p>
+    
+    <div class="wk-blog-excerpt"><h2 id="7-october-2026-a-new-direction-our-own-runtime"><a class="toclink" href="2026/10/07/7-october-2026-a-new-direction-our-own-runtime/">7 October 2026: a new direction, our own <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr></a></h2>
+<p>Paleblood is a decompilation with its own <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>. The borrowed runtimes it used so far are
+being removed, and the game will not run on Paleblood until our own <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> is far enough along.</p>
+</div>
+    
+    <p class="wk-read-more"><a href="2026/10/07/7-october-2026-a-new-direction-our-own-runtime/">Continue reading →</a></p>
+    
+  </div>
+  
+  <div class="wk-blog-entry">
+    
+    <p class="wk-post-meta"><time datetime="2026-10-07 00:00:00+00:00">2026-10-07</time></p>
+    
+    <div class="wk-blog-excerpt"><h2 id="7-october-2026-going-public-and-two-frames-worth-of-work"><a class="toclink" href="2026/10/07/7-october-2026-going-public-and-two-frames-worth-of-work/">7 October 2026: going public, and two frames' worth of work</a></h2>
+<p>The code repository went public today, with a clean history, open contributions and branch
+protection, and two more functions that run every frame are rebuilt and <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>.</p>
+</div>
+    
+    <p class="wk-read-more"><a href="2026/10/07/7-october-2026-going-public-and-two-frames-worth-of-work/">Continue reading →</a></p>
+    
+  </div>
+  
+  <div class="wk-blog-entry">
+    
+    <p class="wk-post-meta"><time datetime="2026-10-06 00:00:00+00:00">2026-10-06</time></p>
+    
+    <div class="wk-blog-excerpt"><h2 id="6-october-2026-from-an-empty-repository-to-the-frame-loop"><a class="toclink" href="2026/10/06/6-october-2026-from-an-empty-repository-to-the-frame-loop/">6 October 2026: from an empty repository to the frame loop</a></h2>
+<p>The first day: the target prepared, both repositories and their tooling, a <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> for the
+original executable, the first <abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr> export, and the game's frame loop rewritten as <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>
+C++, from the clock up to the function that runs every frame. By evening, scripted routes
+carried unattended test runs through the menus and character creation into the game.</p>
+<p><img alt="The title menu, rendered by the port on a virtual display with five replaced functions in place" src="../assets/screens/title-menu.jpg" /></p>
+</div>
+    
+    <p class="wk-read-more"><a href="2026/10/06/6-october-2026-from-an-empty-repository-to-the-frame-loop/">Continue reading →</a></p>
+    
+  </div>
+  
+  
+  <nav class="wk-pagination">
+    
+    
+  </nav>
+  
+</div>
+
       </div>
 
     </div>
