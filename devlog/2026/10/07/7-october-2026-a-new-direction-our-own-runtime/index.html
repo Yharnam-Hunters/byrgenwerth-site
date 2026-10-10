@@ -218,7 +218,7 @@
           <li>
             <a href="#7-october-2026-a-new-direction-our-own-runtime" class="wk-toc-link">7 October 2026: a new direction, our own runtime</a>
             
-            <ol><li><a href="#what-changes" class="wk-toc-link">What changes</a></li><li><a href="#what-it-means-for-playing" class="wk-toc-link">What it means for playing</a></li><li><a href="#a-readability-gate" class="wk-toc-link">A readability gate</a></li></ol>
+            <ol><li><a href="#runtime-and-boot-progress" class="wk-toc-link">Runtime and boot progress</a></li><li><a href="#decompilation-and-verified-functions" class="wk-toc-link">Decompilation and verified functions</a></li><li><a href="#tooling-and-automation" class="wk-toc-link">Tooling and automation</a></li><li><a href="#documentation-and-website-changes" class="wk-toc-link">Documentation and website changes</a></li><li><a href="#tests-and-validation" class="wk-toc-link">Tests and validation</a></li><li><a href="#blockers-and-next-steps" class="wk-toc-link">Blockers and next steps</a></li></ol>
             
           </li>
           
@@ -238,35 +238,46 @@
   
   
   <h1 id="7-october-2026-a-new-direction-our-own-runtime">7 October 2026: a new direction, our own <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr></h1>
-<p>Paleblood is a decompilation with its own <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>. The borrowed runtimes it used so far are
-being removed, and the game will not run on Paleblood until our own <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> is far enough along.</p>
+<p>Paleblood opened its code to contributors and began replacing Bloodborne with a clean-room
+<abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> of its own. This entry combines the day's <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> change and decompilation progress;
+the earlier game-play results below used the project's former <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>.</p>
 <!-- more -->
 
-<h2 id="what-changes">What changes</h2>
-<p>Until now, Paleblood's rewritten functions were tried in the game on a borrowed <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>: a fork
-of <abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; the borrowed runtime Paleblood used until October 2026 (a public fork), being removed.">bbport</abbr>, which carries graphics code taken from the <abbr title="An open-source PS4 emulator; bbport's renderer and shader recompiler come from it. Paleblood uses none of its code.">shadPS4</abbr> emulator. That got the first functions <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>
-quickly, but it tied the project to code that isn't ours. From today Paleblood builds its own
-<abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> instead, and <abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; the borrowed runtime Paleblood used until October 2026 (a public fork), being removed.">bbport</abbr> and <abbr title="An open-source PS4 emulator; bbport's renderer and shader recompiler come from it. Paleblood uses none of its code.">shadPS4</abbr> are being removed from the project entirely. They stay
-in the credits as part of its history.</p>
-<p>The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> is written clean-room: from public documentation, our own reverse engineering and
-what we observe, never from another emulator's code. Its first piece is done. Paleblood now has
-its own <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr>, which maps the game's executable exactly as the old <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> prepared it, byte for
-byte, and the verification <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr> already runs on it. Every function <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> so far was checked
-again on the new <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr>, case for case, and gives the same results as on the old <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>.</p>
-<h2 id="what-it-means-for-playing">What it means for playing</h2>
-<p>The game won't run on Paleblood for a while. Running it needs the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>'s whole roadmap:
-threads and memory, files, input, audio, video out, and the graphics, the largest part. The
-<a href="../../../../../runtime/">Runtime</a> page lists the roadmap and shows how far the game's executable gets
-on our <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> today: its own C library starts up and stops at the first system function we
-haven't written yet.</p>
-<p>Meanwhile the decompilation goes on as before: functions are rewritten and proved against the
-original in the verification <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr>, on inputs recorded earlier and on generated <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr>.</p>
-<h2 id="a-readability-gate">A readability gate</h2>
-<p>After a critique of the rewritten code, readability becomes a hard requirement rather than a
-later clean-up; the gate went in the same evening. A function will only reach the main branch when it is both <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> and readable:
-named structures instead of raw offsets, named calls instead of addresses, named constants, and
-no test plumbing inside the game's code. The functions rewritten so far are being brought up to
-that standard first, each one checked again and reviewed independently.</p>
+<h2 id="runtime-and-boot-progress">Runtime and boot progress</h2>
+<p>Earlier that day, the former <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> ran the game at 60 FPS through Iosefka's Clinic. The project
+then began removing that borrowed <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> and its graphics dependency. Paleblood's new <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr>
+maps the executable byte for byte and its verification <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr> reproduced the earlier function
+results. At this point the new <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> did not run the game; its system-library work stopped at
+an unimplemented import. The roadmap still included threads and memory, files, input, audio,
+video out, and graphics.</p>
+<h2 id="decompilation-and-verified-functions">Decompilation and <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> functions</h2>
+<p>The earlier <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>'s frame-loop work included the pad manager's step, reference-counted render
+updates, present/<abbr title="Vertical blank: the gap between two screen refreshes, when a frame is shown.">vblank</abbr> handling, YEBIS sample parameters, six task-manager functions, a physics
+constructor, the Havok AI manager, and a character update. The clinic route recorded the per-frame
+work and 19 physics constructions. The AI manager's branches and idle paths used explicit test
+fixtures. Tests caught floating-point <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr>, stack arguments, thread-local state, shared
+patch data, and object memory that the <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr> needed to describe. Those results belong to the
+former <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> and do not show the new Paleblood <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> executing the game.</p>
+<h2 id="tooling-and-automation">Tooling and automation</h2>
+<p>The verification <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr> learned to pass and return floating-point values, model stack arguments
+and thread-local state, apply the frame-rate patch to the original, and count calls without
+replacing functions. Deliberately incorrect replacements were used to check that the cases caught
+known mistakes. The project also introduced a readable-code review gate and a contributor route
+based on claimed work and pull-request evidence.</p>
+<h2 id="documentation-and-website-changes">Documentation and website changes</h2>
+<p>The public Paleblood repository opened with a clean history, contribution guidance, and protected
+pull requests. The old repositories became private archives. The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> roadmap and clean-room
+boundary were documented alongside the new <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr>.</p>
+<h2 id="tests-and-validation">Tests and validation</h2>
+<p>The earlier 60-FPS clinic session reached Iosefka's Clinic with the replacements in place; recorded
+calls and edge fixtures checked the covered functions, and deliberately wrong versions exposed
+several test gaps. The new <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> then ran the existing verification cases with the same results.
+These are separate results: the former demonstrated game execution; the new <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> demonstrated
+function verification only.</p>
+<h2 id="blockers-and-next-steps">Blockers and next steps</h2>
+<p>At the time, the new <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> still needed its system imports and execution layers before it could
+boot the game. The decompilation continued independently, with every replacement requiring
+recorded inputs where available, <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr>, readable code, and matching verification evidence.</p>
   
   <p class="wk-post-back"><a href="../../../../">← Back to devlog</a></p>
 </article>

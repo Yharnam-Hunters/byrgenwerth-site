@@ -215,13 +215,11 @@
   </div>
   <ol class="wk-toc-list" id="wk-toc-list">
     
-    <li><a href="2026/10/10/capture-foundation-deterministic-cases-with-provenance/" class="wk-toc-link">Capture foundation: deterministic cases with provenance</a></li>
+    <li><a href="2026/10/10/10-october-2026-recorded-verification-and-runtime-foundations/" class="wk-toc-link">10 October 2026: recorded verification and runtime foundations</a></li>
     
     <li><a href="2026/10/09/9-october-2026-a-path-for-runtime-contributors/" class="wk-toc-link">9 October 2026: a path for runtime contributors</a></li>
     
     <li><a href="2026/10/07/7-october-2026-a-new-direction-our-own-runtime/" class="wk-toc-link">7 October 2026: a new direction, our own runtime</a></li>
-    
-    <li><a href="2026/10/07/7-october-2026-going-public-and-two-frames-worth-of-work/" class="wk-toc-link">7 October 2026: going public, and two frames' worth of work</a></li>
     
     <li><a href="2026/10/06/6-october-2026-from-an-empty-repository-to-the-frame-loop/" class="wk-toc-link">6 October 2026: from an empty repository to the frame loop</a></li>
     
@@ -234,60 +232,20 @@
       
 <div>
   <h1 id="devlog">Devlog</h1>
-<p>Notes on Paleblood, one post per working day, split by topic.
+<p>Notes on Paleblood, one post per local calendar day, updated as milestones land and split into six standard sections.
 Written in plain English — if a term is new, check the <a href="../glossary/">Glossary</a> first.</p>
   
   <div class="wk-blog-entry">
     
     <p class="wk-post-meta"><time datetime="2026-10-10 00:00:00+00:00">2026-10-10</time></p>
     
-    <div class="wk-blog-excerpt"><h2 id="capture-foundation-deterministic-cases-with-provenance"><a class="toclink" href="2026/10/10/capture-foundation-deterministic-cases-with-provenance/">Capture foundation: deterministic cases with provenance</a></h2>
-<p>Paleblood PR #46 adds an initial reliability layer to the generic <abbr title="Inputs recorded while the game ran, replayed by the harness.">capture</abbr> path. New recorder
-cases can identify the hooked function and <abbr title="Inputs recorded while the game ran, replayed by the harness.">capture</abbr> run, buffer entries serialize in a stable
-order, and the writer refuses unsafe paths or an existing case filename. Replay checks the
-function and executable address when provenance is present, while older schema-1 cases remain
-compatible.</p>
-<p>This is a foundation, not automatic <abbr title="Inputs recorded while the game ran, replayed by the harness.">capture</abbr> of every replacement. No production replacement
-calls the recorder yet, so it does not add game-run inputs to the <abbr title="Inputs recorded while the game ran, replayed by the harness.">capture</abbr> library. In
-particular, <code>0x02713870</code> still has no matching recorded inputs and remains blocked from
-verification beyond generated <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr>.</p>
-<p>The change did not alter function replacements or the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> ABI. GCC and Clang builds passed,
-the full CTest suite passed under both compilers, and repository <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr>, session, clean-room, and
-readability checks passed. The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> page stays explicit about the unfinished integration
-step.</p>
-<h3 id="follow-up-a-typed-capture-proof-not-a-production-observer"><a class="toclink" href="2026/10/10/capture-foundation-deterministic-cases-with-provenance/#follow-up-a-typed-capture-proof-not-a-production-observer">Follow-up: a typed <abbr title="Inputs recorded while the game ran, replayed by the harness.">capture</abbr> proof, not a production observer</a></h3>
-<p>Paleblood PR #47 documents the current <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> boundary: its host interface installs a replacement
-target directly and carries no signature, return, or pointer-range descriptors. A test-only
-adapter with one declared integer signature and explicit four-byte buffers emitted a schema-1
-case that the existing <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr> replayed successfully; a deliberately changed output failed
-verification. Unsupported signatures and incomplete descriptors fail before the fixture is
-called. The experiment does not install a production wrapper, exercise stack or floating-point
-arguments, record imports, or produce real game <abbr title="Inputs recorded while the game ran, replayed by the harness.">captures</abbr>. <code>0x02713870</code> remains blocked until
-matching recorded inputs exist.</p>
-<p>GCC and Clang full builds and all 11 CTest cases passed. The test leaves production <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr>
-registration and replacements unchanged.</p>
-<h3 id="follow-up-promotion-from-recorded-evidence"><a class="toclink" href="2026/10/10/capture-foundation-deterministic-cases-with-provenance/#follow-up-promotion-from-recorded-evidence">Follow-up: promotion from recorded evidence</a></h3>
-<p>Paleblood PR #48 made comparison output from <code>tools/promote.py</code> temporary, keeping generated
-results out of the local <abbr title="Inputs recorded while the game ran, replayed by the harness.">capture</abbr> library. On the merged source, <code>frame_timing_pace_frame</code>
-(<code>0x02434770</code>) passed all 585 recorded calls and 26 <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr> with its existing approved
-independent review, so its status advanced to <code>verified</code>. The public progress tables now report
-21 <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> functions. The change did not add a game run, modify <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> behavior, or create new
-<abbr title="Inputs recorded while the game ran, replayed by the harness.">capture</abbr> inputs; boot still stops at <code>scePthreadAttrGetaffinity</code>, and <code>0x02713870</code> remains blocked
-without matching recorded inputs. Paleblood PR #49 refreshed the generated public frame-timing
-page and progress table from that merged status; it added no <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> behavior or new verification
-result.</p>
-<h3 id="follow-up-four-network-byte-order-imports"><a class="toclink" href="2026/10/10/capture-foundation-deterministic-cases-with-provenance/#follow-up-four-network-byte-order-imports">Follow-up: four network byte-order imports</a></h3>
-<p>Paleblood PR <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/50">#50</a>, merged at
-<code>816ea964c2d5db49271ad3131cad4a24e3d0bcc5</code>, implements <code>sceNetHtonl</code>, <code>sceNetHtons</code>,
-<code>sceNetNtohl</code>, and <code>sceNetNtohs</code>. These are deterministic 32-bit and 16-bit host/network byte-order
-conversions. Public API declarations and the standard byte-order contract support this narrow
-behavior; sockets, name resolution, epoll, and online state are not covered.</p>
-<p>The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> registry tests cover both directions with known byte patterns, zero and maximum-width
-values, and round trips. GCC and Clang Release builds and full CTest suites passed 11/11; clean-room,
-policy, <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr>, and session-audit checks passed. These four implementations do not resolve the first
-unresolved call in the last recorded boot result, <code>scePthreadAttrGetaffinity</code>, owned through <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>
-issue #34. The boot <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr> was not rerun for this change; the saved status remains 238 of 686
-imports. No game data or recorded function cases were used.</p></div>
+    <div class="wk-blog-excerpt"><h2 id="10-october-2026-recorded-verification-and-runtime-foundations"><a class="toclink" href="2026/10/10/10-october-2026-recorded-verification-and-runtime-foundations/">10 October 2026: recorded verification and <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> foundations</a></h2>
+<p>This day improved <abbr title="Inputs recorded while the game ran, replayed by the harness.">capture</abbr> reliability, <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> one function from existing recorded calls, and
+added four deterministic network byte-order imports. The tooling work did not itself advance game
+execution.</p>
+</div>
+    
+    <p class="wk-read-more"><a href="2026/10/10/10-october-2026-recorded-verification-and-runtime-foundations/">Continue reading →</a></p>
     
   </div>
   
@@ -296,9 +254,9 @@ imports. No game data or recorded function cases were used.</p></div>
     <p class="wk-post-meta"><time datetime="2026-10-09 00:00:00+00:00">2026-10-09</time></p>
     
     <div class="wk-blog-excerpt"><h2 id="9-october-2026-a-path-for-runtime-contributors"><a class="toclink" href="2026/10/09/9-october-2026-a-path-for-runtime-contributors/">9 October 2026: a path for <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> contributors</a></h2>
-<p>The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> contribution route for issue #34 is prepared for review. A syscall contribution can
-be developed and tested without a game dump or recorded <abbr title="Inputs recorded while the game ran, replayed by the harness.">captures</abbr>; the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> and system-library
-tests run in CI, while the maintainer checks boot progress locally after merge.</p>
+<p>Runtime-only contributors can implement a documented syscall without access to a game dump or
+recorded <abbr title="Inputs recorded while the game ran, replayed by the harness.">captures</abbr>. This day's work prepared the issue #34 contribution route and clarified what
+the current boot evidence does and does not establish.</p>
 </div>
     
     <p class="wk-read-more"><a href="2026/10/09/9-october-2026-a-path-for-runtime-contributors/">Continue reading →</a></p>
@@ -310,24 +268,12 @@ tests run in CI, while the maintainer checks boot progress locally after merge.<
     <p class="wk-post-meta"><time datetime="2026-10-07 00:00:00+00:00">2026-10-07</time></p>
     
     <div class="wk-blog-excerpt"><h2 id="7-october-2026-a-new-direction-our-own-runtime"><a class="toclink" href="2026/10/07/7-october-2026-a-new-direction-our-own-runtime/">7 October 2026: a new direction, our own <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr></a></h2>
-<p>Paleblood is a decompilation with its own <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>. The borrowed runtimes it used so far are
-being removed, and the game will not run on Paleblood until our own <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> is far enough along.</p>
+<p>Paleblood opened its code to contributors and began replacing Bloodborne with a clean-room
+<abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> of its own. This entry combines the day's <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> change and decompilation progress;
+the earlier game-play results below used the project's former <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>.</p>
 </div>
     
     <p class="wk-read-more"><a href="2026/10/07/7-october-2026-a-new-direction-our-own-runtime/">Continue reading →</a></p>
-    
-  </div>
-  
-  <div class="wk-blog-entry">
-    
-    <p class="wk-post-meta"><time datetime="2026-10-07 00:00:00+00:00">2026-10-07</time></p>
-    
-    <div class="wk-blog-excerpt"><h2 id="7-october-2026-going-public-and-two-frames-worth-of-work"><a class="toclink" href="2026/10/07/7-october-2026-going-public-and-two-frames-worth-of-work/">7 October 2026: going public, and two frames' worth of work</a></h2>
-<p>The code repository went public today, with a clean history, open contributions and branch
-protection, and two more functions that run every frame are rebuilt and <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>.</p>
-</div>
-    
-    <p class="wk-read-more"><a href="2026/10/07/7-october-2026-going-public-and-two-frames-worth-of-work/">Continue reading →</a></p>
     
   </div>
   

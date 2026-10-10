@@ -218,7 +218,7 @@
           <li>
             <a href="#9-october-2026-a-path-for-runtime-contributors" class="wk-toc-link">9 October 2026: a path for runtime contributors</a>
             
-            <ol><li><a href="#facts-before-implementations" class="wk-toc-link">Facts before implementations</a></li><li><a href="#a-smaller-runtime-pull-request" class="wk-toc-link">A smaller runtime pull request</a></li><li><a href="#contributor-tooling" class="wk-toc-link">Contributor tooling</a></li><li><a href="#loading-imports-before-behavior" class="wk-toc-link">Loading: imports before behavior</a></li></ol>
+            <ol><li><a href="#runtime-and-boot-progress" class="wk-toc-link">Runtime and boot progress</a></li><li><a href="#decompilation-and-verified-functions" class="wk-toc-link">Decompilation and verified functions</a></li><li><a href="#tooling-and-automation" class="wk-toc-link">Tooling and automation</a></li><li><a href="#documentation-and-website-changes" class="wk-toc-link">Documentation and website changes</a></li><li><a href="#tests-and-validation" class="wk-toc-link">Tests and validation</a></li><li><a href="#blockers-and-next-steps" class="wk-toc-link">Blockers and next steps</a></li></ol>
             
           </li>
           
@@ -238,37 +238,46 @@
   
   
   <h1 id="9-october-2026-a-path-for-runtime-contributors">9 October 2026: a path for <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> contributors</h1>
-<p>The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> contribution route for issue #34 is prepared for review. A syscall contribution can
-be developed and tested without a game dump or recorded <abbr title="Inputs recorded while the game ran, replayed by the harness.">captures</abbr>; the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> and system-library
-tests run in CI, while the maintainer checks boot progress locally after merge.</p>
+<p>Runtime-only contributors can implement a documented syscall without access to a game dump or
+recorded <abbr title="Inputs recorded while the game ran, replayed by the harness.">captures</abbr>. This day's work prepared the issue #34 contribution route and clarified what
+the current boot evidence does and does not establish.</p>
 <!-- more -->
 
-<h2 id="facts-before-implementations">Facts before implementations</h2>
-<p>The new syscall notes separate the public contracts for <code>getpagesize</code>, <code>getpid</code>,
-<code>clock_gettime</code>, and <code>gettimeofday</code> from what has actually been established for the target. The
-frame limiter passes null to <code>gettimeofday</code>'s timezone argument. Clock ID <code>4</code> is confirmed for a
-separate <code>sceKernelClockGettime</code> call, but the IDs passed to the imported <code>clock_gettime</code> remain
-unknown. The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> should leave those questions visible instead of guessing a return value to
-make boot continue.</p>
-<h2 id="a-smaller-runtime-pull-request">A smaller <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> pull request</h2>
-<p>The workflow prepared for issue #34 uses a claim-and-branch process, one call or tightly related
-group per pull request, and a concise report with evidence, unresolved questions, clean-room
-basis, and tests. The merged CI workflow chooses that report from the files changed. Runtime-only
-pull requests run the compiler matrix, RT_SYSLIB tests, and policy checks without game dumps or
-<abbr title="Inputs recorded while the game ran, replayed by the harness.">captures</abbr>.
-Decompilation and mixed-track pull requests keep the full session report and all existing build
-and policy checks. The readiness change added no function replacements and no verification results.</p>
-<p>After a <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> change merges, the maintainer runs <code>tools/boot.py</code> locally and posts its result on
-the pull request. No game files or <abbr title="Inputs recorded while the game ran, replayed by the harness.">captures</abbr> need to leave the maintainer's machine.</p>
-<h2 id="contributor-tooling">Contributor tooling</h2>
-<p>The shared Git <abbr title="14-byte jumps written over the start of original functions, sending their callers to the replacements.">hooks</abbr> now dispatch through the active worktree, so linked worktrees run the
-checks installed for their own branch. This merge changes no function verification or <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>
-boot progress. Wiki progress was checked against the latest merged Paleblood revision.</p>
-<h2 id="loading-imports-before-behavior">Loading: imports before behavior</h2>
-<p>The loading map now separates the executable's linked file and PlayGo interfaces from behavior
-that has actually been observed. Its bundled Fios module is mapped, while the current <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>
-boot still stops before the first file milestone. The page records those boundaries and leaves
-archive access, PlayGo flow, and target-specific error paths as open questions.</p>
+<h2 id="runtime-and-boot-progress">Runtime and boot progress</h2>
+<p>The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> still stopped at its first unresolved system call. The maintainer's boot check runs
+locally after a <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> pull request merges; a contributor does not need proprietary files or
+<abbr title="Inputs recorded while the game ran, replayed by the harness.">captures</abbr> to implement and test a <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>-only change.</p>
+<h2 id="decompilation-and-verified-functions">Decompilation and <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> functions</h2>
+<p>No function replacement or verification status changed in this milestone. The frame limiter's
+clock calls pass a null timezone to <code>gettimeofday</code>; a separate <code>sceKernelClockGettime</code> call uses
+clock ID <code>4</code>, but the IDs passed to the imported <code>clock_gettime</code> are still unknown. Those gaps
+remain open instead of being filled with assumed return values.</p>
+<h2 id="tooling-and-automation">Tooling and automation</h2>
+<p>The issue #34 workflow uses a claim-and-branch process, small related changes, and a concise
+evidence report. <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/44">Paleblood PR #44</a>,
+merged at <code>ef1989ec3388c26cddd20b13742ba93d09cc147e</code>, prepared the contributor checks. Runtime-only
+pull requests use the compiler matrix, system-library tests, and policy checks. Decompilation and
+mixed changes retain the full session report and verification gates. Shared Git <abbr title="14-byte jumps written over the start of original functions, sending their callers to the replacements.">hooks</abbr> dispatch
+through the active worktree, so linked worktrees use their own installed checks.</p>
+<!-- milestone:codex-daily-devlog-policy order=2026-10-10T02:45:00.000000Z -->
+<p>Daily posting now updates the existing local-date entry through stable milestone keys, ordered sections, and concurrent-safe atomic writes. The gated publisher also keeps the pinned Paleblood source revision separate from the public-site remote. Seven deterministic tests pass, including concurrent updates and repeat MkDocs output. These are documentation and workflow improvements; game execution did not advance.</p>
+<!-- /milestone -->
+<h2 id="documentation-and-website-changes">Documentation and website changes</h2>
+<p>The syscall notes distinguish public contracts for <code>getpagesize</code>, <code>getpid</code>, <code>clock_gettime</code>, and
+<code>gettimeofday</code> from target-specific behavior not yet established. The loading map records the
+bundled Fios module while leaving archive access, PlayGo flow, and target-specific error paths as
+open questions. Progress was synchronized from merged Paleblood sources.</p>
+<h2 id="tests-and-validation">Tests and validation</h2>
+<p>The issue #34 workflow added no replacement and no verification result. Runtime-only CI checks
+run without game data; pull-request CI validates the changed code and policy before the local
+post-merge boot check. The shared <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> changes were exercised in linked worktrees.</p>
+<h2 id="blockers-and-next-steps">Blockers and next steps</h2>
+<p>The first unresolved import and the target-specific behavior listed above still need evidence.
+The next <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> change should implement one documented call or a tightly related group, keep
+unknown behavior explicit, and include deterministic tests and its source basis.</p>
+<!-- milestone:paleblood-evidence-assessment order=2026-10-10T02:46:00.000000Z -->
+<p>The current Paleblood source has nine <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr> functions, but none has matching recorded calls in the available <abbr title="Inputs recorded while the game ran, replayed by the harness.">capture</abbr> library; the read-only promotion dry run produced no candidate. Issue #34 still has a contributor claim and remains the earliest boot blocker. Issues #35–#40 are unclaimed, but their current issue scopes list imports without enough target-specific contracts for a safe implementation. The existing <code>0x0183ac60</code> worktree was left untouched, and <code>0x02713870</code> still has no matching recorded inputs. No <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> behavior or game execution advanced.</p>
+<!-- /milestone -->
   
   <p class="wk-post-back"><a href="../../../../">← Back to devlog</a></p>
 </article>
