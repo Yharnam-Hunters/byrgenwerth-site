@@ -208,7 +208,7 @@
           <li>
             <a href="#runtime" class="wk-toc-link">Runtime</a>
             
-            <ol><li><a href="#roadmap" class="wk-toc-link">Roadmap</a></li><li><a href="#last-recorded-boot-result" class="wk-toc-link">Last recorded boot result</a></li></ol>
+            <ol><li><a href="#what-works-in-palebloods-runtime" class="wk-toc-link">What works in Paleblood's runtime</a></li><li><a href="#capture-and-replay" class="wk-toc-link">Capture and replay</a></li><li><a href="#boot-history-and-the-current-blocker" class="wk-toc-link">Boot history and the current blocker</a></li><li><a href="#decompilation-progress" class="wk-toc-link">Decompilation progress</a></li><li><a href="#roadmap" class="wk-toc-link">Roadmap</a></li><li><a href="#full-run-dependency-and-replacement-path" class="wk-toc-link">Full-run dependency and replacement path</a></li></ol>
             
           </li>
           
@@ -220,100 +220,196 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 10, 2026 03:18:22 UTC">October 10, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 10, 2026 06:29:31 UTC">October 10, 2026</span></p>
       
       <h1 id="runtime">Runtime</h1>
-<p>Paleblood is a decompilation with its own <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>. The decompilation rewrites the game's code,
-function by function, as readable C++ that is proved to behave like the original. The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> is
-what that code, and the original executable while it is being <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr>, runs on: Paleblood's own
-<abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> and its own versions of the PlayStation 4 system libraries, written from public
-documentation and our own reverse engineering, not taken from any emulator.</p>
-<p>The game does not run on Paleblood yet. It will once the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> is far enough along the roadmap
-below. Until then, every <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> function is checked in the verification <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr>, which runs
-the original function and the replacement side by side on recorded and generated inputs.</p>
-<h2 id="roadmap">Roadmap</h2>
-<p>The order the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> is built in. Each step is measured by how far the game's own executable
-boots on it.</p>
-<ol>
-<li><strong>Loader</strong> (done). Maps the executable, applies its relocations and binds every system
-   import, either to the game's own bundled modules (its C library and file system library,
-   mapped as guest code) or to the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>. The verification <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr> uses it too.</li>
-<li><strong>Generic <abbr title="Inputs recorded while the game ran, replayed by the harness.">capture</abbr> (foundation in place; integration incomplete).</strong> The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> recorder can
-   write deterministic cases with function/run provenance, and replay rejects a mismatched
-   function or address. No production replacement calls the recorder yet, so this does not
-   automatically produce new game inputs. The current version-1 <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> interface passes a
-   replacement target directly and exposes no return callback or typed argument and memory
-   descriptors. A test-only typed adapter now proves that explicitly described synthetic inputs
-   can serialize and replay through the verifier; it is not connected to production <abbr title="14-byte jumps written over the start of original functions, sending their callers to the replacements.">hooks</abbr> and
-   does not <abbr title="Inputs recorded while the game ran, replayed by the harness.">capture</abbr> real game calls. The goal remains recording inputs from the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> without
-   adding recording code to each <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> function. <code>tools/promote.py</code> consumes existing local
-   recorded and <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr> to advance reviewed functions; it does not produce <abbr title="Inputs recorded while the game ran, replayed by the harness.">capture</abbr> inputs.</li>
-<li><strong>Kernel, threads and memory.</strong> Processes, threads, mutexes and other synchronisation,
-   memory mapping, time.</li>
-<li><strong>Files.</strong> Save data, the game's packed archives, its file system library's needs.</li>
-<li><strong>Input.</strong> Controllers and the signed-in user.</li>
-<li><strong>Audio.</strong> Audio output and the decoders the game uses.</li>
-<li><strong>Video out.</strong> Display buffers and flips.</li>
-<li><strong><abbr title="The PS4's low-level graphics API.">GNM</abbr> and shaders.</strong> The GPU's command interface and the game's shaders: the largest part.
-   Graphics are rebuilt at the level of the game's own graphics layer, not by emulating the
-   console's GPU.</li>
-</ol>
-<p>Network and system-service imports are tracked separately in the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> issue groups. The
-byte-order-only slice of <code>libSceNet</code> is implemented; sockets, resolvers, epoll, and offline-state
-behavior remain open. These calls are not the current boot blocker.</p>
-<h2 id="last-recorded-boot-result">Last recorded boot result</h2>
-<p>The boot <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr> runs the executable's entry on the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> and stops at the first system
-function the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> does not implement, naming it. The generated status below is the last
-recorded run from Paleblood's <code>symbols/boot.json</code>; it is not refreshed merely because <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>
-source changes. After a <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> change, a maintainer must rerun the <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr> on a local executable
-before claiming that boot advanced.</p>
-<p><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/51">Paleblood PR #51</a> extends
-<code>symbols/boot_history.csv</code> with the run outcome, phase, unresolved-import return site, and guest
-fault location, signal, and address. A changed failure location is retained even if the import
-counts and blocking symbol stay the same; existing history entries remain readable. This is a
-diagnostics improvement only. It did not run the game or change the saved result below.</p>
+<p>Paleblood is building a <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> of its own. A <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> is the software that loads a program and provides the system services it expects. The project has an <abbr title="Executable and Linkable Format, the standard executable file format on Linux and FreeBSD.">ELF</abbr> <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> and boot <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr> that can load the game's executable and bundled system modules, bind imports, and run the entry point until it reaches a call the current <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> does not implement.</p>
+<p>That is different from running the full game. Full native game runs still use a third-party host scaffold for the broader execution environment, system-library coverage, and Vulkan rendering. Paleblood supplies a project-owned <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> plug-in and host interface, but the project-owned <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> has not <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> that host or passed equivalent full-run checks.</p>
+<h2 id="what-works-in-palebloods-runtime">What works in Paleblood's <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr></h2>
+<ul>
+<li><strong><abbr title="Executable and Linkable Format, the standard executable file format on Linux and FreeBSD.">ELF</abbr> loading and boot diagnostics.</strong> <code>runtime/loader.c</code> maps the executable and bundled modules, applies relocations, and binds known imports. <code>runtime/boot.c</code> and <code>tools/boot.py</code> run the entry point and record how far it gets.</li>
+<li><strong>Selected system calls.</strong> The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> supplies a small set of kernel/thread calls and four <code>libSceNet</code> byte-order conversions: <code>sceNetHtonl</code>, <code>sceNetHtons</code>, <code>sceNetNtohl</code>, and <code>sceNetNtohs</code>. These convert 16-bit and 32-bit integer byte order; they do not implement sockets or online services. See <a href="../runtime-syscalls/"><abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> system-call notes</a> and <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/41">issue #41</a> for the live group status.</li>
+<li><strong>Function replacements and <abbr title="14-byte jumps written over the start of original functions, sending their callers to the replacements.">hooks</abbr>.</strong> The project's plug-in receives the guest image and a <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr>-install callback, then registers its function replacements. The small host-interface test uses a synthetic host to check this contract; it does not test the third-party host or run the game.</li>
+</ul>
 <table>
 <thead>
 <tr>
-<th>Boot status</th>
+<th>Runtime</th>
 <th></th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>The executable's system imports</td>
-<td>686</td>
-</tr>
-<tr>
-<td>Provided by the game's own modules (mapped as guest code)</td>
-<td>219</td>
-</tr>
-<tr>
-<td>Implemented by the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr></td>
-<td>19</td>
-</tr>
-<tr>
-<td>Remaining</td>
-<td>448</td>
+<td>System imports provided</td>
+<td>238 of 686 (34.69%): 219 by the game's own modules, 19 by the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>; 448 remaining</td>
 </tr>
 <tr>
 <td>Furthest boot milestone</td>
 <td>loaded (0 of 8)</td>
 </tr>
 <tr>
-<td>The boot stops at</td>
-<td><code>scePthreadAttrGetaffinity</code> (libkernel), called by the game's own <code>libc</code> module while it starts</td>
+<td>Boot stops at</td>
+<td><code>scePthreadAttrGetaffinity</code> (libkernel, called by libc.elf)</td>
 </tr>
 </tbody>
 </table>
-<p>Generated by <code>tools/gen_runtime_status.py</code> from a run of Paleblood's boot <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr>. Do not edit.</p>
-<p>Measured with the boot <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr> in the code repository (<code>runtime/boot.c</code>, <code>tools/boot.py</code>). The
-work is split into claimable issues per system call group, labelled <code>runtime</code>. The boot
-milestones, in order, are the first calls to the system's threads, files, input, audio, video
-out, GPU submission and the first flip.</p>
-<p>Runtime system-call contributions are tracked in issues <a href="https://github.com/Yharnam-Hunters/Paleblood/issues?q=is%3Aissue+is%3Aopen+label%3Aruntime">#34–#41</a>.
-The <a href="../runtime-syscalls/">system-call notes</a> distinguish public API contracts from target
-behavior that has not yet been established.</p>
+<p>Last recorded run: 2026-10-07. This is saved evidence, not a live measurement.</p>
+<p>Generated by <code>tools/sync_progress.py</code> from the code repo. Do not edit.</p>
+<p>The table above is generated from the saved Paleblood boot record. Its date identifies the last recorded run; changing <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> code does not refresh the result by itself.</p>
+<h2 id="capture-and-replay">Capture and replay</h2>
+<p>Paleblood has a local <abbr title="Inputs recorded while the game ran, replayed by the harness.">capture</abbr> writer and replay verifier. Saved cases carry function and run identifiers, use stable buffer ordering, and replay checks reject a case for a different function or address. The version-1 production <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> interface does not observe function returns or describe pointer buffers, and current replacements do not call the recorder.</p>
+<p>A separate test adapter proves that explicitly described <strong>synthetic</strong> inputs can be serialized and replayed. This checks the case format and verifier path only. It does not <abbr title="Inputs recorded while the game ran, replayed by the harness.">capture</abbr> real game calls, prove a replacement against a real recording, or supply production run inputs. <code>tools/promote.py</code> consumes existing recorded cases and generated <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr>; it does not create <abbr title="Inputs recorded while the game ran, replayed by the harness.">captures</abbr>.</p>
+<h2 id="boot-history-and-the-current-blocker">Boot history and the current blocker</h2>
+<p><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/51">PR #51</a> extended new <code>symbols/boot_history.csv</code> rows with the run outcome, execution phase, unresolved-import return site, and guest-fault location, signal, and address. A changed failure location is recorded even when import counts and the blocking symbol stay the same. Existing rows remain readable.</p>
+<p>This improved diagnostics; it did not run the game or change the saved boot result. The issue #34 <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> work for kernel, threads, and memory is still claimed in its <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/34">public issue</a>, and no corresponding <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> change has merged. The next maintainer boot run is gated on that relevant change merging. It should then compare the new history fields against the saved baseline instead of inferring progress from import counts alone.</p>
+<h2 id="decompilation-progress">Decompilation progress</h2>
+<p>The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> is developed alongside the decompilation. The <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>-function counts below come from Paleblood's function table; see the <a href="../progress/">progress dashboard</a> for the generated breakdown.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th style="text-align: right;">Functions</th>
+<th style="text-align: right;">Bytes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Target (<abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr> export)</td>
+<td style="text-align: right;">157,757</td>
+<td style="text-align: right;">42,487,347</td>
+</tr>
+<tr>
+<td>Replaced</td>
+<td style="text-align: right;">30 (0.02%)</td>
+<td style="text-align: right;">15,176 (0.04%)</td>
+</tr>
+<tr>
+<td>Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></td>
+<td style="text-align: right;">30 (0.02%)</td>
+<td style="text-align: right;">15,176 (0.04%)</td>
+</tr>
+<tr>
+<td>Verified</td>
+<td style="text-align: right;">21 (0.01%)</td>
+<td style="text-align: right;">14,010 (0.03%)</td>
+</tr>
+</tbody>
+</table>
+<p>Each row includes the next: <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> functions are also <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr> and <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr>.</p>
+<table>
+<thead>
+<tr>
+<th>System</th>
+<th style="text-align: right;">Tracked</th>
+<th style="text-align: right;">Replaced</th>
+<th style="text-align: right;">Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></th>
+<th style="text-align: right;">Verified</th>
+<th style="text-align: right;">Replaced bytes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ai</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2,693</td>
+</tr>
+<tr>
+<td>audio</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td>camera</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td>character</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">979</td>
+</tr>
+<tr>
+<td>event</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">368</td>
+</tr>
+<tr>
+<td>frame_timing</td>
+<td style="text-align: right;">22</td>
+<td style="text-align: right;">21</td>
+<td style="text-align: right;">21</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">5,447</td>
+</tr>
+<tr>
+<td>input</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">426</td>
+</tr>
+<tr>
+<td>kernel</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">204</td>
+</tr>
+<tr>
+<td>loading</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td>physics</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">3,222</td>
+</tr>
+<tr>
+<td>render</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">1,837</td>
+</tr>
+</tbody>
+</table>
+<p>Generated by <code>tools/sync_progress.py</code> from the code repo. Do not edit.</p>
+<h2 id="roadmap">Roadmap</h2>
+<ol>
+<li><strong>Loader and boot <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr>:</strong> project-owned and independently tested. The current saved run reaches the <code>loaded</code> milestone, before the executable's entry has completed.</li>
+<li><strong>Kernel, threads, and memory:</strong> the present boot blocker. Issue #34 is contributor-claimed; preserve that ownership and run the <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr> after the relevant change merges.</li>
+<li><strong>Capture integration:</strong> add a return-aware, ABI-described observation boundary before connecting recordings to production <abbr title="14-byte jumps written over the start of original functions, sending their callers to the replacements.">hooks</abbr>. Synthetic tests are not a substitute for real <abbr title="Inputs recorded while the game ran, replayed by the harness.">captures</abbr>.</li>
+<li><strong>Files, input, audio, and video output:</strong> implement and measure each milestone as the boot <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr> reaches it.</li>
+<li><strong><abbr title="The PS4's low-level graphics API.">GNM</abbr> and shaders:</strong> rebuild the game's graphics layer at its engine interface, then prove the first rendered frame.</li>
+</ol>
+<p>System-library work is tracked separately from boot milestones. The four byte-order calls above are the only currently implemented functions in the network issue group; sockets, resolvers, epoll, and offline-state behavior remain unresolved. See Paleblood's <a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/NEXT.md"><abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> queue</a> and <a href="https://github.com/Yharnam-Hunters/Paleblood/issues?q=is%3Aissue+is%3Aopen+label%3Aruntime"><abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> issues</a>.</p>
+<h2 id="full-run-dependency-and-replacement-path">Full-run dependency and replacement path</h2>
+<p>The current full-game path retains an external GPL-2.0-or-later scaffold and its required host, system-library, and graphics dependencies. Paleblood's own <code>pbboot</code> <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr> builds and tests without that submodule, but it does not yet provide equivalent full-game loading, services, rendering, or route checks. The scaffold and its required attribution stay in the code repository until a project-owned replacement passes the same native game-run checks.</p>
       
       </div>
 
