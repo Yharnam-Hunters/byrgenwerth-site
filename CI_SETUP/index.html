@@ -183,8 +183,8 @@
     
     <div class="wk-stats">
       <p class="wk-nav-heading" title="Project stats">Insight</p>
-      <div class="wk-stat-row"><span>Verified</span><span class="wk-stat-val">11,933 B</span></div>
-      <div class="wk-stat-row"><span>Functions</span><span class="wk-stat-val">20</span></div>
+      <div class="wk-stat-row"><span>Verified</span><span class="wk-stat-val">14,010 B</span></div>
+      <div class="wk-stat-row"><span>Functions</span><span class="wk-stat-val">21</span></div>
       <div class="wk-stat-row"><span>Replaced</span><span class="wk-stat-val">30</span></div>
       <p class="wk-stat-sublabel">Replaced (42.5 MB of code)</p>
       <div class="wk-stat-track" title="0.0357%">
@@ -192,10 +192,10 @@
       </div>
       <p class="wk-stat-pct">0.0357%</p>
       <p class="wk-stat-sublabel">Verified (42.5 MB of code)</p>
-      <div class="wk-stat-track" title="0.0281%">
-        <div class="wk-stat-fill wk-stat-fill-dim" style="width:0.0281%"></div>
+      <div class="wk-stat-track" title="0.033%">
+        <div class="wk-stat-fill wk-stat-fill-dim" style="width:0.033%"></div>
       </div>
-      <p class="wk-stat-pct">0.0281%</p>
+      <p class="wk-stat-pct">0.033%</p>
       <p class="wk-stat-link"><a href="../progress/">View full progress →</a></p>
     </div>
     
@@ -230,7 +230,7 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 9, 2026 22:10:12 UTC">October 9, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 10, 2026 01:21:38 UTC">October 10, 2026</span></p>
       
       <h1 id="ci-setup">CI Setup</h1>
 <p>Both repositories run GitHub Actions on every push and pull request. Neither ever sees game data: nothing from a dump is in the repositories, and CI does not need it.</p>
@@ -243,6 +243,7 @@
 <li><strong>pull request report</strong> — CI checks changed files, rather than trusting a manually applied label, to select a concise report for <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>-only changes, documentation-only changes, or the full decompilation/mixed report. Unknown code paths fail closed to the full report. A <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> file cannot downgrade a mixed PR: any decompilation or other out-of-scope change selects the full report. Runtime-only changes also pass <code>git diff --check</code> (whitespace formatting), the game-data scan, and the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> game-agnostic check. The build and policy jobs above remain required for every path.</li>
 </ul>
 <p>Function-level verification against the real game cannot run in CI, because it needs your dump. It remains required for decompilation changes and runs locally (<code>tools/verify.py run</code>, <code>tools/smoke.sh</code>). The full session report must include every replacement status change recorded for the PR and matching, non-empty, passing <code>verify.py</code> evidence for each <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr>, <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr>, or <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> function. Runtime-only contributions do not require a dump, <abbr title="Inputs recorded while the game ran, replayed by the harness.">captures</abbr>, or function-level verification. After a <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> PR merges, a maintainer runs <code>tools/boot.py</code> locally and posts its result on the PR.</p>
+<p><code>tools/promote.py</code> checks existing recorded and <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr> locally and requires an approved review before promotion. Comparison result files go to temporary storage; the <abbr title="Inputs recorded while the game ran, replayed by the harness.">capture</abbr> library remains input-only. <code>--dry-run</code> leaves verification metadata and function status unchanged.</p>
 <h2 id="wiki-byrgenwerth">Wiki (<code>Byrgenwerth</code>)</h2>
 <p><code>.github/workflows/ci.yml</code> installs MkDocs, rejects game data, checks that every generated file (progress data, tables, visuals) agrees with the data it comes from and that no page has a hand-typed count, builds the site with <code>--strict</code>, and exercises the pre-commit <abbr title="14-byte jumps written over the start of original functions, sending their callers to the replacements.">hooks</abbr>.</p>
 <h2 id="local-workflow-no-ci-needed">Local workflow (no CI needed)</h2>
