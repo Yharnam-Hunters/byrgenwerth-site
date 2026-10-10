@@ -262,6 +262,10 @@ through the active worktree, so linked worktrees use their own installed checks.
 <!-- milestone:codex-daily-devlog-policy order=2026-10-10T02:45:00.000000Z -->
 <p>Daily posting now updates the existing local-date entry through stable milestone keys, ordered sections, and concurrent-safe atomic writes. The gated publisher also keeps the pinned Paleblood source revision separate from the public-site remote. Seven deterministic tests pass, including concurrent updates and repeat MkDocs output. These are documentation and workflow improvements; game execution did not advance.</p>
 <!-- /milestone -->
+
+<!-- milestone:paleblood-boot-failure-history-pr51 order=2026-10-10T03:30:00.000000Z -->
+<p><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/51">Paleblood PR #51</a>, merged at <code>fe3661f</code>, keeps boot outcome, phase, unresolved-import return site, and guest fault location in history, including when only the failure site changes. GCC and Clang builds and CTest passed 11/11 each; 93 Python tests passed. This improves diagnostics only; no game run or boot advancement occurred.</p>
+<!-- /milestone -->
 <h2 id="documentation-and-website-changes">Documentation and website changes</h2>
 <p>The syscall notes distinguish public contracts for <code>getpagesize</code>, <code>getpid</code>, <code>clock_gettime</code>, and
 <code>gettimeofday</code> from target-specific behavior not yet established. The loading map records the
