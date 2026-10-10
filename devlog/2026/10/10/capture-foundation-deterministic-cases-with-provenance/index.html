@@ -218,6 +218,8 @@
           <li>
             <a href="#capture-foundation-deterministic-cases-with-provenance" class="wk-toc-link">Capture foundation: deterministic cases with provenance</a>
             
+            <ol><li><a href="#follow-up-a-typed-capture-proof-not-a-production-observer" class="wk-toc-link">Follow-up: a typed capture proof, not a production observer</a></li></ol>
+            
           </li>
           
         </ol>
@@ -249,6 +251,17 @@ verification beyond generated <abbr title="Generated inputs for situations a rec
 the full CTest suite passed under both compilers, and repository <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr>, session, clean-room, and
 readability checks passed. The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> page stays explicit about the unfinished integration
 step.</p>
+<h2 id="follow-up-a-typed-capture-proof-not-a-production-observer">Follow-up: a typed <abbr title="Inputs recorded while the game ran, replayed by the harness.">capture</abbr> proof, not a production observer</h2>
+<p>Paleblood PR #47 documents the current <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> boundary: its host interface installs a replacement
+target directly and carries no signature, return, or pointer-range descriptors. A test-only
+adapter with one declared integer signature and explicit four-byte buffers emitted a schema-1
+case that the existing <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr> replayed successfully; a deliberately changed output failed
+verification. Unsupported signatures and incomplete descriptors fail before the fixture is
+called. The experiment does not install a production wrapper, exercise stack or floating-point
+arguments, record imports, or produce real game <abbr title="Inputs recorded while the game ran, replayed by the harness.">captures</abbr>. <code>0x02713870</code> remains blocked until
+matching recorded inputs exist.</p>
+<p>GCC and Clang full builds and all 11 CTest cases passed. The test leaves production <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr>
+registration and replacements unchanged.</p>
   
   <p class="wk-post-back"><a href="../../../../">← Back to devlog</a></p>
 </article>
