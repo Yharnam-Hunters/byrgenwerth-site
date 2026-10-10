@@ -230,7 +230,7 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 10, 2026 01:21:38 UTC">October 10, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 10, 2026 02:31:15 UTC">October 10, 2026</span></p>
       
       <h1 id="ci-setup">CI Setup</h1>
 <p>Both repositories run GitHub Actions on every push and pull request. Neither ever sees game data: nothing from a dump is in the repositories, and CI does not need it.</p>
@@ -249,9 +249,13 @@
 <h2 id="local-workflow-no-ci-needed">Local workflow (no CI needed)</h2>
 <div class="language-bash highlight"><span class="filename">Shell</span><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1"></a><a href="#__codelineno-0-1"><span class="linenos" data-linenos="1 "></span></a>tools/install_hooks.sh<span class="w">            </span><span class="c1"># both repositories</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2"></a><a href="#__codelineno-0-2"><span class="linenos" data-linenos="2 "></span></a>tools/smoke.sh<span class="w">                    </span><span class="c1"># code repository: the pipeline on a known function</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3"></a><a href="#__codelineno-0-3"><span class="linenos" data-linenos="3 "></span></a>tools/end_session.sh<span class="w">              </span><span class="c1"># wiki: pull numbers from the code repository, build, check</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4"></a><a href="#__codelineno-0-4"><span class="linenos" data-linenos="4 "></span></a>python3<span class="w"> </span>-m<span class="w"> </span>mkdocs<span class="w"> </span>serve<span class="w">           </span><span class="c1"># wiki: preview at http://127.0.0.1:8000</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3"></a><a href="#__codelineno-0-3"><span class="linenos" data-linenos="3 "></span></a><span class="nb">export</span><span class="w"> </span><span class="nv">BB_PORT_DIR</span><span class="o">=</span>/absolute/path/to/clean-paleblood-main-at-merged-sha
+<a id="__codelineno-0-4" name="__codelineno-0-4"></a><a href="#__codelineno-0-4"><span class="linenos" data-linenos="4 "></span></a>tools/end_session.sh<span class="w">              </span><span class="c1"># wiki: pull numbers from the code repository, build, check</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5"></a><a href="#__codelineno-0-5"><span class="linenos" data-linenos="5 "></span></a>python3<span class="w"> </span>-m<span class="w"> </span>mkdocs<span class="w"> </span>serve<span class="w">           </span><span class="c1"># wiki: preview at http://127.0.0.1:8000</span>
 </code></pre></div>
+<p>For wiki validation and publication, pin <code>BB_PORT_DIR</code> to a clean worktree at the exact merged
+Paleblood revision and record its absolute path and full SHA in the shared checkpoint. Do not use
+the implicit sibling checkout when it may contain uncommitted or stale changes.</p>
       
       </div>
 

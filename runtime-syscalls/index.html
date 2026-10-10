@@ -218,7 +218,7 @@
           <li>
             <a href="#runtime-system-call-notes" class="wk-toc-link">Runtime system-call notes</a>
             
-            <ol><li><a href="#what-the-game-evidence-shows" class="wk-toc-link">What the game evidence shows</a></li><li><a href="#interfaces-and-behavior" class="wk-toc-link">Interfaces and behavior</a></li><li><a href="#implementation-and-tests" class="wk-toc-link">Implementation and tests</a></li><li><a href="#references" class="wk-toc-link">References</a></li></ol>
+            <ol><li><a href="#what-the-game-evidence-shows" class="wk-toc-link">What the game evidence shows</a></li><li><a href="#interfaces-and-behavior" class="wk-toc-link">Interfaces and behavior</a></li><li><a href="#network-byte-order-conversions" class="wk-toc-link">Network byte-order conversions</a></li><li><a href="#implementation-and-tests" class="wk-toc-link">Implementation and tests</a></li><li><a href="#references" class="wk-toc-link">References</a></li></ol>
             
           </li>
           
@@ -230,12 +230,13 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 9, 2026 22:10:12 UTC">October 9, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 10, 2026 02:31:15 UTC">October 10, 2026</span></p>
       
       <h1 id="runtime-system-call-notes">Runtime system-call notes</h1>
-<p>This page records the public API contracts and the evidence currently available for four calls
-in <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> issue <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/34">#34</a>. A platform manual
-describes that platform; it does not prove every detail of the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> implementation. The notes
+<p>This page records the public API contracts and the evidence currently available for calls in
+<abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> issue <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/34">#34</a>, with a separate network
+byte-order slice from issue <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/41">#41</a>. A platform
+manual describes that platform; it does not prove every detail of the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> implementation. The notes
 below separate documented behavior from what remains unknown for the target.</p>
 <h2 id="what-the-game-evidence-shows">What the game evidence shows</h2>
 <p>The executable imports <code>getpagesize</code> and <code>gettimeofday</code> from <code>libScePosix</code>. The game's bundled
@@ -288,6 +289,18 @@ imported <code>clock_gettime</code> wrapper, or whether <code>4</code> is accept
 <code>CLOCK_UPTIME</code> variants. Those names and numbers are not evidence for <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> behavior. No inspected
 source confirms that the game's imported <code>clock_gettime</code> receives <code>CLOCK_REALTIME</code>,
 <code>CLOCK_MONOTONIC_RAW</code>, <code>CLOCK_BOOTTIME</code>, or any ID besides the separate SCE call's value 4.</p>
+<h2 id="network-byte-order-conversions">Network byte-order conversions</h2>
+<p>Paleblood imports four integer conversion calls from <code>libSceNet</code> in <code>eboot</code>: <code>sceNetHtonl</code>,
+<code>sceNetHtons</code>, <code>sceNetNtohl</code>, and <code>sceNetNtohs</code>. Their public SCE declarations use unsigned 32-bit
+and 16-bit integer arguments and results. The documented byte-order contract converts between
+host order and big-endian network order; the reverse direction uses the same operation. For the
+project's AMD64 guest ABI, this is byte reversal. The four calls are pure value conversions and do
+not require socket or online state.</p>
+<p>The declaration reference below is PSP2SDK's public <code>net.h</code> API surface; it supplies the SCE
+function names and integer widths, not a <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> trace. The FreeBSD manual documents the
+standard host/network conversion contract. This evidence supports only these four conversions.
+It does not establish behavior for <code>libSceNet</code> sockets, name resolution, epoll, or offline-state
+queries. Those imports remain unimplemented until their own evidence is available.</p>
 <h2 id="implementation-and-tests">Implementation and tests</h2>
 <p>Implement only behavior supported by public documentation, independent reverse engineering, or
 observed behavior. Keep unresolved target behavior visible; do not fabricate a return value to
@@ -300,6 +313,8 @@ each established behavior and error path. Runtime-only contributions do not need
 <li><a href="https://pubs.opengroup.org/onlinepubs/009604599/functions/gettimeofday.html">Older POSIX <code>gettimeofday</code> specification</a></li>
 <li>FreeBSD <a href="https://man.freebsd.org/cgi/man.cgi?query=getpagesize&amp;sektion=3&amp;manpath=FreeBSD+13.3-RELEASE"><code>getpagesize(3)</code></a>, <a href="https://man.freebsd.org/cgi/man.cgi?query=clock_gettime&amp;sektion=2&amp;manpath=FreeBSD+15.1-STABLE"><code>clock_gettime(2)</code></a>, and <a href="https://man.freebsd.org/cgi/man.cgi?query=gettimeofday&amp;sektion=2&amp;manpath=FreeBSD+14.4-RELEASE"><code>gettimeofday(2)</code></a></li>
 <li>Linux <a href="https://man7.org/linux/man-pages/man2/getpagesize.2.html"><code>getpagesize(2)</code></a>, <a href="https://man7.org/linux/man-pages/man2/getpid.2.html"><code>getpid(2)</code></a>, <a href="https://man7.org/linux/man-pages/man2/clock_gettime.2.html"><code>clock_gettime(2)</code></a>, and <a href="https://man7.org/linux/man-pages/man2/gettimeofday.2.html"><code>gettimeofday(2)</code></a></li>
+<li><a href="https://psp2sdk.github.io/net_8h.html">PSP2SDK network API declarations for the four SCE byte-order functions</a></li>
+<li>FreeBSD <a href="https://man.freebsd.org/cgi/man.cgi?format=html&amp;query=htons&amp;sektion=3"><code>htonl(3)</code>/<code>htons(3)</code>/<code>ntohl(3)</code>/<code>ntohs(3)</code></a></li>
 </ul>
       
       </div>

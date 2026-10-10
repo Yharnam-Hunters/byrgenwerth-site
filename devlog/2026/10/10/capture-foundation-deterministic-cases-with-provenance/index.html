@@ -218,7 +218,7 @@
           <li>
             <a href="#capture-foundation-deterministic-cases-with-provenance" class="wk-toc-link">Capture foundation: deterministic cases with provenance</a>
             
-            <ol><li><a href="#follow-up-a-typed-capture-proof-not-a-production-observer" class="wk-toc-link">Follow-up: a typed capture proof, not a production observer</a></li><li><a href="#follow-up-promotion-from-recorded-evidence" class="wk-toc-link">Follow-up: promotion from recorded evidence</a></li></ol>
+            <ol><li><a href="#follow-up-a-typed-capture-proof-not-a-production-observer" class="wk-toc-link">Follow-up: a typed capture proof, not a production observer</a></li><li><a href="#follow-up-promotion-from-recorded-evidence" class="wk-toc-link">Follow-up: promotion from recorded evidence</a></li><li><a href="#follow-up-four-network-byte-order-imports" class="wk-toc-link">Follow-up: four network byte-order imports</a></li></ol>
             
           </li>
           
@@ -272,6 +272,18 @@ independent review, so its status advanced to <code>verified</code>. The public 
 without matching recorded inputs. Paleblood PR #49 refreshed the generated public frame-timing
 page and progress table from that merged status; it added no <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> behavior or new verification
 result.</p>
+<h2 id="follow-up-four-network-byte-order-imports">Follow-up: four network byte-order imports</h2>
+<p>Paleblood PR <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/50">#50</a>, merged at
+<code>816ea964c2d5db49271ad3131cad4a24e3d0bcc5</code>, implements <code>sceNetHtonl</code>, <code>sceNetHtons</code>,
+<code>sceNetNtohl</code>, and <code>sceNetNtohs</code>. These are deterministic 32-bit and 16-bit host/network byte-order
+conversions. Public API declarations and the standard byte-order contract support this narrow
+behavior; sockets, name resolution, epoll, and online state are not covered.</p>
+<p>The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> registry tests cover both directions with known byte patterns, zero and maximum-width
+values, and round trips. GCC and Clang Release builds and full CTest suites passed 11/11; clean-room,
+policy, <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr>, and session-audit checks passed. These four implementations do not resolve the first
+unresolved call in the last recorded boot result, <code>scePthreadAttrGetaffinity</code>, owned through <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>
+issue #34. The boot <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr> was not rerun for this change; the saved status remains 238 of 686
+imports. No game data or recorded function cases were used.</p>
   
   <p class="wk-post-back"><a href="../../../../">← Back to devlog</a></p>
 </article>
