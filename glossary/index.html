@@ -11,7 +11,7 @@
   <title>Glossary — Byrgenwerth</title>
   
   
-  <link rel="stylesheet" href="../stylesheets/wiki.css?v=6aa0e2635b">
+  <link rel="stylesheet" href="../stylesheets/wiki.css?v=6f612af49d">
   
   
 </head>
@@ -40,9 +40,7 @@
 
   <!-- Left sidebar -->
   <nav class="wk-nav" id="wk-nav" aria-label="Site navigation">
-    <a href="../" class="wk-portal-icon" aria-label="Home">
-      <img src="../assets/bb-icon.png" alt="Byrgenwerth" width="220" height="220">
-    </a>
+    <a href="../" class="wk-portal-icon" aria-label="Home">Byrgenwerth</a>
 
     
       
@@ -54,10 +52,6 @@
         
           
           <a class="wk-nav-link" href="../devlog/">Devlog</a>
-          
-        
-          
-          <a class="wk-nav-link" href="../gallery/">Gallery</a>
           
         
           
@@ -140,10 +134,6 @@
         
           
           <a class="wk-nav-link" href="../ADDRESS_MAP/">Address Map</a>
-          
-        
-          
-          <a class="wk-nav-link" href="../bbport-notes/">bbport Study (history)</a>
           
         
           
@@ -230,7 +220,7 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 10, 2026 00:17:43 UTC">October 10, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 10, 2026 05:54:56 UTC">October 10, 2026</span></p>
       
       <h1 id="glossary-ps4-and-port-terms">Glossary: <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> and port terms</h1>
 <p>A running glossary for terms used across the devlog and the system pages. Hover any of them on another page for a short definition.</p>
@@ -258,7 +248,7 @@
 <h2 id="thunk">Thunk</h2>
 <p>A tiny piece of code that only forwards a call. The game calls each <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> library function through a <abbr title="A tiny stub that forwards a call, here to a PS4 library function.">thunk</abbr>; our replacements call the same <abbr title="Tiny stubs that forward calls, here to PS4 library functions.">thunks</abbr>, so whatever answers the original's calls (the <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr>'s scripted stubs, or the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>) answers the replacement's the same way.</p>
 <h2 id="runtime-and-loader">Runtime and <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr></h2>
-<p>The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> is what the game's code runs on: Paleblood's own <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr>, which maps the executable and the game's own C library and file system modules and binds every system import, and its own versions of the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> system libraries, written clean-room. Until October 2026 the project used a borrowed <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>, a fork of <a href="../bbport-notes/"><abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; the borrowed runtime Paleblood used until October 2026 (a public fork), being removed.">bbport</abbr></a>; it is being removed. See <a href="../runtime/">Runtime</a>.</p>
+<p>The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> is what the game's code runs on: Paleblood's own <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr>, which maps the executable and the game's own C library and file system modules and binds every system import, and its own versions of the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> system libraries, written clean-room. The project-owned <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> does not yet run the full game; see <a href="../runtime/">Runtime</a>.</p>
 <h2 id="gnm-pm4-gcn"><abbr title="The PS4's low-level graphics API.">GNM</abbr>, <abbr title="The command packet format the PS4's GPU reads.">PM4</abbr>, <abbr title="Graphics Core Next, the AMD GPU architecture of the PS4.">GCN</abbr></h2>
 <p><abbr title="The PS4's low-level graphics API.">GNM</abbr> is the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr>'s low-level graphics API; the game builds <abbr title="The command packet format the PS4's GPU reads.">PM4</abbr> command packets for its AMD <abbr title="Graphics Core Next, the AMD GPU architecture of the PS4.">GCN</abbr> graphics chip. Paleblood does not plan to emulate that chip: the graphics are to be rebuilt at the level of the game's own graphics layer, on Vulkan.</p>
 <h2 id="fde"><abbr title="Frame Description Entry: a function's unwind record in .eh_frame, used to cross-check the function count.">FDE</abbr></h2>

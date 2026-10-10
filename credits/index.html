@@ -11,7 +11,7 @@
   <title>Credits — Byrgenwerth</title>
   
   
-  <link rel="stylesheet" href="../stylesheets/wiki.css?v=6aa0e2635b">
+  <link rel="stylesheet" href="../stylesheets/wiki.css?v=6f612af49d">
   
   
 </head>
@@ -40,9 +40,7 @@
 
   <!-- Left sidebar -->
   <nav class="wk-nav" id="wk-nav" aria-label="Site navigation">
-    <a href="../" class="wk-portal-icon" aria-label="Home">
-      <img src="../assets/bb-icon.png" alt="Byrgenwerth" width="220" height="220">
-    </a>
+    <a href="../" class="wk-portal-icon" aria-label="Home">Byrgenwerth</a>
 
     
       
@@ -54,10 +52,6 @@
         
           
           <a class="wk-nav-link" href="../devlog/">Devlog</a>
-          
-        
-          
-          <a class="wk-nav-link" href="../gallery/">Gallery</a>
           
         
           
@@ -143,10 +137,6 @@
           
         
           
-          <a class="wk-nav-link" href="../bbport-notes/">bbport Study (history)</a>
-          
-        
-          
           <a class="wk-nav-link" href="../target/">Target</a>
           
         
@@ -218,7 +208,7 @@
           <li>
             <a href="#credits" class="wk-toc-link">Credits</a>
             
-            <ol><li><a href="#runtime-and-emulation" class="wk-toc-link">Runtime and emulation</a></li><li><a href="#tools" class="wk-toc-link">Tools</a></li><li><a href="#community-patch-authors" class="wk-toc-link">Community patch authors</a></li></ol>
+            <ol><li><a href="#tools" class="wk-toc-link">Tools</a></li><li><a href="#community-patch-authors" class="wk-toc-link">Community patch authors</a></li></ol>
             
           </li>
           
@@ -230,23 +220,11 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 7, 2026 22:05:30 UTC">October 7, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 10, 2026 05:54:56 UTC">October 10, 2026</span></p>
       
       <h1 id="credits">Credits</h1>
-<p>The port stands on other people's work. Names and links are added here as the
+<p>The project stands on other people's work. Names and links are added here as the
 work they enabled lands; nothing is copied without its license being honored.</p>
-<h2 id="runtime-and-emulation">Runtime and emulation</h2>
-<ul>
-<li><strong><abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; the borrowed runtime Paleblood used until October 2026 (a public fork), being removed.">bbport</abbr></strong> (<a href="https://github.com/deadinside28/bloodborne_pc">https://github.com/deadinside28/bloodborne_pc</a>, repository owner
-  deadinside28): a native Linux port of Bloodborne 1.09 that runs the original executable
-  directly. Studied in <a href="../bbport-notes/"><abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; the borrowed runtime Paleblood used until October 2026 (a public fork), being removed.">bbport</abbr> study</a>. Paleblood ran on a minimal fork of it,
-  and recorded its verification inputs there, until October 2026; it is being removed and kept
-  here as history. GPL-2.0-or-later. It credits, and we inherit the credit for:</li>
-<li><strong><abbr title="An open-source PS4 emulator; bbport's renderer and shader recompiler come from it. Paleblood uses none of its code.">shadPS4</abbr></strong> (<a href="https://github.com/shadps4-emu/shadPS4">https://github.com/shadps4-emu/shadPS4</a>): the video core and shader
-    recompiler <abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; the borrowed runtime Paleblood used until October 2026 (a public fork), being removed.">bbport</abbr> is built on. GPL-2.0-or-later. Paleblood uses none of its code.</li>
-<li>sirit, half, <strong>FSR-Vulkan</strong> by FireBurn (MIT), AMD FidelityFX SDK (MIT), <strong>LibAtrac9</strong> by
-    Thealexbarney (MIT), Dear ImGui (MIT), dxil-spirv (MIT).</li>
-</ul>
 <h2 id="tools">Tools</h2>
 <ul>
 <li><strong>SelfUtil-Patched</strong> (xSpecialFoodx), based on <strong>selfutil</strong> (dmiller423): <abbr title="Signed ELF: the PS4's wrapper around an executable. Ours are fake-signed and unencrypted, so converting them only unwraps them.">SELF</abbr> to <abbr title="Executable and Linkable Format, the standard executable file format on Linux and FreeBSD.">ELF</abbr> conversion for the target.</li>
@@ -254,14 +232,14 @@ work they enabled lands; nothing is copied without its license being honored.</p
 <li><strong><abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr></strong>: analysis and the function export that sets the progress denominator.</li>
 </ul>
 <h2 id="community-patch-authors">Community patch authors</h2>
-<p>Authors of community patches whose work documents patch points, as credited in <abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; the borrowed runtime Paleblood used until October 2026 (a public fork), being removed.">bbport</abbr>'s
-<code>patches/Bloodborne.xml</code> and README. One entry per patch is added here when we use it.</p>
+<p>Authors of public community patches whose work documents patch points. One entry per patch is
+added here when we use it.</p>
 <ul>
 <li><strong>Kyo</strong> (frame-rate patches 30/60/90 FPS++, which located the frame limiter),
   <strong>Lance McDonald</strong> (free camera; <code>Uncap FPS++</code> with Kyo), <strong>yogesh1239</strong> (<code>Sprint Fix
   (High FPS)</code>), <strong>auser1337</strong>,
-  <strong>illusion</strong> (skip intro), <strong>emoose</strong>, and other community members. Which patch each wrote
-  is recorded per patch in the XML; this list follows <abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; the borrowed runtime Paleblood used until October 2026 (a public fork), being removed.">bbport</abbr>'s own credits and is not complete.</li>
+  <strong>illusion</strong> (skip intro), <strong>emoose</strong>, and other community members. Which patch each wrote is
+  recorded in the corresponding public patch file; this list is not complete.</li>
 </ul>
       
       </div>

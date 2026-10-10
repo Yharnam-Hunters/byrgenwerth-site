@@ -11,7 +11,7 @@
   <title>7 October 2026: a new direction, our own runtime — Byrgenwerth</title>
   
   
-  <link rel="stylesheet" href="../../../../../stylesheets/wiki.css?v=6aa0e2635b">
+  <link rel="stylesheet" href="../../../../../stylesheets/wiki.css?v=6f612af49d">
   
   
 </head>
@@ -40,9 +40,7 @@
 
   <!-- Left sidebar -->
   <nav class="wk-nav" id="wk-nav" aria-label="Site navigation">
-    <a href="../../../../../" class="wk-portal-icon" aria-label="Home">
-      <img src="../../../../../assets/bb-icon.png" alt="Byrgenwerth" width="220" height="220">
-    </a>
+    <a href="../../../../../" class="wk-portal-icon" aria-label="Home">Byrgenwerth</a>
 
     
       
@@ -54,10 +52,6 @@
         
           
           <a class="wk-nav-link is-active" href="../../../../">Devlog</a>
-          
-        
-          
-          <a class="wk-nav-link" href="../../../../../gallery/">Gallery</a>
           
         
           
@@ -140,10 +134,6 @@
         
           
           <a class="wk-nav-link" href="../../../../../ADDRESS_MAP/">Address Map</a>
-          
-        
-          
-          <a class="wk-nav-link" href="../../../../../bbport-notes/">bbport Study (history)</a>
           
         
           
@@ -238,9 +228,8 @@
   
   
   <h1 id="7-october-2026-a-new-direction-our-own-runtime">7 October 2026: a new direction, our own <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr></h1>
-<p>Paleblood opened its code to contributors and began replacing Bloodborne with a clean-room
-<abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> of its own. This entry combines the day's <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> change and decompilation progress;
-the earlier game-play results below used the project's former <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>.</p>
+<p>Paleblood opened its code to contributors and began building a clean-room <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> of its own.
+This entry combines the day's <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> work and decompilation progress.</p>
 <!-- more -->
 
 <h2 id="runtime-and-boot-progress">Runtime and boot progress</h2>
@@ -251,13 +240,12 @@ results. At this point the new <abbr title="What the game's code runs on: Palebl
 an unimplemented import. The roadmap still included threads and memory, files, input, audio,
 video out, and graphics.</p>
 <h2 id="decompilation-and-verified-functions">Decompilation and <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> functions</h2>
-<p>The earlier <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>'s frame-loop work included the pad manager's step, reference-counted render
-updates, present/<abbr title="Vertical blank: the gap between two screen refreshes, when a frame is shown.">vblank</abbr> handling, YEBIS sample parameters, six task-manager functions, a physics
-constructor, the Havok AI manager, and a character update. The clinic route recorded the per-frame
-work and 19 physics constructions. The AI manager's branches and idle paths used explicit test
-fixtures. Tests caught floating-point <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr>, stack arguments, thread-local state, shared
-patch data, and object memory that the <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr> needed to describe. Those results belong to the
-former <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> and do not show the new Paleblood <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> executing the game.</p>
+<p>The frame-loop work included the pad manager's step, reference-counted render updates,
+present/<abbr title="Vertical blank: the gap between two screen refreshes, when a frame is shown.">vblank</abbr> handling, YEBIS sample parameters, six task-manager functions, a physics
+constructor, the Havok AI manager, and a character update. Existing cases cover per-frame work and
+19 physics constructions. The AI manager's branches and idle paths use explicit test fixtures.
+Tests caught floating-point <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr>, stack arguments, thread-local state, shared patch data, and
+object memory that the <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr> needed to describe.</p>
 <h2 id="tooling-and-automation">Tooling and automation</h2>
 <p>The verification <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr> learned to pass and return floating-point values, model stack arguments
 and thread-local state, apply the frame-rate patch to the original, and count calls without
@@ -265,15 +253,13 @@ replacing functions. Deliberately incorrect replacements were used to check that
 known mistakes. The project also introduced a readable-code review gate and a contributor route
 based on claimed work and pull-request evidence.</p>
 <h2 id="documentation-and-website-changes">Documentation and website changes</h2>
-<p>The public Paleblood repository opened with a clean history, contribution guidance, and protected
-pull requests. The old repositories became private archives. The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> roadmap and clean-room
-boundary were documented alongside the new <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr>.</p>
+<p>The public Paleblood repository opened with contribution guidance and protected pull requests.
+The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> roadmap and clean-room boundary were documented alongside the new <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr>.</p>
 <h2 id="tests-and-validation">Tests and validation</h2>
-<p>The earlier 60-FPS clinic session reached Iosefka's Clinic with the replacements in place; recorded
-calls and edge fixtures checked the covered functions, and deliberately wrong versions exposed
-several test gaps. The new <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> then ran the existing verification cases with the same results.
-These are separate results: the former demonstrated game execution; the new <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> demonstrated
-function verification only.</p>
+<p>The verification <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr> ran existing recorded and <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr>, and deliberately wrong versions
+exposed several test gaps. The new <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> reproduced the same verification results. These checks
+validated function behavior; they did not demonstrate full game execution on the project-owned
+<abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>.</p>
 <h2 id="blockers-and-next-steps">Blockers and next steps</h2>
 <p>At the time, the new <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> still needed its system imports and execution layers before it could
 boot the game. The decompilation continued independently, with every replacement requiring

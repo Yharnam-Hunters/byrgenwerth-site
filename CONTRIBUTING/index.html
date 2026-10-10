@@ -11,7 +11,7 @@
   <title>Contributing — Byrgenwerth</title>
   
   
-  <link rel="stylesheet" href="../stylesheets/wiki.css?v=6aa0e2635b">
+  <link rel="stylesheet" href="../stylesheets/wiki.css?v=6f612af49d">
   
   
 </head>
@@ -40,9 +40,7 @@
 
   <!-- Left sidebar -->
   <nav class="wk-nav" id="wk-nav" aria-label="Site navigation">
-    <a href="../" class="wk-portal-icon" aria-label="Home">
-      <img src="../assets/bb-icon.png" alt="Byrgenwerth" width="220" height="220">
-    </a>
+    <a href="../" class="wk-portal-icon" aria-label="Home">Byrgenwerth</a>
 
     
       
@@ -54,10 +52,6 @@
         
           
           <a class="wk-nav-link" href="../devlog/">Devlog</a>
-          
-        
-          
-          <a class="wk-nav-link" href="../gallery/">Gallery</a>
           
         
           
@@ -140,10 +134,6 @@
         
           
           <a class="wk-nav-link" href="../ADDRESS_MAP/">Address Map</a>
-          
-        
-          
-          <a class="wk-nav-link" href="../bbport-notes/">bbport Study (history)</a>
           
         
           
@@ -230,7 +220,7 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 10, 2026 02:31:15 UTC">October 10, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 10, 2026 05:54:56 UTC">October 10, 2026</span></p>
       
       <h1 id="contributing">Contributing</h1>
 <p class="wk-epigraph">Tonight, Gehrman joins the hunt.<cite>Gehrman, the First Hunter</cite></p>
@@ -256,7 +246,7 @@ wherever they are posted, and may lead to a ban.</p>
 <h2 id="ground-rules">Ground rules</h2>
 <ul>
 <li><strong>No game files.</strong> Ever. No executables, assets, decompiler output or extracted data in commits, issues, pull requests or Discussions.</li>
-<li><strong>No screenshots or clips of the game</strong> in the code repositories, their issues, pull requests or Discussions. (The gallery here shows the maintainer's own recordings of test runs.)</li>
+<li><strong>No screenshots or clips of the game</strong> in the code repositories, their issues, pull requests, Discussions, or documentation site.</li>
 <li><strong>Verified and readable.</strong> A replacement that "looks right" is not done until the <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr> finds no difference on recorded and <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr>, deliberately wrong versions fail, it reads well (the code repository's STYLE.md), and an independent reviewer has approved it.</li>
 <li>The local promotion tool reruns the recorded and edge suites before changing a function to <code>verified</code>; its comparison output is temporary and kept away from the <abbr title="Inputs recorded while the game ran, replayed by the harness.">capture</abbr> library. Case data stays on the contributor's machine.</li>
 <li><strong>Say how you know.</strong> When you name a function, say how you inferred what it does: its callers, its library calls, the memory it touches. A name says what is known and no more.</li>

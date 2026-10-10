@@ -11,7 +11,7 @@
   <title>9 October 2026: a path for runtime contributors — Byrgenwerth</title>
   
   
-  <link rel="stylesheet" href="../../../../../stylesheets/wiki.css?v=6aa0e2635b">
+  <link rel="stylesheet" href="../../../../../stylesheets/wiki.css?v=6f612af49d">
   
   
 </head>
@@ -40,9 +40,7 @@
 
   <!-- Left sidebar -->
   <nav class="wk-nav" id="wk-nav" aria-label="Site navigation">
-    <a href="../../../../../" class="wk-portal-icon" aria-label="Home">
-      <img src="../../../../../assets/bb-icon.png" alt="Byrgenwerth" width="220" height="220">
-    </a>
+    <a href="../../../../../" class="wk-portal-icon" aria-label="Home">Byrgenwerth</a>
 
     
       
@@ -54,10 +52,6 @@
         
           
           <a class="wk-nav-link is-active" href="../../../../">Devlog</a>
-          
-        
-          
-          <a class="wk-nav-link" href="../../../../../gallery/">Gallery</a>
           
         
           
@@ -140,10 +134,6 @@
         
           
           <a class="wk-nav-link" href="../../../../../ADDRESS_MAP/">Address Map</a>
-          
-        
-          
-          <a class="wk-nav-link" href="../../../../../bbport-notes/">bbport Study (history)</a>
           
         
           
@@ -271,6 +261,9 @@ through the active worktree, so linked worktrees use their own installed checks.
 <code>gettimeofday</code> from target-specific behavior not yet established. The loading map records the
 bundled Fios module while leaving archive access, PlayGo flow, and target-specific error paths as
 open questions. Progress was synchronized from merged Paleblood sources.</p>
+<!-- milestone:paleblood-legacy-cleanup-pr52 order=2026-10-10T05:53:06.000000Z -->
+<p><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/52">Paleblood PR #52</a>, merged at <code>b7a5dc5</code>, clarifies that the current full game-run path still depends on the external scaffold pending equivalent project-owned run checks. This cleanup removes the legacy <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> study pages, test-run media, unverified wiki icon, and media-only build <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> from Byrgenwerth, with focused checks against reintroduction in public source and generated output. GCC and Clang builds and CTest passed 11/11 each; the strict wiki build, 10 Python tests, <abbr title="14-byte jumps written over the start of original functions, sending their callers to the replacements.">hooks</abbr>, and 88-file privacy scan passed. This improves documentation and publication safeguards; it does not advance game execution or decompilation.</p>
+<!-- /milestone -->
 <h2 id="tests-and-validation">Tests and validation</h2>
 <p>The issue #34 workflow added no replacement and no verification result. Runtime-only CI checks
 run without game data; pull-request CI validates the changed code and policy before the local

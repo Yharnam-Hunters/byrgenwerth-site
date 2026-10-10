@@ -11,7 +11,7 @@
   <title>6 October 2026: from an empty repository to the frame loop — Byrgenwerth</title>
   
   
-  <link rel="stylesheet" href="../../../../../stylesheets/wiki.css?v=6aa0e2635b">
+  <link rel="stylesheet" href="../../../../../stylesheets/wiki.css?v=6f612af49d">
   
   
 </head>
@@ -40,9 +40,7 @@
 
   <!-- Left sidebar -->
   <nav class="wk-nav" id="wk-nav" aria-label="Site navigation">
-    <a href="../../../../../" class="wk-portal-icon" aria-label="Home">
-      <img src="../../../../../assets/bb-icon.png" alt="Byrgenwerth" width="220" height="220">
-    </a>
+    <a href="../../../../../" class="wk-portal-icon" aria-label="Home">Byrgenwerth</a>
 
     
       
@@ -54,10 +52,6 @@
         
           
           <a class="wk-nav-link is-active" href="../../../../">Devlog</a>
-          
-        
-          
-          <a class="wk-nav-link" href="../../../../../gallery/">Gallery</a>
           
         
           
@@ -143,10 +137,6 @@
           
         
           
-          <a class="wk-nav-link" href="../../../../../bbport-notes/">bbport Study (history)</a>
-          
-        
-          
           <a class="wk-nav-link" href="../../../../../target/">Target</a>
           
         
@@ -218,7 +208,7 @@
           <li>
             <a href="#6-october-2026-from-an-empty-repository-to-the-frame-loop" class="wk-toc-link">6 October 2026: from an empty repository to the frame loop</a>
             
-            <ol><li><a href="#the-target" class="wk-toc-link">The target</a></li><li><a href="#repositories-and-tooling" class="wk-toc-link">Repositories and tooling</a></li><li><a href="#bbport-the-runtime" class="wk-toc-link">bbport, the runtime</a></li><li><a href="#one-address-convention" class="wk-toc-link">One address convention</a></li><li><a href="#the-first-ghidra-export" class="wk-toc-link">The first Ghidra export</a></li><li><a href="#the-first-function-a-millisecond-clock" class="wk-toc-link">The first function: a millisecond clock</a></li><li><a href="#finding-the-frame-limiter" class="wk-toc-link">Finding the frame limiter</a></li><li><a href="#the-limiter-replaced-and-the-first-option" class="wk-toc-link">The limiter, replaced, and the first option</a></li><li><a href="#the-frame-step-and-the-flipper" class="wk-toc-link">The frame step and the flipper</a></li><li><a href="#getting-into-the-game" class="wk-toc-link">Getting into the game</a></li><li><a href="#the-frame-rate-option-corrected" class="wk-toc-link">The frame-rate option, corrected</a></li><li><a href="#counting-calls-and-three-more-functions" class="wk-toc-link">Counting calls, and three more functions</a></li><li><a href="#workflow" class="wk-toc-link">Workflow</a></li><li><a href="#this-wiki" class="wk-toc-link">This wiki</a></li><li><a href="#next" class="wk-toc-link">Next</a></li></ol>
+            <ol><li><a href="#the-target" class="wk-toc-link">The target</a></li><li><a href="#repositories-and-tooling" class="wk-toc-link">Repositories and tooling</a></li><li><a href="#the-first-ghidra-export" class="wk-toc-link">The first Ghidra export</a></li><li><a href="#the-first-function-a-millisecond-clock" class="wk-toc-link">The first function: a millisecond clock</a></li><li><a href="#finding-the-frame-limiter" class="wk-toc-link">Finding the frame limiter</a></li><li><a href="#the-limiter-replaced-and-the-first-option" class="wk-toc-link">The limiter, replaced, and the first option</a></li><li><a href="#the-frame-step-and-the-flipper" class="wk-toc-link">The frame step and the flipper</a></li><li><a href="#the-frame-rate-option-corrected" class="wk-toc-link">The frame-rate option, corrected</a></li><li><a href="#counting-calls-and-three-more-functions" class="wk-toc-link">Counting calls, and three more functions</a></li><li><a href="#workflow" class="wk-toc-link">Workflow</a></li><li><a href="#this-wiki" class="wk-toc-link">This wiki</a></li><li><a href="#next" class="wk-toc-link">Next</a></li></ol>
             
           </li>
           
@@ -238,19 +228,11 @@
   
   
   <h1 id="6-october-2026-from-an-empty-repository-to-the-frame-loop">6 October 2026: from an empty repository to the frame loop</h1>
-<p>The first day: the target prepared, both repositories and their tooling, a <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> for the
-original executable, the first <abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr> export, and the game's frame loop rewritten as <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>
-C++, from the clock up to the function that runs every frame. By evening, scripted routes
-carried unattended test runs through the menus and character creation into the game.</p>
-<p><img alt="The title menu, rendered by the port on a virtual display with five replaced functions in place" src="../../../../../assets/screens/title-menu.jpg" /></p>
+<p>The first day: the target was prepared, the repositories and tooling were set up, and the
+first <abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr> export and <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> frame-loop replacements were completed, from the clock up to
+the function that runs every frame.</p>
 <!-- more -->
 
-<div class="admonition note">
-<p class="admonition-title">Since then</p>
-<p>The project's direction changed the next day, 7 October: Paleblood is now a decompilation with its own
-<abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>, and the borrowed <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> this post describes is being removed. See
-<a href="../../07/7-october-2026-a-new-direction-our-own-runtime/">a new direction</a>.</p>
-</div>
 <h2 id="the-target">The target</h2>
 <p>Both packages extracted without keys and merged. The update's <code>param.sfo</code> reports the 1.09 app
 version. All eight executables (the <abbr title="eboot.bin, the game's main executable.">eboot</abbr> and seven <abbr title="A PS4 dynamic library (shared module), like a .so on Linux.">PRX</abbr> modules) were fake-signed SELFs with no
@@ -266,23 +248,6 @@ encrypted segments, and converting them to <abbr title="Executable and Linkable 
 <p>The converted <abbr title="eboot.bin, the game's main executable.">eboot</abbr> has no section headers, so there is no <code>.text</code> to measure. The progress
 denominator is the set of functions <abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr> finds in executable blocks, tied to the hash of the
 committed export.</p>
-<h2 id="bbport-the-runtime"><abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; the borrowed runtime Paleblood used until October 2026 (a public fork), being removed.">bbport</abbr>, the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr></h2>
-<p><abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; the borrowed runtime Paleblood used until October 2026 (a public fork), being removed.">bbport</abbr> runs the original executable natively on Linux. It converts the <abbr title="eboot.bin, the game's main executable.">eboot</abbr> offline into a
-flat image, links the game's own libc and Fios2 modules into it, and binds every <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> import
-to a small <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>. Graphics come from a vendored <abbr title="An open-source PS4 emulator; bbport's renderer and shader recompiler come from it. Paleblood uses none of its code.">shadPS4</abbr> renderer. The loaded-image hash it
-pins is the hash of our dump, so it runs exactly our target. Details are on the
-<a href="../../../../../bbport-notes/"><abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; the borrowed runtime Paleblood used until October 2026 (a public fork), being removed.">bbport</abbr> study</a> page.</p>
-<p>It had no general way to replace a function, so our private fork adds one: the <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> loads a
-game library before any game code runs, and the library asks it to put a jump at the start of
-each function it replaces. Everything this project writes builds into that library.</p>
-<p><abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; the borrowed runtime Paleblood used until October 2026 (a public fork), being removed.">bbport</abbr> is GPL-2.0-or-later and contains <abbr title="An open-source PS4 emulator; bbport's renderer and shader recompiler come from it. Paleblood uses none of its code.">shadPS4</abbr> code, and our code runs in its process, so both
-repositories are GPL-2.0-or-later.</p>
-<h2 id="one-address-convention">One address convention</h2>
-<p>Three conventions are in use, one constant apart: the <abbr title="Executable and Linkable Format, the standard executable file format on Linux and FreeBSD.">ELF</abbr> virtual address (<abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; the borrowed runtime Paleblood used until October 2026 (a public fork), being removed.">bbport</abbr>'s "guest
-offset"), the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> virtual address at base <code>0x400000</code> (the community patches), and <abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; the borrowed runtime Paleblood used until October 2026 (a public fork), being removed.">bbport</abbr>'s
-host address. Checking real bytes settled it: <abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; the borrowed runtime Paleblood used until October 2026 (a public fork), being removed.">bbport</abbr>'s <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> sites match at the <abbr title="Executable and Linkable Format, the standard executable file format on Linux and FreeBSD.">ELF</abbr> address,
-and a community patch only lands on a sensible instruction after subtracting <code>0x400000</code>.
-Everything here uses the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> virtual address, with <abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr>'s image base at <code>0x400000</code>.</p>
 <h2 id="the-first-ghidra-export">The first <abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr> export</h2>
 <p><abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr> 12.0.3 with the <abbr title="A Ghidra extension that loads PS4 executables and resolves NIDs to names.">GhidraOrbis</abbr> <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> imported the <abbr title="eboot.bin, the game's main executable.">eboot</abbr> and finished full auto-analysis in
 about 26 minutes. It found 157,757 functions in <code>.text</code>, 42,487,347 bytes, not counting 9,302
@@ -342,27 +307,6 @@ frame.</p>
 which is why the game runs the 30 FPS mode. Verified on the recorded call and nine <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr>.</p>
 <p>The microsecond time helper the frame-rate patches edit is <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> too, but the game never
 calls it before the title menu, so it waits for a run that gets further.</p>
-<h2 id="getting-into-the-game">Getting into the game</h2>
-<p>Every run so far stopped at the title, so functions used only in gameplay had nothing to
-record. <code>run_game.sh</code> now plays a route: a list of timed button presses fed to <abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; the borrowed runtime Paleblood used until October 2026 (a public fork), being removed.">bbport</abbr>'s pad
-input, and <code>BB_RECORD</code> saves a clip of the run (there is one in the <a href="../../../../../gallery/">gallery</a>).
-The first route picks Play Offline and New Game and reaches the brightness screen.</p>
-<p><img alt="Play Offline selected by the route" src="../../../../../assets/screens/title-play-offline.jpg" /></p>
-<p><img alt="The New Game menu" src="../../../../../assets/screens/new-game-menu.jpg" /></p>
-<p><img alt="The brightness screen after New Game" src="../../../../../assets/screens/brightness.jpg" /></p>
-<p>Fixed times broke as soon as a dialog took longer, so routes now wait for text on the screen,
-read by OCR, and can press a button while they wait. Keyboard input types the character's name.
-The second route got through the controls setup, the opening cutscene, character creation and
-the contract, which saves the game; a shorter route loads that save, skips the transfusion
-cutscene and wakes the hunter in Iosefka's Clinic about two minutes after start, with every
-<abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> function in place.</p>
-<p><img alt="Character creation, the name typed by the route" src="../../../../../assets/screens/character-creation.jpg" /></p>
-<p><img alt="Gameplay: Iosefka's Clinic" src="../../../../../assets/screens/iosefkas-clinic.jpg" /></p>
-<p>One thing broke on the way: with every <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> function recording its inputs, the game crashed
-in the opening cutscene. Switching <abbr title="14-byte jumps written over the start of original functions, sending their callers to the replacements.">hooks</abbr> off one by one showed the replacements were not at
-fault; the recordings were. The limiter's recordings run to megabytes per frame, and with the
-frame step recording too, frames got slow enough to trip a problem in the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>. Runs now
-record only the functions they are collecting for.</p>
 <h2 id="the-frame-rate-option-corrected">The frame-rate option, corrected</h2>
 <p>A function nothing calls turned out to be a code cave: the time helper the frame-rate patches
 edit is never called in the stock game, and the patches overwrite it with their own code. That
@@ -400,8 +344,8 @@ answer for the clock reads, the executable loaded once and low priority, it take
 <p>Replacements may start from a draft of the decompiler's output, kept on the maintainer's machine
 and never committed. What is committed is the renamed, readable, <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> version.</p>
 <h2 id="this-wiki">This wiki</h2>
-<p>It took on the look and features of the ChronoRET wiki, a new icon, a
-<a href="../../../../../gallery/">gallery</a> of the test runs, and this devlog now has one post per day.</p>
+<p>The site theme and the one-post-per-day devlog were established alongside the project's
+documentation.</p>
 <h2 id="next">Next</h2>
 <ul>
 <li>The live functions the 60 FPS patches edit, starting with the frame-time descriptor family.</li>

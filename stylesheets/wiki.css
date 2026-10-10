@@ -1099,14 +1099,6 @@ summary {
 .bar > span { display: block; height: 100%; border-radius: 3px; background: var(--md-primary-fg-color); }
 .bar-label { font-size: .8rem; }
 
-/* Gallery and screenshots from test runs */
-.wk-gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; margin: 1rem 0; }
-.wk-gallery figure { margin: 0; }
-.wk-gallery img, .wk-gallery video, .md-typeset article img { border: 1px solid var(--border, #444); border-radius: 4px; }
-.wk-gallery img, .wk-gallery video { width: 100%; height: auto; display: block; }
-.wk-gallery figcaption { font-size: .85em; opacity: .8; margin-top: .3rem; }
-
-
 /* ════════════════════════════════════════════════════════════
    Yharnam theme
    Night: slate black, bone text, lamp gold, old blood.
@@ -1356,11 +1348,7 @@ blockquote {
 
 /* Tables, figures, code */
 table th { font-family: "Cinzel", Georgia, serif; font-weight: 600; letter-spacing: .06em; font-size: .85em; }
-.wk-gallery figcaption, figcaption { font-family: "Cormorant Garamond", Georgia, serif; font-style: italic; font-size: 1em; }
-.md-typeset article img, .wk-gallery img, .wk-gallery video, .wk-article-body p > img {
-  border: 1px solid var(--border);
-  box-shadow: 0 6px 24px rgba(0,0,0,.45);
-}
+figcaption { font-family: "Cormorant Garamond", Georgia, serif; font-style: italic; font-size: 1em; }
 
 /* Footer */
 .wk-footer {

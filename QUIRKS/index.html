@@ -11,7 +11,7 @@
   <title>Ghidra & PS4 Quirks — Byrgenwerth</title>
   
   
-  <link rel="stylesheet" href="../stylesheets/wiki.css?v=6aa0e2635b">
+  <link rel="stylesheet" href="../stylesheets/wiki.css?v=6f612af49d">
   
   
 </head>
@@ -40,9 +40,7 @@
 
   <!-- Left sidebar -->
   <nav class="wk-nav" id="wk-nav" aria-label="Site navigation">
-    <a href="../" class="wk-portal-icon" aria-label="Home">
-      <img src="../assets/bb-icon.png" alt="Byrgenwerth" width="220" height="220">
-    </a>
+    <a href="../" class="wk-portal-icon" aria-label="Home">Byrgenwerth</a>
 
     
       
@@ -54,10 +52,6 @@
         
           
           <a class="wk-nav-link" href="../devlog/">Devlog</a>
-          
-        
-          
-          <a class="wk-nav-link" href="../gallery/">Gallery</a>
           
         
           
@@ -140,10 +134,6 @@
         
           
           <a class="wk-nav-link" href="../ADDRESS_MAP/">Address Map</a>
-          
-        
-          
-          <a class="wk-nav-link" href="../bbport-notes/">bbport Study (history)</a>
           
         
           
@@ -266,8 +256,8 @@ yet; confirm or correct them when you hit them.</p>
 </ul>
 <h2 id="address-conventions">Address conventions</h2>
 <p>All addresses in this repository are <strong><abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> virtual addresses: the <abbr title="Executable and Linkable Format, the standard executable file format on Linux and FreeBSD.">ELF</abbr> <code>p_vaddr</code> plus
-<code>0x400000</code></strong>, with <abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr>'s image base set to <code>0x400000</code>. This is what the community
-patches (<abbr title="An open-source PS4 emulator; bbport's renderer and shader recompiler come from it. Paleblood uses none of its code.">shadPS4</abbr> and GoldHEN XML) use, and what <abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; the borrowed runtime Paleblood used until October 2026 (a public fork), being removed.">bbport</abbr>'s patch compiler converts from.</p>
+<code>0x400000</code></strong>, with <abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr>'s image base set to <code>0x400000</code>. Community patch files use the same
+address convention.</p>
 <p>Three conventions exist, one constant apart. V is the <abbr title="Executable and Linkable Format, the standard executable file format on Linux and FreeBSD.">ELF</abbr> <code>p_vaddr</code>.</p>
 <table>
 <thead>
@@ -279,32 +269,27 @@ patches (<abbr title="An open-source PS4 emulator; bbport's renderer and shader 
 </thead>
 <tbody>
 <tr>
-<td><abbr title="Executable and Linkable Format, the standard executable file format on Linux and FreeBSD.">ELF</abbr> vaddr, "guest offset"</td>
+<td><abbr title="Executable and Linkable Format, the standard executable file format on Linux and FreeBSD.">ELF</abbr> virtual address</td>
 <td>V</td>
-<td><abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; the borrowed runtime Paleblood used until October 2026 (a public fork), being removed.">bbport</abbr>'s <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> logs and <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> sites, its <code>game_check.py</code></td>
+<td><abbr title="Executable and Linkable Format, the standard executable file format on Linux and FreeBSD.">ELF</abbr> program headers and file layout</td>
 </tr>
 <tr>
 <td><abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> virtual address</td>
 <td>V + 0x400000</td>
-<td><strong>ours</strong>, <abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr>, community XML patches</td>
-</tr>
-<tr>
-<td><abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; the borrowed runtime Paleblood used until October 2026 (a public fork), being removed.">bbport</abbr> host address</td>
-<td>V + 0x800000000</td>
-<td>the running <abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; the borrowed runtime Paleblood used until October 2026 (a public fork), being removed.">bbport</abbr> process</td>
+<td><strong>ours</strong>, <abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr>, community patch files</td>
 </tr>
 </tbody>
 </table>
-<p>To convert ours to a <abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; the borrowed runtime Paleblood used until October 2026 (a public fork), being removed.">bbport</abbr> guest offset, subtract <code>0x400000</code>. <code>tools/validate_functions.py</code>
-rejects any address below <code>0x00400000</code>, which catches a base-0 import by mistake.</p>
+<p>To convert an address to the <abbr title="Executable and Linkable Format, the standard executable file format on Linux and FreeBSD.">ELF</abbr> virtual address, subtract <code>0x400000</code>.
+<code>tools/validate_functions.py</code> rejects any address below <code>0x00400000</code>, which catches a base-0
+import by mistake.</p>
 <p>Checked against the target image (read-only):
-- <abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; the borrowed runtime Paleblood used until October 2026 (a public fork), being removed.">bbport</abbr>'s five guest-<abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> sites hold their expected bytes at V, not at V + 0x400000.
 - The community "Performance Patch" address <code>0x0261B108</code> minus <code>0x400000</code> holds
   <code>c7 45 b4 06 00 00 00</code> (<code>mov dword [rbp-0x4c], 6</code>), which the patch changes to 9.</p>
 <p>Tool-independent identity: the loaded image (loadable segments copied to their <code>p_vaddr</code>,
 SHA-256) of this target is
-<code>071df19c8880086d97182dbc057bc8cb37badaca57d9112683836b24a0444c0a</code>, the value <abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; the borrowed runtime Paleblood used until October 2026 (a public fork), being removed.">bbport</abbr> pins.
-It is the same whichever SelfUtil produced the <abbr title="Executable and Linkable Format, the standard executable file format on Linux and FreeBSD.">ELF</abbr>.</p>
+<code>071df19c8880086d97182dbc057bc8cb37badaca57d9112683836b24a0444c0a</code>. It is the same whichever
+SelfUtil build produced the <abbr title="Executable and Linkable Format, the standard executable file format on Linux and FreeBSD.">ELF</abbr>.</p>
 <h2 id="ghidra-itself"><abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr> itself</h2>
 <ul>
 <li><abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr> 12 headless has no Jython: a <code>.py</code> script fails with "<abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr> was not started with
