@@ -254,6 +254,9 @@ added an isolated typed adapter proof with explicit signature and memory descrip
 fixtures passed <abbr title="Inputs recorded while the game ran, replayed by the harness.">capture</abbr>, serialization, replay, and verification; unsupported signatures and
 missing descriptors failed closed. Production replacements still do not call this adapter, so
 these tests produced no real game <abbr title="Inputs recorded while the game ran, replayed by the harness.">captures</abbr>.</p>
+<!-- milestone:paleblood-runtime-issue-status-pr53 order=2026-10-10T06:02:18.000000Z -->
+<p><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/53">Paleblood PR #53</a>, merged at <code>fec0551</code>, makes <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> issue counts recognize registered <code>RT_SYSLIB</code> entries without waiting for a boot run. This corrected <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/41">issue #41</a>: the four network byte-order helpers from <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/50">PR #50</a> are now checked and the group reports 4/175 implemented. Focused parser/count tests and the 95-test Python suite passed; GCC/Clang builds and CTest passed 11/11 each. This improves progress tracking only; actual boot did not advance.</p>
+<!-- /milestone -->
 <h2 id="documentation-and-website-changes">Documentation and website changes</h2>
 <p>The frame-timing page and generated progress data were refreshed from merged Paleblood revision
 <code>816ea964c2d5db49271ad3131cad4a24e3d0bcc5</code>. The public site was published at
