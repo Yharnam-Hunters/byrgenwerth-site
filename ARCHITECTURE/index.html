@@ -230,7 +230,7 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 7, 2026 22:05:30 UTC">October 7, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 10, 2026 00:17:43 UTC">October 10, 2026</span></p>
       
       <h1 id="architecture">Architecture</h1>
 <p>How Paleblood fits together: two tracks, decompilation and <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>, and how a function moves
@@ -299,7 +299,9 @@ own <abbr title="Paleblood's loader: maps the executable and the game's own modu
 yet; the <a href="../runtime/">Runtime</a> page has the roadmap and how far the executable boots today.</p>
 <p>Until October 2026 the project ran the original executable on a borrowed <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>, a fork of
 <a href="../bbport-notes/"><abbr title="A native Linux port of Bloodborne 1.09 that runs the original executable; the borrowed runtime Paleblood used until October 2026 (a public fork), being removed.">bbport</abbr></a>, and recorded the inputs of its replacements there. That <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> is
-being removed; the recordings it produced stay in use for verification.</p>
+being removed; the recordings it produced stay in use for verification. Paleblood's recorder
+now supports stable, function/run-identified output and replay checks, but it has no production
+call sites yet and does not automatically provide new game inputs.</p>
 <h2 id="the-decompilation-track">The decompilation track</h2>
 <p>A replacement lives in the code repository's <code>game/&lt;system&gt;/</code> and is written to its style rules:
 the objects a function touches described as structures with named fields, the original's other

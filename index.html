@@ -230,7 +230,7 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 7, 2026 22:05:30 UTC">October 7, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 10, 2026 00:17:43 UTC">October 10, 2026</span></p>
       
       <h1 class="wk-visually-hidden" id="byrgenwerth">Byrgenwerth</h1>
 <div class="wk-hero">
@@ -263,11 +263,11 @@ they are updated. See the <a href="devlog/2026/10/07/7-october-2026-a-new-direct
 
 <p><svg class="wk-sparkline" viewBox="0 0 720 200" role="img"
      aria-label="Bytes of verified replacement code by day, 4,711 to 11,933">
-  <polygon points="8,172 8.0,110.4 360.0,16.0 712.0,16.0 712,172" class="wk-spark-area"></polygon>
-  <polyline points="8.0,110.4 360.0,16.0 712.0,16.0" class="wk-spark-line"></polyline>
-  <circle cx="8.0" cy="110.4" r="2.5" class="wk-spark-dot"><title>2026-10-06: 4,711 bytes verified, 9 functions</title></circle><circle cx="360.0" cy="16.0" r="2.5" class="wk-spark-dot"><title>2026-10-07: 11,933 bytes verified, 20 functions</title></circle><circle cx="712.0" cy="16.0" r="2.5" class="wk-spark-dot"><title>2026-10-09: 11,933 bytes verified, 20 functions</title></circle>
+  <polygon points="8,172 8.0,110.4 242.7,16.0 477.3,16.0 712.0,16.0 712,172" class="wk-spark-area"></polygon>
+  <polyline points="8.0,110.4 242.7,16.0 477.3,16.0 712.0,16.0" class="wk-spark-line"></polyline>
+  <circle cx="8.0" cy="110.4" r="2.5" class="wk-spark-dot"><title>2026-10-06: 4,711 bytes verified, 9 functions</title></circle><circle cx="242.7" cy="16.0" r="2.5" class="wk-spark-dot"><title>2026-10-07: 11,933 bytes verified, 20 functions</title></circle><circle cx="477.3" cy="16.0" r="2.5" class="wk-spark-dot"><title>2026-10-09: 11,933 bytes verified, 20 functions</title></circle><circle cx="712.0" cy="16.0" r="2.5" class="wk-spark-dot"><title>2026-10-10: 11,933 bytes verified, 20 functions</title></circle>
   <text x="8" y="192" class="wk-spark-label">2026-10-06 — 4,711 B</text>
-  <text x="712" y="192" class="wk-spark-label" text-anchor="end">2026-10-09 — 11,933 B</text>
+  <text x="712" y="192" class="wk-spark-label" text-anchor="end">2026-10-10 — 11,933 B</text>
 </svg></p>
 <p class="wk-page-meta">Verified replacement code by day — see the <a href="devlog/">devlog</a> for the story behind each step.</p>
 
@@ -290,7 +290,8 @@ rate and resolution.</p>
 <ul>
 <li><strong>Decompilation:</strong> functions rewritten as readable C++ and proved against the original in the
   verification <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr>, on inputs recorded earlier and on generated <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr>.</li>
-<li><strong>Runtime:</strong> our own <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> (done), then generic input <abbr title="Inputs recorded while the game ran, replayed by the harness.">capture</abbr>, kernel, threads and memory,
+<li><strong>Runtime:</strong> our own <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> (done), generic input <abbr title="Inputs recorded while the game ran, replayed by the harness.">capture</abbr> (foundation in place; integration
+  incomplete), kernel, threads and memory,
   files, input, audio, video out, and the graphics, rebuilt at the engine's own level rather than
   by emulating the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr>'s GPU (<a href="runtime/">Runtime</a>).</li>
 </ul>
