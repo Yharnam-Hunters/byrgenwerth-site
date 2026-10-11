@@ -220,7 +220,7 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 10, 2026 06:27:30 UTC">October 10, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 10, 2026 07:03:55 UTC">October 10, 2026</span></p>
       
       <h1 id="architecture">Architecture</h1>
 <p>How Paleblood fits together: two tracks, decompilation and <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>, and how a function moves
@@ -291,9 +291,10 @@ the latest saved boot result.</p>
 <p>Full game runs still use an external host scaffold while the project-owned <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> is completed.
 The verification <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr> independently maps the executable and replays recorded inputs. Its
 <abbr title="Inputs recorded while the game ran, replayed by the harness.">capture</abbr> writer now supports stable, function/run-identified output and replay checks, but it has
-no production call sites yet and does not automatically provide new game inputs. A synthetic
-host test checks Paleblood's side of the versioned plug-in interface; it does not exercise the
-external host or establish full-run equivalence.</p>
+no production call sites yet and does not automatically provide new game inputs. Paleblood also
+has a project-owned implementation of the version-1 <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> callback. A synthetic executable-memory
+test verifies that its jump reaches a replacement, but the callback is not yet wired into the
+full game-run scaffold and does not establish full-run equivalence.</p>
 <h2 id="the-decompilation-track">The decompilation track</h2>
 <p>A replacement lives in the code repository's <code>game/&lt;system&gt;/</code> and is written to its style rules:
 the objects a function touches described as structures with named fields, the original's other

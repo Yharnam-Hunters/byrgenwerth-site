@@ -240,6 +240,9 @@ and <code>sceNetNtohs</code>. These implement fixed-width host/network byte-orde
 resolver, epoll, and online behavior remain uncovered. The saved boot result still stopped at
 <code>scePthreadAttrGetaffinity</code> (238/686 system imports provided), within contributor-owned issue #34.
 No boot run was made for this change.</p>
+<!-- milestone:paleblood-host-v1-pr55 order=2026-10-10T06:58:39.000000Z -->
+<p><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/55">Paleblood PR #55</a>, merged at <code>348c71f</code>, adds Paleblood's first functional implementation of the version-1 host <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> callback. A synthetic executable-memory case confirms that a patched guest entry dispatches to its replacement with the test arguments. GCC and Clang Release builds and all 13 CTest cases passed. The full game-run scaffold remains active: the callback is not yet integrated into that path, and game boot did not advance.</p>
+<!-- /milestone -->
 <h2 id="decompilation-and-verified-functions">Decompilation and <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> functions</h2>
 <p><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/48">Paleblood PR #48</a> promoted
 <code>frame_timing_pace_frame</code> (<code>0x02434770</code>) using its existing evidence: 585/585 recorded calls and
@@ -260,6 +263,10 @@ these tests produced no real game <abbr title="Inputs recorded while the game ra
 
 <!-- milestone:paleblood-scaffold-contract-pr54 order=2026-10-10T06:24:31.000000Z -->
 <p><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/54">Paleblood PR #54</a>, merged at <code>8abd5531f919047ee8d28bae7b16a0332f5fb764</code>, adds a synthetic fake-host test for the existing version-1 host API consumer. It checks version rejection, image handoff, guest-relative <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> registration, named/address <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> skips, probe ordering, and error propagation. GCC and Clang Release builds and CTest passed 12/12 each; policy, <abbr title="14-byte jumps written over the start of original functions, sending their callers to the replacements.">hooks</abbr>, and required CI checks passed. This improves ABI regression coverage only: the legacy host remains active, no equivalent replacement exists, and boot execution did not advance.</p>
+<!-- /milestone -->
+
+<!-- milestone:paleblood-host-v1-tooling-pr55 order=2026-10-10T07:00:05.000000Z -->
+<p><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/55">Paleblood PR #55</a> also makes <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> tests honor <code>TMPDIR</code>, stops safely if the test clone cannot be created, and gives the synthetic replay test the <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> path selected by CMake. The <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> suite <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> that unreadable game code and allowlist growth are refused, and that a failing pre-push gate blocks a piped push. These checks improve development reliability only; they do not change game execution.</p>
 <!-- /milestone -->
 <h2 id="documentation-and-website-changes">Documentation and website changes</h2>
 <p>The frame-timing page and generated progress data were refreshed from merged Paleblood revision
