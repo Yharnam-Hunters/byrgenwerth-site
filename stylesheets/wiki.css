@@ -265,21 +265,30 @@ img { max-width: 100%; }
 
 /* ── Portal icon (top of sidebar) ───────────────────────────── */
 .wk-portal-icon {
-  display: block;
-  width: 100%;
-  line-height: 0;
+  margin: 0;
+  padding: 16px 18px 10px;
   border-bottom: 1px solid var(--border);
-  overflow: hidden;
+  text-align: center;
   flex-shrink: 0;
 }
+.wk-portal-icon > a { display: block; width: min(100%, 176px); margin: 0 auto; line-height: 0; }
 .wk-portal-icon img {
   width: 100%;
   height: auto;
   display: block;
   object-fit: cover;
+  border: 1px solid var(--border-l);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, .45);
   transition: opacity .2s;
 }
-.wk-portal-icon:hover img { opacity: .85; }
+.wk-portal-icon a:hover img { opacity: .85; }
+.wk-portal-icon a:focus-visible { outline: 2px solid var(--logo-gold); outline-offset: 3px; }
+.wk-portal-icon figcaption {
+  margin-top: 7px;
+  font: 9.5px/1.4 system-ui, sans-serif;
+  color: var(--text-dd);
+}
+.wk-portal-icon figcaption a { color: var(--text-d); }
 
 .wk-nav-heading {
   font-family: system-ui, sans-serif;
@@ -315,8 +324,13 @@ img { max-width: 100%; }
   flex: 1 1 auto;
   min-width: 0;
   margin: 0;
-  padding: 8px 4px 2px 12px;
+  padding: 8px 4px 2px 20px;
   border: 0;
+  font-size: 10.5px;
+  letter-spacing: .09em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .wk-nav-section-heading .wk-nav-heading-link { color: var(--logo-gold); }
 .wk-nav-section-toggle {
@@ -387,8 +401,9 @@ img { max-width: 100%; }
 }
 .wk-stat-row {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
-  gap: 6px;
+  column-gap: 6px;
   font-family: system-ui, sans-serif;
   font-size: 12px;
   padding: 3px 12px;
@@ -399,7 +414,8 @@ img { max-width: 100%; }
   font-weight: 600;
   color: var(--text);
   text-align: right;
-  overflow-wrap: anywhere;
+  white-space: nowrap;
+  margin-left: auto;
 }
 .wk-stat-sublabel {
   font-family: system-ui, sans-serif;
@@ -1328,85 +1344,59 @@ blockquote {
   color: var(--text-dd);
 }
 
-/* Homepage hero pairs the identified game cover with Willem's words. */
+/* Homepage hero: Willem's words are the centrepiece. */
 .wk-hero {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: clamp(1.25em, 4vw, 3em);
-  margin: .4em 0 2.2em;
-  padding: 2.4em 1em 2.2em;
+  margin: .4em 0 2.4em;
+  padding: 2.8em 1em 2.6em;
   background:
     linear-gradient(to right, transparent, var(--lamp) 25%, var(--lamp) 75%, transparent) top / 70% 1px no-repeat,
     linear-gradient(to right, transparent, var(--lamp) 25%, var(--lamp) 75%, transparent) bottom / 70% 1px no-repeat,
-    radial-gradient(ellipse 60% 70% at 50% 50%, color-mix(in srgb, var(--blood) 22%, transparent), transparent 75%);
+    radial-gradient(ellipse 60% 70% at 50% 60%, color-mix(in srgb, var(--blood) 24%, transparent), transparent 75%);
 }
-.wk-hero-cover {
-  flex: 0 0 clamp(150px, 20vw, 220px);
-  width: clamp(150px, 20vw, 220px);
-  margin: 0;
-}
-.wk-hero-cover img {
-  display: block;
-  width: 100%;
-  height: auto;
-  border: 1px solid var(--border-l);
-  box-shadow: 0 8px 28px rgba(0, 0, 0, .45);
-}
-.wk-hero-cover figcaption {
-  margin-top: .55em;
-  color: var(--text-dd);
-  font: 11px/1.45 system-ui, sans-serif;
-  text-align: left;
-}
-.wk-hero-cover figcaption a { color: var(--link); }
-.wk-hero-text { max-width: 40em; margin: 0 auto; text-align: center; }
+.wk-hero-text { max-width: 42em; margin: 0 auto; text-align: center; }
 .wk-hero-title {
   font-family: "Cinzel", Georgia, serif;
-  font-size: 2.3em;
+  font-size: 1.5em;
   font-weight: 600;
-  letter-spacing: .2em;
+  letter-spacing: .3em;
   text-transform: uppercase;
-  color: var(--heading);
+  color: var(--lamp);
   margin: 0;
   line-height: 1.2;
 }
 .wk-hero-sub {
   font-family: "Cormorant Garamond", Georgia, serif;
   font-style: italic;
-  font-size: 1.15em;
+  font-size: 1.1em;
   color: var(--text-d);
-  margin: .2em 0 1.6em;
+  margin: .3em 0 1.5em;
 }
 .wk-hero blockquote {
   border: none;
-  margin: 0;
+  margin: 0 auto;
   padding: 0;
   font-family: "Cormorant Garamond", Georgia, serif;
   font-style: italic;
   font-weight: 500;
-  font-size: 1.75em;
-  line-height: 1.45;
+  font-size: 2.15em;
+  line-height: 1.4;
   color: var(--heading);
-  text-shadow: 0 0 18px color-mix(in srgb, var(--lamp) 35%, transparent);
+  text-shadow: 0 0 22px color-mix(in srgb, var(--lamp) 45%, transparent),
+               0 0 2px color-mix(in srgb, var(--lamp) 30%, transparent);
 }
 .wk-hero blockquote cite {
   display: block;
-  margin-top: .8em;
+  margin-top: .9em;
   font-family: "Cinzel", Georgia, serif;
   font-style: normal;
-  font-size: .42em;
+  font-size: .36em;
   letter-spacing: .22em;
   text-transform: uppercase;
   color: var(--lamp);
   text-shadow: none;
 }
-@media (max-width: 720px) {
-  .wk-hero { flex-direction: column; gap: 1.25em; padding: 1.6em .5em; }
-  .wk-hero-cover { flex-basis: auto; width: min(42vw, 170px); }
-  .wk-hero-cover figcaption { font-size: 10px; text-align: center; }
-}
-@media (max-width: 600px) { .wk-hero-title { font-size: 1.6em; } .wk-hero blockquote { font-size: 1.35em; } }
+@media (max-width: 720px) { .wk-hero { padding: 1.8em .5em; } }
+@media (max-width: 600px) { .wk-hero-title { font-size: 1.2em; } .wk-hero blockquote { font-size: 1.5em; } }
 
 /* Quick links: four hunters' paths */
 .wk-ql-box { background: var(--bg-s); border: 1px solid var(--border); }
@@ -1572,8 +1562,8 @@ figcaption { font-family: "Cormorant Garamond", Georgia, serif; font-style: ital
 .wk-stats .wk-nav-heading { padding: 8px 8px 4px; }
 /* Fitting levels, set by the script in main.html until the sidebar fits the window (never a
    scrollbar): 1 hides the stats' fine print, 2 tightens the menu, 3 uses smaller type, 4 hides
-   the stats, 5 shortens the picture, 6 hides it; only a window too short for all of that gets a
-   scrolling menu rather than cut-off entries. */
+   the stats, 5 shortens the picture; only a window too short for all of that gets a scrolling
+   menu rather than cut-off entries. The picture itself always stays. */
 .wk-nav.wk-fit-1 .wk-stats .wk-stat-sublabel, .wk-nav.wk-fit-1 .wk-stats .wk-stat-track,
 .wk-nav.wk-fit-1 .wk-stats .wk-stat-pct { display: none; }
 .wk-nav.wk-fit-2 .wk-nav-heading { padding-top: 8px; padding-bottom: 2px; }
@@ -1583,6 +1573,6 @@ figcaption { font-family: "Cormorant Garamond", Georgia, serif; font-style: ital
 .wk-nav.wk-fit-3 .wk-nav-heading { padding-top: 6px; padding-bottom: 1px; font-size: 10px; }
 .wk-nav.wk-fit-4 .wk-stats { display: none; }
 .wk-nav.wk-fit-5 .wk-portal-icon img { max-height: 90px; object-fit: cover; object-position: 50% 30%; }
-.wk-nav.wk-fit-6 .wk-portal-icon { display: none; }
+.wk-nav.wk-fit-5 .wk-portal-icon figcaption { display: none; }
 .wk-nav.wk-fit-scroll { overflow-y: auto; }
 @media (max-width: 720px) { .wk-nav { overflow-y: auto; } .wk-nav .wk-stats { display: block; } }

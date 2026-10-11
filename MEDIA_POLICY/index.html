@@ -11,7 +11,7 @@
   <title>Evidence & Media Review — Byrgenwerth</title>
   
   
-  <link rel="stylesheet" href="../stylesheets/wiki.css?v=e7d73aebcd">
+  <link rel="stylesheet" href="../stylesheets/wiki.css?v=540b25005e">
   
   
 </head>
@@ -40,7 +40,13 @@
 
   <!-- Left sidebar -->
   <nav class="wk-nav" id="wk-nav" aria-label="Site navigation">
-    <a href="../" class="wk-portal-icon" aria-label="Home">Byrgenwerth</a>
+    <!-- Menu artwork: provenance and rights notes in the private media review -->
+    <figure class="wk-portal-icon">
+      <a href="../" aria-label="Byrgenwerth home">
+        <img src="../assets/media/bloodborne-menu-art.png" width="256" height="256" alt="A lone Bloodborne hunter stands in a rain-darkened Yharnam street beneath the game's gothic architecture.">
+      </a>
+      <figcaption>Art credited to r_dsgnd on <a href="https://www.steamgriddb.com/icon/105442" target="_blank" rel="noopener">SteamGridDB</a> · ©2014 Sony Computer Entertainment Inc. Redistribution permission for the underlying game artwork is unverified.</figcaption>
+    </figure>
 
     
       
@@ -411,7 +417,7 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 11, 2026 05:13:16 UTC">October 11, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 11, 2026 05:38:12 UTC">October 11, 2026</span></p>
       
       <h1 id="evidence-media-review">Evidence &amp; Media Review</h1>
 <h2 id="how-to-read-a-claim">How to read a claim</h2>
@@ -484,9 +490,9 @@ screenshots as Paleblood output.</p>
 assets, game files, and decompiler output do not belong in its source, issues, pull requests, or
 Discussions. A media review for this site does not authorize placing media in the code repository.</p>
 <h2 id="current-media-record">Current media record</h2>
-<p>The homepage uses the 256×256 Bloodborne menu artwork credited to <code>r_dsgnd</code> on SteamGridDB. It is
-shown as a restrained image beside the project introduction, with descriptive alt text, visible
-contributor/source attribution, and a link to the source entry. The private asset record explains
+<p>The site menu shows the 256×256 Bloodborne menu artwork credited to <code>r_dsgnd</code> on SteamGridDB. It
+appears once per page as a small image at the top of the sidebar, above the Home link, with
+descriptive alt text, visible contributor/source attribution, and a link to the source entry. The private asset record explains
 the supplied file's provenance and pixel match to the former wiki icon, intended display size,
 copyright rationale, and unresolved rights status. No license for redistribution of the underlying
 game artwork was found; contributor credit and the educational/research context are not treated as
@@ -570,9 +576,9 @@ var wordmark = document.querySelector('.wk-wordmark');
 /* The sidebar is set, not scrolled: step through the fitting levels (wiki.css) until it fits. */
 function fitNav() {
   if (!navEl || window.matchMedia('(max-width: 720px)').matches) return;
-  for (var i = 1; i <= 6; i++) navEl.classList.remove('wk-fit-' + i);
+  for (var i = 1; i <= 5; i++) navEl.classList.remove('wk-fit-' + i);
   navEl.classList.remove('wk-fit-scroll');
-  for (var level = 1; level <= 6 && navEl.scrollHeight > navEl.clientHeight + 1; level++) {
+  for (var level = 1; level <= 5 && navEl.scrollHeight > navEl.clientHeight + 1; level++) {
     navEl.classList.add('wk-fit-' + level);
   }
   if (navEl.scrollHeight > navEl.clientHeight + 1) navEl.classList.add('wk-fit-scroll');
