@@ -11,7 +11,7 @@
   <title>Devlog — Byrgenwerth</title>
   
   
-  <link rel="stylesheet" href="../stylesheets/wiki.css?v=4690528dd5">
+  <link rel="stylesheet" href="../stylesheets/wiki.css?v=e00e283b2a">
   
   
 </head>
@@ -40,12 +40,11 @@
 
   <!-- Left sidebar -->
   <nav class="wk-nav" id="wk-nav" aria-label="Site navigation">
-    <!-- Menu artwork: provenance and rights notes in the private media review -->
+    <!-- Menu artwork: credited on the Credits page; provenance and rights notes in the private media review -->
     <figure class="wk-portal-icon">
       <a href="../" aria-label="Byrgenwerth home">
         <img src="../assets/media/bloodborne-menu-art.png" width="256" height="256" alt="A lone Bloodborne hunter stands in a rain-darkened Yharnam street beneath the game's gothic architecture.">
       </a>
-      <figcaption>Art credited to r_dsgnd on <a href="https://www.steamgriddb.com/icon/105442" target="_blank" rel="noopener">SteamGridDB</a> · ©2014 Sony Computer Entertainment Inc.</figcaption>
     </figure>
 
     
@@ -402,6 +401,8 @@
   </div>
   <ol class="wk-toc-list" id="wk-toc-list">
     
+    <li><a href="2026/10/11/2026-10-11-development-progress/" class="wk-toc-link">2026-10-11: Development progress</a></li>
+    
     <li><a href="2026/10/10/10-october-2026-recorded-verification-and-runtime-foundations/" class="wk-toc-link">10 October 2026: recorded verification and runtime foundations</a></li>
     
     <li><a href="2026/10/09/9-october-2026-a-path-for-runtime-contributors/" class="wk-toc-link">9 October 2026: a path for runtime contributors</a></li>
@@ -421,6 +422,23 @@
   <h1 id="devlog">Devlog</h1>
 <p>Notes on Paleblood, one post per local calendar day, updated as milestones land and split into six standard sections.
 Written in plain English — if a term is new, check the <a href="../glossary/">Glossary</a> first.</p>
+  
+  <div class="wk-blog-entry">
+    
+    <p class="wk-post-meta"><time datetime="2026-10-11 00:00:00+00:00">2026-10-11</time></p>
+    
+    <div class="wk-blog-excerpt"><h2 id="2026-10-11-development-progress"><a class="toclink" href="2026/10/11/2026-10-11-development-progress/">2026-10-11: Development progress</a></h2>
+<h3 id="runtime-and-boot-progress"><a class="toclink" href="2026/10/11/2026-10-11-development-progress/#runtime-and-boot-progress">Runtime and boot progress</a></h3>
+<h3 id="decompilation-and-verified-functions"><a class="toclink" href="2026/10/11/2026-10-11-development-progress/#decompilation-and-verified-functions">Decompilation and <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> functions</a></h3>
+<h3 id="tooling-and-automation"><a class="toclink" href="2026/10/11/2026-10-11-development-progress/#tooling-and-automation">Tooling and automation</a></h3>
+<h3 id="documentation-and-website-changes"><a class="toclink" href="2026/10/11/2026-10-11-development-progress/#documentation-and-website-changes">Documentation and website changes</a></h3>
+<!-- milestone:wiki-publication-pr27-image-only-20261011 order=2026-10-11T06:02:49.000000Z -->
+<p>The roomier submenu from private PR #27 (merge <code>2f8709c</code>) is live at <a href="https://github.com/Yharnam-Hunters/byrgenwerth-site/commit/e691994c00d51bf25cd526088132b8b304a22cd3">public site commit <code>e691994</code></a>; its <a href="https://github.com/Yharnam-Hunters/byrgenwerth-site/actions/runs/38116684097">GitHub Pages deployment</a> succeeded. Submenus are indented along a guide line with more room between entries, and one section opens at a time. Core routes, the image and the search index returned HTTP 200; publication privacy scanning found 105 generated files clean. At the maintainer's request the sidebar now shows the menu artwork alone: its caption was removed, and the r_dsgnd/SteamGridDB credit and ©2014 Sony notice moved to the <a href="../credits/">Credits</a> page. Documentation and navigation only; game execution did not advance.</p>
+<!-- /milestone -->
+<h3 id="tests-and-validation"><a class="toclink" href="2026/10/11/2026-10-11-development-progress/#tests-and-validation">Tests and validation</a></h3>
+<h3 id="blockers-and-next-steps"><a class="toclink" href="2026/10/11/2026-10-11-development-progress/#blockers-and-next-steps">Blockers and next steps</a></h3></div>
+    
+  </div>
   
   <div class="wk-blog-entry">
     

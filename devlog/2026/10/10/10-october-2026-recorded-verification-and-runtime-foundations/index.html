@@ -11,7 +11,7 @@
   <title>10 October 2026: recorded verification and runtime foundations — Byrgenwerth</title>
   
   
-  <link rel="stylesheet" href="../../../../../stylesheets/wiki.css?v=4690528dd5">
+  <link rel="stylesheet" href="../../../../../stylesheets/wiki.css?v=e00e283b2a">
   
   
 </head>
@@ -40,12 +40,11 @@
 
   <!-- Left sidebar -->
   <nav class="wk-nav" id="wk-nav" aria-label="Site navigation">
-    <!-- Menu artwork: provenance and rights notes in the private media review -->
+    <!-- Menu artwork: credited on the Credits page; provenance and rights notes in the private media review -->
     <figure class="wk-portal-icon">
       <a href="../../../../../" aria-label="Byrgenwerth home">
         <img src="../../../../../assets/media/bloodborne-menu-art.png" width="256" height="256" alt="A lone Bloodborne hunter stands in a rain-darkened Yharnam street beneath the game's gothic architecture.">
       </a>
-      <figcaption>Art credited to r_dsgnd on <a href="https://www.steamgriddb.com/icon/105442" target="_blank" rel="noopener">SteamGridDB</a> · ©2014 Sony Computer Entertainment Inc.</figcaption>
     </figure>
 
     
@@ -483,8 +482,16 @@ Public source documents the synthetic limits alongside the results.</p>
 <p>The homepage now uses the exact 256×256 hunter image supplied by the maintainer (SteamGridDB entry 105442, contributor <code>r_dsgnd</code>), replacing the rejected PlayStation Hits product tile. The image is visibly attributed and its caption states that redistribution permission for the underlying game artwork is unverified; the private review records its provenance, display scope, rationale, and adverse rights factors without claiming a license or guaranteed exception. The seven themed groups remain collapsible, the active section opens automatically, preferences persist where storage is available, and mobile navigation remains a compact accessible drawer. This remains a private-PR proposal pending maintainer review; it has not been published. It changes no <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>, decompilation, or game-boot behavior.</p>
 <!-- /milestone -->
 
+<!-- milestone:wiki-publication-pr24-20261010 order=2026-10-11T05:25:56.000000Z -->
+<p>The updated Byrgenwerth encyclopedia is live at <a href="https://github.com/Yharnam-Hunters/byrgenwerth-site/commit/975ec0c9b2945269f2d5b54e4464be94d150e535">public site commit <code>975ec0c</code></a>; its <a href="https://github.com/Yharnam-Hunters/byrgenwerth-site/actions/runs/38114509856">GitHub Pages deployment</a> succeeded. Live checks found the supplied menu image at its expected hash, all seven themed collapsible groups, the active Runtime section expanded, and the preserved Insight panel. All 45 generated page routes returned HTTP 200; the 292-document search index contains the encyclopedia destinations and no retired gallery or private-path entries. A live mobile-width Firefox check confirmed the compact drawer opens, Escape closes it and restores focus, and following a navigation link closes the drawer. Publication privacy scanning found 105 generated files clean. This is documentation and navigation work only; <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> behavior and game execution did not advance.</p>
+<!-- /milestone -->
+
 <!-- milestone:sidebar-menu-art-20261010 order=2026-10-11T05:45:19.000000Z -->
 <p>The sidebar menu was repaired and the maintainer-selected menu artwork moved into it. The empty top-of-menu link (collapsed to zero height) now holds the image, above Home, with its r_dsgnd/SteamGridDB credit and ©2014 Sony notice beneath it; at the maintainer's request the caption no longer carries a permission note. Section headings line up with their links and no longer wrap, and the Insight figures no longer break mid-number. Submenus are indented along a thin guide line with more room between entries, and only one section opens at a time; short windows hide the Insight panel and shorten the picture, then scroll, instead of squeezing the menu's spacing. The homepage hero is now text only, so Master Willem's words lead the page. Checked in desktop, short-window, and mobile screenshots. This changes no <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>, decompilation, or game-boot behavior.</p>
+<!-- /milestone -->
+
+<!-- milestone:wiki-publication-pr26-20261010 order=2026-10-11T05:55:00.000000Z -->
+<p>The repaired sidebar menu from private PR #26 (merge <code>8e6f5b2</code>) is live at <a href="https://github.com/Yharnam-Hunters/byrgenwerth-site/commit/6b16b4525ccea78cda1f44a36fc51570d881bfa1">public site commit <code>6b16b45</code></a>; its <a href="https://github.com/Yharnam-Hunters/byrgenwerth-site/actions/runs/38115624398">GitHub Pages deployment</a> succeeded. Live checks found the menu image in the sidebar at its expected hash and no longer on the homepage, and the core routes and search index returned HTTP 200. Publication privacy scanning found 105 generated files clean. Documentation and navigation only; game execution did not advance.</p>
 <!-- /milestone -->
 <h2 id="tests-and-validation">Tests and validation</h2>
 <p>The <abbr title="Inputs recorded while the game ran, replayed by the harness.">capture</abbr> changes passed GCC and Clang builds and all 11 CTest suites. The verification

@@ -266,7 +266,7 @@ img { max-width: 100%; }
 /* ── Portal icon (top of sidebar) ───────────────────────────── */
 .wk-portal-icon {
   margin: 0;
-  padding: 16px 18px 10px;
+  padding: 16px 18px 14px;
   border-bottom: 1px solid var(--border);
   text-align: center;
   flex-shrink: 0;
@@ -283,12 +283,6 @@ img { max-width: 100%; }
 }
 .wk-portal-icon a:hover img { opacity: .85; }
 .wk-portal-icon a:focus-visible { outline: 2px solid var(--logo-gold); outline-offset: 3px; }
-.wk-portal-icon figcaption {
-  margin-top: 7px;
-  font: 9.5px/1.4 system-ui, sans-serif;
-  color: var(--text-dd);
-}
-.wk-portal-icon figcaption a { color: var(--text-d); }
 
 .wk-nav-heading {
   font-family: system-ui, sans-serif;
@@ -1567,7 +1561,6 @@ figcaption { font-family: "Cormorant Garamond", Georgia, serif; font-style: ital
 .wk-nav.wk-fit-1 .wk-stats .wk-stat-pct { display: none; }
 .wk-nav.wk-fit-2 .wk-stats { display: none; }
 .wk-nav.wk-fit-3 .wk-portal-icon img { max-height: 90px; object-fit: cover; object-position: 50% 30%; }
-.wk-nav.wk-fit-3 .wk-portal-icon figcaption { display: none; }
 .wk-nav.wk-fit-scroll { overflow-y: auto; }
 
 /* Submenu: indented under its heading along a thin guide line, with room between entries; the
