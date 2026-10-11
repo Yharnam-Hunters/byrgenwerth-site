@@ -292,7 +292,59 @@ img { max-width: 100%; }
   border-top: 1px solid var(--border);
   margin-top: 4px;
 }
+.wk-nav-heading-link {
+  display: block;
+  color: var(--logo-gold);
+  text-decoration: none;
+}
+.wk-nav-heading-link:hover { color: var(--text); text-decoration: underline; }
+.wk-nav-heading-link:focus-visible { outline: 2px solid var(--logo-gold); outline-offset: 2px; }
 .wk-nav-heading:first-child { border-top: none; margin-top: 0; }
+
+.wk-nav-section { flex: 0 0 auto; }
+.wk-nav-section-heading {
+  display: flex;
+  align-items: center;
+  min-height: 29px;
+  margin-top: 3px;
+  border-top: 1px solid var(--border);
+}
+.wk-nav-section:first-of-type .wk-nav-section-heading { margin-top: 0; border-top: 0; }
+.wk-nav-section-heading .wk-nav-heading,
+.wk-nav-section-heading .wk-nav-heading-link {
+  flex: 1 1 auto;
+  min-width: 0;
+  margin: 0;
+  padding: 8px 4px 2px 12px;
+  border: 0;
+}
+.wk-nav-section-heading .wk-nav-heading-link { color: var(--logo-gold); }
+.wk-nav-section-toggle {
+  display: inline-flex;
+  flex: 0 0 30px;
+  align-items: center;
+  justify-content: center;
+  min-width: 30px;
+  min-height: 28px;
+  margin: 1px 6px 0 0;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  background: transparent;
+  color: var(--logo-gold);
+  font: 700 18px/1 system-ui, sans-serif;
+  cursor: pointer;
+}
+.wk-nav-section-toggle:hover { border-color: var(--border-l); background: var(--bg-h); }
+.wk-nav-section-toggle:focus-visible,
+.wk-nav-section-heading a:focus-visible {
+  outline: 2px solid var(--logo-gold);
+  outline-offset: 1px;
+}
+.wk-nav-section-links { padding-bottom: 2px; }
+.wk-nav-section-links[hidden] { display: none; }
+.wk-nav-section-links > .wk-nav-link { padding-top: 2px; padding-bottom: 2px; }
+.wk-nav-section-links > .wk-nav-subheading { padding-top: 5px; }
 
 /* Gap between portal icon and first nav link */
 .wk-portal-icon + .wk-nav-link { margin-top: 10px; }
@@ -890,7 +942,13 @@ summary {
   .wk-toc { display: none; }
 }
 @media (max-width: 720px) {
+  .wk-header { padding-right: 8px; padding-left: 8px; }
   .wk-nav-toggle { display: inline-flex; align-items: center; }
+  .wk-wordmark { min-width: 0; flex-shrink: 1; font-size: 16px; letter-spacing: .08em; margin-right: 6px; }
+  .wk-wordmark small { display: none; }
+  .wk-header-right { gap: 4px; min-width: 0; }
+  .wk-searchbox { width: clamp(82px, 27vw, 160px); }
+  .wk-toggle { padding-right: 6px; padding-left: 6px; }
   .wk-nav {
     position: fixed;
     top: 44px;
@@ -1270,9 +1328,12 @@ blockquote {
   color: var(--text-dd);
 }
 
-/* Homepage hero: only Willem's words, lit like a lamp in the dark */
+/* Homepage hero pairs the identified game cover with Willem's words. */
 .wk-hero {
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(1.25em, 4vw, 3em);
   margin: .4em 0 2.2em;
   padding: 2.4em 1em 2.2em;
   background:
@@ -1280,7 +1341,26 @@ blockquote {
     linear-gradient(to right, transparent, var(--lamp) 25%, var(--lamp) 75%, transparent) bottom / 70% 1px no-repeat,
     radial-gradient(ellipse 60% 70% at 50% 50%, color-mix(in srgb, var(--blood) 22%, transparent), transparent 75%);
 }
-.wk-hero-text { max-width: 40em; margin: 0 auto; }
+.wk-hero-cover {
+  flex: 0 0 clamp(150px, 20vw, 220px);
+  width: clamp(150px, 20vw, 220px);
+  margin: 0;
+}
+.wk-hero-cover img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--border-l);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, .45);
+}
+.wk-hero-cover figcaption {
+  margin-top: .55em;
+  color: var(--text-dd);
+  font: 11px/1.45 system-ui, sans-serif;
+  text-align: left;
+}
+.wk-hero-cover figcaption a { color: var(--link); }
+.wk-hero-text { max-width: 40em; margin: 0 auto; text-align: center; }
 .wk-hero-title {
   font-family: "Cinzel", Georgia, serif;
   font-size: 2.3em;
@@ -1320,6 +1400,11 @@ blockquote {
   text-transform: uppercase;
   color: var(--lamp);
   text-shadow: none;
+}
+@media (max-width: 720px) {
+  .wk-hero { flex-direction: column; gap: 1.25em; padding: 1.6em .5em; }
+  .wk-hero-cover { flex-basis: auto; width: min(42vw, 170px); }
+  .wk-hero-cover figcaption { font-size: 10px; text-align: center; }
 }
 @media (max-width: 600px) { .wk-hero-title { font-size: 1.6em; } .wk-hero blockquote { font-size: 1.35em; } }
 

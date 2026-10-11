@@ -57,6 +57,22 @@
          <lastmod>2026-10-11</lastmod>
     </url>
     <url>
+         <loc>https://yharnam-hunters.github.io/byrgenwerth-site/beasts-of-yharnam/</loc>
+         <lastmod>2026-10-11</lastmod>
+    </url>
+    <url>
+         <loc>https://yharnam-hunters.github.io/byrgenwerth-site/beasts-of-yharnam/ai-and-behavior/</loc>
+         <lastmod>2026-10-11</lastmod>
+    </url>
+    <url>
+         <loc>https://yharnam-hunters.github.io/byrgenwerth-site/beasts-of-yharnam/enemy-directory/</loc>
+         <lastmod>2026-10-11</lastmod>
+    </url>
+    <url>
+         <loc>https://yharnam-hunters.github.io/byrgenwerth-site/beasts-of-yharnam/npcs-and-hunters/</loc>
+         <lastmod>2026-10-11</lastmod>
+    </url>
+    <url>
          <loc>https://yharnam-hunters.github.io/byrgenwerth-site/devlog/</loc>
          <lastmod>2026-10-11</lastmod>
     </url>
@@ -74,6 +90,22 @@
     </url>
     <url>
          <loc>https://yharnam-hunters.github.io/byrgenwerth-site/devlog/2026/10/10/10-october-2026-recorded-verification-and-runtime-foundations/</loc>
+         <lastmod>2026-10-11</lastmod>
+    </url>
+    <url>
+         <loc>https://yharnam-hunters.github.io/byrgenwerth-site/great-ones/</loc>
+         <lastmod>2026-10-11</lastmod>
+    </url>
+    <url>
+         <loc>https://yharnam-hunters.github.io/byrgenwerth-site/great-ones/ai-and-phases/</loc>
+         <lastmod>2026-10-11</lastmod>
+    </url>
+    <url>
+         <loc>https://yharnam-hunters.github.io/byrgenwerth-site/great-ones/boss-directory/</loc>
+         <lastmod>2026-10-11</lastmod>
+    </url>
+    <url>
+         <loc>https://yharnam-hunters.github.io/byrgenwerth-site/great-ones/mechanics/</loc>
          <lastmod>2026-10-11</lastmod>
     </url>
     <url>
@@ -125,7 +157,27 @@
          <lastmod>2026-10-11</lastmod>
     </url>
     <url>
+         <loc>https://yharnam-hunters.github.io/byrgenwerth-site/workshop/</loc>
+         <lastmod>2026-10-11</lastmod>
+    </url>
+    <url>
+         <loc>https://yharnam-hunters.github.io/byrgenwerth-site/workshop/combat-damage/</loc>
+         <lastmod>2026-10-11</lastmod>
+    </url>
+    <url>
+         <loc>https://yharnam-hunters.github.io/byrgenwerth-site/workshop/hitboxes-collision/</loc>
+         <lastmod>2026-10-11</lastmod>
+    </url>
+    <url>
+         <loc>https://yharnam-hunters.github.io/byrgenwerth-site/workshop/movement-stamina/</loc>
+         <lastmod>2026-10-11</lastmod>
+    </url>
+    <url>
          <loc>https://yharnam-hunters.github.io/byrgenwerth-site/workshop/stats-progression/</loc>
+         <lastmod>2026-10-11</lastmod>
+    </url>
+    <url>
+         <loc>https://yharnam-hunters.github.io/byrgenwerth-site/workshop/weapons-transformations/</loc>
          <lastmod>2026-10-11</lastmod>
     </url>
 </urlset>
