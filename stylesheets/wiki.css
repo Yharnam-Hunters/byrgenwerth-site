@@ -336,6 +336,7 @@ img { max-width: 100%; }
 .wk-stat-row {
   display: flex;
   justify-content: space-between;
+  gap: 6px;
   font-family: system-ui, sans-serif;
   font-size: 12px;
   padding: 3px 12px;
@@ -345,6 +346,8 @@ img { max-width: 100%; }
   font-variant-numeric: tabular-nums;
   font-weight: 600;
   color: var(--text);
+  text-align: right;
+  overflow-wrap: anywhere;
 }
 .wk-stat-sublabel {
   font-family: system-ui, sans-serif;
@@ -1009,7 +1012,7 @@ summary {
 .wk-stat-tile-val {
   display: block;
   font-family: system-ui, sans-serif;
-  font-size: 22px;
+  font-size: clamp(15px, 2.4vw, 22px);
   font-weight: 700;
   color: var(--logo-gold);
   font-variant-numeric: tabular-nums;
@@ -1065,6 +1068,16 @@ summary {
   margin: 1em 0;
   font-family: system-ui, sans-serif;
 }
+.wk-technical-diagram {
+  max-width: 720px;
+  margin: 1.5em auto;
+  padding: clamp(0.5rem, 2vw, 1rem);
+  background: var(--bg-s);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+.wk-technical-diagram svg { display: block; max-width: 100%; height: auto; }
+.wk-technical-diagram figcaption { margin-top: 0.6em; color: var(--text-d); }
 .wk-diag-box rect {
   fill: var(--bg-s);
   stroke: var(--border);

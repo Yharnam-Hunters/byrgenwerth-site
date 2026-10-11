@@ -11,7 +11,7 @@
   <title>Runtime — Byrgenwerth</title>
   
   
-  <link rel="stylesheet" href="../stylesheets/wiki.css?v=6f612af49d">
+  <link rel="stylesheet" href="../stylesheets/wiki.css?v=8425ceca28">
   
   
 </head>
@@ -161,10 +161,23 @@
           <a class="wk-nav-link" href="../CI_SETUP/">CI Setup</a>
           
         
+          
+          <a class="wk-nav-link" href="../credits/">Credits</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../MEDIA_POLICY/">Evidence & Media Review</a>
+          
+        
       
     
       
-      <a class="wk-nav-link" href="../credits/">Credits</a>
+        <p class="wk-nav-heading">The Hunter's Workshop</p>
+        
+          
+          <a class="wk-nav-link" href="../workshop/stats-progression/">Stats & Progression</a>
+          
+        
       
     
 
@@ -173,16 +186,16 @@
     
     <div class="wk-stats">
       <p class="wk-nav-heading" title="Project stats">Insight</p>
-      <div class="wk-stat-row"><span>Verified</span><span class="wk-stat-val">14,010 B</span></div>
-      <div class="wk-stat-row"><span>Functions</span><span class="wk-stat-val">21</span></div>
-      <div class="wk-stat-row"><span>Replaced</span><span class="wk-stat-val">30</span></div>
-      <p class="wk-stat-sublabel">Replaced (42.5 MB of code)</p>
-      <div class="wk-stat-track" title="0.0357%">
+      <div class="wk-stat-row"><span>Verified bytes</span><span class="wk-stat-val">14,010 / 42,487,347</span></div>
+      <div class="wk-stat-row"><span>Verified functions</span><span class="wk-stat-val">21 / 157,757</span></div>
+      <div class="wk-stat-row"><span>Replaced functions</span><span class="wk-stat-val">30 / 157,757</span></div>
+      <p class="wk-stat-sublabel">Replaced code size (target bytes)</p>
+      <div class="wk-stat-track" title="0.0357% of target code bytes" role="img" aria-label="0.0357 percent of target code bytes replaced">
         <div class="wk-stat-fill" style="width:0.0357%"></div>
       </div>
       <p class="wk-stat-pct">0.0357%</p>
-      <p class="wk-stat-sublabel">Verified (42.5 MB of code)</p>
-      <div class="wk-stat-track" title="0.033%">
+      <p class="wk-stat-sublabel">Verified code size (target bytes)</p>
+      <div class="wk-stat-track" title="0.033% of target code bytes" role="img" aria-label="0.033 percent of target code bytes verified">
         <div class="wk-stat-fill wk-stat-fill-dim" style="width:0.033%"></div>
       </div>
       <p class="wk-stat-pct">0.033%</p>
@@ -268,8 +281,8 @@
 <thead>
 <tr>
 <th></th>
-<th style="text-align: right;">Functions</th>
-<th style="text-align: right;">Bytes</th>
+<th style="text-align: right;">Functions (of target)</th>
+<th style="text-align: right;">Bytes (of target)</th>
 </tr>
 </thead>
 <tbody>
@@ -284,7 +297,7 @@
 <td style="text-align: right;">15,176 (0.04%)</td>
 </tr>
 <tr>
-<td>Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></td>
+<td>Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> (includes <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>)</td>
 <td style="text-align: right;">30 (0.02%)</td>
 <td style="text-align: right;">15,176 (0.04%)</td>
 </tr>
@@ -295,14 +308,14 @@
 </tr>
 </tbody>
 </table>
-<p>Each row includes the next: <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> functions are also <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr> and <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr>.</p>
+<p>Counts are cumulative: <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> functions are included in <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr> and <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> totals.</p>
 <table>
 <thead>
 <tr>
 <th>System</th>
 <th style="text-align: right;">Tracked</th>
 <th style="text-align: right;">Replaced</th>
-<th style="text-align: right;">Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></th>
+<th style="text-align: right;">Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> (includes <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>)</th>
 <th style="text-align: right;">Verified</th>
 <th style="text-align: right;">Replaced bytes</th>
 </tr>

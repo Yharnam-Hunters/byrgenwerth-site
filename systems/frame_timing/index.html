@@ -11,7 +11,7 @@
   <title>Frame timing — Byrgenwerth</title>
   
   
-  <link rel="stylesheet" href="../../stylesheets/wiki.css?v=6f612af49d">
+  <link rel="stylesheet" href="../../stylesheets/wiki.css?v=8425ceca28">
   
   
 </head>
@@ -161,10 +161,23 @@
           <a class="wk-nav-link" href="../../CI_SETUP/">CI Setup</a>
           
         
+          
+          <a class="wk-nav-link" href="../../credits/">Credits</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../MEDIA_POLICY/">Evidence & Media Review</a>
+          
+        
       
     
       
-      <a class="wk-nav-link" href="../../credits/">Credits</a>
+        <p class="wk-nav-heading">The Hunter's Workshop</p>
+        
+          
+          <a class="wk-nav-link" href="../../workshop/stats-progression/">Stats & Progression</a>
+          
+        
       
     
 
@@ -173,16 +186,16 @@
     
     <div class="wk-stats">
       <p class="wk-nav-heading" title="Project stats">Insight</p>
-      <div class="wk-stat-row"><span>Verified</span><span class="wk-stat-val">14,010 B</span></div>
-      <div class="wk-stat-row"><span>Functions</span><span class="wk-stat-val">21</span></div>
-      <div class="wk-stat-row"><span>Replaced</span><span class="wk-stat-val">30</span></div>
-      <p class="wk-stat-sublabel">Replaced (42.5 MB of code)</p>
-      <div class="wk-stat-track" title="0.0357%">
+      <div class="wk-stat-row"><span>Verified bytes</span><span class="wk-stat-val">14,010 / 42,487,347</span></div>
+      <div class="wk-stat-row"><span>Verified functions</span><span class="wk-stat-val">21 / 157,757</span></div>
+      <div class="wk-stat-row"><span>Replaced functions</span><span class="wk-stat-val">30 / 157,757</span></div>
+      <p class="wk-stat-sublabel">Replaced code size (target bytes)</p>
+      <div class="wk-stat-track" title="0.0357% of target code bytes" role="img" aria-label="0.0357 percent of target code bytes replaced">
         <div class="wk-stat-fill" style="width:0.0357%"></div>
       </div>
       <p class="wk-stat-pct">0.0357%</p>
-      <p class="wk-stat-sublabel">Verified (42.5 MB of code)</p>
-      <div class="wk-stat-track" title="0.033%">
+      <p class="wk-stat-sublabel">Verified code size (target bytes)</p>
+      <div class="wk-stat-track" title="0.033% of target code bytes" role="img" aria-label="0.033 percent of target code bytes verified">
         <div class="wk-stat-fill wk-stat-fill-dim" style="width:0.033%"></div>
       </div>
       <p class="wk-stat-pct">0.033%</p>
@@ -220,7 +233,7 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 9, 2026 22:10:12 UTC">October 9, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 11, 2026 03:38:01 UTC">October 11, 2026</span></p>
       
       <h1 id="frame-timing">Frame timing</h1>
 <h2 id="summary">Summary</h2>
@@ -288,6 +301,9 @@ running. Both the limiter and the frame step are <abbr title="A function with a 
 confirmed call passes a null timezone pointer. The game's separate <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> clock helper invokes
 <code>sceKernelClockGettime</code> with ID <code>4</code>, identified as <code>CLOCK_MONOTONIC</code>; that does not establish the
 IDs accepted by the imported libc <code>clock_gettime</code> wrapper. See the <a href="../../runtime-syscalls/"><abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> system-call notes</a>.</p>
+<p>The frame step also passes time into character updates. One <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> update accumulates a
+per-frame points value using that time and retains fractional progress between frames. Its
+evidence and unresolved stat identity are documented in <a href="../../workshop/stats-progression/">Stats &amp; Progression</a>.</p>
 <p><code>0x004632d0</code> is a small <code>gettimeofday</code> helper in microseconds that the stock game never calls:
 nothing calls it directly, and no relocated pointer (vtable or table slot) points at it. The
 frame-rate patches overwrite it and its neighbours with their own code (a code cave), so it is

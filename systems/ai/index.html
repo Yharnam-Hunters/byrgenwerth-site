@@ -11,7 +11,7 @@
   <title>AI — Byrgenwerth</title>
   
   
-  <link rel="stylesheet" href="../../stylesheets/wiki.css?v=6f612af49d">
+  <link rel="stylesheet" href="../../stylesheets/wiki.css?v=8425ceca28">
   
   
 </head>
@@ -161,10 +161,23 @@
           <a class="wk-nav-link" href="../../CI_SETUP/">CI Setup</a>
           
         
+          
+          <a class="wk-nav-link" href="../../credits/">Credits</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../MEDIA_POLICY/">Evidence & Media Review</a>
+          
+        
       
     
       
-      <a class="wk-nav-link" href="../../credits/">Credits</a>
+        <p class="wk-nav-heading">The Hunter's Workshop</p>
+        
+          
+          <a class="wk-nav-link" href="../../workshop/stats-progression/">Stats & Progression</a>
+          
+        
       
     
 
@@ -173,16 +186,16 @@
     
     <div class="wk-stats">
       <p class="wk-nav-heading" title="Project stats">Insight</p>
-      <div class="wk-stat-row"><span>Verified</span><span class="wk-stat-val">14,010 B</span></div>
-      <div class="wk-stat-row"><span>Functions</span><span class="wk-stat-val">21</span></div>
-      <div class="wk-stat-row"><span>Replaced</span><span class="wk-stat-val">30</span></div>
-      <p class="wk-stat-sublabel">Replaced (42.5 MB of code)</p>
-      <div class="wk-stat-track" title="0.0357%">
+      <div class="wk-stat-row"><span>Verified bytes</span><span class="wk-stat-val">14,010 / 42,487,347</span></div>
+      <div class="wk-stat-row"><span>Verified functions</span><span class="wk-stat-val">21 / 157,757</span></div>
+      <div class="wk-stat-row"><span>Replaced functions</span><span class="wk-stat-val">30 / 157,757</span></div>
+      <p class="wk-stat-sublabel">Replaced code size (target bytes)</p>
+      <div class="wk-stat-track" title="0.0357% of target code bytes" role="img" aria-label="0.0357 percent of target code bytes replaced">
         <div class="wk-stat-fill" style="width:0.0357%"></div>
       </div>
       <p class="wk-stat-pct">0.0357%</p>
-      <p class="wk-stat-sublabel">Verified (42.5 MB of code)</p>
-      <div class="wk-stat-track" title="0.033%">
+      <p class="wk-stat-sublabel">Verified code size (target bytes)</p>
+      <div class="wk-stat-track" title="0.033% of target code bytes" role="img" aria-label="0.033 percent of target code bytes verified">
         <div class="wk-stat-fill wk-stat-fill-dim" style="width:0.033%"></div>
       </div>
       <p class="wk-stat-pct">0.033%</p>
@@ -220,7 +233,7 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 7, 2026 14:11:44 UTC">October 7, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 11, 2026 03:38:01 UTC">October 11, 2026</span></p>
       
       <h1 id="ai">AI</h1>
 <h2 id="summary">Summary</h2>
@@ -238,6 +251,10 @@
 each AI object; the debug display, axis frames, boxes and the manager-wide draw stay off.</p>
 <p>Scope still to map: the AI world step itself (<code>0x021cdad0</code>), the groups and objects, the
 behaviour of individual enemies.</p>
+<p>This <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> wrapper establishes how the AI manager is stepped and how its debug drawing is
+gated. It does not reveal an individual enemy's decisions, attack timing, or boss phases. The
+current source and evidence contain no basis for those profiles yet; gameplay observations alone
+will be labeled as observations until their implementation is traced.</p>
 <h2 id="key-functions">Key functions</h2>
 <table>
 <thead>

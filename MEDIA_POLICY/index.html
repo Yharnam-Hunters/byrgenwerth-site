@@ -1,0 +1,559 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  
+  <meta name="description" content="Notes of Paleblood, a decompilation of Bloodborne (PS4, CUSA03173 v1.09) with its own runtime, one verified function at a time, and an open place to learn how a console game works and how it is reverse engineered">
+  <link rel="canonical" href="https://yharnam-hunters.github.io/byrgenwerth-site/MEDIA_POLICY/">
+  
+  
+  <title>Evidence & Media Review — Byrgenwerth</title>
+  
+  
+  <link rel="stylesheet" href="../stylesheets/wiki.css?v=8425ceca28">
+  
+  
+</head>
+<body>
+
+<!-- ── Header ──────────────────────────────────────────────── -->
+<header class="wk-header">
+  <button class="wk-nav-toggle" id="wk-nav-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="wk-nav">☰</button>
+  <a class="wk-wordmark" href="../">Byrgenwerth<small>notes of Paleblood, rebuilding Bloodborne one verified function at a time</small></a>
+
+  <div class="wk-header-right">
+    
+    <div class="wk-searchbox">
+      <input class="wk-search-input" id="wk-q" type="search"
+             placeholder="Search the archives…  [/]" autocomplete="off" aria-label="Search">
+      <div class="wk-search-results" id="wk-results" hidden role="listbox"></div>
+    </div>
+    <button class="wk-toggle" id="wk-toggle" title="Toggle theme" aria-label="Toggle dark/light">☀</button>
+  </div>
+</header>
+
+<!-- ── Layout ──────────────────────────────────────────────── -->
+<div class="wk-layout">
+
+  <div class="wk-nav-backdrop" id="wk-nav-backdrop" hidden></div>
+
+  <!-- Left sidebar -->
+  <nav class="wk-nav" id="wk-nav" aria-label="Site navigation">
+    <a href="../" class="wk-portal-icon" aria-label="Home">Byrgenwerth</a>
+
+    
+      
+      <a class="wk-nav-link" href="..">Home</a>
+      
+    
+      
+        <p class="wk-nav-heading">The Hunt</p>
+        
+          
+          <a class="wk-nav-link" href="../devlog/">Devlog</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../progress/">Progress</a>
+          
+        
+      
+    
+      
+        <p class="wk-nav-heading">Systems</p>
+        
+          
+          <a class="wk-nav-link" href="../systems/">Overview</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../systems/frame_timing/">Frame timing</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../systems/kernel/">Kernel</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../systems/event/">Event</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../systems/camera/">Camera</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../systems/input/">Input</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../systems/character/">Character</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../systems/ai/">AI</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../systems/physics/">Physics</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../systems/render/">Render</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../systems/loading/">Loading</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../systems/audio/">Audio</a>
+          
+        
+      
+    
+      
+        <p class="wk-nav-heading">How It Works</p>
+        
+          
+          <a class="wk-nav-link" href="../ARCHITECTURE/">Architecture</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../runtime/">Runtime</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../runtime-syscalls/">Runtime system calls</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../how-the-frame-limiter-works/">The Frame Limiter</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../ADDRESS_MAP/">Address Map</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../target/">Target</a>
+          
+        
+      
+    
+      
+        <p class="wk-nav-heading">For Hunters</p>
+        
+          
+          <a class="wk-nav-link" href="../CONTRIBUTING/">Contributing</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../QUIRKS/">Ghidra & PS4 Quirks</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../glossary/">Glossary</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../CI_SETUP/">CI Setup</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../credits/">Credits</a>
+          
+        
+          
+          <a class="wk-nav-link is-active" href="./">Evidence & Media Review</a>
+          
+        
+      
+    
+      
+        <p class="wk-nav-heading">The Hunter's Workshop</p>
+        
+          
+          <a class="wk-nav-link" href="../workshop/stats-progression/">Stats & Progression</a>
+          
+        
+      
+    
+
+    <!-- Project stats widget: every value from docs/data/progress.json (hooks/progress_extra.py) -->
+    
+    
+    <div class="wk-stats">
+      <p class="wk-nav-heading" title="Project stats">Insight</p>
+      <div class="wk-stat-row"><span>Verified bytes</span><span class="wk-stat-val">14,010 / 42,487,347</span></div>
+      <div class="wk-stat-row"><span>Verified functions</span><span class="wk-stat-val">21 / 157,757</span></div>
+      <div class="wk-stat-row"><span>Replaced functions</span><span class="wk-stat-val">30 / 157,757</span></div>
+      <p class="wk-stat-sublabel">Replaced code size (target bytes)</p>
+      <div class="wk-stat-track" title="0.0357% of target code bytes" role="img" aria-label="0.0357 percent of target code bytes replaced">
+        <div class="wk-stat-fill" style="width:0.0357%"></div>
+      </div>
+      <p class="wk-stat-pct">0.0357%</p>
+      <p class="wk-stat-sublabel">Verified code size (target bytes)</p>
+      <div class="wk-stat-track" title="0.033% of target code bytes" role="img" aria-label="0.033 percent of target code bytes verified">
+        <div class="wk-stat-fill wk-stat-fill-dim" style="width:0.033%"></div>
+      </div>
+      <p class="wk-stat-pct">0.033%</p>
+      <p class="wk-stat-link"><a href="../progress/">View full progress →</a></p>
+    </div>
+    
+  </nav>
+
+  <!-- Main content -->
+  <main class="wk-main">
+    <div class="wk-article">
+
+      
+      
+      <div class="wk-toc" id="wk-toc">
+        <div class="wk-toc-header">
+          <b>Contents</b>
+          <button class="wk-toc-toggle"
+            onclick="var l=document.getElementById('wk-toc-list');l.hidden=!l.hidden;this.textContent=l.hidden?'[show]':'[hide]'">[hide]</button>
+        </div>
+        <ol class="wk-toc-list" id="wk-toc-list">
+          
+          <li>
+            <a href="#evidence-media-review" class="wk-toc-link">Evidence &amp; Media Review</a>
+            
+            <ol><li><a href="#how-to-read-a-claim" class="wk-toc-link">How to read a claim</a></li><li><a href="#screenshots-clips-and-other-media" class="wk-toc-link">Screenshots, clips, and other media</a></li><li><a href="#current-media-record" class="wk-toc-link">Current media record</a></li></ol>
+            
+          </li>
+          
+        </ol>
+      </div>
+      
+      
+
+      <div class="wk-article-body">
+      
+      
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 11, 2026 03:38:59 UTC">October 11, 2026</span></p>
+      
+      <h1 id="evidence-media-review">Evidence &amp; Media Review</h1>
+<h2 id="how-to-read-a-claim">How to read a claim</h2>
+<p>Byrgenwerth explains how <em>Bloodborne</em> works from evidence gathered by Paleblood and its
+contributors. A test result, a trace, and a gameplay observation answer different questions, so
+pages label them separately.</p>
+<table>
+<thead>
+<tr>
+<th>Evidence label</th>
+<th>What it supports</th>
+<th>What it does not establish by itself</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Verified original-game behavior</strong></td>
+<td>A Paleblood replacement matched the original on the recorded and <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr> listed in its verification record, with independent review.</td>
+<td>Every possible input or every game state.</td>
+</tr>
+<tr>
+<td><strong>Direct static analysis</strong></td>
+<td>A behavior or relationship visible in disassembly, callers, data references, or a readable replacement.</td>
+<td>That a code path ran in an observed play session.</td>
+</tr>
+<tr>
+<td><strong>Recorded original-game observation</strong></td>
+<td>What happened in an original-game run or captured call, for the recorded conditions.</td>
+<td>Unobserved states or the reason behind an outcome.</td>
+</tr>
+<tr>
+<td><strong>Synthetic Paleblood test</strong></td>
+<td>The tested Paleblood infrastructure or function behavior under the synthetic fixture.</td>
+<td>Original-game execution or a real production <abbr title="Inputs recorded while the game ran, replayed by the harness.">capture</abbr>.</td>
+</tr>
+<tr>
+<td><strong>Paleblood-owned infrastructure</strong></td>
+<td>A project-created <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr>, host interface, diagnostic, test, or tool and its demonstrated behavior.</td>
+<td>That the full game uses or reaches it.</td>
+</tr>
+<tr>
+<td><strong>External research</strong></td>
+<td>A cited fact or interpretation from a named outside source.</td>
+<td>Independent confirmation by Paleblood.</td>
+</tr>
+<tr>
+<td><strong>Hypothesis / open question</strong></td>
+<td>A plausible interpretation that guides further investigation.</td>
+<td>A confirmed function purpose or game rule.</td>
+</tr>
+</tbody>
+</table>
+<p>When a claim combines evidence types, state which part each type supports. Link to the exact
+source revision, test record, or published source that supports it. Merging a pull request or
+closing an issue is not evidence that game execution advanced.</p>
+<h2 id="screenshots-clips-and-other-media">Screenshots, clips, and other media</h2>
+<p>The public documentation site may use an individual image or short clip when it materially helps
+explain a technical point, or supports criticism, research, or commentary. Each proposed asset
+needs its own provenance and rights review before it is copied into this private source or
+published. Attribution and educational intent are relevant context; neither alone grants
+permission.</p>
+<p>The review must identify the source, creator and rights holder where known, intended use, amount
+shown, attribution terms, permission or license (or a reasoned, asset-specific legal basis for
+the proposed use), privacy and security concerns, accessibility text, resizing or redaction, and
+maintainer approval. Use only the smallest portion and resolution that explains the point. Do not
+publish extracted assets, proprietary <abbr title="Inputs recorded while the game ran, replayed by the harness.">captures</abbr>, bulk game text, secrets, or material whose source
+cannot be established. Do not republish retired image collections or describe another project's
+screenshots as Paleblood output.</p>
+<p>The Paleblood code repository has its own stricter rule: game screenshots, clips, extracted
+assets, game files, and decompiler output do not belong in its source, issues, pull requests, or
+Discussions. A media review for this site does not authorize placing media in the code repository.</p>
+<h2 id="current-media-record">Current media record</h2>
+<p>This encyclopedia milestone adds an original SVG diagram generated from the documented
+Paleblood-owned function replacement. It contains no game imagery. The former homepage icon and
+previous image collection remain absent. The icon's creator listing does not establish redistribution
+permission or rights to the underlying Bloodborne artwork; see the private maintenance archive
+for the provenance review and restoration options.</p>
+<p>Maintainers keep the detailed per-asset record privately; those records are not included in the
+generated website.</p>
+      
+      </div>
+
+    </div>
+    <footer class="wk-footer">
+      <p class="wk-footer-motto">Fear the old blood</p>
+      <p>Made by people who love Bloodborne, so that it can be studied, preserved and played
+      natively, one verified function at a time.</p>
+      <p>A fan project. Not affiliated with or endorsed by Sony Interactive Entertainment or
+      FromSoftware. No game files are shared here: bring your own copy.</p>
+    </footer>
+  </main>
+
+</div>
+
+
+<!-- Back to top -->
+<button class="wk-top" id="wk-top" title="Back to top" aria-label="Scroll to top">↑</button>
+
+
+<script>
+(function () {
+'use strict';
+
+/* ── Theme ─────────────────────────────────────────────────── */
+var stored = localStorage.getItem('wk-theme') || 'dark';
+applyTheme(stored);
+document.getElementById('wk-toggle').addEventListener('click', function () {
+  applyTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+});
+function applyTheme(t) {
+  document.documentElement.setAttribute('data-theme', t);
+  localStorage.setItem('wk-theme', t);
+  var btn = document.getElementById('wk-toggle');
+  if (btn) btn.textContent = t === 'dark' ? '☀' : '🌙';
+}
+
+/* ── Address map: a block opens its slice in a pop-up ──────── */
+(function () {
+  var map = document.querySelector('.wk-bankmap');
+  if (!map) return;
+  var modal = document.createElement('div');
+  modal.className = 'wk-slice-modal';
+  modal.setAttribute('role', 'dialog');
+  modal.setAttribute('aria-modal', 'true');
+  document.body.appendChild(modal);
+  function close() { modal.classList.remove('is-open'); }
+  map.addEventListener('click', function (e) {
+    var cell = e.target.closest('a.wk-bank-cell');
+    if (!cell) return;
+    var panel = document.getElementById(cell.getAttribute('href').slice(1));
+    if (!panel) return;
+    e.preventDefault();
+    modal.innerHTML = '';
+    modal.appendChild(panel.cloneNode(true));
+    modal.firstChild.removeAttribute('id');
+    requestAnimationFrame(function () { modal.classList.add('is-open'); });
+  });
+  modal.addEventListener('click', function (e) {
+    if (e.target === modal || e.target.closest('.wk-slice-close')) { e.preventDefault(); close(); }
+  });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+})();
+
+/* ── Mobile nav ────────────────────────────────────────────── */
+var navToggle  = document.getElementById('wk-nav-toggle');
+var navEl      = document.getElementById('wk-nav');
+var navBackdrop = document.getElementById('wk-nav-backdrop');
+
+/* The sidebar is set, not scrolled: step through the fitting levels (wiki.css) until it fits. */
+function fitNav() {
+  if (!navEl || window.matchMedia('(max-width: 720px)').matches) return;
+  for (var i = 1; i <= 6; i++) navEl.classList.remove('wk-fit-' + i);
+  navEl.classList.remove('wk-fit-scroll');
+  for (var level = 1; level <= 6 && navEl.scrollHeight > navEl.clientHeight + 1; level++) {
+    navEl.classList.add('wk-fit-' + level);
+  }
+  if (navEl.scrollHeight > navEl.clientHeight + 1) navEl.classList.add('wk-fit-scroll');
+}
+fitNav();
+window.addEventListener('resize', fitNav);
+window.addEventListener('load', fitNav);
+function openNav() {
+  navEl.classList.add('is-open');
+  navBackdrop.hidden = false;
+  navToggle.setAttribute('aria-expanded', 'true');
+}
+function closeNav() {
+  navEl.classList.remove('is-open');
+  navBackdrop.hidden = true;
+  navToggle.setAttribute('aria-expanded', 'false');
+}
+if (navToggle && navEl && navBackdrop) {
+  navToggle.addEventListener('click', function () {
+    if (navEl.classList.contains('is-open')) { closeNav(); } else { openNav(); }
+  });
+  navBackdrop.addEventListener('click', closeNav);
+  navEl.addEventListener('click', function (e) {
+    if (e.target.closest('a')) { closeNav(); }
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { closeNav(); }
+  });
+  window.addEventListener('resize', function () {
+    if (window.innerWidth > 720) { closeNav(); }
+  });
+}
+
+/* ── Search ─────────────────────────────────────────────────── */
+var input   = document.getElementById('wk-q');
+var results = document.getElementById('wk-results');
+var docs    = null;
+if (input) {
+  fetch("../search/search_index.json")
+    .then(function (r) { return r.json(); })
+    .then(function (d) { docs = d.docs; });
+
+  input.addEventListener('input', onSearch);
+
+  document.addEventListener('click', function (e) {
+    if (results && !results.contains(e.target) && e.target !== input) results.hidden = true;
+  });
+  input.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { results.hidden = true; this.blur(); }
+    if (e.key === 'Enter' && results && !results.hidden) {
+      var first = results.querySelector('.wk-result');
+      if (first) { first.click(); }
+    }
+  });
+}
+
+/* Press / to focus search */
+document.addEventListener('keydown', function (e) {
+  if (e.key === '/' && document.activeElement !== input &&
+      document.activeElement.tagName !== 'INPUT' &&
+      document.activeElement.tagName !== 'TEXTAREA') {
+    e.preventDefault();
+    if (input) { input.focus(); input.select(); }
+  }
+});
+
+function onSearch() {
+  var q = this.value.trim().toLowerCase();
+  if (!docs || q.length < 2) { results.hidden = true; return; }
+  var hits = docs.filter(function (d) {
+    return (d.title + ' ' + d.text).toLowerCase().indexOf(q) !== -1;
+  }).slice(0, 8);
+  if (!hits.length) { results.hidden = true; return; }
+  var base = "..";
+  results.innerHTML = hits.map(function (d) {
+    var text  = d.text || '';
+    var i     = text.toLowerCase().indexOf(q);
+    var start = Math.max(0, i - 35);
+    var end   = Math.min(text.length, i + q.length + 70);
+    var snip  = (start > 0 ? '…' : '') + text.slice(start, end) + (end < text.length ? '…' : '');
+    var url   = base + '/' + d.location;
+    return '<a class="wk-result" href="' + esc(url) + '" role="option">'
+         + '<div class="wk-result-title">' + esc(d.title || d.location) + '</div>'
+         + '<div class="wk-result-snip">'  + esc(snip) + '</div></a>';
+  }).join('');
+  results.hidden = false;
+}
+
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+/* ── Back to top ────────────────────────────────────────────── */
+var topBtn = document.getElementById('wk-top');
+if (topBtn) {
+  window.addEventListener('scroll', function () {
+    topBtn.classList.toggle('visible', window.scrollY > 400);
+  }, {passive: true});
+  topBtn.addEventListener('click', function () {
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  });
+}
+
+/* ── Copy-to-clipboard ───────────────────────────────────────── */
+document.querySelectorAll('.highlight').forEach(function (block) {
+  var btn = document.createElement('button');
+  btn.className = 'wk-copy-btn';
+  btn.title     = 'Copy code';
+  btn.textContent = '⎘';
+  block.appendChild(btn);
+  btn.addEventListener('click', function () {
+    var pre = block.querySelector('pre');
+    if (!pre) return;
+    navigator.clipboard.writeText(pre.innerText).then(function () {
+      btn.textContent = '✓';
+      btn.classList.add('copied');
+      setTimeout(function () {
+        btn.textContent = '⎘';
+        btn.classList.remove('copied');
+      }, 1500);
+    });
+  });
+});
+
+/* ── Collapsible long code blocks ─────────────────────────────── */
+var COLLAPSE_THRESHOLD = 340;
+document.querySelectorAll('.wk-article-body .highlight').forEach(function (block) {
+  var pre = block.querySelector('pre');
+  if (!pre || pre.scrollHeight <= COLLAPSE_THRESHOLD + 40) return;
+
+  block.classList.add('wk-code-collapsed');
+  var toggle = document.createElement('button');
+  toggle.className = 'wk-code-toggle';
+  toggle.type = 'button';
+  toggle.textContent = 'Show more ▾';
+  toggle.addEventListener('click', function () {
+    var collapsed = block.classList.toggle('wk-code-collapsed');
+    toggle.textContent = collapsed ? 'Show more ▾' : 'Show less ▴';
+    if (collapsed) block.scrollIntoView({block: 'nearest'});
+  });
+  block.insertAdjacentElement('afterend', toggle);
+});
+
+/* ── TOC scroll spy ─────────────────────────────────────────── */
+var tocLinks = document.querySelectorAll('.wk-toc-link');
+if (tocLinks.length && 'IntersectionObserver' in window) {
+  var headings = Array.from(document.querySelectorAll('.wk-article h1, .wk-article h2, .wk-article h3'));
+  var active   = null;
+  var obs = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) {
+        var id  = e.target.id;
+        var lnk = document.querySelector('.wk-toc-link[href="#' + id + '"]');
+        if (lnk && lnk !== active) {
+          if (active) active.classList.remove('is-current');
+          lnk.classList.add('is-current');
+          active = lnk;
+        }
+      }
+    });
+  }, {rootMargin: '-10% 0px -80% 0px'});
+  headings.forEach(function (h) { if (h.id) obs.observe(h); });
+}
+
+
+}());
+</script>
+</body>
+</html>

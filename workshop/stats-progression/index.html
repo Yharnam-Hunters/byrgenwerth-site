@@ -1,0 +1,598 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  
+  <meta name="description" content="Notes of Paleblood, a decompilation of Bloodborne (PS4, CUSA03173 v1.09) with its own runtime, one verified function at a time, and an open place to learn how a console game works and how it is reverse engineered">
+  <link rel="canonical" href="https://yharnam-hunters.github.io/byrgenwerth-site/workshop/stats-progression/">
+  
+  
+  <title>Stats & Progression — Byrgenwerth</title>
+  
+  
+  <link rel="stylesheet" href="../../stylesheets/wiki.css?v=8425ceca28">
+  
+  
+</head>
+<body>
+
+<!-- ── Header ──────────────────────────────────────────────── -->
+<header class="wk-header">
+  <button class="wk-nav-toggle" id="wk-nav-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="wk-nav">☰</button>
+  <a class="wk-wordmark" href="../../">Byrgenwerth<small>notes of Paleblood, rebuilding Bloodborne one verified function at a time</small></a>
+
+  <div class="wk-header-right">
+    
+    <div class="wk-searchbox">
+      <input class="wk-search-input" id="wk-q" type="search"
+             placeholder="Search the archives…  [/]" autocomplete="off" aria-label="Search">
+      <div class="wk-search-results" id="wk-results" hidden role="listbox"></div>
+    </div>
+    <button class="wk-toggle" id="wk-toggle" title="Toggle theme" aria-label="Toggle dark/light">☀</button>
+  </div>
+</header>
+
+<!-- ── Layout ──────────────────────────────────────────────── -->
+<div class="wk-layout">
+
+  <div class="wk-nav-backdrop" id="wk-nav-backdrop" hidden></div>
+
+  <!-- Left sidebar -->
+  <nav class="wk-nav" id="wk-nav" aria-label="Site navigation">
+    <a href="../../" class="wk-portal-icon" aria-label="Home">Byrgenwerth</a>
+
+    
+      
+      <a class="wk-nav-link" href="../..">Home</a>
+      
+    
+      
+        <p class="wk-nav-heading">The Hunt</p>
+        
+          
+          <a class="wk-nav-link" href="../../devlog/">Devlog</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../progress/">Progress</a>
+          
+        
+      
+    
+      
+        <p class="wk-nav-heading">Systems</p>
+        
+          
+          <a class="wk-nav-link" href="../../systems/">Overview</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../systems/frame_timing/">Frame timing</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../systems/kernel/">Kernel</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../systems/event/">Event</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../systems/camera/">Camera</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../systems/input/">Input</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../systems/character/">Character</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../systems/ai/">AI</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../systems/physics/">Physics</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../systems/render/">Render</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../systems/loading/">Loading</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../systems/audio/">Audio</a>
+          
+        
+      
+    
+      
+        <p class="wk-nav-heading">How It Works</p>
+        
+          
+          <a class="wk-nav-link" href="../../ARCHITECTURE/">Architecture</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../runtime/">Runtime</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../runtime-syscalls/">Runtime system calls</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../how-the-frame-limiter-works/">The Frame Limiter</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../ADDRESS_MAP/">Address Map</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../target/">Target</a>
+          
+        
+      
+    
+      
+        <p class="wk-nav-heading">For Hunters</p>
+        
+          
+          <a class="wk-nav-link" href="../../CONTRIBUTING/">Contributing</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../QUIRKS/">Ghidra & PS4 Quirks</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../glossary/">Glossary</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../CI_SETUP/">CI Setup</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../credits/">Credits</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../MEDIA_POLICY/">Evidence & Media Review</a>
+          
+        
+      
+    
+      
+        <p class="wk-nav-heading">The Hunter's Workshop</p>
+        
+          
+          <a class="wk-nav-link is-active" href="./">Stats & Progression</a>
+          
+        
+      
+    
+
+    <!-- Project stats widget: every value from docs/data/progress.json (hooks/progress_extra.py) -->
+    
+    
+    <div class="wk-stats">
+      <p class="wk-nav-heading" title="Project stats">Insight</p>
+      <div class="wk-stat-row"><span>Verified bytes</span><span class="wk-stat-val">14,010 / 42,487,347</span></div>
+      <div class="wk-stat-row"><span>Verified functions</span><span class="wk-stat-val">21 / 157,757</span></div>
+      <div class="wk-stat-row"><span>Replaced functions</span><span class="wk-stat-val">30 / 157,757</span></div>
+      <p class="wk-stat-sublabel">Replaced code size (target bytes)</p>
+      <div class="wk-stat-track" title="0.0357% of target code bytes" role="img" aria-label="0.0357 percent of target code bytes replaced">
+        <div class="wk-stat-fill" style="width:0.0357%"></div>
+      </div>
+      <p class="wk-stat-pct">0.0357%</p>
+      <p class="wk-stat-sublabel">Verified code size (target bytes)</p>
+      <div class="wk-stat-track" title="0.033% of target code bytes" role="img" aria-label="0.033 percent of target code bytes verified">
+        <div class="wk-stat-fill wk-stat-fill-dim" style="width:0.033%"></div>
+      </div>
+      <p class="wk-stat-pct">0.033%</p>
+      <p class="wk-stat-link"><a href="../../progress/">View full progress →</a></p>
+    </div>
+    
+  </nav>
+
+  <!-- Main content -->
+  <main class="wk-main">
+    <div class="wk-article">
+
+      
+      
+      <div class="wk-toc" id="wk-toc">
+        <div class="wk-toc-header">
+          <b>Contents</b>
+          <button class="wk-toc-toggle"
+            onclick="var l=document.getElementById('wk-toc-list');l.hidden=!l.hidden;this.textContent=l.hidden?'[show]':'[hide]'">[hide]</button>
+        </div>
+        <ol class="wk-toc-list" id="wk-toc-list">
+          
+          <li>
+            <a href="#stats-progression" class="wk-toc-link">Stats &amp; Progression</a>
+            
+            <ol><li><a href="#what-we-know-so-far" class="wk-toc-link">What we know so far</a></li><li><a href="#the-per-frame-update" class="wk-toc-link">The per-frame update</a></li><li><a href="#frame-time-variants" class="wk-toc-link">Frame-time variants</a></li><li><a href="#evidence-and-limits" class="wk-toc-link">Evidence and limits</a></li><li><a href="#open-questions" class="wk-toc-link">Open questions</a></li></ol>
+            
+          </li>
+          
+        </ol>
+      </div>
+      
+      
+
+      <div class="wk-article-body">
+      
+      
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 11, 2026 03:38:01 UTC">October 11, 2026</span></p>
+      
+      <h1 id="stats-progression">Stats &amp; Progression</h1>
+<h2 id="what-we-know-so-far">What we know so far</h2>
+<p>One <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> per-frame character update changes a bounded value the source calls <strong>points</strong>.
+It accumulates fractional recovery between frames, applies a character-specific rate, and clamps
+the result between <code>-50</code> and a per-character maximum. That is a concrete example of how a game
+stat can be driven by the frame loop. The evidence does not identify this value as the player's
+stamina, prove that it belongs only to the player, or explain the wider progression system.</p>
+<p>This article describes one function and its tested behavior. It is not a complete account of
+combat, weapon costs, attributes, leveling, or save data.</p>
+<h2 id="the-per-frame-update">The per-frame update</h2>
+<p><code>character_frame_update_01cbdb20</code> (<code>0x01cbdb20</code>, 979 bytes) is called from two character update <!-- number:ok -->
+loops. It reads the character's frame time, handles a pending throw animation event when the
+animation-event manager is ready, updates the points value, and passes time into a character
+module step. It then runs other module calls and copies data used by the character and animation
+systems. The <a href="../../systems/character/">Character</a> page lists the observed fields and remaining
+layout questions.</p>
+<p>The points update follows this sequence:</p>
+<ol>
+<li>If the character parameter flag disables regeneration, return without changing the stat.</li>
+<li>Multiply the parameter byte by <code>0.01</code>, the character multiplier, and a factor returned through
+   the character's virtual table. The result is the per-second rate.</li>
+<li>Save the rate truncated toward zero, then calculate <code>frame time × rate + saved fraction</code>.</li>
+<li>Apply the whole-number portion to the current points value and keep the fractional remainder
+   for the next update.</li>
+<li>If the change would lower points, skip it when the data flag or observed debug flag disables
+   drops. Otherwise clamp the value to at least <code>-50</code> and at most the character's maximum.</li>
+</ol>
+<p>The retained fraction prevents each frame from discarding the part of the recovery smaller than
+one point. A slower update can therefore accumulate several fractional contributions before the
+integer stat changes.</p>
+<figure class="wk-technical-diagram">
+  <svg role="img" aria-labelledby="points-title points-desc" viewBox="0 0 720 690" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto">
+    <title id="points-title">Per-frame points update</title>
+    <desc id="points-desc">A character update checks regeneration flags, calculates a rate from parameters and a virtual factor, accumulates fractional frame-time progress, conditionally applies the whole points change, and clamps it to minus fifty through the character maximum.</desc>
+    <defs>
+      <marker id="points-arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#8b6d4c"/></marker>
+      <style>
+        .points-box{fill:#171511;stroke:#8b6d4c;stroke-width:2;rx:10}
+        .points-text{fill:#f0e8d5;font:20px sans-serif;text-anchor:middle}
+        .points-small{fill:#c9bda5;font:16px sans-serif;text-anchor:middle}
+        .points-arrow{fill:none;stroke:#8b6d4c;stroke-width:3;marker-end:url(#points-arrow)}
+      </style>
+    </defs>
+    <rect class="points-box" x="100" y="20" width="520" height="76"/>
+    <text class="points-text" x="360" y="51"><tspan x="360">Character frame update</tspan><tspan class="points-small" x="360" dy="25">uses this instance's frame time</tspan></text>
+    <path class="points-arrow" d="M360 96V124"/>
+    <rect class="points-box" x="100" y="130" width="520" height="82"/>
+    <text class="points-text" x="360" y="164"><tspan x="360">Check regeneration flags</tspan><tspan class="points-small" x="360" dy="25">disabled regeneration exits early</tspan></text>
+    <path class="points-arrow" d="M360 212V240"/>
+    <rect class="points-box" x="100" y="246" width="520" height="82"/>
+    <text class="points-text" x="360" y="280"><tspan x="360">Calculate per-second rate</tspan><tspan class="points-small" x="360" dy="25">parameter × 0.01 × character and virtual factors</tspan></text>
+    <path class="points-arrow" d="M360 328V356"/>
+    <rect class="points-box" x="100" y="362" width="520" height="82"/>
+    <text class="points-text" x="360" y="396"><tspan x="360">Accumulate this frame</tspan><tspan class="points-small" x="360" dy="25">frame time × rate + saved fraction</tspan></text>
+    <path class="points-arrow" d="M360 444V472"/>
+    <rect class="points-box" x="100" y="478" width="520" height="82"/>
+    <text class="points-text" x="360" y="512"><tspan x="360">Apply whole points change</tspan><tspan class="points-small" x="360" dy="25">retain fractional remainder; no-drop flags can skip decreases</tspan></text>
+    <path class="points-arrow" d="M360 560V588"/>
+    <rect class="points-box" x="100" y="594" width="520" height="76"/>
+    <text class="points-text" x="360" y="625"><tspan x="360">Clamp to the observed range</tspan><tspan class="points-small" x="360" dy="25">−50 through this character's maximum</tspan></text>
+  </svg>
+  <figcaption>Static-analysis summary of the verified character update. The points field's game-facing identity is unresolved.</figcaption>
+</figure>
+
+<h2 id="frame-time-variants">Frame-time variants</h2>
+<p>The update normally uses the frame time stored on the character. The community 30 FPS patch
+substitutes <code>1/27</code> second, the 60 FPS patch substitutes <code>1/54</code> second, and the uncapped patch keeps
+the stored time. Paleblood's <code>BB_TARGET_FPS</code> option mirrors those substitutions in this function.
+Those constants explain the code path; they do not establish why the patch authors selected them
+or how the resulting rate feels in every game state. See <a href="../../systems/frame_timing/">Frame timing</a>
+for the main loop and the broader patch comparison.</p>
+<h2 id="evidence-and-limits">Evidence and limits</h2>
+<p>The replacement is marked <strong><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></strong> in Paleblood's function table. Its verification record,
+dated 2026-10-07 with source digest <code>b243fddb1ca6589a</code>, reports 457/457 recorded cases and 39/39
+<abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr> for each of four runs: original timing, 30 FPS, 60 FPS, and uncapped. Each comparison
+reported zero failures. The recorded suite is evidence from previously captured original-game
+calls; the edge suite exercises generated boundary cases. An independent review record says the
+readable refactor was approved and all recorded and <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr> were rerun.</p>
+<p>These results support equivalence over those recorded inputs and generated cases. They do not
+prove every possible state, identify the points value as stamina, or establish that an enemy or
+boss uses this exact update. See <a href="../../MEDIA_POLICY/">Evidence &amp; Media Review</a> for how this wiki
+labels different kinds of evidence.</p>
+<table>
+<thead>
+<tr>
+<th>Evidence</th>
+<th>Paleblood record</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Function status and size</td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/b9fb62df910652315eab6dbebe6a81362548c76d/symbols/functions.csv"><code>symbols/functions.csv</code></a></td>
+</tr>
+<tr>
+<td>Replacement and layout description</td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/b9fb62df910652315eab6dbebe6a81362548c76d/game/character/frame_update.cpp"><code>game/character/frame_update.cpp</code></a></td>
+</tr>
+<tr>
+<td>Recorded and edge-case counts</td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/b9fb62df910652315eab6dbebe6a81362548c76d/symbols/verification.csv"><code>symbols/verification.csv</code></a></td>
+</tr>
+<tr>
+<td>Independent verification/readability review</td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/b9fb62df910652315eab6dbebe6a81362548c76d/symbols/reviews.csv"><code>symbols/reviews.csv</code></a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="open-questions">Open questions</h2>
+<ul>
+<li>What game concept does the points field represent, and which character types use it?</li>
+<li>What do the associated parameter byte and virtual multiplier mean in game-facing terms?</li>
+<li>Which module consumes the points value, and how does that connect to combat or progression?</li>
+<li>Why do the frame-rate patches use <code>1/27</code> and <code>1/54</code> second rather than exact display-frame intervals?</li>
+</ul>
+<p>Until those links are supported by source analysis or recorded evidence, “stamina” remains a
+hypothesis rather than the name of this mechanic.</p>
+      
+      </div>
+
+    </div>
+    <footer class="wk-footer">
+      <p class="wk-footer-motto">Fear the old blood</p>
+      <p>Made by people who love Bloodborne, so that it can be studied, preserved and played
+      natively, one verified function at a time.</p>
+      <p>A fan project. Not affiliated with or endorsed by Sony Interactive Entertainment or
+      FromSoftware. No game files are shared here: bring your own copy.</p>
+    </footer>
+  </main>
+
+</div>
+
+
+<!-- Back to top -->
+<button class="wk-top" id="wk-top" title="Back to top" aria-label="Scroll to top">↑</button>
+
+
+<script>
+(function () {
+'use strict';
+
+/* ── Theme ─────────────────────────────────────────────────── */
+var stored = localStorage.getItem('wk-theme') || 'dark';
+applyTheme(stored);
+document.getElementById('wk-toggle').addEventListener('click', function () {
+  applyTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+});
+function applyTheme(t) {
+  document.documentElement.setAttribute('data-theme', t);
+  localStorage.setItem('wk-theme', t);
+  var btn = document.getElementById('wk-toggle');
+  if (btn) btn.textContent = t === 'dark' ? '☀' : '🌙';
+}
+
+/* ── Address map: a block opens its slice in a pop-up ──────── */
+(function () {
+  var map = document.querySelector('.wk-bankmap');
+  if (!map) return;
+  var modal = document.createElement('div');
+  modal.className = 'wk-slice-modal';
+  modal.setAttribute('role', 'dialog');
+  modal.setAttribute('aria-modal', 'true');
+  document.body.appendChild(modal);
+  function close() { modal.classList.remove('is-open'); }
+  map.addEventListener('click', function (e) {
+    var cell = e.target.closest('a.wk-bank-cell');
+    if (!cell) return;
+    var panel = document.getElementById(cell.getAttribute('href').slice(1));
+    if (!panel) return;
+    e.preventDefault();
+    modal.innerHTML = '';
+    modal.appendChild(panel.cloneNode(true));
+    modal.firstChild.removeAttribute('id');
+    requestAnimationFrame(function () { modal.classList.add('is-open'); });
+  });
+  modal.addEventListener('click', function (e) {
+    if (e.target === modal || e.target.closest('.wk-slice-close')) { e.preventDefault(); close(); }
+  });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+})();
+
+/* ── Mobile nav ────────────────────────────────────────────── */
+var navToggle  = document.getElementById('wk-nav-toggle');
+var navEl      = document.getElementById('wk-nav');
+var navBackdrop = document.getElementById('wk-nav-backdrop');
+
+/* The sidebar is set, not scrolled: step through the fitting levels (wiki.css) until it fits. */
+function fitNav() {
+  if (!navEl || window.matchMedia('(max-width: 720px)').matches) return;
+  for (var i = 1; i <= 6; i++) navEl.classList.remove('wk-fit-' + i);
+  navEl.classList.remove('wk-fit-scroll');
+  for (var level = 1; level <= 6 && navEl.scrollHeight > navEl.clientHeight + 1; level++) {
+    navEl.classList.add('wk-fit-' + level);
+  }
+  if (navEl.scrollHeight > navEl.clientHeight + 1) navEl.classList.add('wk-fit-scroll');
+}
+fitNav();
+window.addEventListener('resize', fitNav);
+window.addEventListener('load', fitNav);
+function openNav() {
+  navEl.classList.add('is-open');
+  navBackdrop.hidden = false;
+  navToggle.setAttribute('aria-expanded', 'true');
+}
+function closeNav() {
+  navEl.classList.remove('is-open');
+  navBackdrop.hidden = true;
+  navToggle.setAttribute('aria-expanded', 'false');
+}
+if (navToggle && navEl && navBackdrop) {
+  navToggle.addEventListener('click', function () {
+    if (navEl.classList.contains('is-open')) { closeNav(); } else { openNav(); }
+  });
+  navBackdrop.addEventListener('click', closeNav);
+  navEl.addEventListener('click', function (e) {
+    if (e.target.closest('a')) { closeNav(); }
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { closeNav(); }
+  });
+  window.addEventListener('resize', function () {
+    if (window.innerWidth > 720) { closeNav(); }
+  });
+}
+
+/* ── Search ─────────────────────────────────────────────────── */
+var input   = document.getElementById('wk-q');
+var results = document.getElementById('wk-results');
+var docs    = null;
+if (input) {
+  fetch("../../search/search_index.json")
+    .then(function (r) { return r.json(); })
+    .then(function (d) { docs = d.docs; });
+
+  input.addEventListener('input', onSearch);
+
+  document.addEventListener('click', function (e) {
+    if (results && !results.contains(e.target) && e.target !== input) results.hidden = true;
+  });
+  input.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { results.hidden = true; this.blur(); }
+    if (e.key === 'Enter' && results && !results.hidden) {
+      var first = results.querySelector('.wk-result');
+      if (first) { first.click(); }
+    }
+  });
+}
+
+/* Press / to focus search */
+document.addEventListener('keydown', function (e) {
+  if (e.key === '/' && document.activeElement !== input &&
+      document.activeElement.tagName !== 'INPUT' &&
+      document.activeElement.tagName !== 'TEXTAREA') {
+    e.preventDefault();
+    if (input) { input.focus(); input.select(); }
+  }
+});
+
+function onSearch() {
+  var q = this.value.trim().toLowerCase();
+  if (!docs || q.length < 2) { results.hidden = true; return; }
+  var hits = docs.filter(function (d) {
+    return (d.title + ' ' + d.text).toLowerCase().indexOf(q) !== -1;
+  }).slice(0, 8);
+  if (!hits.length) { results.hidden = true; return; }
+  var base = "../..";
+  results.innerHTML = hits.map(function (d) {
+    var text  = d.text || '';
+    var i     = text.toLowerCase().indexOf(q);
+    var start = Math.max(0, i - 35);
+    var end   = Math.min(text.length, i + q.length + 70);
+    var snip  = (start > 0 ? '…' : '') + text.slice(start, end) + (end < text.length ? '…' : '');
+    var url   = base + '/' + d.location;
+    return '<a class="wk-result" href="' + esc(url) + '" role="option">'
+         + '<div class="wk-result-title">' + esc(d.title || d.location) + '</div>'
+         + '<div class="wk-result-snip">'  + esc(snip) + '</div></a>';
+  }).join('');
+  results.hidden = false;
+}
+
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+/* ── Back to top ────────────────────────────────────────────── */
+var topBtn = document.getElementById('wk-top');
+if (topBtn) {
+  window.addEventListener('scroll', function () {
+    topBtn.classList.toggle('visible', window.scrollY > 400);
+  }, {passive: true});
+  topBtn.addEventListener('click', function () {
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  });
+}
+
+/* ── Copy-to-clipboard ───────────────────────────────────────── */
+document.querySelectorAll('.highlight').forEach(function (block) {
+  var btn = document.createElement('button');
+  btn.className = 'wk-copy-btn';
+  btn.title     = 'Copy code';
+  btn.textContent = '⎘';
+  block.appendChild(btn);
+  btn.addEventListener('click', function () {
+    var pre = block.querySelector('pre');
+    if (!pre) return;
+    navigator.clipboard.writeText(pre.innerText).then(function () {
+      btn.textContent = '✓';
+      btn.classList.add('copied');
+      setTimeout(function () {
+        btn.textContent = '⎘';
+        btn.classList.remove('copied');
+      }, 1500);
+    });
+  });
+});
+
+/* ── Collapsible long code blocks ─────────────────────────────── */
+var COLLAPSE_THRESHOLD = 340;
+document.querySelectorAll('.wk-article-body .highlight').forEach(function (block) {
+  var pre = block.querySelector('pre');
+  if (!pre || pre.scrollHeight <= COLLAPSE_THRESHOLD + 40) return;
+
+  block.classList.add('wk-code-collapsed');
+  var toggle = document.createElement('button');
+  toggle.className = 'wk-code-toggle';
+  toggle.type = 'button';
+  toggle.textContent = 'Show more ▾';
+  toggle.addEventListener('click', function () {
+    var collapsed = block.classList.toggle('wk-code-collapsed');
+    toggle.textContent = collapsed ? 'Show more ▾' : 'Show less ▴';
+    if (collapsed) block.scrollIntoView({block: 'nearest'});
+  });
+  block.insertAdjacentElement('afterend', toggle);
+});
+
+/* ── TOC scroll spy ─────────────────────────────────────────── */
+var tocLinks = document.querySelectorAll('.wk-toc-link');
+if (tocLinks.length && 'IntersectionObserver' in window) {
+  var headings = Array.from(document.querySelectorAll('.wk-article h1, .wk-article h2, .wk-article h3'));
+  var active   = null;
+  var obs = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) {
+        var id  = e.target.id;
+        var lnk = document.querySelector('.wk-toc-link[href="#' + id + '"]');
+        if (lnk && lnk !== active) {
+          if (active) active.classList.remove('is-current');
+          lnk.classList.add('is-current');
+          active = lnk;
+        }
+      }
+    });
+  }, {rootMargin: '-10% 0px -80% 0px'});
+  headings.forEach(function (h) { if (h.id) obs.observe(h); });
+}
+
+
+}());
+</script>
+</body>
+</html>
