@@ -11,7 +11,7 @@
   <title>Character — Byrgenwerth</title>
   
   
-  <link rel="stylesheet" href="../../stylesheets/wiki.css?v=540b25005e">
+  <link rel="stylesheet" href="../../stylesheets/wiki.css?v=4690528dd5">
   
   
 </head>
@@ -45,7 +45,7 @@
       <a href="../../" aria-label="Byrgenwerth home">
         <img src="../../assets/media/bloodborne-menu-art.png" width="256" height="256" alt="A lone Bloodborne hunter stands in a rain-darkened Yharnam street beneath the game's gothic architecture.">
       </a>
-      <figcaption>Art credited to r_dsgnd on <a href="https://www.steamgriddb.com/icon/105442" target="_blank" rel="noopener">SteamGridDB</a> · ©2014 Sony Computer Entertainment Inc. Redistribution permission for the underlying game artwork is unverified.</figcaption>
+      <figcaption>Art credited to r_dsgnd on <a href="https://www.steamgriddb.com/icon/105442" target="_blank" rel="noopener">SteamGridDB</a> · ©2014 Sony Computer Entertainment Inc.</figcaption>
     </figure>
 
     
@@ -558,9 +558,9 @@ var wordmark = document.querySelector('.wk-wordmark');
 /* The sidebar is set, not scrolled: step through the fitting levels (wiki.css) until it fits. */
 function fitNav() {
   if (!navEl || window.matchMedia('(max-width: 720px)').matches) return;
-  for (var i = 1; i <= 5; i++) navEl.classList.remove('wk-fit-' + i);
+  for (var i = 1; i <= 3; i++) navEl.classList.remove('wk-fit-' + i);
   navEl.classList.remove('wk-fit-scroll');
-  for (var level = 1; level <= 5 && navEl.scrollHeight > navEl.clientHeight + 1; level++) {
+  for (var level = 1; level <= 3 && navEl.scrollHeight > navEl.clientHeight + 1; level++) {
     navEl.classList.add('wk-fit-' + level);
   }
   if (navEl.scrollHeight > navEl.clientHeight + 1) navEl.classList.add('wk-fit-scroll');
@@ -616,7 +616,7 @@ if (navToggle && navEl && navBackdrop) {
   });
 }
 
-/* ── Collapsible navigation groups ────────────────────────── */
+/* ── Collapsible navigation groups: one open at a time ────── */
 (function () {
   var groups = Array.prototype.slice.call(document.querySelectorAll('[data-nav-section]'));
   if (!groups.length) return;
@@ -640,26 +640,23 @@ if (navToggle && navEl && navBackdrop) {
       try { localStorage.setItem(key, JSON.stringify(preferences)); } catch (_) { /* Storage is optional. */ }
     }
   }
+  /* The current page's section opens; elsewhere (the homepage) the last section opened does. */
+  var hasCurrent = groups.some(function (s) { return s.getAttribute('data-current') === 'true'; });
+  var opened = false;
   groups.forEach(function (section) {
     var panel = section.querySelector('.wk-nav-section-links');
     var button = section.querySelector('.wk-nav-section-toggle');
     if (!panel || !button) return;
-    var active = section.getAttribute('data-current') === 'true';
     var storedOpen = preferences[panel.id];
-    var open = active || (typeof storedOpen === 'boolean' ? storedOpen : section.getAttribute('data-default-open') === 'true');
-    setOpen(section, open, false);
+    var wanted = hasCurrent ? section.getAttribute('data-current') === 'true'
+      : (typeof storedOpen === 'boolean' ? storedOpen : section.getAttribute('data-default-open') === 'true');
+    setOpen(section, wanted && !opened, false);
+    if (wanted) opened = true;
     button.addEventListener('click', function () {
-      setOpen(section, button.getAttribute('aria-expanded') !== 'true', true);
+      var open = button.getAttribute('aria-expanded') !== 'true';
+      if (open) groups.forEach(function (other) { if (other !== section) setOpen(other, false, true); });
+      setOpen(section, open, true);
       fitNav();
-    });
-  });
-  window.addEventListener('storage', function (event) {
-    if (event.key !== key || !event.newValue) return;
-    try { preferences = JSON.parse(event.newValue) || {}; } catch (_) { return; }
-    groups.forEach(function (section) {
-      var id = section.querySelector('.wk-nav-section-links').id;
-      var active = section.getAttribute('data-current') === 'true';
-      if (!active && typeof preferences[id] === 'boolean') setOpen(section, preferences[id], false);
     });
   });
 })();
