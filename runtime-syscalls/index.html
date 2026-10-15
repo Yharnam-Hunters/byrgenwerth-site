@@ -11,7 +11,7 @@
   <title>Runtime system calls — Byrgenwerth</title>
   
   
-  <link rel="stylesheet" href="../stylesheets/wiki.css?v=e00e283b2a">
+  <link rel="stylesheet" href="../stylesheets/wiki.css?v=901045f4c4">
   
   
 </head>
@@ -371,12 +371,12 @@
       <p class="wk-nav-heading" title="Project stats">Insight</p>
       <div class="wk-stat-row"><span>Verified bytes</span><span class="wk-stat-val">14,010 / 42,487,347</span></div>
       <div class="wk-stat-row"><span>Verified functions</span><span class="wk-stat-val">21 / 157,757</span></div>
-      <div class="wk-stat-row"><span>Replaced functions</span><span class="wk-stat-val">30 / 157,757</span></div>
+      <div class="wk-stat-row"><span>Replaced functions</span><span class="wk-stat-val">31 / 157,757</span></div>
       <p class="wk-stat-sublabel">Replaced code size (target bytes)</p>
-      <div class="wk-stat-track" title="0.0357% of target code bytes" role="img" aria-label="0.0357 percent of target code bytes replaced">
-        <div class="wk-stat-fill" style="width:0.0357%"></div>
+      <div class="wk-stat-track" title="0.0361% of target code bytes" role="img" aria-label="0.0361 percent of target code bytes replaced">
+        <div class="wk-stat-fill" style="width:0.0361%"></div>
       </div>
-      <p class="wk-stat-pct">0.0357%</p>
+      <p class="wk-stat-pct">0.0361%</p>
       <p class="wk-stat-sublabel">Verified code size (target bytes)</p>
       <div class="wk-stat-track" title="0.033% of target code bytes" role="img" aria-label="0.033 percent of target code bytes verified">
         <div class="wk-stat-fill wk-stat-fill-dim" style="width:0.033%"></div>
@@ -404,7 +404,7 @@
           <li>
             <a href="#runtime-system-call-notes" class="wk-toc-link">Runtime system-call notes</a>
             
-            <ol><li><a href="#what-the-game-evidence-shows" class="wk-toc-link">What the game evidence shows</a></li><li><a href="#interfaces-and-behavior" class="wk-toc-link">Interfaces and behavior</a></li><li><a href="#network-byte-order-conversions" class="wk-toc-link">Network byte-order conversions</a></li><li><a href="#ipv4-text-conversion-scenetinetpton-issue-41" class="wk-toc-link">IPv4 text conversion (sceNetInetPton, issue #41)</a></li><li><a href="#offline-network-control" class="wk-toc-link">Offline network control</a></li><li><a href="#implementation-and-tests" class="wk-toc-link">Implementation and tests</a></li><li><a href="#references" class="wk-toc-link">References</a></li></ol>
+            <ol><li><a href="#what-the-game-evidence-shows" class="wk-toc-link">What the game evidence shows</a></li><li><a href="#interfaces-and-behavior" class="wk-toc-link">Interfaces and behavior</a></li><li><a href="#page-size-getpagesize-what-is-known" class="wk-toc-link">Page size (getpagesize): what is known</a></li><li><a href="#network-byte-order-conversions" class="wk-toc-link">Network byte-order conversions</a></li><li><a href="#ipv4-text-conversion-scenetinetpton-issue-41" class="wk-toc-link">IPv4 text conversion (sceNetInetPton, issue #41)</a></li><li><a href="#offline-network-control" class="wk-toc-link">Offline network control</a></li><li><a href="#implementation-and-tests" class="wk-toc-link">Implementation and tests</a></li><li><a href="#references" class="wk-toc-link">References</a></li></ol>
             
           </li>
           
@@ -416,7 +416,7 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 11, 2026 19:54:22 UTC">October 11, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 14, 2026 00:49:05 UTC">October 14, 2026</span></p>
       
       <h1 id="runtime-system-call-notes">Runtime system-call notes</h1>
 <p>This page records the public API contracts and the evidence currently available for calls in
@@ -434,7 +434,7 @@ helper calls <code>sceKernelClockGettime</code> with clock ID <code>4</code>, id
 confirms that ID for the SCE entry point. It does not establish which IDs the game passes to the
 imported <code>clock_gettime</code> wrapper, or whether <code>4</code> is accepted there.</p>
 <h2 id="interfaces-and-behavior">Interfaces and behavior</h2>
-<table>
+<table class="wk-stack">
 <thead>
 <tr>
 <th>Call</th>
@@ -445,28 +445,28 @@ imported <code>clock_gettime</code> wrapper, or whether <code>4</code> is accept
 </thead>
 <tbody>
 <tr>
-<td><code>getpagesize(void)</code></td>
-<td>No arguments; returns the system page size in bytes. The number is platform-specific.</td>
-<td>Linux and FreeBSD document the byte count. <code>getpagesize</code> is not in current POSIX; portable code uses <code>sysconf(_SC_PAGESIZE)</code>. The manuals do not define a general error return.</td>
-<td>The target's page-size value and behavior under unusual configurations. Never substitute the build host's page size without evidence.</td>
+<td data-label="Call"><code>getpagesize(void)</code></td>
+<td data-label="Arguments and representation">No arguments; returns the system page size in bytes. The number is platform-specific.</td>
+<td data-label="Publicly documented result and errors">Linux and FreeBSD document the byte count. <code>getpagesize</code> is not in current POSIX; portable code uses <code>sysconf(_SC_PAGESIZE)</code>. The manuals do not define a general error return.</td>
+<td data-label="Still unknown for the PS4 target">The target's page-size value and behavior under unusual configurations. Never substitute the build host's page size without evidence.</td>
 </tr>
 <tr>
-<td><code>getpid(void)</code></td>
-<td>No arguments; returns a <code>pid_t</code> for the calling process.</td>
-<td>POSIX specifies success and no error return. Linux PID namespaces scope process IDs; process-ID scope and lifetime are platform-specific.</td>
-<td>The guest-visible ID and its scope. The host PID is not automatically the correct guest result.</td>
+<td data-label="Call"><code>getpid(void)</code></td>
+<td data-label="Arguments and representation">No arguments; returns a <code>pid_t</code> for the calling process.</td>
+<td data-label="Publicly documented result and errors">POSIX specifies success and no error return. Linux PID namespaces scope process IDs; process-ID scope and lifetime are platform-specific.</td>
+<td data-label="Still unknown for the PS4 target">The guest-visible ID and its scope. The host PID is not automatically the correct guest result.</td>
 </tr>
 <tr>
-<td><code>clock_gettime(clock_id, tp)</code></td>
-<td><code>clock_id</code> selects a clock. <code>tp</code> points to a <code>struct timespec</code>; POSIX represents it as seconds (<code>tv_sec</code>) and nanoseconds (<code>tv_nsec</code>), normalized so <code>tv_nsec</code> is from 0 through 999,999,999.</td>
-<td>POSIX returns 0 on success and -1 with <code>errno</code> on failure; an unsupported clock ID is <code>EINVAL</code>. Linux and BSD manuals document pointer errors, but exact error mapping is platform-specific.</td>
-<td>The target structure layout, IDs accepted by the imported wrapper, and its pointer/error behavior. ID 4 is confirmed only for <code>sceKernelClockGettime</code>.</td>
+<td data-label="Call"><code>clock_gettime(clock_id, tp)</code></td>
+<td data-label="Arguments and representation"><code>clock_id</code> selects a clock. <code>tp</code> points to a <code>struct timespec</code>; POSIX represents it as seconds (<code>tv_sec</code>) and nanoseconds (<code>tv_nsec</code>), normalized so <code>tv_nsec</code> is from 0 through 999,999,999.</td>
+<td data-label="Publicly documented result and errors">POSIX returns 0 on success and -1 with <code>errno</code> on failure; an unsupported clock ID is <code>EINVAL</code>. Linux and BSD manuals document pointer errors, but exact error mapping is platform-specific.</td>
+<td data-label="Still unknown for the PS4 target">The target structure layout, IDs accepted by the imported wrapper, and its pointer/error behavior. ID 4 is confirmed only for <code>sceKernelClockGettime</code>.</td>
 </tr>
 <tr>
-<td><code>gettimeofday(tv, tz)</code></td>
-<td><code>tv</code> points to a <code>struct timeval</code>: seconds since the Epoch and microseconds (<code>tv_usec</code> from 0 through 999,999). The game passes null for <code>tz</code>.</td>
-<td>This is wall time and may jump; it is not a monotonic elapsed-time clock. Older POSIX specified 0 on success but left errors undefined. Linux reports <code>-1</code>/<code>EFAULT</code> for inaccessible pointers and ignores <code>tz</code>. POSIX.1-2024 removed the interface.</td>
-<td>The target structure layout, bad-pointer behavior, non-null timezone behavior, and error mapping. The known game call passes null for <code>tz</code>.</td>
+<td data-label="Call"><code>gettimeofday(tv, tz)</code></td>
+<td data-label="Arguments and representation"><code>tv</code> points to a <code>struct timeval</code>: seconds since the Epoch and microseconds (<code>tv_usec</code> from 0 through 999,999). The game passes null for <code>tz</code>.</td>
+<td data-label="Publicly documented result and errors">This is wall time and may jump; it is not a monotonic elapsed-time clock. Older POSIX specified 0 on success but left errors undefined. Linux reports <code>-1</code>/<code>EFAULT</code> for inaccessible pointers and ignores <code>tz</code>. POSIX.1-2024 removed the interface.</td>
+<td data-label="Still unknown for the PS4 target">The target structure layout, bad-pointer behavior, non-null timezone behavior, and error mapping. The known game call passes null for <code>tz</code>.</td>
 </tr>
 </tbody>
 </table>
@@ -475,6 +475,26 @@ imported <code>clock_gettime</code> wrapper, or whether <code>4</code> is accept
 <code>CLOCK_UPTIME</code> variants. Those names and numbers are not evidence for <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> behavior. No inspected
 source confirms that the game's imported <code>clock_gettime</code> receives <code>CLOCK_REALTIME</code>,
 <code>CLOCK_MONOTONIC_RAW</code>, <code>CLOCK_BOOTTIME</code>, or any ID besides the separate SCE call's value 4.</p>
+<h2 id="page-size-getpagesize-what-is-known">Page size (<code>getpagesize</code>): what is known</h2>
+<p><code>getpagesize</code> is the only page-size query the game has: the executable imports it from
+<code>libScePosix</code> and the bundled <code>libc.elf</code> from <code>libkernel</code>, and nothing imports <code>sysconf</code>. Both
+entries are registered as fail-loud unresolved diagnostics
+(<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/66">PR #66</a>), because the value the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> returns
+is not established.</p>
+<p><strong>Observed in the game files.</strong> Every loadable segment of the eight images is aligned to <code>0x4000</code>,
+and each segment's file offset and address differ by exactly <code>0x4000</code>. Three call sites
+(<code>0x00e04168</code>, <code>0x00e04939</code>, <code>0x00e05cf9</code>) use the result the same way: they accept it only if it is
+a power of two and cache it at <code>0x05859ec8</code>, next to three fixed sizes (<code>0x10000</code>, <code>0x40000</code>,
+<code>0x200000</code>). Nothing else reads that cached value, and nothing compares it with a constant.</p>
+<p><strong>Inferred, with its assumptions.</strong> If the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> follows the usual <abbr title="Executable and Linkable Format, the standard executable file format on Linux and FreeBSD.">ELF</abbr> rules for these
+segments, the page size cannot be larger than <code>0x4000</code>; any power of two that divides <code>0x4000</code>
+would fit. Narrowing that to 4 KiB, 8 KiB or 16 KiB also assumes a page is at least 4 KiB, which is
+our assumption, not an observation. The game's own check accepts every power of two, so it does
+not pick one either.</p>
+<p><strong>Unknown.</strong> The actual value. Stock FreeBSD on AMD64 uses 4096, but that describes the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr>
+kernel's ancestor, not the console. Paleblood's <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> does not depend on the page size: it copies
+each segment to its exact address. One <code>getpagesize()</code> result observed on a console would settle
+it.</p>
 <h2 id="network-byte-order-conversions">Network byte-order conversions</h2>
 <p>Paleblood imports four integer conversion calls from <code>libSceNet</code> in <code>eboot</code>: <code>sceNetHtonl</code>,
 <code>sceNetHtons</code>, <code>sceNetNtohl</code>, and <code>sceNetNtohs</code>. Their public SCE declarations use unsigned 32-bit
@@ -493,7 +513,7 @@ queries. Those imports remain unimplemented until their own evidence is availabl
 <h2 id="offline-network-control">Offline network control</h2>
 <p>The executable imports six calls from <code>libSceNetCtl</code>. Four currently provide a constrained
 offline behavior, based on Paleblood PR #59 and its source-level tests:</p>
-<table>
+<table class="wk-stack">
 <thead>
 <tr>
 <th>Call</th>
@@ -503,24 +523,24 @@ offline behavior, based on Paleblood PR #59 and its source-level tests:</p>
 </thead>
 <tbody>
 <tr>
-<td><code>sceNetCtlGetState</code></td>
-<td>Writes the disconnected value (<code>0</code>) and returns success. The game checks <code>0</code> and <code>3</code>; the disconnected interpretation is cross-checked against the public API family.</td>
-<td>The meanings of intermediate states and <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> error behavior for a null pointer remain unknown.</td>
+<td data-label="Call"><code>sceNetCtlGetState</code></td>
+<td data-label="Implemented offline behavior">Writes the disconnected value (<code>0</code>) and returns success. The game checks <code>0</code> and <code>3</code>; the disconnected interpretation is cross-checked against the public API family.</td>
+<td data-label="Evidence limit">The meanings of intermediate states and <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> error behavior for a null pointer remain unknown.</td>
 </tr>
 <tr>
-<td><code>sceNetCtlCheckCallback</code></td>
-<td>Returns <code>0</code>; while the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> remains disconnected, no state-change callback is due.</td>
-<td>Behavior for a connected state is not implemented or established.</td>
+<td data-label="Call"><code>sceNetCtlCheckCallback</code></td>
+<td data-label="Implemented offline behavior">Returns <code>0</code>; while the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> remains disconnected, no state-change callback is due.</td>
+<td data-label="Evidence limit">Behavior for a connected state is not implemented or established.</td>
 </tr>
 <tr>
-<td><code>sceNetCtlRegisterCallback</code></td>
-<td>Stores an opaque callback and argument under a nonzero ID written to the caller's output slot.</td>
-<td>Callback invocation and <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> error values for invalid pointers or allocation failure remain unresolved.</td>
+<td data-label="Call"><code>sceNetCtlRegisterCallback</code></td>
+<td data-label="Implemented offline behavior">Stores an opaque callback and argument under a nonzero ID written to the caller's output slot.</td>
+<td data-label="Evidence limit">Callback invocation and <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> error values for invalid pointers or allocation failure remain unresolved.</td>
 </tr>
 <tr>
-<td><code>sceNetCtlUnregisterCallback</code></td>
-<td>Removes a registration by its returned ID.</td>
-<td><abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> behavior for unknown or repeated IDs remains unresolved and fails loudly.</td>
+<td data-label="Call"><code>sceNetCtlUnregisterCallback</code></td>
+<td data-label="Implemented offline behavior">Removes a registration by its returned ID.</td>
+<td data-label="Evidence limit"><abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> behavior for unknown or repeated IDs remains unresolved and fails loudly.</td>
 </tr>
 </tbody>
 </table>

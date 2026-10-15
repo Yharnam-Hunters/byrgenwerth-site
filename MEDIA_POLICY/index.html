@@ -11,7 +11,7 @@
   <title>Evidence & Media Review — Byrgenwerth</title>
   
   
-  <link rel="stylesheet" href="../stylesheets/wiki.css?v=e00e283b2a">
+  <link rel="stylesheet" href="../stylesheets/wiki.css?v=901045f4c4">
   
   
 </head>
@@ -371,12 +371,12 @@
       <p class="wk-nav-heading" title="Project stats">Insight</p>
       <div class="wk-stat-row"><span>Verified bytes</span><span class="wk-stat-val">14,010 / 42,487,347</span></div>
       <div class="wk-stat-row"><span>Verified functions</span><span class="wk-stat-val">21 / 157,757</span></div>
-      <div class="wk-stat-row"><span>Replaced functions</span><span class="wk-stat-val">30 / 157,757</span></div>
+      <div class="wk-stat-row"><span>Replaced functions</span><span class="wk-stat-val">31 / 157,757</span></div>
       <p class="wk-stat-sublabel">Replaced code size (target bytes)</p>
-      <div class="wk-stat-track" title="0.0357% of target code bytes" role="img" aria-label="0.0357 percent of target code bytes replaced">
-        <div class="wk-stat-fill" style="width:0.0357%"></div>
+      <div class="wk-stat-track" title="0.0361% of target code bytes" role="img" aria-label="0.0361 percent of target code bytes replaced">
+        <div class="wk-stat-fill" style="width:0.0361%"></div>
       </div>
-      <p class="wk-stat-pct">0.0357%</p>
+      <p class="wk-stat-pct">0.0361%</p>
       <p class="wk-stat-sublabel">Verified code size (target bytes)</p>
       <div class="wk-stat-track" title="0.033% of target code bytes" role="img" aria-label="0.033 percent of target code bytes verified">
         <div class="wk-stat-fill wk-stat-fill-dim" style="width:0.033%"></div>
@@ -423,7 +423,7 @@
 <p>Byrgenwerth explains how <em>Bloodborne</em> works from evidence gathered by Paleblood and its
 contributors. A test result, a trace, and a gameplay observation answer different questions, so
 pages label them separately.</p>
-<table>
+<table class="wk-stack">
 <thead>
 <tr>
 <th>Evidence label</th>
@@ -433,39 +433,39 @@ pages label them separately.</p>
 </thead>
 <tbody>
 <tr>
-<td><strong>Verified original-game behavior</strong></td>
-<td>A Paleblood replacement matched the original on the recorded and <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr> listed in its verification record, with independent review.</td>
-<td>Every possible input or every game state.</td>
+<td data-label="Evidence label"><strong>Verified original-game behavior</strong></td>
+<td data-label="What it supports">A Paleblood replacement matched the original on the recorded and <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr> listed in its verification record, with independent review.</td>
+<td data-label="What it does not establish by itself">Every possible input or every game state.</td>
 </tr>
 <tr>
-<td><strong>Direct static analysis</strong></td>
-<td>A behavior or relationship visible in disassembly, callers, data references, or a readable replacement.</td>
-<td>That a code path ran in an observed play session.</td>
+<td data-label="Evidence label"><strong>Direct static analysis</strong></td>
+<td data-label="What it supports">A behavior or relationship visible in disassembly, callers, data references, or a readable replacement.</td>
+<td data-label="What it does not establish by itself">That a code path ran in an observed play session.</td>
 </tr>
 <tr>
-<td><strong>Recorded original-game observation</strong></td>
-<td>What happened in an original-game run or captured call, for the recorded conditions.</td>
-<td>Unobserved states or the reason behind an outcome.</td>
+<td data-label="Evidence label"><strong>Recorded original-game observation</strong></td>
+<td data-label="What it supports">What happened in an original-game run or captured call, for the recorded conditions.</td>
+<td data-label="What it does not establish by itself">Unobserved states or the reason behind an outcome.</td>
 </tr>
 <tr>
-<td><strong>Synthetic Paleblood test</strong></td>
-<td>The tested Paleblood infrastructure or function behavior under the synthetic fixture.</td>
-<td>Original-game execution or a real production <abbr title="Inputs recorded while the game ran, replayed by the harness.">capture</abbr>.</td>
+<td data-label="Evidence label"><strong>Synthetic Paleblood test</strong></td>
+<td data-label="What it supports">The tested Paleblood infrastructure or function behavior under the synthetic fixture.</td>
+<td data-label="What it does not establish by itself">Original-game execution or a real production <abbr title="Inputs recorded while the game ran, replayed by the harness.">capture</abbr>.</td>
 </tr>
 <tr>
-<td><strong>Paleblood-owned infrastructure</strong></td>
-<td>A project-created <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr>, host interface, diagnostic, test, or tool and its demonstrated behavior.</td>
-<td>That the full game uses or reaches it.</td>
+<td data-label="Evidence label"><strong>Paleblood-owned infrastructure</strong></td>
+<td data-label="What it supports">A project-created <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr>, host interface, diagnostic, test, or tool and its demonstrated behavior.</td>
+<td data-label="What it does not establish by itself">That the full game uses or reaches it.</td>
 </tr>
 <tr>
-<td><strong>External research</strong></td>
-<td>A cited fact or interpretation from a named outside source.</td>
-<td>Independent confirmation by Paleblood.</td>
+<td data-label="Evidence label"><strong>External research</strong></td>
+<td data-label="What it supports">A cited fact or interpretation from a named outside source.</td>
+<td data-label="What it does not establish by itself">Independent confirmation by Paleblood.</td>
 </tr>
 <tr>
-<td><strong>Hypothesis / open question</strong></td>
-<td>A plausible interpretation that guides further investigation.</td>
-<td>A confirmed function purpose or game rule.</td>
+<td data-label="Evidence label"><strong>Hypothesis / open question</strong></td>
+<td data-label="What it supports">A plausible interpretation that guides further investigation.</td>
+<td data-label="What it does not establish by itself">A confirmed function purpose or game rule.</td>
 </tr>
 </tbody>
 </table>

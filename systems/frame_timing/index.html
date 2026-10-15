@@ -11,7 +11,7 @@
   <title>Frame timing — Byrgenwerth</title>
   
   
-  <link rel="stylesheet" href="../../stylesheets/wiki.css?v=e00e283b2a">
+  <link rel="stylesheet" href="../../stylesheets/wiki.css?v=901045f4c4">
   
   
 </head>
@@ -371,12 +371,12 @@
       <p class="wk-nav-heading" title="Project stats">Insight</p>
       <div class="wk-stat-row"><span>Verified bytes</span><span class="wk-stat-val">14,010 / 42,487,347</span></div>
       <div class="wk-stat-row"><span>Verified functions</span><span class="wk-stat-val">21 / 157,757</span></div>
-      <div class="wk-stat-row"><span>Replaced functions</span><span class="wk-stat-val">30 / 157,757</span></div>
+      <div class="wk-stat-row"><span>Replaced functions</span><span class="wk-stat-val">31 / 157,757</span></div>
       <p class="wk-stat-sublabel">Replaced code size (target bytes)</p>
-      <div class="wk-stat-track" title="0.0357% of target code bytes" role="img" aria-label="0.0357 percent of target code bytes replaced">
-        <div class="wk-stat-fill" style="width:0.0357%"></div>
+      <div class="wk-stat-track" title="0.0361% of target code bytes" role="img" aria-label="0.0361 percent of target code bytes replaced">
+        <div class="wk-stat-fill" style="width:0.0361%"></div>
       </div>
-      <p class="wk-stat-pct">0.0357%</p>
+      <p class="wk-stat-pct">0.0361%</p>
       <p class="wk-stat-sublabel">Verified code size (target bytes)</p>
       <div class="wk-stat-track" title="0.033% of target code bytes" role="img" aria-label="0.033 percent of target code bytes verified">
         <div class="wk-stat-fill wk-stat-fill-dim" style="width:0.033%"></div>
@@ -516,7 +516,7 @@ every registered task (76 in Iosefka's Clinic), then fills a job with the record
 the group mask and runs it through the same five steps as the workers. Each of those tasks is a
 piece of the game's own per-frame work, the next layer to map.</p>
 <h2 id="key-functions">Key functions</h2>
-<table>
+<table class="wk-stack">
 <thead>
 <tr>
 <th>Address</th>
@@ -528,158 +528,158 @@ piece of the game's own per-frame work, the next layer to map.</p>
 </thead>
 <tbody>
 <tr>
-<td><code>0x004632d0</code></td>
-<td style="text-align: right;">67</td>
-<td><code>frame_timing_get_time_us</code></td>
-<td>original</td>
-<td>dead in the stock game: only unwind entries refer to it; the community frame-rate patches overwrite it as a code cave (gettimeofday in microseconds)</td>
+<td data-label="Address"><code>0x004632d0</code></td>
+<td style="text-align: right;" data-label="Size">67</td>
+<td data-label="Name"><code>frame_timing_get_time_us</code></td>
+<td data-label="Status">original</td>
+<td data-label="Notes">dead in the stock game: only unwind entries refer to it; the community frame-rate patches overwrite it as a code cave (gettimeofday in microseconds)</td>
 </tr>
 <tr>
-<td><code>0x0111a7f0</code></td>
-<td style="text-align: right;">131</td>
-<td><code>frame_timing_get_monotonic_ms</code></td>
-<td><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></td>
-<td>Milliseconds since its first call from CLOCK_MONOTONIC; keeps the first seconds in the clock state object</td>
+<td data-label="Address"><code>0x0111a7f0</code></td>
+<td style="text-align: right;" data-label="Size">131</td>
+<td data-label="Name"><code>frame_timing_get_monotonic_ms</code></td>
+<td data-label="Status"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></td>
+<td data-label="Notes">Milliseconds since its first call from CLOCK_MONOTONIC; keeps the first seconds in the clock state object</td>
 </tr>
 <tr>
-<td><code>0x01388c60</code></td>
-<td style="text-align: right;">16</td>
-<td><code>frame_timing_task_run_all_01388c60</code></td>
-<td><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></td>
-<td>task manager: run the tasks of every group (0x01388c70 with -1)</td>
+<td data-label="Address"><code>0x01388c60</code></td>
+<td style="text-align: right;" data-label="Size">16</td>
+<td data-label="Name"><code>frame_timing_task_run_all_01388c60</code></td>
+<td data-label="Status"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></td>
+<td data-label="Notes">task manager: run the tasks of every group (0x01388c70 with -1)</td>
 </tr>
 <tr>
-<td><code>0x01388c70</code></td>
-<td style="text-align: right;">171</td>
-<td><code>frame_timing_task_run_01388c70</code></td>
-<td><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></td>
-<td>task manager run: prepare the frame, dispatch through +0x40 (virtual +0x30) with +0x38 set, finish</td>
+<td data-label="Address"><code>0x01388c70</code></td>
+<td style="text-align: right;" data-label="Size">171</td>
+<td data-label="Name"><code>frame_timing_task_run_01388c70</code></td>
+<td data-label="Status"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></td>
+<td data-label="Notes">task manager run: prepare the frame, dispatch through +0x40 (virtual +0x30) with +0x38 set, finish</td>
 </tr>
 <tr>
-<td><code>0x0138a370</code></td>
-<td style="text-align: right;">330</td>
-<td><code>frame_timing_task_dispatch_0138a370</code></td>
-<td><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></td>
-<td>task dispatcher (virtual +0x30): wakes registered tasks, updates the group record, runs the job like the worker step</td>
+<td data-label="Address"><code>0x0138a370</code></td>
+<td style="text-align: right;" data-label="Size">330</td>
+<td data-label="Name"><code>frame_timing_task_dispatch_0138a370</code></td>
+<td data-label="Status"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></td>
+<td data-label="Notes">task dispatcher (virtual +0x30): wakes registered tasks, updates the group record, runs the job like the worker step</td>
 </tr>
 <tr>
-<td><code>0x013d3520</code></td>
-<td style="text-align: right;">87</td>
-<td><code>frame_timing_task_013d3520</code></td>
-<td><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></td>
-<td>per-frame task: passes the frame-time descriptor and its seconds to three parts; Uncap FPS++ edits it</td>
+<td data-label="Address"><code>0x013d3520</code></td>
+<td style="text-align: right;" data-label="Size">87</td>
+<td data-label="Name"><code>frame_timing_task_013d3520</code></td>
+<td data-label="Status"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></td>
+<td data-label="Notes">per-frame task: passes the frame-time descriptor and its seconds to three parts; Uncap FPS++ edits it</td>
 </tr>
 <tr>
-<td><code>0x0143e490</code></td>
-<td style="text-align: right;">174</td>
-<td><code>frame_timing_task_flush_queue_0143e490</code></td>
-<td><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></td>
-<td>task manager queue flush: lock, run, destroy and free every queued object, empty the list, unlock</td>
+<td data-label="Address"><code>0x0143e490</code></td>
+<td style="text-align: right;" data-label="Size">174</td>
+<td data-label="Name"><code>frame_timing_task_flush_queue_0143e490</code></td>
+<td data-label="Status"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></td>
+<td data-label="Notes">task manager queue flush: lock, run, destroy and free every queued object, empty the list, unlock</td>
 </tr>
 <tr>
-<td><code>0x0143f9f0</code></td>
-<td style="text-align: right;">18</td>
-<td><code>frame_timing_task_set_frame_value_0143f9f0</code></td>
-<td><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></td>
-<td>task manager: copies the float at +0x8 of the frame information to the global 0x058b7e08</td>
+<td data-label="Address"><code>0x0143f9f0</code></td>
+<td style="text-align: right;" data-label="Size">18</td>
+<td data-label="Name"><code>frame_timing_task_set_frame_value_0143f9f0</code></td>
+<td data-label="Status"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></td>
+<td data-label="Notes">task manager: copies the float at +0x8 of the frame information to the global 0x058b7e08</td>
 </tr>
 <tr>
-<td><code>0x014400a0</code></td>
-<td style="text-align: right;">180</td>
-<td><code>frame_timing_task_workers_step_014400a0</code></td>
-<td><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></td>
-<td>task manager workers: three rounds over the worker queues +0x58, +0x68, +0x60</td>
+<td data-label="Address"><code>0x014400a0</code></td>
+<td style="text-align: right;" data-label="Size">180</td>
+<td data-label="Name"><code>frame_timing_task_workers_step_014400a0</code></td>
+<td data-label="Status"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></td>
+<td data-label="Notes">task manager workers: three rounds over the worker queues +0x58, +0x68, +0x60</td>
 </tr>
 <tr>
-<td><code>0x01f6a9f0</code></td>
-<td style="text-align: right;">121</td>
-<td><code>frame_timing_until_idle_01f6a9f0</code></td>
-<td><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></td>
-<td>state method: advance the owner one fixed step while busy (1/30 s; 1/60 s in the 60 FPS patches) (a Chalice Dungeon state machine: built next to SprjHolygrail; not reached by the routes yet)</td>
+<td data-label="Address"><code>0x01f6a9f0</code></td>
+<td style="text-align: right;" data-label="Size">121</td>
+<td data-label="Name"><code>frame_timing_until_idle_01f6a9f0</code></td>
+<td data-label="Status"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></td>
+<td data-label="Notes">state method: advance the owner one fixed step while busy (1/30 s; 1/60 s in the 60 FPS patches) (a Chalice Dungeon state machine: built next to SprjHolygrail; not reached by the routes yet)</td>
 </tr>
 <tr>
-<td><code>0x0200d8a0</code></td>
-<td style="text-align: right;">137</td>
-<td><code>frame_timing_until_idle_0200d8a0</code></td>
-<td><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></td>
-<td>state method: advance the owner one fixed step while busy (1/30 s; 1/60 s in the 60 FPS patches) (a Chalice Dungeon state machine: built next to SprjHolygrail; not reached by the routes yet)</td>
+<td data-label="Address"><code>0x0200d8a0</code></td>
+<td style="text-align: right;" data-label="Size">137</td>
+<td data-label="Name"><code>frame_timing_until_idle_0200d8a0</code></td>
+<td data-label="Status"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></td>
+<td data-label="Notes">state method: advance the owner one fixed step while busy (1/30 s; 1/60 s in the 60 FPS patches) (a Chalice Dungeon state machine: built next to SprjHolygrail; not reached by the routes yet)</td>
 </tr>
 <tr>
-<td><code>0x0200e100</code></td>
-<td style="text-align: right;">121</td>
-<td><code>frame_timing_until_idle_0200e100</code></td>
-<td><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></td>
-<td>state method: advance the owner one fixed step while busy (1/30 s; 1/60 s in the 60 FPS patches) (a Chalice Dungeon state machine: built next to SprjHolygrail; not reached by the routes yet)</td>
+<td data-label="Address"><code>0x0200e100</code></td>
+<td style="text-align: right;" data-label="Size">121</td>
+<td data-label="Name"><code>frame_timing_until_idle_0200e100</code></td>
+<td data-label="Status"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></td>
+<td data-label="Notes">state method: advance the owner one fixed step while busy (1/30 s; 1/60 s in the 60 FPS patches) (a Chalice Dungeon state machine: built next to SprjHolygrail; not reached by the routes yet)</td>
 </tr>
 <tr>
-<td><code>0x0200e270</code></td>
-<td style="text-align: right;">151</td>
-<td><code>frame_timing_request_7_0200e270</code></td>
-<td><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></td>
-<td>state method: when idle in states 2..5, request 7 and advance the owner one fixed step (a Chalice Dungeon state machine: built next to SprjHolygrail; not reached by the routes yet)</td>
+<td data-label="Address"><code>0x0200e270</code></td>
+<td style="text-align: right;" data-label="Size">151</td>
+<td data-label="Name"><code>frame_timing_request_7_0200e270</code></td>
+<td data-label="Status"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></td>
+<td data-label="Notes">state method: when idle in states 2..5, request 7 and advance the owner one fixed step (a Chalice Dungeon state machine: built next to SprjHolygrail; not reached by the routes yet)</td>
 </tr>
 <tr>
-<td><code>0x02012610</code></td>
-<td style="text-align: right;">121</td>
-<td><code>frame_timing_until_idle_02012610</code></td>
-<td><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></td>
-<td>state method: advance the owner one fixed step while busy (1/30 s; 1/60 s in the 60 FPS patches) (a Chalice Dungeon state machine: built next to SprjHolygrail; not reached by the routes yet)</td>
+<td data-label="Address"><code>0x02012610</code></td>
+<td style="text-align: right;" data-label="Size">121</td>
+<td data-label="Name"><code>frame_timing_until_idle_02012610</code></td>
+<td data-label="Status"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></td>
+<td data-label="Notes">state method: advance the owner one fixed step while busy (1/30 s; 1/60 s in the 60 FPS patches) (a Chalice Dungeon state machine: built next to SprjHolygrail; not reached by the routes yet)</td>
 </tr>
 <tr>
-<td><code>0x02012780</code></td>
-<td style="text-align: right;">122</td>
-<td><code>frame_timing_request_10_02012780</code></td>
-<td><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></td>
-<td>state method: when idle, request 10 and advance the owner one fixed step (a Chalice Dungeon state machine: built next to SprjHolygrail; not reached by the routes yet)</td>
+<td data-label="Address"><code>0x02012780</code></td>
+<td style="text-align: right;" data-label="Size">122</td>
+<td data-label="Name"><code>frame_timing_request_10_02012780</code></td>
+<td data-label="Status"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></td>
+<td data-label="Notes">state method: when idle, request 10 and advance the owner one fixed step (a Chalice Dungeon state machine: built next to SprjHolygrail; not reached by the routes yet)</td>
 </tr>
 <tr>
-<td><code>0x020128f0</code></td>
-<td style="text-align: right;">121</td>
-<td><code>frame_timing_until_idle_020128f0</code></td>
-<td><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></td>
-<td>state method: advance the owner one fixed step while busy (1/30 s; 1/60 s in the 60 FPS patches) (a Chalice Dungeon state machine: built next to SprjHolygrail; not reached by the routes yet)</td>
+<td data-label="Address"><code>0x020128f0</code></td>
+<td style="text-align: right;" data-label="Size">121</td>
+<td data-label="Name"><code>frame_timing_until_idle_020128f0</code></td>
+<td data-label="Status"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></td>
+<td data-label="Notes">state method: advance the owner one fixed step while busy (1/30 s; 1/60 s in the 60 FPS patches) (a Chalice Dungeon state machine: built next to SprjHolygrail; not reached by the routes yet)</td>
 </tr>
 <tr>
-<td><code>0x02012a60</code></td>
-<td style="text-align: right;">151</td>
-<td><code>frame_timing_request_7_02012a60</code></td>
-<td><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></td>
-<td>state method: when idle in states 2..5, request 7 and advance the owner one fixed step (a Chalice Dungeon state machine: built next to SprjHolygrail; not reached by the routes yet)</td>
+<td data-label="Address"><code>0x02012a60</code></td>
+<td style="text-align: right;" data-label="Size">151</td>
+<td data-label="Name"><code>frame_timing_request_7_02012a60</code></td>
+<td data-label="Status"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></td>
+<td data-label="Notes">state method: when idle in states 2..5, request 7 and advance the owner one fixed step (a Chalice Dungeon state machine: built next to SprjHolygrail; not reached by the routes yet)</td>
 </tr>
 <tr>
-<td><code>0x02012bf0</code></td>
-<td style="text-align: right;">121</td>
-<td><code>frame_timing_until_idle_02012bf0</code></td>
-<td><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></td>
-<td>state method: advance the owner one fixed step while busy (1/30 s; 1/60 s in the 60 FPS patches) (a Chalice Dungeon state machine: built next to SprjHolygrail; not reached by the routes yet)</td>
+<td data-label="Address"><code>0x02012bf0</code></td>
+<td style="text-align: right;" data-label="Size">121</td>
+<td data-label="Name"><code>frame_timing_until_idle_02012bf0</code></td>
+<td data-label="Status"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></td>
+<td data-label="Notes">state method: advance the owner one fixed step while busy (1/30 s; 1/60 s in the 60 FPS patches) (a Chalice Dungeon state machine: built next to SprjHolygrail; not reached by the routes yet)</td>
 </tr>
 <tr>
-<td><code>0x02418d20</code></td>
-<td style="text-align: right;">467</td>
-<td><code>frame_timing_frame_step</code></td>
-<td><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></td>
-<td>Per frame: <abbr title="The game's window object, named in the executable's own assertion strings.">SprjWindow</abbr> running check; creates <abbr title="The game's frame-pacing object, named in the executable's own assertion strings.">SprjFlipper</abbr>; calls the limiter; runs the task update; returns running and not quitting</td>
+<td data-label="Address"><code>0x02418d20</code></td>
+<td style="text-align: right;" data-label="Size">467</td>
+<td data-label="Name"><code>frame_timing_frame_step</code></td>
+<td data-label="Status"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></td>
+<td data-label="Notes">Per frame: <abbr title="The game's window object, named in the executable's own assertion strings.">SprjWindow</abbr> running check; creates <abbr title="The game's frame-pacing object, named in the executable's own assertion strings.">SprjFlipper</abbr>; calls the limiter; runs the task update; returns running and not quitting</td>
 </tr>
 <tr>
-<td><code>0x02434520</code></td>
-<td style="text-align: right;">552</td>
-<td><code>frame_timing_flipper_init</code></td>
-<td><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></td>
-<td><abbr title="The game's frame-pacing object, named in the executable's own assertion strings.">SprjFlipper</abbr> constructor: reads Game.FlipMode (default 4; pending default 3; clamped to 4); unset in the shipped config</td>
+<td data-label="Address"><code>0x02434520</code></td>
+<td style="text-align: right;" data-label="Size">552</td>
+<td data-label="Name"><code>frame_timing_flipper_init</code></td>
+<td data-label="Status"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></td>
+<td data-label="Notes"><abbr title="The game's frame-pacing object, named in the executable's own assertion strings.">SprjFlipper</abbr> constructor: reads Game.FlipMode (default 4; pending default 3; clamped to 4); unset in the shipped config</td>
 </tr>
 <tr>
-<td><code>0x02434770</code></td>
-<td style="text-align: right;">2077</td>
-<td><code>frame_timing_pace_frame</code></td>
-<td><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></td>
-<td>Frame limiter: target interval at +0x18 (1/30 or 1/60 s); sleeps then spins; 32-frame ring; every FPS patch edits it</td>
+<td data-label="Address"><code>0x02434770</code></td>
+<td style="text-align: right;" data-label="Size">2077</td>
+<td data-label="Name"><code>frame_timing_pace_frame</code></td>
+<td data-label="Status"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></td>
+<td data-label="Notes">Frame limiter: target interval at +0x18 (1/30 or 1/60 s); sleeps then spins; 32-frame ring; every FPS patch edits it</td>
 </tr>
 <tr>
-<td><code>0x024512a0</code></td>
-<td style="text-align: right;">78</td>
-<td><code>frame_timing_task_frame_024512a0</code></td>
-<td><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></td>
-<td>task manager frame entry from the frame step: FD4TaskManager singleton, then 0x01388c60</td>
+<td data-label="Address"><code>0x024512a0</code></td>
+<td style="text-align: right;" data-label="Size">78</td>
+<td data-label="Name"><code>frame_timing_task_frame_024512a0</code></td>
+<td data-label="Status"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></td>
+<td data-label="Notes">task manager frame entry from the frame step: FD4TaskManager singleton, then 0x01388c60</td>
 </tr>
 </tbody>
 </table>

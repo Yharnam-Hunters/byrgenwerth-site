@@ -11,7 +11,7 @@
   <title>10 October 2026: recorded verification and runtime foundations — Byrgenwerth</title>
   
   
-  <link rel="stylesheet" href="../../../../../stylesheets/wiki.css?v=e00e283b2a">
+  <link rel="stylesheet" href="../../../../../stylesheets/wiki.css?v=901045f4c4">
   
   
 </head>
@@ -371,12 +371,12 @@
       <p class="wk-nav-heading" title="Project stats">Insight</p>
       <div class="wk-stat-row"><span>Verified bytes</span><span class="wk-stat-val">14,010 / 42,487,347</span></div>
       <div class="wk-stat-row"><span>Verified functions</span><span class="wk-stat-val">21 / 157,757</span></div>
-      <div class="wk-stat-row"><span>Replaced functions</span><span class="wk-stat-val">30 / 157,757</span></div>
+      <div class="wk-stat-row"><span>Replaced functions</span><span class="wk-stat-val">31 / 157,757</span></div>
       <p class="wk-stat-sublabel">Replaced code size (target bytes)</p>
-      <div class="wk-stat-track" title="0.0357% of target code bytes" role="img" aria-label="0.0357 percent of target code bytes replaced">
-        <div class="wk-stat-fill" style="width:0.0357%"></div>
+      <div class="wk-stat-track" title="0.0361% of target code bytes" role="img" aria-label="0.0361 percent of target code bytes replaced">
+        <div class="wk-stat-fill" style="width:0.0361%"></div>
       </div>
-      <p class="wk-stat-pct">0.0357%</p>
+      <p class="wk-stat-pct">0.0361%</p>
       <p class="wk-stat-sublabel">Verified code size (target bytes)</p>
       <div class="wk-stat-track" title="0.033% of target code bytes" role="img" aria-label="0.033 percent of target code bytes verified">
         <div class="wk-stat-fill wk-stat-fill-dim" style="width:0.033%"></div>
@@ -431,13 +431,16 @@ execution.</p>
 
 <h2 id="runtime-and-boot-progress">Runtime and boot progress</h2>
 <p><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/50">Paleblood PR #50</a>, merged at
-<code>816ea964c2d5db49271ad3131cad4a24e3d0bcc5</code>, added <code>sceNetHtonl</code>, <code>sceNetHtons</code>, <code>sceNetNtohl</code>,
+<code>816ea96</code>, added <code>sceNetHtonl</code>, <code>sceNetHtons</code>, <code>sceNetNtohl</code>,
 and <code>sceNetNtohs</code>. These implement fixed-width host/network byte-order conversions; socket,
 resolver, epoll, and online behavior remain uncovered. The saved boot result still stopped at
 <code>scePthreadAttrGetaffinity</code> (238/686 system imports provided), within contributor-owned issue #34.
 No boot run was made for this change.</p>
 <!-- milestone:paleblood-host-v1-pr55 order=2026-10-10T06:58:39.000000Z -->
-<p><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/55">Paleblood PR #55</a>, merged at <code>348c71f</code>, adds Paleblood's first functional implementation of the version-1 host <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> callback. A synthetic executable-memory case confirms that a patched guest entry dispatches to its replacement with the test arguments. GCC and Clang Release builds and all 13 CTest cases passed. The full game-run scaffold remains active: the callback is not yet integrated into that path, and game boot did not advance.</p>
+<p><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/55">Paleblood PR #55</a> adds Paleblood's own
+version of the callback that redirects a game function to its replacement. A synthetic test
+confirms the redirect works. The full game run still uses the old <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>, which doesn't call this
+yet.</p>
 <!-- /milestone -->
 <h2 id="decompilation-and-verified-functions">Decompilation and <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> functions</h2>
 <p><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/48">Paleblood PR #48</a> promoted
@@ -454,44 +457,66 @@ fixtures passed <abbr title="Inputs recorded while the game ran, replayed by the
 missing descriptors failed closed. Production replacements still do not call this adapter, so
 these tests produced no real game <abbr title="Inputs recorded while the game ran, replayed by the harness.">captures</abbr>.</p>
 <!-- milestone:paleblood-runtime-issue-status-pr53 order=2026-10-10T06:02:18.000000Z -->
-<p><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/53">Paleblood PR #53</a>, merged at <code>fec0551</code>, makes <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> issue counts recognize registered <code>RT_SYSLIB</code> entries without waiting for a boot run. This corrected <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/41">issue #41</a>: the four network byte-order helpers from <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/50">PR #50</a> are now checked and the group reports 4/175 implemented. Focused parser/count tests and the 95-test Python suite passed; GCC/Clang builds and CTest passed 11/11 each. This improves progress tracking only; actual boot did not advance.</p>
+<p><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/53">Paleblood PR #53</a> lets the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> issue
+counts see implemented system calls without waiting for a boot run. That corrected
+<a href="https://github.com/Yharnam-Hunters/Paleblood/issues/41">issue #41</a>: its network group now shows the
+four byte-order helpers from PR #50, 4/175 implemented.</p>
 <!-- /milestone -->
 
 <!-- milestone:paleblood-scaffold-contract-pr54 order=2026-10-10T06:24:31.000000Z -->
-<p><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/54">Paleblood PR #54</a>, merged at <code>8abd5531f919047ee8d28bae7b16a0332f5fb764</code>, adds a synthetic fake-host test for the existing version-1 host API consumer. It checks version rejection, image handoff, guest-relative <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> registration, named/address <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> skips, probe ordering, and error propagation. GCC and Clang Release builds and CTest passed 12/12 each; policy, <abbr title="14-byte jumps written over the start of original functions, sending their callers to the replacements.">hooks</abbr>, and required CI checks passed. This improves ABI regression coverage only: the legacy host remains active, no equivalent replacement exists, and boot execution did not advance.</p>
+<p><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/54">Paleblood PR #54</a> adds a test that checks
+how Paleblood talks to the old <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>: version checks, handing over the game image, registering
+redirects and passing errors back. It guards against regressions; nothing new runs.</p>
 <!-- /milestone -->
 
 <!-- milestone:paleblood-host-v1-tooling-pr55 order=2026-10-10T07:00:05.000000Z -->
-<p><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/55">Paleblood PR #55</a> also makes <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> tests honor <code>TMPDIR</code>, stops safely if the test clone cannot be created, and gives the synthetic replay test the <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> path selected by CMake. The <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> suite <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> that unreadable game code and allowlist growth are refused, and that a failing pre-push gate blocks a piped push. These checks improve development reliability only; they do not change game execution.</p>
+<p>PR #55 also made the repository's Git <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> tests more robust: they respect the configured
+temporary directory and stop cleanly if their test copy can't be made. The tests confirm that the
+<abbr title="14-byte jumps written over the start of original functions, sending their callers to the replacements.">hooks</abbr> refuse game code and block a push when a required check fails.</p>
 <!-- /milestone -->
 <h2 id="documentation-and-website-changes">Documentation and website changes</h2>
 <p>The frame-timing page and generated progress data were refreshed from merged Paleblood revision
-<code>816ea964c2d5db49271ad3131cad4a24e3d0bcc5</code>. The public site was published at
+<code>816ea96</code>. The public site was published at
 <a href="https://github.com/Yharnam-Hunters/byrgenwerth-site/commit/21e1d26d3d3dc3a33173122ef199aa223cf7c686"><code>21e1d26</code></a>.
 The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> notes keep the production observer and <abbr title="Inputs recorded while the game ran, replayed by the harness.">capture</abbr> integration explicitly unfinished.
 Public source documents the synthetic limits alongside the results.</p>
 <!-- milestone:wiki-audit-runtime-scaffold-20261010 order=2026-10-10T06:30:00.000000Z -->
-<p>The Runtime, Architecture, and CI Setup pages were audited and updated against Paleblood <code>8abd5531f919047ee8d28bae7b16a0332f5fb764</code>; all 30 public wiki pages plus generated fragments, navigation, metadata, image references, and search output were reviewed. The Runtime page reports the 4/175 network group count and names all four implemented byte-order helpers. The former homepage artwork could not be restored because its creator and redistribution rights are unrecorded. Automatic synchronization remains inactive: no least-privilege App credentials exist, and the current sync path executes code from the public Paleblood checkout. A final output review removed a Runtime-page link into the legacy scaffold README so retired integration names stay out of public routes and search content. The license and dependency findings remain in the private maintenance audit. This documentation work did not advance game execution.</p>
+<p>All 30 public wiki pages were reviewed against the current Paleblood source, and the Runtime,
+Architecture and CI Setup pages were updated; the Runtime page now lists the four network
+byte-order helpers. Automatic syncing from Paleblood stays off until it can run with safe,
+limited credentials.</p>
 <!-- /milestone -->
 
 <!-- milestone:wiki-encyclopedia-character-points order=2026-10-11T03:30:00.000000Z -->
-<p>Byrgenwerth's first evidence-backed Workshop article now explains the <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> per-frame character points update (<code>0x01cbdb20</code>), its retained fractional accumulation and bounds, its recorded/edge-case evidence, and why “stamina” remains an unconfirmed interpretation. The article links the exact Paleblood source revision and independent review record and includes a responsive original SVG flow diagram. No game screenshot or clip was added; the previous image collection remains absent. This documentation milestone does not advance game execution.</p>
+<p>The first Workshop article explains the <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> per-frame character points update
+(<code>0x01cbdb20</code>): how it keeps fractional amounts between frames, its limits, and the evidence behind
+it, with a diagram. Calling it "stamina" is still a guess, and the article says so.</p>
 <!-- /milestone -->
 
 <!-- milestone:themed-encyclopedia-nav-art-20261010 order=2026-10-11T05:03:00.000000Z -->
-<p>The homepage now uses the exact 256×256 hunter image supplied by the maintainer (SteamGridDB entry 105442, contributor <code>r_dsgnd</code>), replacing the rejected PlayStation Hits product tile. The image is visibly attributed and its caption states that redistribution permission for the underlying game artwork is unverified; the private review records its provenance, display scope, rationale, and adverse rights factors without claiming a license or guaranteed exception. The seven themed groups remain collapsible, the active section opens automatically, preferences persist where storage is available, and mobile navigation remains a compact accessible drawer. This remains a private-PR proposal pending maintainer review; it has not been published. It changes no <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>, decompilation, or game-boot behavior.</p>
+<p>A redesign put the wiki's pages into seven themed, collapsible menu groups that remember which
+ones you opened and work as a drawer on phones. The homepage got the hunter artwork chosen by the
+maintainer (SteamGridDB, by <code>r_dsgnd</code>) in place of a product image.</p>
 <!-- /milestone -->
 
 <!-- milestone:wiki-publication-pr24-20261010 order=2026-10-11T05:25:56.000000Z -->
-<p>The updated Byrgenwerth encyclopedia is live at <a href="https://github.com/Yharnam-Hunters/byrgenwerth-site/commit/975ec0c9b2945269f2d5b54e4464be94d150e535">public site commit <code>975ec0c</code></a>; its <a href="https://github.com/Yharnam-Hunters/byrgenwerth-site/actions/runs/38114509856">GitHub Pages deployment</a> succeeded. Live checks found the supplied menu image at its expected hash, all seven themed collapsible groups, the active Runtime section expanded, and the preserved Insight panel. All 45 generated page routes returned HTTP 200; the 292-document search index contains the encyclopedia destinations and no retired gallery or private-path entries. A live mobile-width Firefox check confirmed the compact drawer opens, Escape closes it and restores focus, and following a navigation link closes the drawer. Publication privacy scanning found 105 generated files clean. This is documentation and navigation work only; <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> behavior and game execution did not advance.</p>
+<p>The redesign went live at
+<a href="https://github.com/Yharnam-Hunters/byrgenwerth-site/commit/975ec0c9b2945269f2d5b54e4464be94d150e535">public site commit <code>975ec0c</code></a>.
+Every page loaded, the search index was up to date, and the phone menu opened, closed and moved
+focus correctly.</p>
 <!-- /milestone -->
 
 <!-- milestone:sidebar-menu-art-20261010 order=2026-10-11T05:45:19.000000Z -->
-<p>The sidebar menu was repaired and the maintainer-selected menu artwork moved into it. The empty top-of-menu link (collapsed to zero height) now holds the image, above Home, with its r_dsgnd/SteamGridDB credit and ©2014 Sony notice beneath it; at the maintainer's request the caption no longer carries a permission note. Section headings line up with their links and no longer wrap, and the Insight figures no longer break mid-number. Submenus are indented along a thin guide line with more room between entries, and only one section opens at a time; short windows hide the Insight panel and shorten the picture, then scroll, instead of squeezing the menu's spacing. The homepage hero is now text only, so Master Willem's words lead the page. Checked in desktop, short-window, and mobile screenshots. This changes no <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>, decompilation, or game-boot behavior.</p>
+<p>The sidebar menu was repaired and the artwork moved into it, above Home, with its credit
+beneath. Section headings line up and no longer wrap, submenus sit along a guide line, only one
+section opens at a time, and short windows scroll instead of squeezing the menu. The homepage now
+opens with Master Willem's words.</p>
 <!-- /milestone -->
 
 <!-- milestone:wiki-publication-pr26-20261010 order=2026-10-11T05:55:00.000000Z -->
-<p>The repaired sidebar menu from private PR #26 (merge <code>8e6f5b2</code>) is live at <a href="https://github.com/Yharnam-Hunters/byrgenwerth-site/commit/6b16b4525ccea78cda1f44a36fc51570d881bfa1">public site commit <code>6b16b45</code></a>; its <a href="https://github.com/Yharnam-Hunters/byrgenwerth-site/actions/runs/38115624398">GitHub Pages deployment</a> succeeded. Live checks found the menu image in the sidebar at its expected hash and no longer on the homepage, and the core routes and search index returned HTTP 200. Publication privacy scanning found 105 generated files clean. Documentation and navigation only; game execution did not advance.</p>
+<p>The repaired menu went live at
+<a href="https://github.com/Yharnam-Hunters/byrgenwerth-site/commit/6b16b4525ccea78cda1f44a36fc51570d881bfa1">public site commit <code>6b16b45</code></a>,
+with the artwork in the sidebar and no longer on the homepage.</p>
 <!-- /milestone -->
 <h2 id="tests-and-validation">Tests and validation</h2>
 <p>The <abbr title="Inputs recorded while the game ran, replayed by the harness.">capture</abbr> changes passed GCC and Clang builds and all 11 CTest suites. The verification

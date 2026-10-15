@@ -11,7 +11,7 @@
   <title>9 October 2026: a path for runtime contributors — Byrgenwerth</title>
   
   
-  <link rel="stylesheet" href="../../../../../stylesheets/wiki.css?v=e00e283b2a">
+  <link rel="stylesheet" href="../../../../../stylesheets/wiki.css?v=901045f4c4">
   
   
 </head>
@@ -371,12 +371,12 @@
       <p class="wk-nav-heading" title="Project stats">Insight</p>
       <div class="wk-stat-row"><span>Verified bytes</span><span class="wk-stat-val">14,010 / 42,487,347</span></div>
       <div class="wk-stat-row"><span>Verified functions</span><span class="wk-stat-val">21 / 157,757</span></div>
-      <div class="wk-stat-row"><span>Replaced functions</span><span class="wk-stat-val">30 / 157,757</span></div>
+      <div class="wk-stat-row"><span>Replaced functions</span><span class="wk-stat-val">31 / 157,757</span></div>
       <p class="wk-stat-sublabel">Replaced code size (target bytes)</p>
-      <div class="wk-stat-track" title="0.0357% of target code bytes" role="img" aria-label="0.0357 percent of target code bytes replaced">
-        <div class="wk-stat-fill" style="width:0.0357%"></div>
+      <div class="wk-stat-track" title="0.0361% of target code bytes" role="img" aria-label="0.0361 percent of target code bytes replaced">
+        <div class="wk-stat-fill" style="width:0.0361%"></div>
       </div>
-      <p class="wk-stat-pct">0.0357%</p>
+      <p class="wk-stat-pct">0.0361%</p>
       <p class="wk-stat-sublabel">Verified code size (target bytes)</p>
       <div class="wk-stat-track" title="0.033% of target code bytes" role="img" aria-label="0.033 percent of target code bytes verified">
         <div class="wk-stat-fill wk-stat-fill-dim" style="width:0.033%"></div>
@@ -441,16 +441,22 @@ remain open instead of being filled with assumed return values.</p>
 <h2 id="tooling-and-automation">Tooling and automation</h2>
 <p>The issue #34 workflow uses a claim-and-branch process, small related changes, and a concise
 evidence report. <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/44">Paleblood PR #44</a>,
-merged at <code>ef1989ec3388c26cddd20b13742ba93d09cc147e</code>, prepared the contributor checks. Runtime-only
+merged at <code>ef1989e</code>, prepared the contributor checks. Runtime-only
 pull requests use the compiler matrix, system-library tests, and policy checks. Decompilation and
 mixed changes retain the full session report and verification gates. Shared Git <abbr title="14-byte jumps written over the start of original functions, sending their callers to the replacements.">hooks</abbr> dispatch
 through the active worktree, so linked worktrees use their own installed checks.</p>
 <!-- milestone:codex-daily-devlog-policy order=2026-10-10T02:45:00.000000Z -->
-<p>Daily posting now updates the existing local-date entry through stable milestone keys, ordered sections, and concurrent-safe atomic writes. The gated publisher also keeps the pinned Paleblood source revision separate from the public-site remote. Seven deterministic tests pass, including concurrent updates and repeat MkDocs output. These are documentation and workflow improvements; game execution did not advance.</p>
+<p>The devlog moved to one post per day: new milestones are added to that day's post under fixed
+sections, and repeat updates replace their own entry instead of adding a second one. The
+publishing script keeps the Paleblood source it builds from separate from the public site. This is
+workflow only; the game did not get further.</p>
 <!-- /milestone -->
 
 <!-- milestone:paleblood-boot-failure-history-pr51 order=2026-10-10T03:30:00.000000Z -->
-<p><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/51">Paleblood PR #51</a>, merged at <code>fe3661f</code>, keeps boot outcome, phase, unresolved-import return site, and guest fault location in history, including when only the failure site changes. GCC and Clang builds and CTest passed 11/11 each; 93 Python tests passed. This improves diagnostics only; no game run or boot advancement occurred.</p>
+<p><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/51">Paleblood PR #51</a> makes the boot history
+record where each run stopped (the phase, the unresolved import and where the game faulted), even
+when only that location changes between runs. This improves diagnostics; it is not boot
+progress.</p>
 <!-- /milestone -->
 <h2 id="documentation-and-website-changes">Documentation and website changes</h2>
 <p>The syscall notes distinguish public contracts for <code>getpagesize</code>, <code>getpid</code>, <code>clock_gettime</code>, and
@@ -458,7 +464,10 @@ through the active worktree, so linked worktrees use their own installed checks.
 bundled Fios module while leaving archive access, PlayGo flow, and target-specific error paths as
 open questions. Progress was synchronized from merged Paleblood sources.</p>
 <!-- milestone:paleblood-legacy-cleanup-pr52 order=2026-10-10T05:53:06.000000Z -->
-<p><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/52">Paleblood PR #52</a>, merged at <code>b7a5dc5</code>, clarifies that the current full game-run path still depends on the external scaffold pending equivalent project-owned run checks. This cleanup removes the legacy <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> study pages, test-run media, unverified wiki icon, and media-only build <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> from Byrgenwerth, with focused checks against reintroduction in public source and generated output. GCC and Clang builds and CTest passed 11/11 each; the strict wiki build, 10 Python tests, <abbr title="14-byte jumps written over the start of original functions, sending their callers to the replacements.">hooks</abbr>, and 88-file privacy scan passed. This improves documentation and publication safeguards; it does not advance game execution or decompilation.</p>
+<p><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/52">Paleblood PR #52</a> notes that running the full
+game still depends on the old borrowed <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> until Paleblood has its own equivalent checks.
+Byrgenwerth removed the pages, test-run media and build <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> left over from that <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>, and
+added checks so they don't come back.</p>
 <!-- /milestone -->
 <h2 id="tests-and-validation">Tests and validation</h2>
 <p>The issue #34 workflow added no replacement and no verification result. Runtime-only CI checks
@@ -469,7 +478,10 @@ post-merge boot check. The shared <abbr title="A 14-byte jump written over the s
 The next <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> change should implement one documented call or a tightly related group, keep
 unknown behavior explicit, and include deterministic tests and its source basis.</p>
 <!-- milestone:paleblood-evidence-assessment order=2026-10-10T02:46:00.000000Z -->
-<p>The current Paleblood source has nine <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr> functions, but none has matching recorded calls in the available <abbr title="Inputs recorded while the game ran, replayed by the harness.">capture</abbr> library; the read-only promotion dry run produced no candidate. Issue #34 still has a contributor claim and remains the earliest boot blocker. Issues #35–#40 are unclaimed, but their current issue scopes list imports without enough target-specific contracts for a safe implementation. The existing <code>0x0183ac60</code> worktree was left untouched, and <code>0x02713870</code> still has no matching recorded inputs. No <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> behavior or game execution advanced.</p>
+<p>Nine functions are checked against hand-written <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr>, but none of them has matching
+recordings from the game yet, so none could be promoted to <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>. Issue #34 is still claimed by
+a contributor and is still the earliest boot blocker. Issues #35–#40 are open, but they don't yet
+describe the system calls well enough to implement them safely.</p>
 <!-- /milestone -->
   
   <p class="wk-post-back"><a href="../../../../">← Back to devlog</a></p>

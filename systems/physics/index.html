@@ -11,7 +11,7 @@
   <title>Physics — Byrgenwerth</title>
   
   
-  <link rel="stylesheet" href="../../stylesheets/wiki.css?v=e00e283b2a">
+  <link rel="stylesheet" href="../../stylesheets/wiki.css?v=901045f4c4">
   
   
 </head>
@@ -371,12 +371,12 @@
       <p class="wk-nav-heading" title="Project stats">Insight</p>
       <div class="wk-stat-row"><span>Verified bytes</span><span class="wk-stat-val">14,010 / 42,487,347</span></div>
       <div class="wk-stat-row"><span>Verified functions</span><span class="wk-stat-val">21 / 157,757</span></div>
-      <div class="wk-stat-row"><span>Replaced functions</span><span class="wk-stat-val">30 / 157,757</span></div>
+      <div class="wk-stat-row"><span>Replaced functions</span><span class="wk-stat-val">31 / 157,757</span></div>
       <p class="wk-stat-sublabel">Replaced code size (target bytes)</p>
-      <div class="wk-stat-track" title="0.0357% of target code bytes" role="img" aria-label="0.0357 percent of target code bytes replaced">
-        <div class="wk-stat-fill" style="width:0.0357%"></div>
+      <div class="wk-stat-track" title="0.0361% of target code bytes" role="img" aria-label="0.0361 percent of target code bytes replaced">
+        <div class="wk-stat-fill" style="width:0.0361%"></div>
       </div>
-      <p class="wk-stat-pct">0.0357%</p>
+      <p class="wk-stat-pct">0.0361%</p>
       <p class="wk-stat-sublabel">Verified code size (target bytes)</p>
       <div class="wk-stat-track" title="0.033% of target code bytes" role="img" aria-label="0.033 percent of target code bytes verified">
         <div class="wk-stat-fill wk-stat-fill-dim" style="width:0.033%"></div>
@@ -452,7 +452,7 @@ arithmetic shift of the bit pattern, then a saturating pack). It is a compact wa
 at half the size, and an example of why a replacement has to reproduce the exact instructions:
 the truncation works on the float's bits, not its value.</p>
 <h2 id="key-functions">Key functions</h2>
-<table>
+<table class="wk-stack">
 <thead>
 <tr>
 <th>Address</th>
@@ -464,11 +464,11 @@ the truncation works on the float's bits, not its value.</p>
 </thead>
 <tbody>
 <tr>
-<td><code>0x01c0c2b0</code></td>
-<td style="text-align: right;">3222</td>
-<td><code>physics_instance_construct_01c0c2b0</code></td>
-<td><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></td>
-<td>physics instance constructor over a body set: back-links, shape copy, controller (step 1/30 s; 60 FPS patches 1/60), motion rescale, listeners</td>
+<td data-label="Address"><code>0x01c0c2b0</code></td>
+<td style="text-align: right;" data-label="Size">3222</td>
+<td data-label="Name"><code>physics_instance_construct_01c0c2b0</code></td>
+<td data-label="Status"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></td>
+<td data-label="Notes">physics instance constructor over a body set: back-links, shape copy, controller (step 1/30 s; 60 FPS patches 1/60), motion rescale, listeners</td>
 </tr>
 </tbody>
 </table>

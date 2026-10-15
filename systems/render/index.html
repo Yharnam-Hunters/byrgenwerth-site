@@ -11,7 +11,7 @@
   <title>Render — Byrgenwerth</title>
   
   
-  <link rel="stylesheet" href="../../stylesheets/wiki.css?v=e00e283b2a">
+  <link rel="stylesheet" href="../../stylesheets/wiki.css?v=901045f4c4">
   
   
 </head>
@@ -371,12 +371,12 @@
       <p class="wk-nav-heading" title="Project stats">Insight</p>
       <div class="wk-stat-row"><span>Verified bytes</span><span class="wk-stat-val">14,010 / 42,487,347</span></div>
       <div class="wk-stat-row"><span>Verified functions</span><span class="wk-stat-val">21 / 157,757</span></div>
-      <div class="wk-stat-row"><span>Replaced functions</span><span class="wk-stat-val">30 / 157,757</span></div>
+      <div class="wk-stat-row"><span>Replaced functions</span><span class="wk-stat-val">31 / 157,757</span></div>
       <p class="wk-stat-sublabel">Replaced code size (target bytes)</p>
-      <div class="wk-stat-track" title="0.0357% of target code bytes" role="img" aria-label="0.0357 percent of target code bytes replaced">
-        <div class="wk-stat-fill" style="width:0.0357%"></div>
+      <div class="wk-stat-track" title="0.0361% of target code bytes" role="img" aria-label="0.0361 percent of target code bytes replaced">
+        <div class="wk-stat-fill" style="width:0.0361%"></div>
       </div>
-      <p class="wk-stat-pct">0.0357%</p>
+      <p class="wk-stat-pct">0.0361%</p>
       <p class="wk-stat-sublabel">Verified code size (target bytes)</p>
       <div class="wk-stat-track" title="0.033% of target code bytes" role="img" aria-label="0.033 percent of target code bytes verified">
         <div class="wk-stat-fill wk-stat-fill-dim" style="width:0.033%"></div>
@@ -437,7 +437,7 @@ recursive passes a blur needs, how many samples the last one takes and how far a
 one samples, with the middleware's own assertions.</p>
 <p>Scope still to map: draw submission, <abbr title="The PS4's low-level graphics API.">GNM</abbr> command buffers, shaders, post-processing.</p>
 <h2 id="key-functions">Key functions</h2>
-<table>
+<table class="wk-stack">
 <thead>
 <tr>
 <th>Address</th>
@@ -449,25 +449,25 @@ one samples, with the middleware's own assertions.</p>
 </thead>
 <tbody>
 <tr>
-<td><code>0x00fbc3e0</code></td>
-<td style="text-align: right;">670</td>
-<td><code>render_yebis_get_recursive_sample_parameters</code></td>
-<td><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></td>
-<td>YEBIS GPUTexUtil_GetRecursiveSampleParameters: blur pass count, last-pass samples and scale; the FPS patches drop its first assertion</td>
+<td data-label="Address"><code>0x00fbc3e0</code></td>
+<td style="text-align: right;" data-label="Size">670</td>
+<td data-label="Name"><code>render_yebis_get_recursive_sample_parameters</code></td>
+<td data-label="Status"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></td>
+<td data-label="Notes">YEBIS GPUTexUtil_GetRecursiveSampleParameters: blur pass count, last-pass samples and scale; the FPS patches drop its first assertion</td>
 </tr>
 <tr>
-<td><code>0x02377bd0</code></td>
-<td style="text-align: right;">399</td>
-<td><code>render_frame_update_02377bd0</code></td>
-<td><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></td>
-<td>per-frame: ages a list of ref-counted objects, updates RendMan-side child, steps another child by 1/30 s (Uncap: measured frame time)</td>
+<td data-label="Address"><code>0x02377bd0</code></td>
+<td style="text-align: right;" data-label="Size">399</td>
+<td data-label="Name"><code>render_frame_update_02377bd0</code></td>
+<td data-label="Status"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></td>
+<td data-label="Notes">per-frame: ages a list of ref-counted objects, updates RendMan-side child, steps another child by 1/30 s (Uncap: measured frame time)</td>
 </tr>
 <tr>
-<td><code>0x025b2fb0</code></td>
-<td style="text-align: right;">768</td>
-<td><code>render_swap_chain_present</code></td>
-<td><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></td>
-<td>GXSwapChainCtrl present: waits for the present interval in 60 Hz vblanks, maps it to a flip mode, presents (Uncap: mode 0)</td>
+<td data-label="Address"><code>0x025b2fb0</code></td>
+<td style="text-align: right;" data-label="Size">768</td>
+<td data-label="Name"><code>render_swap_chain_present</code></td>
+<td data-label="Status"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></td>
+<td data-label="Notes">GXSwapChainCtrl present: waits for the present interval in 60 Hz vblanks, maps it to a flip mode, presents (Uncap: mode 0)</td>
 </tr>
 </tbody>
 </table>

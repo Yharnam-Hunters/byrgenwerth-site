@@ -5,13 +5,13 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   
   <meta name="description" content="Notes of Paleblood, a decompilation of Bloodborne (PS4, CUSA03173 v1.09) with its own runtime, one verified function at a time, and an open place to learn how a console game works and how it is reverse engineered">
-  <link rel="canonical" href="https://yharnam-hunters.github.io/byrgenwerth-site/devlog/2026/10/11/2026-10-11-development-progress/">
+  <link rel="canonical" href="https://yharnam-hunters.github.io/byrgenwerth-site/devlog/2026/10/11/11-october-2026-more-imports-supplied-same-boot-blocker/">
   
   
-  <title>2026-10-11: Development progress — Byrgenwerth</title>
+  <title>11 October 2026: more imports supplied, same boot blocker — Byrgenwerth</title>
   
   
-  <link rel="stylesheet" href="../../../../../stylesheets/wiki.css?v=e00e283b2a">
+  <link rel="stylesheet" href="../../../../../stylesheets/wiki.css?v=901045f4c4">
   
   
 </head>
@@ -371,12 +371,12 @@
       <p class="wk-nav-heading" title="Project stats">Insight</p>
       <div class="wk-stat-row"><span>Verified bytes</span><span class="wk-stat-val">14,010 / 42,487,347</span></div>
       <div class="wk-stat-row"><span>Verified functions</span><span class="wk-stat-val">21 / 157,757</span></div>
-      <div class="wk-stat-row"><span>Replaced functions</span><span class="wk-stat-val">30 / 157,757</span></div>
+      <div class="wk-stat-row"><span>Replaced functions</span><span class="wk-stat-val">31 / 157,757</span></div>
       <p class="wk-stat-sublabel">Replaced code size (target bytes)</p>
-      <div class="wk-stat-track" title="0.0357% of target code bytes" role="img" aria-label="0.0357 percent of target code bytes replaced">
-        <div class="wk-stat-fill" style="width:0.0357%"></div>
+      <div class="wk-stat-track" title="0.0361% of target code bytes" role="img" aria-label="0.0361 percent of target code bytes replaced">
+        <div class="wk-stat-fill" style="width:0.0361%"></div>
       </div>
-      <p class="wk-stat-pct">0.0357%</p>
+      <p class="wk-stat-pct">0.0361%</p>
       <p class="wk-stat-sublabel">Verified code size (target bytes)</p>
       <div class="wk-stat-track" title="0.033% of target code bytes" role="img" aria-label="0.033 percent of target code bytes verified">
         <div class="wk-stat-fill wk-stat-fill-dim" style="width:0.033%"></div>
@@ -402,7 +402,7 @@
         <ol class="wk-toc-list" id="wk-toc-list">
           
           <li>
-            <a href="#2026-10-11-development-progress" class="wk-toc-link">2026-10-11: Development progress</a>
+            <a href="#11-october-2026-more-imports-supplied-same-boot-blocker" class="wk-toc-link">11 October 2026: more imports supplied, same boot blocker</a>
             
             <ol><li><a href="#runtime-and-boot-progress" class="wk-toc-link">Runtime and boot progress</a></li><li><a href="#decompilation-and-verified-functions" class="wk-toc-link">Decompilation and verified functions</a></li><li><a href="#tooling-and-automation" class="wk-toc-link">Tooling and automation</a></li><li><a href="#documentation-and-website-changes" class="wk-toc-link">Documentation and website changes</a></li><li><a href="#tests-and-validation" class="wk-toc-link">Tests and validation</a></li><li><a href="#blockers-and-next-steps" class="wk-toc-link">Blockers and next steps</a></li></ol>
             
@@ -423,40 +423,77 @@
   </p>
   
   
-  <h1 id="2026-10-11-development-progress">2026-10-11: Development progress</h1>
+  <h1 id="11-october-2026-more-imports-supplied-same-boot-blocker">11 October 2026: more imports supplied, same boot blocker</h1>
+<p>Two genuine boot traces raised the supplied system imports from 238 to 247 of 686, but startup
+still stops at the same call, <code>scePthreadAttrGetaffinity</code>. The day also re-checked the
+millisecond clock against the original code, documented IPv4 text conversion, and published the
+roomier sidebar menu.</p>
+<!-- more -->
+
 <h2 id="runtime-and-boot-progress">Runtime and boot progress</h2>
 <!-- milestone:postmerge-runtime-coverage-20261011 order=2026-10-11T17:30:00.000000Z -->
-<p>Genuine <code>tools/boot.py --trace</code> execution used the local Bloodborne <code>eboot.elf</code> (SHA-256 <code>ca8813862d7b1345a6791b7d88cc1d383ede2a6bbc944f39dd3c0e0e3ad9e285</code>) with Paleblood PR #61 head <code>3e4886b</code>, based on merged main <code>251d426</code>. The trace resolved 246/686 imports (219 from bundled game modules, 27 implemented by Paleblood, plus two separately reported unresolved NetCtl diagnostics), reached seven import calls, and remained at <code>loaded</code> (0/8). It stopped at <code>scePthreadAttrGetaffinity</code> in libkernel from <code>libc.elf</code>, returning to <code>libc.elf+0x81ad5</code>, the same blocker as the previous 238/686 baseline. The additional eight imports reflect merged PRs #50 and #59 plus corrected unresolved classification; startup did not advance. Issue #34 remains contributor-owned. No new decompilation verification was performed.</p>
+<p>A traced boot run (<code>tools/boot.py --trace</code>) on the local Bloodborne executable, using
+<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/61">Paleblood PR #61</a> on top of merged main
+<code>251d426</code>, resolved 246/686 imports: 219 from bundled game modules and 27 implemented by
+Paleblood. It reached seven import calls and stayed at <code>loaded</code> (0/8), stopping at
+<code>scePthreadAttrGetaffinity</code>, the same blocker as the earlier 238/686 baseline. The eight extra
+imports come from merged PRs #50 and #59 and a corrected count of unresolved imports; startup did
+not advance.</p>
 <!-- /milestone -->
 
 <!-- milestone:postmerge-boot-68d5f93-20261011 order=2026-10-11T19:50:00.000000Z -->
-<p>Genuine <code>tools/boot.py</code> run on merged Paleblood main <code>68d5f93d7938be6b72eb8d5d7e32ef8585e51094</code> used the local Bloodborne 1.09 executable (SHA-256 <code>ca8813862d7b1345a6791b7d88cc1d383ede2a6bbc944f39dd3c0e0e3ad9e285</code>) and its required bundled modules. The run resolved 247/686 imports (219 bundled, 28 <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>), reported two separately registered unresolved diagnostics and 437 unbound imports, and reached seven import calls. It remained at <code>loaded</code> (0/8), stopping at <code>scePthreadAttrGetaffinity</code> in <code>libc.elf</code>, returning to <code>libc.elf+0x81ad5</code>. Compared with the saved 246/686 trace, one more import is supplied by PR #63; startup did not advance. This is actual game executable boot-<abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr> execution, not a full gameplay run.</p>
+<p>A second boot run on merged Paleblood main <code>68d5f93</code> resolved 247/686 imports (219 bundled,
+28 <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>): <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/63">PR #63</a> supplies one more.
+It still reached seven import calls and stopped at <code>scePthreadAttrGetaffinity</code> (0/8). This was
+the real game executable in the boot <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr>, not a gameplay run.</p>
 <!-- /milestone -->
+
 <h2 id="decompilation-and-verified-functions">Decompilation and <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> functions</h2>
 <!-- milestone:catalog-counts-68d5f93-20261011 order=2026-10-11T19:51:00.000000Z -->
-<p>The generated catalog remains at 21 <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>, 30 <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr>, and 30 <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr> functions. No new original-code differential or verification promotion was performed; this session did not repeat the existing <code>frame_timing_get_monotonic_ms</code> comparison.</p>
+<p>The catalog is unchanged at 21 <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>, 30 <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr>, and 30 <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr> functions. No
+function was promoted today.</p>
 <!-- /milestone -->
+
 <h2 id="tooling-and-automation">Tooling and automation</h2>
 <!-- milestone:original-code-differential-20261011 order=2026-10-11T06:40:39.000000Z -->
-<p>Against Paleblood source <code>b9fb62df910652315eab6dbebe6a81362548c76d</code>, the existing differential <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr> executed the original x86-64 instructions at <code>frame_timing_get_monotonic_ms</code> (<code>0x0111a7f0</code>) from the local Bloodborne executable beside Paleblood's replacement. All 1,767 recorded inputs and 10 edge inputs matched, with zero differences. This repeats the evidence for an already-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> function: <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>/<abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> counts did not change. Original instructions ran in the isolated verifier; the game boot sequence did not advance. No executable or <abbr title="Inputs recorded while the game ran, replayed by the harness.">capture</abbr> data was added to the repository.</p>
+<p>The differential <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr> ran the original instructions of the millisecond clock
+(<code>0x0111a7f0</code>) beside Paleblood's replacement: all 1,767 recorded inputs and 10 <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr>
+matched. This repeats the evidence for an already-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> function, so the counts did not
+change. No executable or <abbr title="Inputs recorded while the game ran, replayed by the harness.">capture</abbr> data was added to the repository.</p>
 <!-- /milestone -->
+
 <h2 id="documentation-and-website-changes">Documentation and website changes</h2>
 <!-- milestone:wiki-publication-pr27-image-only-20261011 order=2026-10-11T06:02:49.000000Z -->
-<p>The roomier submenu from private PR #27 (merge <code>2f8709c</code>) is live at <a href="https://github.com/Yharnam-Hunters/byrgenwerth-site/commit/e691994c00d51bf25cd526088132b8b304a22cd3">public site commit <code>e691994</code></a>; its <a href="https://github.com/Yharnam-Hunters/byrgenwerth-site/actions/runs/38116684097">GitHub Pages deployment</a> succeeded. Submenus are indented along a guide line with more room between entries, and one section opens at a time. Core routes, the image and the search index returned HTTP 200; publication privacy scanning found 105 generated files clean. At the maintainer's request the sidebar now shows the menu artwork alone: its caption was removed, and the r_dsgnd/SteamGridDB credit and ©2014 Sony notice moved to the <a href="../../../../../credits/">Credits</a> page. Documentation and navigation only; game execution did not advance.</p>
+<p>The roomier sidebar menu is live at
+<a href="https://github.com/Yharnam-Hunters/byrgenwerth-site/commit/e691994c00d51bf25cd526088132b8b304a22cd3">public site commit <code>e691994</code></a>.
+Submenus sit along a guide line with more space between entries, and one section opens at a
+time. The sidebar now shows the menu artwork alone; its credit and copyright notice moved to the
+<a href="../../../../../credits/">Credits</a> page.</p>
 <!-- /milestone -->
 
 <!-- milestone:merged-netctl-docs-20261011 order=2026-10-11T17:34:00.000000Z -->
-<p>Updated Runtime, Runtime system-call, and generated status content against merged Paleblood <code>fd0d0bf</code>. PR #61 is now merged: <code>sceNetCtlGetInfo</code> and <code>sceNetCtlGetNatInfo</code> remain callable fail-loud unresolved diagnostics and are excluded from implemented coverage. The merged-source network group remains 8/175 implemented; the latest saved genuine boot record provides 246/686 imports (219 bundled, 27 <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>), reaches seven imported calls, and remains at <code>loaded</code> (0/8), blocked at contributor-owned <code>scePthreadAttrGetaffinity</code>. This is a coverage/reporting correction, not game-startup progress. No duplicate daily post was created; no publication was performed.</p>
+<p>With PR #61 merged, the Runtime pages now note that <code>sceNetCtlGetInfo</code> and
+<code>sceNetCtlGetNatInfo</code> are callable but deliberately fail loudly, so they no longer count as
+implemented. This corrects the coverage numbers; it is not startup progress.</p>
 <!-- /milestone -->
 
 <!-- milestone:netinetpton-docs-68d5f93-20261011 order=2026-10-11T19:52:00.000000Z -->
-<p>Updated the Runtime and Runtime system-call pages against merged Paleblood source <code>68d5f93d7938be6b72eb8d5d7e32ef8585e51094</code>. They now explain the observed AF_INET-only <code>sceNetInetPton</code> behavior, its call-site evidence and synthetic-test limits, and the latest genuine boot trace. <code>tools/runtime_issues.py</code> regenerated issue #41 to 9/175 implemented imports (four byte-order helpers, one IPv4 text conversion, and four offline NetCtl behaviors); <code>sceNetCtlGetInfo</code> and <code>sceNetCtlGetNatInfo</code> remain callable unresolved diagnostics. The existing October 11 post was updated in place; no second daily post was created. The private wiki update is not published.</p>
+<p>The Runtime pages also explain the new <code>sceNetInetPton</code> support (IPv4 text conversion only),
+what evidence backs it, and the limits of its synthetic tests. The network group in
+<a href="https://github.com/Yharnam-Hunters/Paleblood/issues/41">issue #41</a> now stands at 9/175
+implemented imports.</p>
 <!-- /milestone -->
+
 <h2 id="tests-and-validation">Tests and validation</h2>
 <!-- milestone:postmerge-validation-68d5f93-20261011 order=2026-10-11T19:53:00.000000Z -->
-<p>Fresh GCC 16.2.1 and Clang 23.1.1 CMake builds passed; CTest passed 13/13 with each compiler, including the syslib registry and <abbr title="Inputs recorded while the game ran, replayed by the harness.">capture</abbr> temporary-directory test. <code>tools/end_session.sh --audit</code>, <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> tests, readability check, tracked-game-data policy, <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> agnostic check, progress consistency, function validation, and <code>git diff --check</code> passed. <code>/tmp</code> is full, so tests and <abbr title="14-byte jumps written over the start of original functions, sending their callers to the replacements.">hooks</abbr> used a configured temporary directory on the home filesystem. An initial <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr>-test attempt without this override failed while creating a temporary clone; the configured-temp rerun passed.</p>
+<p>Fresh GCC and Clang builds passed, with 13/13 CTest cases each. The session audit, <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> tests,
+game-data policy, progress consistency, and function validation checks all passed.</p>
 <!-- /milestone -->
+
 <h2 id="blockers-and-next-steps">Blockers and next steps</h2>
+<p><code>scePthreadAttrGetaffinity</code> is still the first unresolved call and the earliest boot blocker; it
+is tracked in contributor-owned issue #34. Once it lands, the next boot run will show how far
+startup gets past the <code>loaded</code> stage.</p>
   
   <p class="wk-post-back"><a href="../../../../">← Back to devlog</a></p>
 </article>
