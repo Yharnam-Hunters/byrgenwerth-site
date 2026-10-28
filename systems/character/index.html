@@ -10,45 +10,51 @@
   
   <title>Character — Byrgenwerth</title>
   
+  <script>
+  /* Before first paint: the stored theme, and a flag that JavaScript (wiki.js) will run. */
+  (function () { var d = document.documentElement, t = 'dark';
+    try { t = localStorage.getItem('wk-theme') || 'dark'; } catch (e) {}
+    d.setAttribute('data-theme', t); d.classList.add('wk-js'); }());
+  </script>
   
-  <link rel="stylesheet" href="../../stylesheets/wiki.css?v=680e958d94"><link rel="stylesheet" href="../../stylesheets/hunters.css?v=e4f3c59dfb">
+  <link rel="stylesheet" href="../../stylesheets/wiki.css?v=25121f2b45"><link rel="stylesheet" href="../../stylesheets/hunters.css?v=e4f3c59dfb">
   
   
 </head>
 <body>
 
-<!-- ── Header ──────────────────────────────────────────────── -->
-<header class="wk-header">
+<!-- ── Header: wordmark, section tabs (wide screens), search, theme ── -->
+
+
+<header class="wk-header" id="wk-header">
   <button class="wk-nav-toggle" id="wk-nav-toggle" aria-label="Open navigation" aria-expanded="false" aria-controls="wk-nav">☰</button>
   <a class="wk-wordmark" href="/byrgenwerth-site/">Byrgenwerth<small>notes of Paleblood, rebuilding Bloodborne one verified function at a time</small></a>
+
+  <!-- Section tabs (wide screens; the drawer lists the same sections on small ones) -->
+  <nav class="wk-tabs" aria-label="Sections">
+    
+    <a class="wk-tab" href="../..">The Hunt</a>
+    
+    <a class="wk-tab" href="../../great-ones/">Encyclopedia</a>
+    
+    <a class="wk-tab is-active" href="../" aria-current="true">Systems</a>
+    
+    <a class="wk-tab" href="../../ARCHITECTURE/">How It Works</a>
+    
+    <a class="wk-tab" href="../../CONTRIBUTING/">For Hunters</a>
+    
+  </nav>
 
   <div class="wk-header-right">
     
     <div class="wk-searchbox">
       <input class="wk-search-input" id="wk-q" type="search"
-             placeholder="Search the archives…  [/]" autocomplete="off" aria-label="Search">
+             placeholder="Search  [/]" autocomplete="off" aria-label="Search">
       <div class="wk-search-results" id="wk-results" hidden role="listbox"></div>
     </div>
     <button class="wk-toggle" id="wk-toggle" title="Toggle theme" aria-label="Toggle dark/light">☀</button>
   </div>
 </header>
-
-
-
-<!-- ── Section tabs (wide screens; the drawer lists the same sections on small ones) ── -->
-<nav class="wk-tabs" aria-label="Sections">
-  
-  <a class="wk-tab" href="../..">The Hunt</a>
-  
-  <a class="wk-tab" href="../../great-ones/">Encyclopedia</a>
-  
-  <a class="wk-tab is-active" href="../" aria-current="true">Systems</a>
-  
-  <a class="wk-tab" href="../../ARCHITECTURE/">How It Works</a>
-  
-  <a class="wk-tab" href="../../CONTRIBUTING/">For Hunters</a>
-  
-</nav>
 
 <!-- ── Layout ──────────────────────────────────────────────── -->
 <div class="wk-layout">
@@ -362,7 +368,7 @@
       <span class="wk-stat-track" role="img" aria-label="0.033 percent of target code bytes verified">
         <span class="wk-stat-fill" style="width:0.033%"></span>
       </span>
-      <span class="wk-progress-foot">0.033% of code bytes verified · 31 replaced</span>
+      <span class="wk-progress-foot">0.033% of code bytes verified · 32 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -374,54 +380,89 @@
 
       
       
-      <div class="wk-toc" id="wk-toc">
-        <div class="wk-toc-header">
-          <b>Contents</b>
-          <button class="wk-toc-toggle"
-            onclick="var l=document.getElementById('wk-toc-list');l.hidden=!l.hidden;this.textContent=l.hidden?'[show]':'[hide]'">[hide]</button>
-        </div>
+      
+      
+      
+      <nav class="wk-toc" id="wk-toc" aria-label="On this page">
+        <div class="wk-toc-header"><b>On this page</b></div>
         <ol class="wk-toc-list" id="wk-toc-list">
           
-          <li>
-            <a href="#character" class="wk-toc-link">Character</a>
-            
-            <ol><li><a href="#summary" class="wk-toc-link">Summary</a></li><li><a href="#key-functions" class="wk-toc-link">Key functions</a></li><li><a href="#structs-and-globals" class="wk-toc-link">Structs and globals</a></li><li><a href="#patch-points" class="wk-toc-link">Patch points</a></li><li><a href="#open-questions" class="wk-toc-link">Open questions</a></li></ol>
-            
-          </li>
+          <li><a href="#summary" class="wk-toc-link">Summary</a></li>
+          
+          <li><a href="#key-functions" class="wk-toc-link">Key functions</a></li>
+          
+          <li><a href="#structs-and-globals" class="wk-toc-link">Structs and globals</a></li>
+          
+          <li><a href="#patch-points" class="wk-toc-link">Patch points</a></li>
+          
+          <li><a href="#open-questions" class="wk-toc-link">Open questions</a></li>
           
         </ol>
-      </div>
+      </nav>
+      
       
       
 
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 11, 2026 03:38:01 UTC">October 11, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 28, 2026 05:15:03 UTC">October 28, 2026</span></p>
       
       <h1 id="character">Character</h1>
+<p class="wk-lede">Every character instance in the game is updated once a frame. This page covers one of those updates: throw events, the regeneration of a points stat, and the hand-off of frame time to the character's modules.</p>
+
+<div class="wk-glance">
+<p><span class="wk-label">At a glance</span></p>
+<dl>
+<dt>Scope</dt>
+<dd><code>character_frame_update_01cbdb20</code>, one of the per-frame updates of a character instance.</dd>
+<dt>Verified</dt>
+<dd><code>character_frame_update_01cbdb20</code> is <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>: the throw event, the points regeneration with its fractional carry, and the frame-time hand-off.</dd>
+<dt>Open</dt>
+<dd>Whether the points stat is stamina, whether the update belongs only to the player, and the rest of the instance layout.</dd>
+</dl>
+</div>
 <h2 id="summary">Summary</h2>
 <p>Character instances (<code>ChrIns</code> in FromSoftware's engine) are updated once a frame through
 virtual calls on each instance. <code>character_frame_update_01cbdb20</code> (<code>0x01cbdb20</code>) is one of
-these updates. It:</p>
-<ul>
-<li>fires a pending throw animation event (<code>W_ThrowAtk</code> or <code>W_ThrowDef</code>) and clears the request;</li>
-<li>regenerates a points stat that floors at -50 and caps at a maximum, which reads like
-  stamina. The rate is a parameter byte × 0.01 × a per-character multiplier × a virtual
-  factor. Each frame adds the whole part of rate × frame time and keeps the fraction for the
-  next frame;</li>
-<li>hands the frame time to the character's modules, copies a few parameters, and builds (then
-  drops) a wide string of the character's name with the thread's allocator. Nothing reads the
-  string; it looks like the remains of debug code.</li>
-</ul>
-<p>In the recordings from Iosefka's Clinic the name string is never built.</p>
+these updates.</p>
+<h3 id="what-the-update-does">What the update does</h3>
+<ol>
+<li><strong>Fires a pending throw animation event</strong> (<code>W_ThrowAtk</code> or <code>W_ThrowDef</code>) and clears the
+   request.</li>
+<li><strong>Regenerates a points stat</strong> that floors at -50 and caps at a maximum (see below). It reads
+   like stamina.</li>
+<li><strong>Hands the frame time to the character's modules</strong>, copies a few parameters, and builds
+   (then drops) a wide string of the character's name with the thread's allocator. Nothing reads
+   the string; it looks like the remains of debug code. In the recordings from Iosefka's Clinic
+   the name string is never built.</li>
+</ol>
+<h3 id="how-the-points-stat-regenerates">How the points stat regenerates</h3>
+<p>The regeneration rate is a product of four terms:</p>
+<div class="language-text highlight"><span class="filename">Text Only</span><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1"></a><a href="#__codelineno-0-1"><span class="linenos" data-linenos="1 "></span></a>rate = parameter byte × 0.01 × per-character multiplier × virtual factor
+</code></pre></div>
+<p>The multiplier lives at <code>+0x16c</code> on the instance, and the last rate is kept at <code>+0x39c</code>. Each
+frame the update:</p>
+<ol>
+<li>multiplies the rate by the frame time (read from <code>+0xe0</code>);</li>
+<li>adds the whole part of the result to the points (data module <code>+0x134</code>), capped at the
+   maximum (<code>+0x138</code>);</li>
+<li>keeps the fraction at <code>+0x168</code> and adds it in on the next frame.</li>
+</ol>
+<p>Carrying the fraction means a rate too small to add a whole point in one frame still adds up
+over several frames instead of being rounded away.</p>
+<p>Two switches stop the stat from dropping: bit 7 of the data module's <code>+0x200</code>, and the debug
+flag <code>0x0593e88a</code> next to the <code>WorldChrManDbg</code> singleton.</p>
+<details class="caveat">
+<summary>Points, stamina and the player</summary>
 <p>The source calls this value <strong>points</strong>. Its relationship to stamina, and whether this update
 belongs only to the player, are not established. The current evidence-backed account is in
 <a href="../../workshop/stats-progression/">Stats &amp; Progression</a>.</p>
+</details>
 <p>Scope still to map: the character instance layout, the modules (<code>+0x3b0</code>), the parameters,
 the other per-frame updates.</p>
 <h2 id="key-functions">Key functions</h2>
-<table class="wk-stack">
+<div class="wk-table is-stack"><table class="wk-stack">
 <thead>
 <tr>
 <th>Address</th>
@@ -436,28 +477,91 @@ the other per-frame updates.</p>
 <td data-label="Address"><code>0x01cbdb20</code></td>
 <td style="text-align: right;" data-label="Size">979</td>
 <td data-label="Name"><code>character_frame_update_01cbdb20</code></td>
-<td data-label="Status"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></td>
+<td data-label="Status"><span class="wk-badge wk-badge--verified"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></span></td>
 <td data-label="Notes">per-frame character update: throw animation event, points stat regeneration (stamina-like, -50..max), time-step descriptor; the 30/60 FPS patches fix its frame time</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h2 id="structs-and-globals">Structs and globals</h2>
-<ul>
-<li>Character instance: frame time <code>+0xe0</code>, parameters <code>+0x58 -&gt; +0x38</code>, modules <code>+0x3b0</code>,
-  regeneration fraction <code>+0x168</code>, multiplier <code>+0x16c</code>, last rate <code>+0x39c</code>, name <code>+0x350</code>.</li>
-<li>Data module (<code>modules +0x20</code>): points <code>+0x134</code>, maximum <code>+0x138</code>, a no-drop flag at bit 7 of
-  <code>+0x200</code>.</li>
-<li><code>0x0593e88a</code>: a debug flag (next to the <code>WorldChrManDbg</code> singleton <code>0x0593e880</code>) that stops
-  the stat from dropping.</li>
-</ul>
+<p><strong>Character instance</strong></p>
+<div class="wk-table"><table>
+<thead>
+<tr>
+<th>Offset</th>
+<th>Field</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>+0x58 -&gt; +0x38</code></td>
+<td>parameters</td>
+</tr>
+<tr>
+<td><code>+0xe0</code></td>
+<td>frame time</td>
+</tr>
+<tr>
+<td><code>+0x168</code></td>
+<td>regeneration fraction</td>
+</tr>
+<tr>
+<td><code>+0x16c</code></td>
+<td>multiplier</td>
+</tr>
+<tr>
+<td><code>+0x350</code></td>
+<td>name</td>
+</tr>
+<tr>
+<td><code>+0x39c</code></td>
+<td>last rate</td>
+</tr>
+<tr>
+<td><code>+0x3b0</code></td>
+<td>modules</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Data module</strong> (<code>modules +0x20</code>): points <code>+0x134</code>, maximum <code>+0x138</code>, a no-drop flag at bit 7 of
+<code>+0x200</code>.</p>
+<p><strong><code>0x0593e88a</code></strong>: a debug flag (next to the <code>WorldChrManDbg</code> singleton <code>0x0593e880</code>) that stops
+the stat from dropping.</p>
 <h2 id="patch-points">Patch points</h2>
-<ul>
-<li>The frame time read from <code>+0xe0</code> is <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> by a constant: 1/27 s (<code>30 FPS++</code>), 1/54 s
-  (<code>60 FPS++</code>), 1/50 s (<code>60FPS (no deltatime)</code>), 1/80 s (<code>90 FPS++</code>); <code>Uncap FPS++</code> keeps the
-  real one. <code>BB_TARGET_FPS</code> does the same for 30 and 60. A fixed time slightly longer than one
-  frame (1/27 instead of 1/30) speeds regeneration up a little; why the patch authors chose it
-  is an open question.</li>
-</ul>
+<p>The frame-rate patches (see <a href="../frame_timing/">Frame timing</a>) replace the frame time read from
+<code>+0xe0</code> with a constant:</p>
+<div class="wk-table"><table>
+<thead>
+<tr>
+<th>Patch</th>
+<th>Frame time used</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>30 FPS++</code></td>
+<td>1/27 s</td>
+</tr>
+<tr>
+<td><code>60 FPS++</code></td>
+<td>1/54 s</td>
+</tr>
+<tr>
+<td><code>60FPS (no deltatime)</code></td>
+<td>1/50 s</td>
+</tr>
+<tr>
+<td><code>90 FPS++</code></td>
+<td>1/80 s</td>
+</tr>
+<tr>
+<td><code>Uncap FPS++</code></td>
+<td>the real frame time</td>
+</tr>
+</tbody>
+</table></div>
+<p><code>BB_TARGET_FPS</code> does the same for 30 and 60. A fixed time slightly longer than one frame (1/27
+instead of 1/30) speeds regeneration up a little; why the patch authors chose it is an open
+question.</p>
 <h2 id="open-questions">Open questions</h2>
 <ul>
 <li>Is the points stat stamina? A floor below zero would fit a stat that can be overspent.</li>
@@ -484,241 +588,10 @@ the other per-frame updates.</p>
 
 
 <script>
-(function () {
-'use strict';
-
-/* ── Theme ─────────────────────────────────────────────────── */
-var stored = localStorage.getItem('wk-theme') || 'dark';
-applyTheme(stored);
-document.getElementById('wk-toggle').addEventListener('click', function () {
-  applyTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
-});
-function applyTheme(t) {
-  document.documentElement.setAttribute('data-theme', t);
-  localStorage.setItem('wk-theme', t);
-  var btn = document.getElementById('wk-toggle');
-  if (btn) btn.textContent = t === 'dark' ? '☀' : '🌙';
-}
-
-/* ── Address map: a block opens its slice in a pop-up ──────── */
-(function () {
-  var map = document.querySelector('.wk-bankmap');
-  if (!map) return;
-  var modal = document.createElement('div');
-  modal.className = 'wk-slice-modal';
-  modal.setAttribute('role', 'dialog');
-  modal.setAttribute('aria-modal', 'true');
-  document.body.appendChild(modal);
-  function close() { modal.classList.remove('is-open'); }
-  map.addEventListener('click', function (e) {
-    var cell = e.target.closest('a.wk-bank-cell');
-    if (!cell) return;
-    var panel = document.getElementById(cell.getAttribute('href').slice(1));
-    if (!panel) return;
-    e.preventDefault();
-    modal.innerHTML = '';
-    modal.appendChild(panel.cloneNode(true));
-    modal.firstChild.removeAttribute('id');
-    requestAnimationFrame(function () { modal.classList.add('is-open'); });
-  });
-  modal.addEventListener('click', function (e) {
-    if (e.target === modal || e.target.closest('.wk-slice-close')) { e.preventDefault(); close(); }
-  });
-  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
-})();
-
-/* ── Mobile nav ────────────────────────────────────────────── */
-var navToggle  = document.getElementById('wk-nav-toggle');
-var navEl      = document.getElementById('wk-nav');
-var navBackdrop = document.getElementById('wk-nav-backdrop');
-var mainEl     = document.querySelector('.wk-main');
-var headerRight = document.querySelector('.wk-header-right');
-var wordmark = document.querySelector('.wk-wordmark');
-/* Matches the drawer breakpoint in wiki.css. */
-var drawerQuery = window.matchMedia('(max-width: 900px)');
-
-function closeNav() {
-  navEl.classList.remove('is-open');
-  navBackdrop.hidden = true;
-  navToggle.setAttribute('aria-expanded', 'false');
-  navToggle.setAttribute('aria-label', 'Open navigation');
-  navToggle.textContent = '☰';
-  if (mainEl) mainEl.inert = false;
-  if (headerRight) headerRight.inert = false;
-  if (wordmark) wordmark.inert = false;
-  if (drawerQuery.matches) navEl.inert = true;
-}
-function openNav() {
-  navEl.inert = false;
-  if (mainEl) mainEl.inert = true;
-  if (headerRight) headerRight.inert = true;
-  if (wordmark) wordmark.inert = true;
-  navEl.classList.add('is-open');
-  navBackdrop.hidden = false;
-  navToggle.setAttribute('aria-expanded', 'true');
-  navToggle.setAttribute('aria-label', 'Close navigation');
-  navToggle.textContent = '×';
-}
-if (navToggle && navEl && navBackdrop) {
-  navEl.inert = drawerQuery.matches;
-  navToggle.addEventListener('click', function () {
-    if (navEl.classList.contains('is-open')) { closeNav(); } else { openNav(); }
-  });
-  navBackdrop.addEventListener('click', function () { closeNav(); navToggle.focus(); });
-  navEl.addEventListener('click', function (e) {
-    if (e.target.closest('a')) { closeNav(); }
-  });
-  document.addEventListener('keydown', function (e) {
-    if (!navEl.classList.contains('is-open') || !drawerQuery.matches) return;
-    if (e.key === 'Escape') { closeNav(); navToggle.focus(); return; }
-    if (e.key !== 'Tab') return;
-    var links = Array.prototype.slice.call(navEl.querySelectorAll('a[href], button:not([disabled])'));
-    var focusable = [navToggle].concat(links);
-    var first = focusable[0];
-    var last = focusable[focusable.length - 1];
-    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
-    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
-  });
-  window.addEventListener('resize', function () {
-    if (!drawerQuery.matches) { navEl.inert = false; closeNav(); }
-    else if (!navEl.classList.contains('is-open')) navEl.inert = true;
-  });
-}
-
-/* ── Search ─────────────────────────────────────────────────── */
-var input   = document.getElementById('wk-q');
-var results = document.getElementById('wk-results');
-var docs    = null;
-if (input) {
-  fetch("../../search/search_index.json")
-    .then(function (r) { return r.json(); })
-    .then(function (d) { docs = d.docs; });
-
-  input.addEventListener('input', onSearch);
-
-  document.addEventListener('click', function (e) {
-    if (results && !results.contains(e.target) && e.target !== input) results.hidden = true;
-  });
-  input.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape') { results.hidden = true; this.blur(); }
-    if (e.key === 'Enter' && results && !results.hidden) {
-      var first = results.querySelector('.wk-result');
-      if (first) { first.click(); }
-    }
-  });
-}
-
-/* Press / to focus search */
-document.addEventListener('keydown', function (e) {
-  if (e.key === '/' && document.activeElement !== input &&
-      document.activeElement.tagName !== 'INPUT' &&
-      document.activeElement.tagName !== 'TEXTAREA') {
-    e.preventDefault();
-    if (input) { input.focus(); input.select(); }
-  }
-});
-
-function onSearch() {
-  var q = this.value.trim().toLowerCase();
-  if (!docs || q.length < 2) { results.hidden = true; return; }
-  var hits = docs.filter(function (d) {
-    return (d.title + ' ' + d.text).toLowerCase().indexOf(q) !== -1;
-  }).slice(0, 8);
-  if (!hits.length) { results.hidden = true; return; }
-  var base = "../..";
-  results.innerHTML = hits.map(function (d) {
-    var text  = d.text || '';
-    var i     = text.toLowerCase().indexOf(q);
-    var start = Math.max(0, i - 35);
-    var end   = Math.min(text.length, i + q.length + 70);
-    var snip  = (start > 0 ? '…' : '') + text.slice(start, end) + (end < text.length ? '…' : '');
-    var url   = base + '/' + d.location;
-    return '<a class="wk-result" href="' + esc(url) + '" role="option">'
-         + '<div class="wk-result-title">' + esc(d.title || d.location) + '</div>'
-         + '<div class="wk-result-snip">'  + esc(snip) + '</div></a>';
-  }).join('');
-  results.hidden = false;
-}
-
-function esc(s) {
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-
-/* ── Back to top ────────────────────────────────────────────── */
-var topBtn = document.getElementById('wk-top');
-if (topBtn) {
-  window.addEventListener('scroll', function () {
-    topBtn.classList.toggle('visible', window.scrollY > 400);
-  }, {passive: true});
-  topBtn.addEventListener('click', function () {
-    window.scrollTo({top: 0, behavior: 'smooth'});
-  });
-}
-
-/* ── Copy-to-clipboard ───────────────────────────────────────── */
-document.querySelectorAll('.highlight').forEach(function (block) {
-  var btn = document.createElement('button');
-  btn.className = 'wk-copy-btn';
-  btn.title     = 'Copy code';
-  btn.textContent = '⎘';
-  block.appendChild(btn);
-  btn.addEventListener('click', function () {
-    var pre = block.querySelector('pre');
-    if (!pre) return;
-    navigator.clipboard.writeText(pre.innerText).then(function () {
-      btn.textContent = '✓';
-      btn.classList.add('copied');
-      setTimeout(function () {
-        btn.textContent = '⎘';
-        btn.classList.remove('copied');
-      }, 1500);
-    });
-  });
-});
-
-/* ── Collapsible long code blocks ─────────────────────────────── */
-var COLLAPSE_THRESHOLD = 340;
-document.querySelectorAll('.wk-article-body .highlight').forEach(function (block) {
-  var pre = block.querySelector('pre');
-  if (!pre || pre.scrollHeight <= COLLAPSE_THRESHOLD + 40) return;
-
-  block.classList.add('wk-code-collapsed');
-  var toggle = document.createElement('button');
-  toggle.className = 'wk-code-toggle';
-  toggle.type = 'button';
-  toggle.textContent = 'Show more ▾';
-  toggle.addEventListener('click', function () {
-    var collapsed = block.classList.toggle('wk-code-collapsed');
-    toggle.textContent = collapsed ? 'Show more ▾' : 'Show less ▴';
-    if (collapsed) block.scrollIntoView({block: 'nearest'});
-  });
-  block.insertAdjacentElement('afterend', toggle);
-});
-
-/* ── TOC scroll spy ─────────────────────────────────────────── */
-var tocLinks = document.querySelectorAll('.wk-toc-link');
-if (tocLinks.length && 'IntersectionObserver' in window) {
-  var headings = Array.from(document.querySelectorAll('.wk-article h1, .wk-article h2, .wk-article h3'));
-  var active   = null;
-  var obs = new IntersectionObserver(function (entries) {
-    entries.forEach(function (e) {
-      if (e.isIntersecting) {
-        var id  = e.target.id;
-        var lnk = document.querySelector('.wk-toc-link[href="#' + id + '"]');
-        if (lnk && lnk !== active) {
-          if (active) active.classList.remove('is-current');
-          lnk.classList.add('is-current');
-          active = lnk;
-        }
-      }
-    });
-  }, {rootMargin: '-10% 0px -80% 0px'});
-  headings.forEach(function (h) { if (h.id) obs.observe(h); });
-}
-
-
-}());
+/* Page settings for wiki.js. The drawer query matches the drawer breakpoint in wiki.css. */
+window.WK = {base: "../..", searchIndex: "../../search/search_index.json",
+             drawerQuery: window.matchMedia('(max-width: 900px)')};
 </script>
-<script src="../../javascripts/hunters.js" defer></script><script src="../../search/main.js" defer></script>
+<script src="../../javascripts/wiki.js?v=48af91151e" defer></script><script src="../../javascripts/hunters.js?v=28a0e867eb" defer></script><script src="../../search/main.js" defer></script>
 </body>
 </html>

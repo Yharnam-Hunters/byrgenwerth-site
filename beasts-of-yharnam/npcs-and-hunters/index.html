@@ -10,45 +10,51 @@
   
   <title>NPCs & Hunters — Byrgenwerth</title>
   
+  <script>
+  /* Before first paint: the stored theme, and a flag that JavaScript (wiki.js) will run. */
+  (function () { var d = document.documentElement, t = 'dark';
+    try { t = localStorage.getItem('wk-theme') || 'dark'; } catch (e) {}
+    d.setAttribute('data-theme', t); d.classList.add('wk-js'); }());
+  </script>
   
-  <link rel="stylesheet" href="../../stylesheets/wiki.css?v=680e958d94"><link rel="stylesheet" href="../../stylesheets/hunters.css?v=e4f3c59dfb">
+  <link rel="stylesheet" href="../../stylesheets/wiki.css?v=25121f2b45"><link rel="stylesheet" href="../../stylesheets/hunters.css?v=e4f3c59dfb">
   
   
 </head>
 <body>
 
-<!-- ── Header ──────────────────────────────────────────────── -->
-<header class="wk-header">
+<!-- ── Header: wordmark, section tabs (wide screens), search, theme ── -->
+
+
+<header class="wk-header" id="wk-header">
   <button class="wk-nav-toggle" id="wk-nav-toggle" aria-label="Open navigation" aria-expanded="false" aria-controls="wk-nav">☰</button>
   <a class="wk-wordmark" href="/byrgenwerth-site/">Byrgenwerth<small>notes of Paleblood, rebuilding Bloodborne one verified function at a time</small></a>
+
+  <!-- Section tabs (wide screens; the drawer lists the same sections on small ones) -->
+  <nav class="wk-tabs" aria-label="Sections">
+    
+    <a class="wk-tab" href="../..">The Hunt</a>
+    
+    <a class="wk-tab is-active" href="../../great-ones/" aria-current="true">Encyclopedia</a>
+    
+    <a class="wk-tab" href="../../systems/">Systems</a>
+    
+    <a class="wk-tab" href="../../ARCHITECTURE/">How It Works</a>
+    
+    <a class="wk-tab" href="../../CONTRIBUTING/">For Hunters</a>
+    
+  </nav>
 
   <div class="wk-header-right">
     
     <div class="wk-searchbox">
       <input class="wk-search-input" id="wk-q" type="search"
-             placeholder="Search the archives…  [/]" autocomplete="off" aria-label="Search">
+             placeholder="Search  [/]" autocomplete="off" aria-label="Search">
       <div class="wk-search-results" id="wk-results" hidden role="listbox"></div>
     </div>
     <button class="wk-toggle" id="wk-toggle" title="Toggle theme" aria-label="Toggle dark/light">☀</button>
   </div>
 </header>
-
-
-
-<!-- ── Section tabs (wide screens; the drawer lists the same sections on small ones) ── -->
-<nav class="wk-tabs" aria-label="Sections">
-  
-  <a class="wk-tab" href="../..">The Hunt</a>
-  
-  <a class="wk-tab is-active" href="../../great-ones/" aria-current="true">Encyclopedia</a>
-  
-  <a class="wk-tab" href="../../systems/">Systems</a>
-  
-  <a class="wk-tab" href="../../ARCHITECTURE/">How It Works</a>
-  
-  <a class="wk-tab" href="../../CONTRIBUTING/">For Hunters</a>
-  
-</nav>
 
 <!-- ── Layout ──────────────────────────────────────────────── -->
 <div class="wk-layout">
@@ -362,7 +368,7 @@
       <span class="wk-stat-track" role="img" aria-label="0.033 percent of target code bytes verified">
         <span class="wk-stat-fill" style="width:0.033%"></span>
       </span>
-      <span class="wk-progress-foot">0.033% of code bytes verified · 31 replaced</span>
+      <span class="wk-progress-foot">0.033% of code bytes verified · 32 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -374,48 +380,106 @@
 
       
       
-      <div class="wk-toc" id="wk-toc">
-        <div class="wk-toc-header">
-          <b>Contents</b>
-          <button class="wk-toc-toggle"
-            onclick="var l=document.getElementById('wk-toc-list');l.hidden=!l.hidden;this.textContent=l.hidden?'[show]':'[hide]'">[hide]</button>
-        </div>
+      
+      
+      
+      <nav class="wk-toc" id="wk-toc" aria-label="On this page">
+        <div class="wk-toc-header"><b>On this page</b></div>
         <ol class="wk-toc-list" id="wk-toc-list">
           
-          <li>
-            <a href="#npcs-hunters" class="wk-toc-link">NPCs &amp; Hunters</a>
-            
-            <ol><li><a href="#current-evidence" class="wk-toc-link">Current evidence</a></li><li><a href="#future-profile-requirements" class="wk-toc-link">Future profile requirements</a></li></ol>
-            
-          </li>
+          <li><a href="#why-visible-behavior-is-not-enough" class="wk-toc-link">Why visible behavior is not enough</a></li>
+          
+          <li><a href="#future-profile-requirements" class="wk-toc-link">Future profile requirements</a></li>
           
         </ol>
-      </div>
+      </nav>
+      
       
       
 
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 11, 2026 04:08:03 UTC">October 11, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 28, 2026 05:15:03 UTC">October 28, 2026</span></p>
       
       <h1 id="npcs-hunters">NPCs &amp; Hunters</h1>
-<p>Hunters and other non-player characters can share broad engine systems with enemies while having
-different roles in the world. A profile needs evidence for the particular entity and behavior; a
-character's visible dialogue, movement, or combat is not enough to identify its internal data or
-script.</p>
-<h2 id="current-evidence">Current evidence</h2>
-<p>Paleblood has not yet established individual NPC or hunter identifiers, schedules, dialogue
-state, combat logic, or event scripts. The <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> <a href="../../systems/event/">Event</a> function inserts
-and advances a keyed event entry, but its IDs and relationship to any NPC remain unknown. The
-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> <a href="../../systems/ai/">AI</a> update describes a shared manager wrapper, not individual actors.</p>
+<p class="wk-lede">Hunters and other non-player characters can share broad engine systems with enemies while having different roles in the world. Each profile needs evidence for that particular entity and behavior.</p>
+
+<div class="wk-glance">
+<p><span class="wk-label">At a glance</span></p>
+<dl>
+<dt>What is established</dt>
+<dd>No individual NPC or hunter identifiers, schedules, dialogue state, combat logic, or event scripts.</dd>
+<dt>Event</dt>
+<dd>A <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> function inserts and advances a keyed event entry; its IDs and relationship to any NPC are unknown.</dd>
+<dt>AI</dt>
+<dd>The <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> update is a shared manager wrapper, not individual actors.</dd>
+</dl>
+</div>
+<h2 id="why-visible-behavior-is-not-enough">Why visible behavior is not enough</h2>
+<p>A character's visible dialogue, movement, or combat is not enough to identify its internal data or
+script. The <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> <a href="../../systems/event/">Event</a> function inserts and advances a keyed event
+entry, but its IDs and relationship to any NPC remain unknown. The <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> <a href="../../systems/ai/">AI</a>
+update describes a shared manager wrapper, not individual actors.</p>
 <h2 id="future-profile-requirements">Future profile requirements</h2>
-<p>An evidence-backed profile should connect an entity identifier to its source path, explain which
-behavior is observed and which is inferred from code, and link tests and independent review.
-Dialogue branches, schedules, hostility changes, or hunter combat should be described only when
-their conditions and data are traced. Unknown transitions remain open questions.</p>
+<p>An evidence-backed profile should:</p>
+<ol>
+<li>connect an entity identifier to its source path;</li>
+<li>explain which behavior is observed and which is inferred from code;</li>
+<li>link tests and independent review.</li>
+</ol>
+<p>Dialogue branches, schedules, hostility changes, or hunter combat are described only when their
+conditions and data are traced. Unknown transitions remain open questions.</p>
 <p>See <a href="../enemy-directory/">Enemy Directory</a> for the shared profile standard and
 <a href="../../great-ones/boss-directory/">Boss Directory</a> for encounter-specific evidence requirements.</p>
+<details class="caveat">
+<summary>What this page can and cannot claim</summary>
+<p>Every claim in this section is labelled by the kind of evidence behind it.</p>
+<div class="wk-table"><table>
+<thead>
+<tr>
+<th>Label</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="wk-badge wk-badge--observed">observed</span></td>
+<td>Seen during play or in a recording, with its context: starting state, player position and actions, the visible change, and whether it repeats.</td>
+</tr>
+<tr>
+<td><span class="wk-badge wk-badge--inferred">inferred</span></td>
+<td>A conclusion drawn from code or tests, stated with the scope that evidence covers.</td>
+</tr>
+<tr>
+<td><span class="wk-badge wk-badge--unknown">unknown</span></td>
+<td>Not yet traced. It stays an open question, with the evidence needed next.</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li><strong>Observation is not implementation.</strong> An animation, health-bar change, phase transition, hit
+  reaction, movement, or line of dialogue can be observed. On its own it does not identify an
+  entity ID, function, data field, condition, timer, probability, script, or internal state.</li>
+<li><strong>No guessing.</strong> Nothing is filled in from genre convention, a gameplay impression, animation
+  timing, or a displayed bar. Visually similar actions are not assumed to share code. No guessed
+  names, IDs, catalogs, or numerical tables are published.</li>
+<li><strong>What a source claim needs.</strong> The entity, the function and address, the data or state it reads,
+  the result it produces, public Paleblood source at the exact merged revision, tests, and
+  independent review.</li>
+<li><strong>Evidence kinds differ.</strong> Recorded original-game behavior, static analysis, synthetic Paleblood
+  tests, and <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> replacements are different kinds of evidence. A link to one does not prove
+  the others.</li>
+<li><strong>Tests have a scope.</strong> Passing tests support equivalence on the cases they cover, not untested
+  gameplay situations. Timing and probability claims need measurements or directly <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> logic,
+  not a single encounter.</li>
+<li><strong>Shared systems are not specific actors.</strong> The <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> AI, Character, Event, and Physics
+  findings do not yet identify any particular boss, enemy, NPC, weapon, or attack.</li>
+<li><strong>Absence is not a claim about the game.</strong> A missing profile describes the project's research,
+  not what the game contains.</li>
+</ul>
+<p>See <a href="../../MEDIA_POLICY/">Evidence &amp; Media Review</a> for how this wiki labels evidence.</p>
+</details>
       
       </div>
 
@@ -437,241 +501,10 @@ their conditions and data are traced. Unknown transitions remain open questions.
 
 
 <script>
-(function () {
-'use strict';
-
-/* ── Theme ─────────────────────────────────────────────────── */
-var stored = localStorage.getItem('wk-theme') || 'dark';
-applyTheme(stored);
-document.getElementById('wk-toggle').addEventListener('click', function () {
-  applyTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
-});
-function applyTheme(t) {
-  document.documentElement.setAttribute('data-theme', t);
-  localStorage.setItem('wk-theme', t);
-  var btn = document.getElementById('wk-toggle');
-  if (btn) btn.textContent = t === 'dark' ? '☀' : '🌙';
-}
-
-/* ── Address map: a block opens its slice in a pop-up ──────── */
-(function () {
-  var map = document.querySelector('.wk-bankmap');
-  if (!map) return;
-  var modal = document.createElement('div');
-  modal.className = 'wk-slice-modal';
-  modal.setAttribute('role', 'dialog');
-  modal.setAttribute('aria-modal', 'true');
-  document.body.appendChild(modal);
-  function close() { modal.classList.remove('is-open'); }
-  map.addEventListener('click', function (e) {
-    var cell = e.target.closest('a.wk-bank-cell');
-    if (!cell) return;
-    var panel = document.getElementById(cell.getAttribute('href').slice(1));
-    if (!panel) return;
-    e.preventDefault();
-    modal.innerHTML = '';
-    modal.appendChild(panel.cloneNode(true));
-    modal.firstChild.removeAttribute('id');
-    requestAnimationFrame(function () { modal.classList.add('is-open'); });
-  });
-  modal.addEventListener('click', function (e) {
-    if (e.target === modal || e.target.closest('.wk-slice-close')) { e.preventDefault(); close(); }
-  });
-  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
-})();
-
-/* ── Mobile nav ────────────────────────────────────────────── */
-var navToggle  = document.getElementById('wk-nav-toggle');
-var navEl      = document.getElementById('wk-nav');
-var navBackdrop = document.getElementById('wk-nav-backdrop');
-var mainEl     = document.querySelector('.wk-main');
-var headerRight = document.querySelector('.wk-header-right');
-var wordmark = document.querySelector('.wk-wordmark');
-/* Matches the drawer breakpoint in wiki.css. */
-var drawerQuery = window.matchMedia('(max-width: 900px)');
-
-function closeNav() {
-  navEl.classList.remove('is-open');
-  navBackdrop.hidden = true;
-  navToggle.setAttribute('aria-expanded', 'false');
-  navToggle.setAttribute('aria-label', 'Open navigation');
-  navToggle.textContent = '☰';
-  if (mainEl) mainEl.inert = false;
-  if (headerRight) headerRight.inert = false;
-  if (wordmark) wordmark.inert = false;
-  if (drawerQuery.matches) navEl.inert = true;
-}
-function openNav() {
-  navEl.inert = false;
-  if (mainEl) mainEl.inert = true;
-  if (headerRight) headerRight.inert = true;
-  if (wordmark) wordmark.inert = true;
-  navEl.classList.add('is-open');
-  navBackdrop.hidden = false;
-  navToggle.setAttribute('aria-expanded', 'true');
-  navToggle.setAttribute('aria-label', 'Close navigation');
-  navToggle.textContent = '×';
-}
-if (navToggle && navEl && navBackdrop) {
-  navEl.inert = drawerQuery.matches;
-  navToggle.addEventListener('click', function () {
-    if (navEl.classList.contains('is-open')) { closeNav(); } else { openNav(); }
-  });
-  navBackdrop.addEventListener('click', function () { closeNav(); navToggle.focus(); });
-  navEl.addEventListener('click', function (e) {
-    if (e.target.closest('a')) { closeNav(); }
-  });
-  document.addEventListener('keydown', function (e) {
-    if (!navEl.classList.contains('is-open') || !drawerQuery.matches) return;
-    if (e.key === 'Escape') { closeNav(); navToggle.focus(); return; }
-    if (e.key !== 'Tab') return;
-    var links = Array.prototype.slice.call(navEl.querySelectorAll('a[href], button:not([disabled])'));
-    var focusable = [navToggle].concat(links);
-    var first = focusable[0];
-    var last = focusable[focusable.length - 1];
-    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
-    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
-  });
-  window.addEventListener('resize', function () {
-    if (!drawerQuery.matches) { navEl.inert = false; closeNav(); }
-    else if (!navEl.classList.contains('is-open')) navEl.inert = true;
-  });
-}
-
-/* ── Search ─────────────────────────────────────────────────── */
-var input   = document.getElementById('wk-q');
-var results = document.getElementById('wk-results');
-var docs    = null;
-if (input) {
-  fetch("../../search/search_index.json")
-    .then(function (r) { return r.json(); })
-    .then(function (d) { docs = d.docs; });
-
-  input.addEventListener('input', onSearch);
-
-  document.addEventListener('click', function (e) {
-    if (results && !results.contains(e.target) && e.target !== input) results.hidden = true;
-  });
-  input.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape') { results.hidden = true; this.blur(); }
-    if (e.key === 'Enter' && results && !results.hidden) {
-      var first = results.querySelector('.wk-result');
-      if (first) { first.click(); }
-    }
-  });
-}
-
-/* Press / to focus search */
-document.addEventListener('keydown', function (e) {
-  if (e.key === '/' && document.activeElement !== input &&
-      document.activeElement.tagName !== 'INPUT' &&
-      document.activeElement.tagName !== 'TEXTAREA') {
-    e.preventDefault();
-    if (input) { input.focus(); input.select(); }
-  }
-});
-
-function onSearch() {
-  var q = this.value.trim().toLowerCase();
-  if (!docs || q.length < 2) { results.hidden = true; return; }
-  var hits = docs.filter(function (d) {
-    return (d.title + ' ' + d.text).toLowerCase().indexOf(q) !== -1;
-  }).slice(0, 8);
-  if (!hits.length) { results.hidden = true; return; }
-  var base = "../..";
-  results.innerHTML = hits.map(function (d) {
-    var text  = d.text || '';
-    var i     = text.toLowerCase().indexOf(q);
-    var start = Math.max(0, i - 35);
-    var end   = Math.min(text.length, i + q.length + 70);
-    var snip  = (start > 0 ? '…' : '') + text.slice(start, end) + (end < text.length ? '…' : '');
-    var url   = base + '/' + d.location;
-    return '<a class="wk-result" href="' + esc(url) + '" role="option">'
-         + '<div class="wk-result-title">' + esc(d.title || d.location) + '</div>'
-         + '<div class="wk-result-snip">'  + esc(snip) + '</div></a>';
-  }).join('');
-  results.hidden = false;
-}
-
-function esc(s) {
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-
-/* ── Back to top ────────────────────────────────────────────── */
-var topBtn = document.getElementById('wk-top');
-if (topBtn) {
-  window.addEventListener('scroll', function () {
-    topBtn.classList.toggle('visible', window.scrollY > 400);
-  }, {passive: true});
-  topBtn.addEventListener('click', function () {
-    window.scrollTo({top: 0, behavior: 'smooth'});
-  });
-}
-
-/* ── Copy-to-clipboard ───────────────────────────────────────── */
-document.querySelectorAll('.highlight').forEach(function (block) {
-  var btn = document.createElement('button');
-  btn.className = 'wk-copy-btn';
-  btn.title     = 'Copy code';
-  btn.textContent = '⎘';
-  block.appendChild(btn);
-  btn.addEventListener('click', function () {
-    var pre = block.querySelector('pre');
-    if (!pre) return;
-    navigator.clipboard.writeText(pre.innerText).then(function () {
-      btn.textContent = '✓';
-      btn.classList.add('copied');
-      setTimeout(function () {
-        btn.textContent = '⎘';
-        btn.classList.remove('copied');
-      }, 1500);
-    });
-  });
-});
-
-/* ── Collapsible long code blocks ─────────────────────────────── */
-var COLLAPSE_THRESHOLD = 340;
-document.querySelectorAll('.wk-article-body .highlight').forEach(function (block) {
-  var pre = block.querySelector('pre');
-  if (!pre || pre.scrollHeight <= COLLAPSE_THRESHOLD + 40) return;
-
-  block.classList.add('wk-code-collapsed');
-  var toggle = document.createElement('button');
-  toggle.className = 'wk-code-toggle';
-  toggle.type = 'button';
-  toggle.textContent = 'Show more ▾';
-  toggle.addEventListener('click', function () {
-    var collapsed = block.classList.toggle('wk-code-collapsed');
-    toggle.textContent = collapsed ? 'Show more ▾' : 'Show less ▴';
-    if (collapsed) block.scrollIntoView({block: 'nearest'});
-  });
-  block.insertAdjacentElement('afterend', toggle);
-});
-
-/* ── TOC scroll spy ─────────────────────────────────────────── */
-var tocLinks = document.querySelectorAll('.wk-toc-link');
-if (tocLinks.length && 'IntersectionObserver' in window) {
-  var headings = Array.from(document.querySelectorAll('.wk-article h1, .wk-article h2, .wk-article h3'));
-  var active   = null;
-  var obs = new IntersectionObserver(function (entries) {
-    entries.forEach(function (e) {
-      if (e.isIntersecting) {
-        var id  = e.target.id;
-        var lnk = document.querySelector('.wk-toc-link[href="#' + id + '"]');
-        if (lnk && lnk !== active) {
-          if (active) active.classList.remove('is-current');
-          lnk.classList.add('is-current');
-          active = lnk;
-        }
-      }
-    });
-  }, {rootMargin: '-10% 0px -80% 0px'});
-  headings.forEach(function (h) { if (h.id) obs.observe(h); });
-}
-
-
-}());
+/* Page settings for wiki.js. The drawer query matches the drawer breakpoint in wiki.css. */
+window.WK = {base: "../..", searchIndex: "../../search/search_index.json",
+             drawerQuery: window.matchMedia('(max-width: 900px)')};
 </script>
-<script src="../../javascripts/hunters.js" defer></script><script src="../../search/main.js" defer></script>
+<script src="../../javascripts/wiki.js?v=48af91151e" defer></script><script src="../../javascripts/hunters.js?v=28a0e867eb" defer></script><script src="../../search/main.js" defer></script>
 </body>
 </html>

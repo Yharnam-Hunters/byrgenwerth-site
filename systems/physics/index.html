@@ -10,45 +10,51 @@
   
   <title>Physics — Byrgenwerth</title>
   
+  <script>
+  /* Before first paint: the stored theme, and a flag that JavaScript (wiki.js) will run. */
+  (function () { var d = document.documentElement, t = 'dark';
+    try { t = localStorage.getItem('wk-theme') || 'dark'; } catch (e) {}
+    d.setAttribute('data-theme', t); d.classList.add('wk-js'); }());
+  </script>
   
-  <link rel="stylesheet" href="../../stylesheets/wiki.css?v=680e958d94"><link rel="stylesheet" href="../../stylesheets/hunters.css?v=e4f3c59dfb">
+  <link rel="stylesheet" href="../../stylesheets/wiki.css?v=25121f2b45"><link rel="stylesheet" href="../../stylesheets/hunters.css?v=e4f3c59dfb">
   
   
 </head>
 <body>
 
-<!-- ── Header ──────────────────────────────────────────────── -->
-<header class="wk-header">
+<!-- ── Header: wordmark, section tabs (wide screens), search, theme ── -->
+
+
+<header class="wk-header" id="wk-header">
   <button class="wk-nav-toggle" id="wk-nav-toggle" aria-label="Open navigation" aria-expanded="false" aria-controls="wk-nav">☰</button>
   <a class="wk-wordmark" href="/byrgenwerth-site/">Byrgenwerth<small>notes of Paleblood, rebuilding Bloodborne one verified function at a time</small></a>
+
+  <!-- Section tabs (wide screens; the drawer lists the same sections on small ones) -->
+  <nav class="wk-tabs" aria-label="Sections">
+    
+    <a class="wk-tab" href="../..">The Hunt</a>
+    
+    <a class="wk-tab" href="../../great-ones/">Encyclopedia</a>
+    
+    <a class="wk-tab is-active" href="../" aria-current="true">Systems</a>
+    
+    <a class="wk-tab" href="../../ARCHITECTURE/">How It Works</a>
+    
+    <a class="wk-tab" href="../../CONTRIBUTING/">For Hunters</a>
+    
+  </nav>
 
   <div class="wk-header-right">
     
     <div class="wk-searchbox">
       <input class="wk-search-input" id="wk-q" type="search"
-             placeholder="Search the archives…  [/]" autocomplete="off" aria-label="Search">
+             placeholder="Search  [/]" autocomplete="off" aria-label="Search">
       <div class="wk-search-results" id="wk-results" hidden role="listbox"></div>
     </div>
     <button class="wk-toggle" id="wk-toggle" title="Toggle theme" aria-label="Toggle dark/light">☀</button>
   </div>
 </header>
-
-
-
-<!-- ── Section tabs (wide screens; the drawer lists the same sections on small ones) ── -->
-<nav class="wk-tabs" aria-label="Sections">
-  
-  <a class="wk-tab" href="../..">The Hunt</a>
-  
-  <a class="wk-tab" href="../../great-ones/">Encyclopedia</a>
-  
-  <a class="wk-tab is-active" href="../" aria-current="true">Systems</a>
-  
-  <a class="wk-tab" href="../../ARCHITECTURE/">How It Works</a>
-  
-  <a class="wk-tab" href="../../CONTRIBUTING/">For Hunters</a>
-  
-</nav>
 
 <!-- ── Layout ──────────────────────────────────────────────── -->
 <div class="wk-layout">
@@ -362,7 +368,7 @@
       <span class="wk-stat-track" role="img" aria-label="0.033 percent of target code bytes verified">
         <span class="wk-stat-fill" style="width:0.033%"></span>
       </span>
-      <span class="wk-progress-foot">0.033% of code bytes verified · 31 replaced</span>
+      <span class="wk-progress-foot">0.033% of code bytes verified · 32 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -374,38 +380,86 @@
 
       
       
-      <div class="wk-toc" id="wk-toc">
-        <div class="wk-toc-header">
-          <b>Contents</b>
-          <button class="wk-toc-toggle"
-            onclick="var l=document.getElementById('wk-toc-list');l.hidden=!l.hidden;this.textContent=l.hidden?'[show]':'[hide]'">[hide]</button>
-        </div>
+      
+      
+      
+      <nav class="wk-toc" id="wk-toc" aria-label="On this page">
+        <div class="wk-toc-header"><b>On this page</b></div>
         <ol class="wk-toc-list" id="wk-toc-list">
           
-          <li>
-            <a href="#physics" class="wk-toc-link">Physics</a>
-            
-            <ol><li><a href="#summary" class="wk-toc-link">Summary</a></li><li><a href="#key-functions" class="wk-toc-link">Key functions</a></li><li><a href="#structs-and-globals" class="wk-toc-link">Structs and globals</a></li><li><a href="#patch-points" class="wk-toc-link">Patch points</a></li><li><a href="#open-questions" class="wk-toc-link">Open questions</a></li></ol>
-            
-          </li>
+          <li><a href="#summary" class="wk-toc-link">Summary</a></li>
+          
+          <li><a href="#key-functions" class="wk-toc-link">Key functions</a></li>
+          
+          <li><a href="#structs-and-globals" class="wk-toc-link">Structs and globals</a></li>
+          
+          <li><a href="#patch-points" class="wk-toc-link">Patch points</a></li>
+          
+          <li><a href="#open-questions" class="wk-toc-link">Open questions</a></li>
           
         </ol>
-      </div>
+      </nav>
+      
       
       
 
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 7, 2026 22:05:30 UTC">October 7, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 28, 2026 05:15:03 UTC">October 28, 2026</span></p>
       
       <h1 id="physics">Physics</h1>
+<p class="wk-lede">The game's rigid bodies live in one physics world: shared tables of bodies, motions and constraints that other objects index into, and listeners that hear when a body changes.</p>
+
+<div class="wk-glance">
+<p><span class="wk-label">At a glance</span></p>
+<dl>
+<dt>Scope</dt>
+<dd>The physics world reached through the physics manager, and the objects that own bodies in it.</dd>
+<dt>Verified</dt>
+<dd>The physics-instance constructor <code>physics_instance_construct_01c0c2b0</code> (<code>0x01c0c2b0</code>).</dd>
+<dt>Fixed step</dt>
+<dd>An instance's controller steps at 1/30 s; the 60 FPS patches and <code>BB_TARGET_FPS=60</code> make it 1/60 s.</dd>
+<dt>Open</dt>
+<dd>What kind of object a physics instance is, and what the manager's two special modes mean.</dd>
+</dl>
+</div>
 <h2 id="summary">Summary</h2>
+<h3 id="the-physics-world">The physics world</h3>
 <p>The game keeps its rigid bodies in a physics world reached through the physics manager
-(<code>0x0593d700</code> → <code>+0x28</code> → <code>+0x8</code>). The world holds tables that everything else indexes into:
-bodies (<code>0x90</code> bytes each, at <code>+0x20</code>), their motions (<code>0x80</code> bytes each, at <code>+0xe0</code>),
-constraints (<code>0x38</code> bytes each, at <code>+0x128</code>), and a list of listeners at <code>+0x538</code> that are told
-when a body changes.</p>
+(<code>0x0593d700</code> → <code>+0x28</code> → <code>+0x8</code>). The world holds tables that everything else indexes into:</p>
+<div class="wk-table"><table>
+<thead>
+<tr>
+<th>Table</th>
+<th>Offset in the world</th>
+<th>Entry size (bytes)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Bodies</td>
+<td><code>+0x20</code></td>
+<td><code>0x90</code></td>
+</tr>
+<tr>
+<td>Motions</td>
+<td><code>+0xe0</code></td>
+<td><code>0x80</code></td>
+</tr>
+<tr>
+<td>Constraints</td>
+<td><code>+0x128</code></td>
+<td><code>0x38</code></td>
+</tr>
+<tr>
+<td>Listeners (told when a body changes)</td>
+<td><code>+0x538</code></td>
+<td>list</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="how-a-physics-instance-is-built">How a physics instance is built</h3>
 <p><code>physics_instance_construct_01c0c2b0</code> (<code>0x01c0c2b0</code>) is the constructor of a <em>physics instance</em>:
 an object that owns a set of bodies in that world (a ragdoll or a breakable object would look like
 this; which one is still open). Reading it is a good lesson in how a constructor wires a new object
@@ -426,14 +480,19 @@ into shared tables:</p>
 </ol>
 <h3 id="how-the-motion-values-are-rescaled">How the motion values are rescaled</h3>
 <p>The four values are stored as the <em>top halves</em> of 32-bit floats (the format known as bfloat16):
-16 bits holding a float's sign, exponent and the top of its mantissa. The code widens each back
-to a float by putting it in the upper half of a float's bit pattern, multiplies the first three by
-0.2 and all four by 1.00390625, then keeps only the top 16 bits of each result again (an
-arithmetic shift of the bit pattern, then a saturating pack). It is a compact way to store floats
-at half the size, and an example of why a replacement has to reproduce the exact instructions:
-the truncation works on the float's bits, not its value.</p>
+16 bits holding a float's sign, exponent and the top of its mantissa. Step 4 above works like
+this:</p>
+<ol>
+<li><strong>Widen.</strong> Each value goes back to a float by putting it in the upper half of a float's bit
+   pattern.</li>
+<li><strong>Scale.</strong> The first three are multiplied by 0.2, and all four by 1.00390625.</li>
+<li><strong>Narrow.</strong> Only the top 16 bits of each result are kept again (an arithmetic shift of the
+   bit pattern, then a saturating pack).</li>
+</ol>
+<p>It is a compact way to store floats at half the size, and an example of why a replacement has to
+reproduce the exact instructions: the truncation works on the float's bits, not its value.</p>
 <h2 id="key-functions">Key functions</h2>
-<table class="wk-stack">
+<div class="wk-table is-stack"><table class="wk-stack">
 <thead>
 <tr>
 <th>Address</th>
@@ -448,21 +507,98 @@ the truncation works on the float's bits, not its value.</p>
 <td data-label="Address"><code>0x01c0c2b0</code></td>
 <td style="text-align: right;" data-label="Size">3222</td>
 <td data-label="Name"><code>physics_instance_construct_01c0c2b0</code></td>
-<td data-label="Status"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></td>
+<td data-label="Status"><span class="wk-badge wk-badge--verified"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></span></td>
 <td data-label="Notes">physics instance constructor over a body set: back-links, shape copy, controller (step 1/30 s; 60 FPS patches 1/60), motion rescale, listeners</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h2 id="structs-and-globals">Structs and globals</h2>
-<ul>
-<li>Physics manager (<code>0x0593d700</code>): world at <code>+0x28</code> → <code>+0x8</code>; special-mode flags at <code>+0x274</code> and
-  <code>+0x275</code>.</li>
-<li>World: body table <code>+0x20</code>, motion table <code>+0xe0</code>, constraint table <code>+0x128</code>, listener list <code>+0x538</code>
-  (a tagged pointer: the low two bits are flags).</li>
-<li>Body (<code>0x90</code> bytes): position <code>+0x30</code>, flags <code>+0x40</code>, motion index <code>+0x68</code>, back-link <code>+0x88</code>.</li>
-<li>Instance: body set <code>+0x38</code>, back-links <code>+0x70</code>/<code>+0x78</code>, shape object <code>+0x88</code>, controller <code>+0x90</code>
-  (frame step at <code>+0x60</code>), own listener <code>+0x128</code>.</li>
-</ul>
+<div class="wk-table"><table>
+<thead>
+<tr>
+<th>Object</th>
+<th>Field</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Physics manager (<code>0x0593d700</code>)</td>
+<td><code>+0x28</code> → <code>+0x8</code></td>
+<td>The world</td>
+</tr>
+<tr>
+<td></td>
+<td><code>+0x274</code>, <code>+0x275</code></td>
+<td>Special-mode flags</td>
+</tr>
+<tr>
+<td>World</td>
+<td><code>+0x20</code></td>
+<td>Body table</td>
+</tr>
+<tr>
+<td></td>
+<td><code>+0xe0</code></td>
+<td>Motion table</td>
+</tr>
+<tr>
+<td></td>
+<td><code>+0x128</code></td>
+<td>Constraint table</td>
+</tr>
+<tr>
+<td></td>
+<td><code>+0x538</code></td>
+<td>Listener list (a tagged pointer: the low two bits are flags)</td>
+</tr>
+<tr>
+<td>Body (<code>0x90</code> bytes)</td>
+<td><code>+0x30</code></td>
+<td>Position</td>
+</tr>
+<tr>
+<td></td>
+<td><code>+0x40</code></td>
+<td>Flags</td>
+</tr>
+<tr>
+<td></td>
+<td><code>+0x68</code></td>
+<td>Motion index</td>
+</tr>
+<tr>
+<td></td>
+<td><code>+0x88</code></td>
+<td>Back-link</td>
+</tr>
+<tr>
+<td>Instance</td>
+<td><code>+0x38</code></td>
+<td>Body set</td>
+</tr>
+<tr>
+<td></td>
+<td><code>+0x70</code> / <code>+0x78</code></td>
+<td>Back-links</td>
+</tr>
+<tr>
+<td></td>
+<td><code>+0x88</code></td>
+<td>Shape object</td>
+</tr>
+<tr>
+<td></td>
+<td><code>+0x90</code></td>
+<td>Controller (frame step at <code>+0x60</code>)</td>
+</tr>
+<tr>
+<td></td>
+<td><code>+0x128</code></td>
+<td>Own listener</td>
+</tr>
+</tbody>
+</table></div>
 <h2 id="patch-points">Patch points</h2>
 <ul>
 <li>The controller's frame step is 1/30 s; <code>60 FPS++</code> (and <code>90 FPS++</code>, <code>60FPS (no deltatime)</code>) make it
@@ -494,241 +630,10 @@ the truncation works on the float's bits, not its value.</p>
 
 
 <script>
-(function () {
-'use strict';
-
-/* ── Theme ─────────────────────────────────────────────────── */
-var stored = localStorage.getItem('wk-theme') || 'dark';
-applyTheme(stored);
-document.getElementById('wk-toggle').addEventListener('click', function () {
-  applyTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
-});
-function applyTheme(t) {
-  document.documentElement.setAttribute('data-theme', t);
-  localStorage.setItem('wk-theme', t);
-  var btn = document.getElementById('wk-toggle');
-  if (btn) btn.textContent = t === 'dark' ? '☀' : '🌙';
-}
-
-/* ── Address map: a block opens its slice in a pop-up ──────── */
-(function () {
-  var map = document.querySelector('.wk-bankmap');
-  if (!map) return;
-  var modal = document.createElement('div');
-  modal.className = 'wk-slice-modal';
-  modal.setAttribute('role', 'dialog');
-  modal.setAttribute('aria-modal', 'true');
-  document.body.appendChild(modal);
-  function close() { modal.classList.remove('is-open'); }
-  map.addEventListener('click', function (e) {
-    var cell = e.target.closest('a.wk-bank-cell');
-    if (!cell) return;
-    var panel = document.getElementById(cell.getAttribute('href').slice(1));
-    if (!panel) return;
-    e.preventDefault();
-    modal.innerHTML = '';
-    modal.appendChild(panel.cloneNode(true));
-    modal.firstChild.removeAttribute('id');
-    requestAnimationFrame(function () { modal.classList.add('is-open'); });
-  });
-  modal.addEventListener('click', function (e) {
-    if (e.target === modal || e.target.closest('.wk-slice-close')) { e.preventDefault(); close(); }
-  });
-  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
-})();
-
-/* ── Mobile nav ────────────────────────────────────────────── */
-var navToggle  = document.getElementById('wk-nav-toggle');
-var navEl      = document.getElementById('wk-nav');
-var navBackdrop = document.getElementById('wk-nav-backdrop');
-var mainEl     = document.querySelector('.wk-main');
-var headerRight = document.querySelector('.wk-header-right');
-var wordmark = document.querySelector('.wk-wordmark');
-/* Matches the drawer breakpoint in wiki.css. */
-var drawerQuery = window.matchMedia('(max-width: 900px)');
-
-function closeNav() {
-  navEl.classList.remove('is-open');
-  navBackdrop.hidden = true;
-  navToggle.setAttribute('aria-expanded', 'false');
-  navToggle.setAttribute('aria-label', 'Open navigation');
-  navToggle.textContent = '☰';
-  if (mainEl) mainEl.inert = false;
-  if (headerRight) headerRight.inert = false;
-  if (wordmark) wordmark.inert = false;
-  if (drawerQuery.matches) navEl.inert = true;
-}
-function openNav() {
-  navEl.inert = false;
-  if (mainEl) mainEl.inert = true;
-  if (headerRight) headerRight.inert = true;
-  if (wordmark) wordmark.inert = true;
-  navEl.classList.add('is-open');
-  navBackdrop.hidden = false;
-  navToggle.setAttribute('aria-expanded', 'true');
-  navToggle.setAttribute('aria-label', 'Close navigation');
-  navToggle.textContent = '×';
-}
-if (navToggle && navEl && navBackdrop) {
-  navEl.inert = drawerQuery.matches;
-  navToggle.addEventListener('click', function () {
-    if (navEl.classList.contains('is-open')) { closeNav(); } else { openNav(); }
-  });
-  navBackdrop.addEventListener('click', function () { closeNav(); navToggle.focus(); });
-  navEl.addEventListener('click', function (e) {
-    if (e.target.closest('a')) { closeNav(); }
-  });
-  document.addEventListener('keydown', function (e) {
-    if (!navEl.classList.contains('is-open') || !drawerQuery.matches) return;
-    if (e.key === 'Escape') { closeNav(); navToggle.focus(); return; }
-    if (e.key !== 'Tab') return;
-    var links = Array.prototype.slice.call(navEl.querySelectorAll('a[href], button:not([disabled])'));
-    var focusable = [navToggle].concat(links);
-    var first = focusable[0];
-    var last = focusable[focusable.length - 1];
-    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
-    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
-  });
-  window.addEventListener('resize', function () {
-    if (!drawerQuery.matches) { navEl.inert = false; closeNav(); }
-    else if (!navEl.classList.contains('is-open')) navEl.inert = true;
-  });
-}
-
-/* ── Search ─────────────────────────────────────────────────── */
-var input   = document.getElementById('wk-q');
-var results = document.getElementById('wk-results');
-var docs    = null;
-if (input) {
-  fetch("../../search/search_index.json")
-    .then(function (r) { return r.json(); })
-    .then(function (d) { docs = d.docs; });
-
-  input.addEventListener('input', onSearch);
-
-  document.addEventListener('click', function (e) {
-    if (results && !results.contains(e.target) && e.target !== input) results.hidden = true;
-  });
-  input.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape') { results.hidden = true; this.blur(); }
-    if (e.key === 'Enter' && results && !results.hidden) {
-      var first = results.querySelector('.wk-result');
-      if (first) { first.click(); }
-    }
-  });
-}
-
-/* Press / to focus search */
-document.addEventListener('keydown', function (e) {
-  if (e.key === '/' && document.activeElement !== input &&
-      document.activeElement.tagName !== 'INPUT' &&
-      document.activeElement.tagName !== 'TEXTAREA') {
-    e.preventDefault();
-    if (input) { input.focus(); input.select(); }
-  }
-});
-
-function onSearch() {
-  var q = this.value.trim().toLowerCase();
-  if (!docs || q.length < 2) { results.hidden = true; return; }
-  var hits = docs.filter(function (d) {
-    return (d.title + ' ' + d.text).toLowerCase().indexOf(q) !== -1;
-  }).slice(0, 8);
-  if (!hits.length) { results.hidden = true; return; }
-  var base = "../..";
-  results.innerHTML = hits.map(function (d) {
-    var text  = d.text || '';
-    var i     = text.toLowerCase().indexOf(q);
-    var start = Math.max(0, i - 35);
-    var end   = Math.min(text.length, i + q.length + 70);
-    var snip  = (start > 0 ? '…' : '') + text.slice(start, end) + (end < text.length ? '…' : '');
-    var url   = base + '/' + d.location;
-    return '<a class="wk-result" href="' + esc(url) + '" role="option">'
-         + '<div class="wk-result-title">' + esc(d.title || d.location) + '</div>'
-         + '<div class="wk-result-snip">'  + esc(snip) + '</div></a>';
-  }).join('');
-  results.hidden = false;
-}
-
-function esc(s) {
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-
-/* ── Back to top ────────────────────────────────────────────── */
-var topBtn = document.getElementById('wk-top');
-if (topBtn) {
-  window.addEventListener('scroll', function () {
-    topBtn.classList.toggle('visible', window.scrollY > 400);
-  }, {passive: true});
-  topBtn.addEventListener('click', function () {
-    window.scrollTo({top: 0, behavior: 'smooth'});
-  });
-}
-
-/* ── Copy-to-clipboard ───────────────────────────────────────── */
-document.querySelectorAll('.highlight').forEach(function (block) {
-  var btn = document.createElement('button');
-  btn.className = 'wk-copy-btn';
-  btn.title     = 'Copy code';
-  btn.textContent = '⎘';
-  block.appendChild(btn);
-  btn.addEventListener('click', function () {
-    var pre = block.querySelector('pre');
-    if (!pre) return;
-    navigator.clipboard.writeText(pre.innerText).then(function () {
-      btn.textContent = '✓';
-      btn.classList.add('copied');
-      setTimeout(function () {
-        btn.textContent = '⎘';
-        btn.classList.remove('copied');
-      }, 1500);
-    });
-  });
-});
-
-/* ── Collapsible long code blocks ─────────────────────────────── */
-var COLLAPSE_THRESHOLD = 340;
-document.querySelectorAll('.wk-article-body .highlight').forEach(function (block) {
-  var pre = block.querySelector('pre');
-  if (!pre || pre.scrollHeight <= COLLAPSE_THRESHOLD + 40) return;
-
-  block.classList.add('wk-code-collapsed');
-  var toggle = document.createElement('button');
-  toggle.className = 'wk-code-toggle';
-  toggle.type = 'button';
-  toggle.textContent = 'Show more ▾';
-  toggle.addEventListener('click', function () {
-    var collapsed = block.classList.toggle('wk-code-collapsed');
-    toggle.textContent = collapsed ? 'Show more ▾' : 'Show less ▴';
-    if (collapsed) block.scrollIntoView({block: 'nearest'});
-  });
-  block.insertAdjacentElement('afterend', toggle);
-});
-
-/* ── TOC scroll spy ─────────────────────────────────────────── */
-var tocLinks = document.querySelectorAll('.wk-toc-link');
-if (tocLinks.length && 'IntersectionObserver' in window) {
-  var headings = Array.from(document.querySelectorAll('.wk-article h1, .wk-article h2, .wk-article h3'));
-  var active   = null;
-  var obs = new IntersectionObserver(function (entries) {
-    entries.forEach(function (e) {
-      if (e.isIntersecting) {
-        var id  = e.target.id;
-        var lnk = document.querySelector('.wk-toc-link[href="#' + id + '"]');
-        if (lnk && lnk !== active) {
-          if (active) active.classList.remove('is-current');
-          lnk.classList.add('is-current');
-          active = lnk;
-        }
-      }
-    });
-  }, {rootMargin: '-10% 0px -80% 0px'});
-  headings.forEach(function (h) { if (h.id) obs.observe(h); });
-}
-
-
-}());
+/* Page settings for wiki.js. The drawer query matches the drawer breakpoint in wiki.css. */
+window.WK = {base: "../..", searchIndex: "../../search/search_index.json",
+             drawerQuery: window.matchMedia('(max-width: 900px)')};
 </script>
-<script src="../../javascripts/hunters.js" defer></script><script src="../../search/main.js" defer></script>
+<script src="../../javascripts/wiki.js?v=48af91151e" defer></script><script src="../../javascripts/hunters.js?v=28a0e867eb" defer></script><script src="../../search/main.js" defer></script>
 </body>
 </html>

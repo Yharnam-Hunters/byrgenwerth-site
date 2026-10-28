@@ -10,45 +10,51 @@
   
   <title>Runtime system calls — Byrgenwerth</title>
   
+  <script>
+  /* Before first paint: the stored theme, and a flag that JavaScript (wiki.js) will run. */
+  (function () { var d = document.documentElement, t = 'dark';
+    try { t = localStorage.getItem('wk-theme') || 'dark'; } catch (e) {}
+    d.setAttribute('data-theme', t); d.classList.add('wk-js'); }());
+  </script>
   
-  <link rel="stylesheet" href="../stylesheets/wiki.css?v=680e958d94"><link rel="stylesheet" href="../stylesheets/hunters.css?v=e4f3c59dfb">
+  <link rel="stylesheet" href="../stylesheets/wiki.css?v=25121f2b45"><link rel="stylesheet" href="../stylesheets/hunters.css?v=e4f3c59dfb">
   
   
 </head>
 <body>
 
-<!-- ── Header ──────────────────────────────────────────────── -->
-<header class="wk-header">
+<!-- ── Header: wordmark, section tabs (wide screens), search, theme ── -->
+
+
+<header class="wk-header" id="wk-header">
   <button class="wk-nav-toggle" id="wk-nav-toggle" aria-label="Open navigation" aria-expanded="false" aria-controls="wk-nav">☰</button>
   <a class="wk-wordmark" href="/byrgenwerth-site/">Byrgenwerth<small>notes of Paleblood, rebuilding Bloodborne one verified function at a time</small></a>
+
+  <!-- Section tabs (wide screens; the drawer lists the same sections on small ones) -->
+  <nav class="wk-tabs" aria-label="Sections">
+    
+    <a class="wk-tab" href="..">The Hunt</a>
+    
+    <a class="wk-tab" href="../great-ones/">Encyclopedia</a>
+    
+    <a class="wk-tab" href="../systems/">Systems</a>
+    
+    <a class="wk-tab is-active" href="../ARCHITECTURE/" aria-current="true">How It Works</a>
+    
+    <a class="wk-tab" href="../CONTRIBUTING/">For Hunters</a>
+    
+  </nav>
 
   <div class="wk-header-right">
     
     <div class="wk-searchbox">
       <input class="wk-search-input" id="wk-q" type="search"
-             placeholder="Search the archives…  [/]" autocomplete="off" aria-label="Search">
+             placeholder="Search  [/]" autocomplete="off" aria-label="Search">
       <div class="wk-search-results" id="wk-results" hidden role="listbox"></div>
     </div>
     <button class="wk-toggle" id="wk-toggle" title="Toggle theme" aria-label="Toggle dark/light">☀</button>
   </div>
 </header>
-
-
-
-<!-- ── Section tabs (wide screens; the drawer lists the same sections on small ones) ── -->
-<nav class="wk-tabs" aria-label="Sections">
-  
-  <a class="wk-tab" href="..">The Hunt</a>
-  
-  <a class="wk-tab" href="../great-ones/">Encyclopedia</a>
-  
-  <a class="wk-tab" href="../systems/">Systems</a>
-  
-  <a class="wk-tab is-active" href="../ARCHITECTURE/" aria-current="true">How It Works</a>
-  
-  <a class="wk-tab" href="../CONTRIBUTING/">For Hunters</a>
-  
-</nav>
 
 <!-- ── Layout ──────────────────────────────────────────────── -->
 <div class="wk-layout">
@@ -362,7 +368,7 @@
       <span class="wk-stat-track" role="img" aria-label="0.033 percent of target code bytes verified">
         <span class="wk-stat-fill" style="width:0.033%"></span>
       </span>
-      <span class="wk-progress-foot">0.033% of code bytes verified · 31 replaced</span>
+      <span class="wk-progress-foot">0.033% of code bytes verified · 32 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -374,48 +380,137 @@
 
       
       
-      <div class="wk-toc" id="wk-toc">
-        <div class="wk-toc-header">
-          <b>Contents</b>
-          <button class="wk-toc-toggle"
-            onclick="var l=document.getElementById('wk-toc-list');l.hidden=!l.hidden;this.textContent=l.hidden?'[show]':'[hide]'">[hide]</button>
-        </div>
+      
+      
+      
+      <nav class="wk-toc" id="wk-toc" aria-label="On this page">
+        <div class="wk-toc-header"><b>On this page</b></div>
         <ol class="wk-toc-list" id="wk-toc-list">
           
-          <li>
-            <a href="#runtime-system-call-notes" class="wk-toc-link">Runtime system-call notes</a>
-            
-            <ol><li><a href="#what-the-game-evidence-shows" class="wk-toc-link">What the game evidence shows</a></li><li><a href="#interfaces-and-behavior" class="wk-toc-link">Interfaces and behavior</a></li><li><a href="#page-size-getpagesize-what-is-known" class="wk-toc-link">Page size (getpagesize): what is known</a></li><li><a href="#thread-identity-and-scheduler-yielding" class="wk-toc-link">Thread identity and scheduler yielding</a></li><li><a href="#network-byte-order-conversions" class="wk-toc-link">Network byte-order conversions</a></li><li><a href="#ipv4-text-conversion-scenetinetpton-issue-41" class="wk-toc-link">IPv4 text conversion (sceNetInetPton, issue #41)</a></li><li><a href="#offline-network-control" class="wk-toc-link">Offline network control</a></li><li><a href="#memory-operations-memcpy-memset" class="wk-toc-link">Memory operations (memcpy, memset)</a></li><li><a href="#thread-attribute-detach-state-scepthreadattrsetdetachstate-issue-34" class="wk-toc-link">Thread attribute detach state (scePthreadAttrSetdetachstate, issue #34)</a></li><li><a href="#thread-attributes-under-their-posix-names-pthread_attr_init-pthread_attr_destroy" class="wk-toc-link">Thread attributes under their POSIX names (pthread_attr_init, pthread_attr_destroy)</a></li><li><a href="#sleeping-scekernelusleep-usleep" class="wk-toc-link">Sleeping (sceKernelUsleep, usleep)</a></li><li><a href="#stack-protector-__stack_chk_fail" class="wk-toc-link">Stack protector (__stack_chk_fail)</a></li><li><a href="#module-loading-at-run-time-libscesysmodule" class="wk-toc-link">Module loading at run time (libSceSysmodule)</a></li><li><a href="#the-current-startup-stop-scepthreadattrgetaffinity" class="wk-toc-link">The current startup stop (scePthreadAttrGetaffinity)</a></li><li><a href="#implementation-and-tests" class="wk-toc-link">Implementation and tests</a></li><li><a href="#references" class="wk-toc-link">References</a></li></ol>
-            
-          </li>
+          <li><a href="#two-rules-the-runtime-follows" class="wk-toc-link">Two rules the runtime follows</a></li>
+          
+          <li><a href="#time-and-process" class="wk-toc-link">Time and process</a></li>
+          
+          <li><a href="#threads-and-yielding" class="wk-toc-link">Threads and yielding</a></li>
+          
+          <li><a href="#thread-attributes" class="wk-toc-link">Thread attributes</a></li>
+          
+          <li><a href="#sleeping" class="wk-toc-link">Sleeping</a></li>
+          
+          <li><a href="#stack-protector" class="wk-toc-link">Stack protector</a></li>
+          
+          <li><a href="#memory-operations" class="wk-toc-link">Memory operations</a></li>
+          
+          <li><a href="#network-byte-order-ipv4-text-and-network-control" class="wk-toc-link">Network: byte order, IPv4 text and network control</a></li>
+          
+          <li><a href="#system-modules-libscesysmodule" class="wk-toc-link">System modules (libSceSysmodule)</a></li>
+          
+          <li><a href="#the-current-startup-stop" class="wk-toc-link">The current startup stop</a></li>
+          
+          <li><a href="#implementation-and-tests" class="wk-toc-link">Implementation and tests</a></li>
+          
+          <li><a href="#references" class="wk-toc-link">References</a></li>
           
         </ol>
-      </div>
+      </nav>
+      
       
       
 
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 28, 2026 03:39:07 UTC">October 28, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 28, 2026 05:15:03 UTC">October 28, 2026</span></p>
       
       <h1 id="runtime-system-call-notes">Runtime system-call notes</h1>
-<p>This page records the public API contracts and the evidence currently available for calls in
-<abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> issue <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/34">#34</a>, with a separate network
-byte-order slice from issue <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/41">#41</a>. A platform
-manual describes that platform; it does not prove every detail of the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> implementation. The notes
-below separate documented behavior from what remains unknown for the target.</p>
-<h2 id="what-the-game-evidence-shows">What the game evidence shows</h2>
+<p class="wk-lede">What each runtime system call is for, what it must do, what the game was seen to do with it, and how Paleblood's runtime answers.</p>
+
+<div class="wk-glance">
+<p><span class="wk-label">At a glance</span></p>
+<dl>
+<dt>Covers</dt>
+<dd>Calls from <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> issue <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/34">#34</a>, plus the network slice from issue <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/41">#41</a>.</dd>
+<dt>Status</dt>
+<dd><strong>implemented</strong>: the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> answers the call. <strong>unresolved</strong>: no established answer, so the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> has no implementation or stops by name. <strong>observed</strong>: seen in a real boot, not yet implemented.</dd>
+<dt>How to read</dt>
+<dd>Each group starts with a status table, then explains the calls. PRs, citations, call-site addresses and "what would settle it" notes are in the collapsibles.</dd>
+<dt>Caution</dt>
+<dd>A platform manual describes that platform; it does not prove every detail of the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> implementation. These notes separate documented behavior from what remains unknown for the target.</dd>
+</dl>
+</div>
+<h2 id="two-rules-the-runtime-follows">Two rules the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> follows</h2>
+<p>Most calls below share the same shape, so it helps to know it first.</p>
+<ul>
+<li><strong>Stopping by name.</strong> When the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr>'s answer to a call is not established, the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> does not guess. It stops the process (a "fail-loud diagnostic") and names the call the guest made. A registry entry that stops like this is not an implementation.</li>
+<li><strong>Two error conventions.</strong> Many calls exist under an SCE name (<code>scePthread…</code>) and a POSIX name (<code>pthread_…</code>). As with the mutex functions (<code>runtime/syslib/kernel_mutex.c</code>), the SCE name returns <code>0x80020000</code> plus the error number, and the POSIX name returns the number itself.</li>
+</ul>
+<h2 id="time-and-process">Time and process</h2>
+<div class="wk-table"><table>
+<thead>
+<tr>
+<th>Call</th>
+<th>Status</th>
+<th>What the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>getpagesize</code></td>
+<td><span class="wk-badge wk-badge--unresolved">unresolved</span></td>
+<td>Stops by name; the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> page size is not established.</td>
+</tr>
+<tr>
+<td><code>getpid</code></td>
+<td><span class="wk-badge wk-badge--unresolved">unresolved</span></td>
+<td>Not implemented yet; the guest-visible ID is unknown.</td>
+</tr>
+<tr>
+<td><code>clock_gettime</code></td>
+<td><span class="wk-badge wk-badge--unresolved">unresolved</span></td>
+<td>Not implemented yet; accepted clock IDs are unknown.</td>
+</tr>
+<tr>
+<td><code>gettimeofday</code></td>
+<td><span class="wk-badge wk-badge--unresolved">unresolved</span></td>
+<td>Not implemented yet; target layout and errors are unknown.</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="what-the-calls-are-for">What the calls are for</h3>
+<dl class="wk-kv">
+<dt><code>getpagesize</code></dt>
+<dd>Takes no arguments and returns the system's memory page size in bytes. The number is platform-specific. It is not in current POSIX; portable code uses <code>sysconf(_SC_PAGESIZE)</code>.</dd>
+<dt><code>getpid</code></dt>
+<dd>Takes no arguments and returns a <code>pid_t</code> for the calling process. POSIX defines no error return. What a process ID means, and how long it lives, is platform-specific.</dd>
+<dt><code>clock_gettime</code></dt>
+<dd>Reads the clock chosen by <code>clock_id</code> into a <code>struct timespec</code>: seconds (<code>tv_sec</code>) and nanoseconds (<code>tv_nsec</code>, from 0 through 999,999,999). POSIX returns 0 on success, and -1 with <code>errno</code> on failure; an unsupported clock ID is <code>EINVAL</code>.</dd>
+<dt><code>gettimeofday</code></dt>
+<dd>Reads wall time into a <code>struct timeval</code>: seconds since the Epoch and microseconds (<code>tv_usec</code> from 0 through 999,999). Wall time can jump, so it is not a monotonic clock for measuring elapsed time. POSIX.1-2024 removed the interface.</dd>
+</dl>
+<h3 id="what-the-game-does-with-them">What the game does with them</h3>
 <p>The executable imports <code>getpagesize</code> and <code>gettimeofday</code> from <code>libScePosix</code>. The game's bundled
 <code>libc.elf</code> imports <code>clock_gettime</code>, <code>getpagesize</code>, <code>getpid</code>, and <code>gettimeofday</code> from <code>libkernel</code>.
-These import rows establish required names, not every call argument or the behavior of the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr>
-implementation.</p>
-<p>The frame limiter calls <code>gettimeofday</code> with a null timezone argument. A separate <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> game
-helper calls <code>sceKernelClockGettime</code> with clock ID <code>4</code>, identified as <code>CLOCK_MONOTONIC</code>. This
-confirms that ID for the SCE entry point. It does not establish which IDs the game passes to the
-imported <code>clock_gettime</code> wrapper, or whether <code>4</code> is accepted there.</p>
-<h2 id="interfaces-and-behavior">Interfaces and behavior</h2>
-<table class="wk-stack">
+These imports tell us which names are needed, not every argument or how the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> behaves.</p>
+<ul>
+<li>The <a href="../how-the-frame-limiter-works/">frame limiter</a> reads the time with <code>gettimeofday</code> and passes null for the timezone argument.</li>
+<li>A separate <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> game helper calls <code>sceKernelClockGettime</code> with clock ID <code>4</code>, identified as <code>CLOCK_MONOTONIC</code>. That confirms the ID for the SCE entry point only. It does not show which IDs the game passes to the imported <code>clock_gettime</code> wrapper, or whether <code>4</code> is accepted there.</li>
+</ul>
+<p>Clock ID numbers are implementation-defined. Linux and FreeBSD each have their own sets, and their
+numbers are not evidence for the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr>.</p>
+<h3 id="working-out-the-page-size">Working out the page size</h3>
+<p>The page size is a good example of how far file evidence goes, and where it stops.
+<code>getpagesize</code> is the only page-size query the game has: nothing imports <code>sysconf</code>.</p>
+<ol>
+<li><strong>Observed in the game files.</strong> Every loadable segment of the eight images is aligned to <code>0x4000</code>, and each segment's file offset and address differ by exactly <code>0x4000</code>. Three call sites use the result the same way: they accept it only if it is a power of two and cache it next to three fixed sizes (<code>0x10000</code>, <code>0x40000</code>, <code>0x200000</code>). Nothing else reads that cached value, and nothing compares it with a constant.</li>
+<li><strong>Inferred, with its assumptions.</strong> If the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> follows the usual <abbr title="Executable and Linkable Format, the standard executable file format on Linux and FreeBSD.">ELF</abbr> rules for these segments, the page size cannot be larger than <code>0x4000</code>; any power of two that divides <code>0x4000</code> would fit. Narrowing that to 4 KiB, 8 KiB or 16 KiB also assumes a page is at least 4 KiB, which is our assumption, not an observation. The game's own check accepts every power of two, so it does not pick one either.</li>
+<li><strong>Unknown.</strong> The actual value. Stock FreeBSD on AMD64 uses 4096, but that describes the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> kernel's ancestor, not the console.</li>
+</ol>
+<p>So both <code>getpagesize</code> entries stop by name. Paleblood's <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> does not depend on the page size:
+it copies each segment to its exact address. Never substitute the build host's page size without
+evidence.</p>
+<details class="evidence">
+<summary>Time and process: full contract table</summary>
+<div class="wk-table is-stack"><table class="wk-stack">
 <thead>
 <tr>
 <th>Call</th>
@@ -450,37 +545,71 @@ imported <code>clock_gettime</code> wrapper, or whether <code>4</code> is accept
 <td data-label="Still unknown for the PS4 target">The target structure layout, bad-pointer behavior, non-null timezone behavior, and error mapping. The known game call passes null for <code>tz</code>.</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>The numeric clock IDs in POSIX are implementation-defined. Linux also has IDs such as
 <code>CLOCK_MONOTONIC_RAW</code> and <code>CLOCK_BOOTTIME</code>; FreeBSD has its own clock set, including
 <code>CLOCK_UPTIME</code> variants. Those names and numbers are not evidence for <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> behavior. No inspected
 source confirms that the game's imported <code>clock_gettime</code> receives <code>CLOCK_REALTIME</code>,
 <code>CLOCK_MONOTONIC_RAW</code>, <code>CLOCK_BOOTTIME</code>, or any ID besides the separate SCE call's value 4.</p>
-<h2 id="page-size-getpagesize-what-is-known">Page size (<code>getpagesize</code>): what is known</h2>
-<p><code>getpagesize</code> is the only page-size query the game has: the executable imports it from
-<code>libScePosix</code> and the bundled <code>libc.elf</code> from <code>libkernel</code>, and nothing imports <code>sysconf</code>. Both
-entries are registered as fail-loud unresolved diagnostics
+</details>
+<details class="evidence">
+<summary>getpagesize: PR, call-site addresses and what would settle it</summary>
+<p>Both <code>getpagesize</code> entries are registered as fail-loud unresolved diagnostics
 (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/66">PR #66</a>), because the value the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> returns
 is not established.</p>
-<p><strong>Observed in the game files.</strong> Every loadable segment of the eight images is aligned to <code>0x4000</code>,
-and each segment's file offset and address differ by exactly <code>0x4000</code>. Three call sites
-(<code>0x00e04168</code>, <code>0x00e04939</code>, <code>0x00e05cf9</code>) use the result the same way: they accept it only if it is
-a power of two and cache it at <code>0x05859ec8</code>, next to three fixed sizes (<code>0x10000</code>, <code>0x40000</code>,
-<code>0x200000</code>). Nothing else reads that cached value, and nothing compares it with a constant.</p>
-<p><strong>Inferred, with its assumptions.</strong> If the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> follows the usual <abbr title="Executable and Linkable Format, the standard executable file format on Linux and FreeBSD.">ELF</abbr> rules for these
-segments, the page size cannot be larger than <code>0x4000</code>; any power of two that divides <code>0x4000</code>
-would fit. Narrowing that to 4 KiB, 8 KiB or 16 KiB also assumes a page is at least 4 KiB, which is
-our assumption, not an observation. The game's own check accepts every power of two, so it does
-not pick one either.</p>
-<p><strong>Unknown.</strong> The actual value. Stock FreeBSD on AMD64 uses 4096, but that describes the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr>
-kernel's ancestor, not the console. Paleblood's <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> does not depend on the page size: it copies
-each segment to its exact address. One <code>getpagesize()</code> result observed on a console would settle
-it.</p>
-<h2 id="thread-identity-and-scheduler-yielding">Thread identity and scheduler yielding</h2>
+<p>The three call sites are <code>0x00e04168</code>, <code>0x00e04939</code> and <code>0x00e05cf9</code>; they cache the result at
+<code>0x05859ec8</code>.</p>
+<p><strong>What would settle it:</strong> one <code>getpagesize()</code> result observed on a console.</p>
+</details>
+<h2 id="threads-and-yielding">Threads and yielding</h2>
+<div class="wk-table"><table>
+<thead>
+<tr>
+<th>Call</th>
+<th>Status</th>
+<th>What the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>scePthreadEqual</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td>Compares guest thread handles; zero means different.</td>
+</tr>
+<tr>
+<td><code>sched_yield</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td>Yields the host thread and returns zero.</td>
+</tr>
+<tr>
+<td><code>scePthreadYield</code></td>
+<td><span class="wk-badge wk-badge--unresolved">unresolved</span></td>
+<td>Stops by name; the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> return signature is unknown.</td>
+</tr>
+<tr>
+<td><code>pthread_self</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td>Answers what <code>scePthreadSelf</code> answers.</td>
+</tr>
+</tbody>
+</table></div>
+<p>A guest thread runs on a host thread. A thread handle is an opaque pointer to the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>'s object
+for that thread, so these calls work by comparing or returning those pointers.</p>
+<ul>
+<li><strong><code>scePthreadEqual</code></strong> asks whether two handles name the same thread. The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> compares the opaque object pointers used as guest thread handles: zero means different, nonzero means equal. The exact nonzero value the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> returns, and its behavior for a null handle, are not established.</li>
+<li><strong><code>sched_yield</code></strong> lets other threads run. The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> yields the calling host thread and returns zero, following the POSIX/FreeBSD contract. A host failure stops by name. The unit test checks the result; it cannot prove that the host scheduler ran another thread.</li>
+<li><strong><code>scePthreadYield</code></strong> sounds like the same thing, but it stays unresolved. FreeBSD's analogue returns <code>void</code>, while Linux's returns <code>int</code>, and nothing settles which one the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> uses. It is registered with <code>RT_SYSLIB_UNRESOLVED</code> and stops by name; registry presence is not implementation evidence.</li>
+<li><strong><code>pthread_self</code></strong> (<code>libScePosix</code>) returns the calling thread's own handle. It answers exactly what <code>scePthreadSelf</code> answers. With no guest thread registered on the host thread, it stops by the name the guest used. POSIX defines no error return.</li>
+</ul>
+<p>These are <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> services, not new decompiled game functions, and the saved boot has not been
+rerun to demonstrate their startup effect.</p>
+<details class="reference">
+<summary>Threads and yielding: PRs, credits and test limits</summary>
 <p>Merged <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/62">PR #62</a> and
 <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/72">PR #72</a>, by
-<a href="https://github.com/EzequielRindello">@EzequielRindello</a>, add these narrowly scoped behaviors:</p>
-<table class="wk-stack">
+<a href="https://github.com/EzequielRindello">@EzequielRindello</a>, add these narrowly scoped behaviors.
+<code>pthread_self</code> was added by <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/95">PR #95</a>.</p>
+<div class="wk-table is-stack"><table class="wk-stack">
 <thead>
 <tr>
 <th>Call</th>
@@ -506,34 +635,314 @@ it.</p>
 </tr>
 <tr>
 <td data-label="Call"><code>pthread_self(void)</code> (<code>libScePosix</code>)</td>
-<td data-label="Runtime behavior">Answers exactly what <code>scePthreadSelf</code> answers: the calling thread's own handle. With no guest thread registered on the host thread it stops by the name the guest used. Added by <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/95">PR #95</a>.</td>
+<td data-label="Runtime behavior">Answers exactly what <code>scePthreadSelf</code> answers: the calling thread's own handle. With no guest thread registered on the host thread it stops by the name the guest used.</td>
 <td data-label="Evidence limit">POSIX defines no error return. The test compares it with <code>scePthreadSelf</code> and checks the stop on a fresh host thread; it does not show real multi-thread guest execution.</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>The implementation is in
-<a href="https://github.com/Yharnam-Hunters/Paleblood/blob/af97b90bb1e88853adfc04b8da2b3d7506516565/runtime/syslib/kernel_thread.c"><code>runtime/syslib/kernel_thread.c</code></a>.
-These are <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> services, not new decompiled game functions, and the saved boot has not been
-rerun to demonstrate their startup effect.</p>
-<h2 id="network-byte-order-conversions">Network byte-order conversions</h2>
-<p>Paleblood imports four integer conversion calls from <code>libSceNet</code> in <code>eboot</code>: <code>sceNetHtonl</code>,
-<code>sceNetHtons</code>, <code>sceNetNtohl</code>, and <code>sceNetNtohs</code>. Their public SCE declarations use unsigned 32-bit
-and 16-bit integer arguments and results. The documented byte-order contract converts between
-host order and big-endian network order; the reverse direction uses the same operation. For the
-project's AMD64 guest ABI, this is byte reversal. The four calls are pure value conversions and do
-not require socket or online state.</p>
-<p>The declaration reference below is PSP2SDK's public <code>net.h</code> API surface; it supplies the SCE
-function names and integer widths, not a <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> trace. The FreeBSD manual documents the
-standard host/network conversion contract. This evidence supports only these four conversions.
-It does not establish behavior for <code>libSceNet</code> sockets, name resolution, epoll, or offline-state
-queries. Those imports remain unimplemented until their own evidence is available.</p>
-<h2 id="ipv4-text-conversion-scenetinetpton-issue-41">IPv4 text conversion (<code>sceNetInetPton</code>, issue #41)</h2>
-<p>Merged Paleblood <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/63">PR #63</a> adds this import using the documented BSD <code>inet_pton(3)</code> AF_INET contract. Inspection of the exact local Bloodborne 1.09 executable found four unconditional call instructions, at <code>0x0085785e</code>, <code>0x011c7a7b</code>, <code>0x02f984f6</code>, and <code>0x02df348d</code>; each passes address-family value 2 and consumes the result as an IPv4 address. The local executable used for that inspection has SHA-256 <code>ca8813862d7b1345a6791b7d88cc1d383ede2a6bbc944f39dd3c0e0e3ad9e285</code> (the file and disassembly remain outside the public repository).</p>
-<p>For that observed path, the implementation parses dotted-decimal text into four network-order bytes, returns 1 for a valid address and 0 for malformed text, and performs no network I/O. The original call sites support the family and output use; the parser's accepted text forms come from the public BSD contract. Other address families and <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> null-pointer error behavior are not established, so the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> fails loudly for those cases rather than choosing host-specific results. Unit tests cover valid, malformed, truncated, unsupported-family, and null-pointer inputs; these are synthetic <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> tests, not additional original-game execution or function-verification evidence.</p>
-<h2 id="offline-network-control">Offline network control</h2>
-<p>The executable imports six calls from <code>libSceNetCtl</code>. Four currently provide a constrained
-offline behavior, based on Paleblood PR #59 and its source-level tests:</p>
-<table class="wk-stack">
+<a href="https://github.com/Yharnam-Hunters/Paleblood/blob/af97b90bb1e88853adfc04b8da2b3d7506516565/runtime/syslib/kernel_thread.c"><code>runtime/syslib/kernel_thread.c</code></a>.</p>
+</details>
+<h2 id="thread-attributes">Thread attributes</h2>
+<div class="wk-table is-stack"><table class="wk-stack">
+<thead>
+<tr>
+<th>Call</th>
+<th>Status</th>
+<th>What the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td data-label="Call"><code>scePthreadAttrSetdetachstate</code>, <code>pthread_attr_setdetachstate</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">Records the state; bad values give <code>EINVAL</code>.</td>
+</tr>
+<tr>
+<td data-label="Call">Default detach state (fresh or copied attribute)</td>
+<td data-label="Status"><span class="wk-badge wk-badge--unresolved">unresolved</span></td>
+<td data-label="What the runtime does">Thread creation stops by name instead of assuming joinable.</td>
+</tr>
+<tr>
+<td data-label="Call"><code>pthread_attr_init</code>, <code>pthread_attr_destroy</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">Allocate and free attributes under the POSIX names.</td>
+</tr>
+</tbody>
+</table></div>
+<p>A thread attribute is a small object a program fills in before creating a thread: it describes
+how the new thread should start. The game creates and frees these objects, and sets one field of
+them, the detach state.</p>
+<h3 id="creating-and-freeing-attributes">Creating and freeing attributes</h3>
+<p><code>eboot</code> imports <code>pthread_attr_init</code> and <code>pthread_attr_destroy</code> from <code>libScePosix</code>, next to the SCE
+names the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> already had.</p>
+<ul>
+<li><strong>Init</strong> allocates the attribute and stores it in the variable; <code>ENOMEM</code> when it cannot (POSIX; FreeBSD libthr's <code>_pthread_attr_init</code>).</li>
+<li><strong>Destroy</strong> frees it and empties the variable; <code>EINVAL</code> for a missing or empty variable (libthr's <code>_pthread_attr_destroy</code>).</li>
+<li><strong>A missing variable passed to init</strong> is undefined in POSIX and unchecked in libthr. The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> answers <code>EINVAL</code> under both names, as the SCE name already did and as the mutex attribute calls do. No <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> source or call site says otherwise.</li>
+</ul>
+<p>An attribute made under one name can be freed under the other.</p>
+<h3 id="setting-the-detach-state">Setting the detach state</h3>
+<p><code>eboot</code> and <code>libSceFios2.elf</code> import <code>scePthreadAttrSetdetachstate</code> from <code>libkernel</code>, and <code>eboot</code>
+imports <code>pthread_attr_setdetachstate</code> from <code>libScePosix</code> (<code>symbols/imports.csv</code>).</p>
+<ul>
+<li><strong>What the call does.</strong> A thread created with the attribute starts <em>detached</em> for <code>PTHREAD_CREATE_DETACHED</code> (nobody waits for it to finish) and <em>joinable</em> for <code>PTHREAD_CREATE_JOINABLE</code> (another thread can join it). This is POSIX <code>pthread_attr_setdetachstate</code>.</li>
+<li><strong>Invalid detach state.</strong> POSIX and FreeBSD's <code>pthread_attr(3)</code> both make any other value <code>EINVAL</code>.</li>
+<li><strong>Invalid attribute variable.</strong> POSIX leaves a null or uninitialised attribute undefined and only recommends <code>EINVAL</code>, and the FreeBSD manual lists no error for it. The behaviour comes from FreeBSD libthr's <code>_pthread_attr_setdetachstate</code> (<code>lib/libthr/thread/thr_attr.c</code>), which returns <code>EINVAL</code> when the variable is null or holds no attribute object.</li>
+<li><strong>The numbers.</strong> FreeBSD's <code>&lt;pthread.h&gt;</code> defines the two states as <code>0</code> and <code>1</code>. The OpenOrbis homebrew SDK header (<code>include/orbis/_types/pthread.h</code>) defines <code>ORBIS_PTHREAD_CREATE_JOINABLE</code> and <code>ORBIS_PTHREAD_CREATE_DETACHED</code> with the same values. That header follows FreeBSD's text, so it corroborates the numbers rather than measuring them independently.</li>
+</ul>
+<h3 id="the-default-nobody-has-measured">The default nobody has measured</h3>
+<p>Two detach states come from the system rather than the game: the state a fresh attribute starts
+with, and the one <code>scePthreadAttrGet</code> copies from a running thread. POSIX makes joinable the
+default, but nothing we can cite confirms what the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> reports. In FreeBSD libthr,
+<code>_pthread_create</code> (<code>thr_create.c</code>) uses that same default (<code>_pthread_attr_default</code>) when it is
+given no attribute variable or an empty one. The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> treats both cases as the unknown default,
+so the outcome, a fatal, does not depend on the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> matching libthr there.</p>
+<p>How the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> keeps that open:</p>
+<ol class="wk-steps">
+<li><strong>Record only what was set.</strong> The attribute records a state only when one is set (<code>has_detach_state</code>). <code>scePthreadAttrGet</code> replaces the whole attribute, as libthr's <code>pthread_attr_get_np</code> does, so a state set before the copy is dropped.</li>
+<li><strong>Read through one function.</strong> By convention, thread creation reads the state through <code>rt_thread_attr_detach_state</code> (<code>runtime/include/runtime/process.h</code>) and never from the field. A fresh attribute's field holds zero, which is the joinable value, so reading the field directly would assume joinable silently.</li>
+<li><strong>Stop when there is no answer.</strong> For no variable, an empty variable, or a state nobody set, the reader stops the process (<code>rt_fatal</code>), names the call that asked, and says which of those cases it hit.</li>
+</ol>
+<details class="reference">
+<summary>Thread attributes: PRs, credits and tests</summary>
+<p>Merged <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/95">PR #95</a>,
+by <a href="https://github.com/EzequielRindello">@EzequielRindello</a>, registers <code>pthread_attr_init</code> and
+<code>pthread_attr_destroy</code>, following the same split as the mutex and detach-state calls: the POSIX
+names return the FreeBSD error number itself, the SCE names <code>0x80020000</code> plus it, and an
+attribute made under one name can be freed under the other.</p>
+<p>The registry tests cover both error conventions and freeing across names. They do not establish
+a new boot result.</p>
+</details>
+<details class="details">
+<summary>Default detach state: what would settle it</summary>
+<p>An observed <code>scePthreadAttrGetdetachstate</code> result on a console, for a fresh
+attribute and for one filled by <code>scePthreadAttrGet</code> from the main thread. Guest call sites would
+also settle it: a thread created without a detach state being set, then joined or detached
+(<code>scePthreadJoin</code>, <code>pthread_join</code> and <code>scePthreadDetach</code> are imported).</p>
+</details>
+<h2 id="sleeping">Sleeping</h2>
+<div class="wk-table"><table>
+<thead>
+<tr>
+<th>Call</th>
+<th>Status</th>
+<th>What the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>sceKernelUsleep</code>, <code>usleep</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td>Sleeps the host thread at least the requested time, then returns <code>0</code>.</td>
+</tr>
+<tr>
+<td><code>usleep</code> of a second or more</td>
+<td><span class="wk-badge wk-badge--unresolved">unresolved</span></td>
+<td>Stops by name.</td>
+</tr>
+<tr>
+<td>SCE error values for <code>sceKernelUsleep</code></td>
+<td><span class="wk-badge wk-badge--unresolved">unresolved</span></td>
+<td>Stops by name.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Both calls pause the calling thread. They take one unsigned 32-bit count of microseconds and return
+<code>int</code>. For <code>sceKernelUsleep</code> the game itself fixes that shape: the <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> frame limiter and
+swap-chain present functions call it that way and expect <code>0</code> back.</p>
+<p><strong>How the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> answers.</strong> A guest thread runs on a host thread, so the host thread sleeps at
+least the requested time and the call returns <code>0</code>. A host signal is not a guest event, so an
+interrupted sleep resumes with the time left.</p>
+<p><strong>What stays open</strong>, and each stops by name rather than guessing:</p>
+<ul>
+<li><code>usleep</code> with 1,000,000 or more. Old SUSv2 allowed <code>EINVAL</code> there; FreeBSD sleeps. No <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> source says which the guest gets.</li>
+<li>Any SCE error value for <code>sceKernelUsleep</code>. The game's call sites never check the result, and no public source names one.</li>
+</ul>
+<details class="reference">
+<summary>Sleeping: PR, credits and tests</summary>
+<p>Merged <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/94">PR #94</a>, by
+<a href="https://github.com/EzequielRindello">@EzequielRindello</a>, implements both.</p>
+<p>The tests measure that each call lasts at least what was asked on the host's monotonic clock.</p>
+</details>
+<h2 id="stack-protector">Stack protector</h2>
+<div class="wk-table is-stack"><table class="wk-stack">
+<thead>
+<tr>
+<th>Call</th>
+<th>Status</th>
+<th>What the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td data-label="Call"><code>__stack_chk_fail</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">Ends the process by name; the stop is the whole contract.</td>
+</tr>
+<tr>
+<td data-label="Call"><code>__stack_chk_guard</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--unresolved">unresolved</span></td>
+<td data-label="What the runtime does">Separate data import; currently gets a zeroed page.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Code built with the compiler's stack protector places a canary value in each protected function's
+stack frame. The function calls <code>__stack_chk_fail</code> when its saved canary no longer matches, meaning
+that function's stack frame was overwritten. <code>eboot</code>, <code>libSceFios2.elf</code> and <code>libc.elf</code> import it
+from <code>libkernel</code>.</p>
+<p>Here the stop <em>is</em> the implementation: the LSB contract is <code>void(void)</code>, the call never returns and
+the program ends (FreeBSD's libc reports it and aborts). So the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> stops the process by name,
+and the entry counts as implemented, unlike the fail-loud diagnostics elsewhere on this page.</p>
+<p>Not covered: the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr>'s own message or crash report, which the guest cannot observe after it ends,
+and <code>__stack_chk_guard</code>, the canary value itself. That is a separate data import whose <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> value is
+not established; an unbound data import currently gets a zeroed page.</p>
+<details class="reference">
+<summary>Stack protector: PR and credits</summary>
+<p>Merged <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/97">PR #97</a>, by
+<a href="https://github.com/EzequielRindello">@EzequielRindello</a>, stops the process by name.</p>
+</details>
+<h2 id="memory-operations">Memory operations</h2>
+<div class="wk-table"><table>
+<thead>
+<tr>
+<th>Call</th>
+<th>Status</th>
+<th>What the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>memcpy</code>, <code>memset</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td>ISO C copy and fill; both return the destination.</td>
+</tr>
+</tbody>
+</table></div>
+<p>These are the two ISO C operations imported by <code>libSceFios2.elf</code> from <code>libSceLibcInternal</code>.
+<code>memcpy</code> copies the requested bytes, and <code>memset</code> writes a value, converted to an unsigned byte,
+across a region. Both return the destination. Undefined cases such as overlapping <code>memcpy</code> regions
+and null pointers are not modeled.</p>
+<details class="reference">
+<summary>Memory operations: PR and tests</summary>
+<p>Merged <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/82">PR #82</a> supplies both.
+The registry tests cover the returned pointer, zero length, byte truncation, untouched bytes
+past the requested region, and coverage classification. These tests do not establish additional
+<abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> behavior or a new boot milestone.</p>
+</details>
+<h2 id="network-byte-order-ipv4-text-and-network-control">Network: byte order, IPv4 text and network control</h2>
+<div class="wk-table is-stack"><table class="wk-stack">
+<thead>
+<tr>
+<th>Call</th>
+<th>Status</th>
+<th>What the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td data-label="Call"><code>sceNetHtonl</code>, <code>sceNetHtons</code>, <code>sceNetNtohl</code>, <code>sceNetNtohs</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">Byte reversal between host and network order.</td>
+</tr>
+<tr>
+<td data-label="Call"><code>sceNetInetPton</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">Parses dotted-decimal IPv4 for AF_INET only; other cases stop.</td>
+</tr>
+<tr>
+<td data-label="Call"><code>sceNetCtlGetState</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">Reports disconnected and returns success.</td>
+</tr>
+<tr>
+<td data-label="Call"><code>sceNetCtlCheckCallback</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">Returns <code>0</code>; no callback is due while disconnected.</td>
+</tr>
+<tr>
+<td data-label="Call"><code>sceNetCtlRegisterCallback</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">Stores the callback opaquely and returns an ID.</td>
+</tr>
+<tr>
+<td data-label="Call"><code>sceNetCtlUnregisterCallback</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">Removes a registration by its ID.</td>
+</tr>
+<tr>
+<td data-label="Call"><code>sceNetCtlGetInfo</code>, <code>sceNetCtlGetNatInfo</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--unresolved">unresolved</span></td>
+<td data-label="What the runtime does">Stop by name; layouts and offline values are unknown.</td>
+</tr>
+</tbody>
+</table></div>
+<p>These are deliberately limited offline paths, not network connectivity or PSN support.</p>
+<h3 id="byte-order">Byte order</h3>
+<p>Network protocols send integers big-endian ("network order"); the CPU may store them the other
+way round ("host order"). Paleblood imports four integer conversion calls from <code>libSceNet</code> in
+<code>eboot</code>: <code>sceNetHtonl</code>, <code>sceNetHtons</code>, <code>sceNetNtohl</code>, and <code>sceNetNtohs</code>. Their public SCE
+declarations use unsigned 32-bit and 16-bit integer arguments and results. The documented contract
+converts between host order and big-endian network order; the reverse direction uses the same
+operation. For the project's AMD64 guest ABI, this is byte reversal. The four calls are pure value
+conversions and do not require socket or online state.</p>
+<p>This evidence supports only these four conversions. It does not establish behavior for <code>libSceNet</code>
+sockets, name resolution, epoll, or offline-state queries. Those imports remain unimplemented until
+their own evidence is available.</p>
+<h3 id="ipv4-text-to-binary-scenetinetpton">IPv4 text to binary (<code>sceNetInetPton</code>)</h3>
+<p><code>inet_pton</code> turns an address written as text, such as dotted decimal, into its binary form. The
+game was seen calling it in four places, each passing address-family value 2 (AF_INET) and using
+the result as an IPv4 address.</p>
+<p>For that observed path, the implementation parses dotted-decimal text into four network-order
+bytes, returns 1 for a valid address and 0 for malformed text, and performs no network I/O. The
+original call sites support the family and output use; the parser's accepted text forms come from
+the public BSD <code>inet_pton(3)</code> contract. Other address families and <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> null-pointer error behavior
+are not established, so the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> fails loudly for those cases rather than choosing host-specific
+results.</p>
+<h3 id="offline-network-control-libscenetctl">Offline network control (<code>libSceNetCtl</code>)</h3>
+<p>The executable imports six calls from <code>libSceNetCtl</code>. They report connection state and let the game
+register a callback for state changes. Four currently provide a constrained offline behavior:</p>
+<ul>
+<li><strong><code>sceNetCtlGetState</code></strong> writes the disconnected value (<code>0</code>) and returns success. The game checks <code>0</code> and <code>3</code>; the disconnected interpretation is cross-checked against the public API family. The meanings of intermediate states and <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> error behavior for a null pointer remain unknown.</li>
+<li><strong><code>sceNetCtlCheckCallback</code></strong> returns <code>0</code>; while the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> remains disconnected, no state-change callback is due. Behavior for a connected state is not implemented or established.</li>
+<li><strong><code>sceNetCtlRegisterCallback</code></strong> stores an opaque callback and argument under a nonzero ID written to the caller's output slot. Callback invocation and <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> error values for invalid pointers or allocation failure remain unresolved.</li>
+<li><strong><code>sceNetCtlUnregisterCallback</code></strong> removes a registration by its returned ID. <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> behavior for unknown or repeated IDs remains unresolved and fails loudly.</li>
+</ul>
+<p>The registration call sites show the callback, argument, and output-ID slot; the guest later passes
+the returned ID to unregister. The callback pointer is kept opaque and never called. Static
+call-site evidence establishes these shapes, not every <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> error case.</p>
+<p>The other two stay unresolved and are registered only to produce a useful fatal diagnostic:</p>
+<ul>
+<li><strong><code>sceNetCtlGetInfo</code></strong>: the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> structure layout, module-14 meaning, and offline answer are unknown.</li>
+<li><strong><code>sceNetCtlGetNatInfo</code></strong>: the guest writes a 16-byte size and later reads offset 8, but the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> meaning of that field and offline NAT value are unknown.</li>
+</ul>
+<p>Their registry presence does not mean they are implemented.</p>
+<details class="reference">
+<summary>Network: sources, PRs and tests</summary>
+<p><strong>Byte order.</strong> The declaration reference (see References) is PSP2SDK's public <code>net.h</code> API
+surface; it supplies the SCE function names and integer widths, not a <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> trace. The
+FreeBSD manual documents the standard host/network conversion contract.</p>
+<p><strong><code>sceNetInetPton</code> (issue #41).</strong> Merged Paleblood <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/63">PR #63</a>
+adds this import using the documented BSD <code>inet_pton(3)</code> AF_INET contract. Unit tests cover
+valid, malformed, truncated, unsupported-family, and null-pointer inputs; these are synthetic
+<abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> tests, not additional original-game execution or function-verification evidence.</p>
+<p><strong><code>libSceNetCtl</code>.</strong> The four offline behaviors are based on Paleblood PR #59 and its
+source-level tests. The unit tests exercise Paleblood's synthetic implementation; they are not
+original-game execution or console validation. Merged Paleblood PR #61 registers
+<code>sceNetCtlGetInfo</code> and <code>sceNetCtlGetNatInfo</code> as unresolved entries, leaves them callable for
+named diagnostics, and excludes them from implementation coverage.</p>
+</details>
+<details class="evidence">
+<summary>sceNetInetPton: call-site addresses and executable hash</summary>
+<p>Inspection of the exact local Bloodborne 1.09 executable found four unconditional call
+instructions, at <code>0x0085785e</code>, <code>0x011c7a7b</code>, <code>0x02f984f6</code>, and <code>0x02df348d</code>; each passes
+address-family value 2 and consumes the result as an IPv4 address. The local executable used for
+that inspection has SHA-256 <code>ca8813862d7b1345a6791b7d88cc1d383ede2a6bbc944f39dd3c0e0e3ad9e285</code>
+(the file and disassembly remain outside the public repository).</p>
+</details>
+<details class="evidence">
+<summary>libSceNetCtl: full table</summary>
+<div class="wk-table is-stack"><table class="wk-stack">
 <thead>
 <tr>
 <th>Call</th>
@@ -563,145 +972,93 @@ offline behavior, based on Paleblood PR #59 and its source-level tests:</p>
 <td data-label="Evidence limit"><abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> behavior for unknown or repeated IDs remains unresolved and fails loudly.</td>
 </tr>
 </tbody>
-</table>
-<p>These are deliberately limited offline paths, not network connectivity or PSN support. The
-registration call sites show the callback, argument, and output-ID slot; the guest later passes the
-returned ID to unregister. The callback pointer is kept opaque and never called. The unit tests
-exercise Paleblood's synthetic implementation; they are not original-game execution or console
-validation. Static call-site evidence establishes the shapes described above, not every <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> error
-case.</p>
-<p><code>sceNetCtlGetInfo</code> and <code>sceNetCtlGetNatInfo</code> remain registered only to produce a useful fatal
-diagnostic. For <code>GetInfo</code>, the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> structure layout, module-14 meaning, and offline answer are
-unknown. For <code>GetNatInfo</code>, the guest writes a 16-byte size and later reads offset 8, but the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr>
-meaning of that field and offline NAT value are unknown. Their registry presence does not mean they
-are implemented. Merged Paleblood PR #61 registers them as unresolved entries, leaves them callable
-for named diagnostics, and excludes them from implementation coverage.</p>
-<h2 id="memory-operations-memcpy-memset">Memory operations (<code>memcpy</code>, <code>memset</code>)</h2>
-<p>Merged <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/82">PR #82</a> supplies the two ISO C
-operations imported by <code>libSceFios2.elf</code> from <code>libSceLibcInternal</code>. Both return the destination;
-<code>memcpy</code> copies the requested bytes and <code>memset</code> writes the value converted to an unsigned byte.
-The registry tests cover the returned pointer, zero length, byte truncation, untouched bytes
-past the requested region, and coverage classification. Undefined cases such as overlapping
-<code>memcpy</code> regions and null pointers are not modeled. These tests do not establish additional
-<abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> behavior or a new boot milestone.</p>
-<h2 id="thread-attribute-detach-state-scepthreadattrsetdetachstate-issue-34">Thread attribute detach state (<code>scePthreadAttrSetdetachstate</code>, issue #34)</h2>
-<p><code>eboot</code> and <code>libSceFios2.elf</code> import <code>scePthreadAttrSetdetachstate</code> from <code>libkernel</code>, and <code>eboot</code>
-imports <code>pthread_attr_setdetachstate</code> from <code>libScePosix</code> (<code>symbols/imports.csv</code>). Each source below
-establishes a different part:</p>
-<ul>
-<li><strong>What the call does:</strong> POSIX <code>pthread_attr_setdetachstate</code>. A thread created with the attribute
-  starts detached for <code>PTHREAD_CREATE_DETACHED</code> and joinable for <code>PTHREAD_CREATE_JOINABLE</code>.</li>
-<li><strong>Invalid detach state:</strong> POSIX and FreeBSD's <code>pthread_attr(3)</code> both make any other value
-  <code>EINVAL</code>.</li>
-<li><strong>Invalid attribute variable:</strong> POSIX leaves a null or uninitialised attribute undefined and only
-  recommends <code>EINVAL</code>, and the FreeBSD manual lists no error for it. The behaviour comes from
-  FreeBSD libthr's <code>_pthread_attr_setdetachstate</code> (<code>lib/libthr/thread/thr_attr.c</code>), which returns
-  <code>EINVAL</code> when the variable is null or holds no attribute object.</li>
-<li><strong>The numbers:</strong> FreeBSD's <code>&lt;pthread.h&gt;</code> defines the two states as <code>0</code> and <code>1</code>. The OpenOrbis
-  homebrew SDK header (<code>include/orbis/_types/pthread.h</code>) defines <code>ORBIS_PTHREAD_CREATE_JOINABLE</code> and
-  <code>ORBIS_PTHREAD_CREATE_DETACHED</code> with the same values. That header follows FreeBSD's text, so it
-  corroborates the numbers rather than measuring them independently.</li>
-</ul>
-<p>As with the mutex functions (<code>runtime/syslib/kernel_mutex.c</code>), the SCE name returns <code>0x80020000</code>
-plus the error number, and the POSIX name returns the number itself.</p>
-<p>Still open: the detach state a fresh attribute starts with, and the one <code>scePthreadAttrGet</code> copies
-from a running thread. Both are values the system supplies. POSIX makes joinable the default, but
-nothing we can cite confirms what the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> reports. In FreeBSD libthr, <code>_pthread_create</code>
-(<code>thr_create.c</code>) uses that same default (<code>_pthread_attr_default</code>) when it is given no attribute
-variable or an empty one. The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> treats both cases as the unknown default, so the outcome, a
-fatal, does not depend on the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> matching libthr there.</p>
-<p>How the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> keeps that open:</p>
-<ul>
-<li>The attribute records a state only when one is set (<code>has_detach_state</code>). <code>scePthreadAttrGet</code>
-  replaces the whole attribute, as libthr's <code>pthread_attr_get_np</code> does, so a state set before the
-  copy is dropped.</li>
-<li>By convention, thread creation reads the state through <code>rt_thread_attr_detach_state</code>
-  (<code>runtime/include/runtime/process.h</code>) and never from the field. A fresh attribute's field holds
-  zero, which is the joinable value, so reading the field directly would assume joinable silently.</li>
-<li>For no variable, an empty variable, or a state nobody set, the reader stops the process
-  (<code>rt_fatal</code>), names the call that asked, and says which of those cases it hit.</li>
-</ul>
-<p>What would settle it: an observed <code>scePthreadAttrGetdetachstate</code> result on a console, for a fresh
-attribute and for one filled by <code>scePthreadAttrGet</code> from the main thread. Guest call sites would
-also settle it: a thread created without a detach state being set, then joined or detached
-(<code>scePthreadJoin</code>, <code>pthread_join</code> and <code>scePthreadDetach</code> are imported).</p>
-<h2 id="thread-attributes-under-their-posix-names-pthread_attr_init-pthread_attr_destroy">Thread attributes under their POSIX names (<code>pthread_attr_init</code>, <code>pthread_attr_destroy</code>)</h2>
-<p><code>eboot</code> imports <code>pthread_attr_init</code> and <code>pthread_attr_destroy</code> from <code>libScePosix</code>, next to the SCE
-names the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> already had. Merged <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/95">PR #95</a>,
-by <a href="https://github.com/EzequielRindello">@EzequielRindello</a>, registers them, following the same
-split as the mutex and detach-state calls: the POSIX names return the FreeBSD error number itself,
-the SCE names <code>0x80020000</code> plus it, and an attribute made under one name can be freed under the
-other.</p>
-<ul>
-<li><strong>Init</strong> allocates the attribute and stores it in the variable; <code>ENOMEM</code> when it cannot (POSIX;
-  FreeBSD libthr's <code>_pthread_attr_init</code>).</li>
-<li><strong>Destroy</strong> frees it and empties the variable; <code>EINVAL</code> for a missing or empty variable (libthr's
-  <code>_pthread_attr_destroy</code>).</li>
-<li><strong>A missing variable passed to init</strong> is undefined in POSIX and unchecked in libthr. The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>
-  answers <code>EINVAL</code> under both names, as the SCE name already did and as the mutex attribute calls do.
-  No <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> source or call site says otherwise.</li>
-</ul>
-<p>The registry tests cover both error conventions and freeing across names. They do not establish
-a new boot result.</p>
-<h2 id="sleeping-scekernelusleep-usleep">Sleeping (<code>sceKernelUsleep</code>, <code>usleep</code>)</h2>
-<p>Merged <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/94">PR #94</a>, by
-<a href="https://github.com/EzequielRindello">@EzequielRindello</a>, implements both. They take one unsigned
-32-bit count of microseconds and return <code>int</code>. For <code>sceKernelUsleep</code> the game itself fixes that
-shape: the <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> frame limiter and swap-chain present functions call it that way and expect <code>0</code>
-back. A guest thread runs on a host thread, so the host thread sleeps at least the requested time
-and the call returns <code>0</code>. A host signal is not a guest event, so an interrupted sleep resumes with
-the time left.</p>
-<p>Still open, and each stops by name rather than guessing:</p>
-<ul>
-<li><code>usleep</code> with 1,000,000 or more. Old SUSv2 allowed <code>EINVAL</code> there; FreeBSD sleeps. No <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> source
-  says which the guest gets.</li>
-<li>Any SCE error value for <code>sceKernelUsleep</code>. The game's call sites never check the result, and no
-  public source names one.</li>
-</ul>
-<p>The tests measure that each call lasts at least what was asked on the host's monotonic clock.</p>
-<h2 id="stack-protector-__stack_chk_fail">Stack protector (<code>__stack_chk_fail</code>)</h2>
-<p>Code built with the compiler's stack protector calls <code>__stack_chk_fail</code> when a function's saved
-canary no longer matches, meaning that function's stack frame was overwritten. <code>eboot</code>,
-<code>libSceFios2.elf</code> and <code>libc.elf</code> import it from <code>libkernel</code>. Merged
-<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/97">PR #97</a>, by
-<a href="https://github.com/EzequielRindello">@EzequielRindello</a>, stops the process by name. Here the stop
-<em>is</em> the implementation: the LSB contract is <code>void(void)</code>, the call never returns and the program
-ends (FreeBSD's libc reports it and aborts), so the entry counts as implemented, unlike the
-fail-loud diagnostics above.</p>
-<p>Not covered: the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr>'s own message or crash report, which the guest cannot observe after it ends,
-and <code>__stack_chk_guard</code>, the canary value itself. That is a separate data import whose <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> value is
-not established; an unbound data import currently gets a zeroed page.</p>
-<h2 id="module-loading-at-run-time-libscesysmodule">Module loading at run time (<code>libSceSysmodule</code>)</h2>
-<p>The executable asks for system modules by id through <code>sceSysmoduleLoadModule</code>,
-<code>sceSysmoduleIsLoaded</code> and <code>sceSysmoduleUnloadModule</code>; it imports no other <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> entry. Five of
-the seven modules the title ships are recorded in Paleblood's module list as stubs: the executable
-imports nothing from them, so they are not mapped. Their public ids come from the OpenOrbis
-toolchain's list.</p>
+</table></div>
+</details>
+<h2 id="system-modules-libscesysmodule">System modules (<code>libSceSysmodule</code>)</h2>
+<div class="wk-table is-stack"><table class="wk-stack">
+<thead>
+<tr>
+<th>Call</th>
+<th>Status</th>
+<th>What the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td data-label="Call"><code>sceSysmoduleLoadModule</code>, <code>sceSysmoduleIsLoaded</code>, <code>sceSysmoduleUnloadModule</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">Answer for stub modules only; every other case stops by name.</td>
+</tr>
+</tbody>
+</table></div>
+<p>A system module is a <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> library the game can ask for at run time. The executable asks for system
+modules by id through <code>sceSysmoduleLoadModule</code>, <code>sceSysmoduleIsLoaded</code> and
+<code>sceSysmoduleUnloadModule</code>; it imports no other <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> entry.</p>
+<p>Five of the seven modules the title ships are recorded in Paleblood's module list as stubs: the
+executable imports nothing from them, so they are not mapped. Their public ids come from the
+OpenOrbis toolchain's list.</p>
+<p><strong>How the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> answers, for stub modules only:</strong></p>
+<ol>
+<li>A load marks the module loaded and succeeds without mapping anything.</li>
+<li>A query of a loaded one answers <code>0</code>.</li>
+<li>An unload clears the mark.</li>
+</ol>
+<p>Everything else stops by name: a module that is not a stub (the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> cannot load system modules
+yet), a second load of a loaded stub, and a query or unload of a stub that is not loaded. The error
+values for those cases are not public. The saved boot stops before the first load, so which ids the
+game passes is not yet observed.</p>
+<details class="reference">
+<summary>System modules: PR and credits</summary>
 <p>Merged <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/83">PR #83</a>, by
-<a href="https://github.com/adurham">@adurham</a>, answers those three calls for the stub modules only: a load
-marks the module loaded and succeeds without mapping anything, a query of a loaded one answers <code>0</code>,
-and an unload clears the mark. Everything else stops by name: a module that is not a stub (the
-<abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> cannot load system modules yet), a second load of a loaded stub, and a query or unload of
-a stub that is not loaded. The error values for those cases are not public. The saved boot stops
-before the first load, so which ids the game passes is not yet observed.</p>
-<h2 id="the-current-startup-stop-scepthreadattrgetaffinity">The current startup stop (<code>scePthreadAttrGetaffinity</code>)</h2>
-<p>The latest genuine boot stops when the bundled <code>libc.elf</code> asks for the main thread's CPU affinity
-mask. The caller is understood from the hash-pinned module: it copies the current thread's
-attributes, then passes the attribute variable and an eight-byte zeroed slot (two pointers, not
-FreeBSD's three-argument form with a size). It ignores the result, counts the set bits in the slot,
-and stores that count. Synthetic runs of that original caller with scripted imports confirm this.
-They are not observations of <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> affinity.</p>
-<p>Returning success with a guessed mask would change the CPU count the C library stores without
-implementing the query. So the import stays unbound until the main thread's real mask, the exact
-output width and the error contract are established. <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/34">Issue #34</a>
-tracks it, and nobody has claimed it yet.</p>
+<a href="https://github.com/adurham">@adurham</a>, answers those three calls for the stub modules only.</p>
+</details>
+<h2 id="the-current-startup-stop">The current startup stop</h2>
+<div class="wk-table is-stack"><table class="wk-stack">
+<thead>
+<tr>
+<th>Call</th>
+<th>Status</th>
+<th>What the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td data-label="Call"><code>scePthreadAttrGetaffinity</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--observed">observed</span></td>
+<td data-label="What the runtime does">Left unbound; the latest genuine boot stops here.</td>
+</tr>
+</tbody>
+</table></div>
+<p>A thread's CPU affinity mask says which CPU cores it may run on, one bit per core. The latest
+genuine boot stops when the bundled <code>libc.elf</code> asks for the main thread's mask.</p>
+<p><strong>What the caller does.</strong> It is understood from the hash-pinned module:</p>
+<ol class="wk-steps">
+<li><strong>Copy the attributes.</strong> It copies the current thread's attributes.</li>
+<li><strong>Ask for the mask.</strong> It passes the attribute variable and an eight-byte zeroed slot: two pointers, not FreeBSD's three-argument form with a size.</li>
+<li><strong>Count the cores.</strong> It ignores the result, counts the set bits in the slot, and stores that count.</li>
+</ol>
+<p>Synthetic runs of that original caller with scripted imports confirm this. They are not
+observations of <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> affinity.</p>
+<p><strong>Why the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> does not answer yet.</strong> Returning success with a guessed mask would change the CPU
+count the C library stores without implementing the query. So the import stays unbound until the
+main thread's real mask, the exact output width and the error contract are established.
+<a href="https://github.com/Yharnam-Hunters/Paleblood/issues/34">Issue #34</a> tracks it, and nobody has
+claimed it yet.</p>
+<details class="reference">
+<summary>scePthreadAttrGetaffinity: declaration source</summary>
+<p>OpenOrbis <a href="https://github.com/OpenOrbis/OpenOrbis-PS4-Toolchain/blob/0a1aaf9dd4a92695538bdeb09fb056d06dd11725/include/orbis/libkernel.h#L463"><code>libkernel.h</code></a>
+has the affinity declaration. It is corroboration, not a measured <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> contract.</p>
+</details>
 <h2 id="implementation-and-tests">Implementation and tests</h2>
-<p>Implement only behavior supported by public documentation, independent reverse engineering, or
-observed behavior. Keep unresolved target behavior visible; do not fabricate a return value to
-make <code>tools/boot.py</code> advance. Add cases to the <a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/test/test_syslib.c">RT_SYSLIB unit test</a> for
-each established behavior and error path. Runtime-only contributions do not need a game dump,
-<abbr title="Inputs recorded while the game ran, replayed by the harness.">captures</abbr>, or function-level <code>verify.py</code> results; CI builds and runs the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> and syslib tests.</p>
+<ul>
+<li>Implement only behavior supported by public documentation, independent reverse engineering, or observed behavior.</li>
+<li>Keep unresolved target behavior visible; do not fabricate a return value to make <code>tools/boot.py</code> advance.</li>
+<li>Add cases to the <a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/test/test_syslib.c">RT_SYSLIB unit test</a> for each established behavior and error path.</li>
+<li>Runtime-only contributions do not need a game dump, <abbr title="Inputs recorded while the game ran, replayed by the harness.">captures</abbr>, or function-level <code>verify.py</code> results; CI builds and runs the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> and syslib tests.</li>
+</ul>
 <h2 id="references">References</h2>
+<details class="reference">
+<summary>References</summary>
 <ul>
 <li><a href="https://pubs.opengroup.org/onlinepubs/9799919799/functions/clock_gettime.html">POSIX <code>clock_gettime</code></a>, <a href="https://pubs.opengroup.org/onlinepubs/9799919799/basedefs/time.h.html">POSIX clock definitions</a>, and <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/getpid.html">POSIX <code>getpid</code></a></li>
 <li><a href="https://pubs.opengroup.org/onlinepubs/009604599/functions/gettimeofday.html">Older POSIX <code>gettimeofday</code> specification</a></li>
@@ -714,6 +1071,7 @@ each established behavior and error path. Runtime-only contributions do not need
 <li><a href="https://refspecs.linuxfoundation.org/LSB_5.0.0/LSB-Core-generic/LSB-Core-generic/libc---stack-chk-fail-1.html">LSB Core <code>__stack_chk_fail</code></a> and FreeBSD libc <a href="https://github.com/freebsd/freebsd-src/blob/main/lib/libc/secure/libc_stack_protector.c"><code>libc_stack_protector.c</code></a></li>
 <li>OpenOrbis toolchain <a href="https://github.com/OpenOrbis/OpenOrbis-PS4-Toolchain/blob/master/include/orbis/Sysmodule.h"><code>Sysmodule.h</code></a> and <a href="https://github.com/OpenOrbis/OpenOrbis-PS4-Toolchain/blob/master/include/orbis/_types/sysmodule.h"><code>_types/sysmodule.h</code></a>; OpenOrbis <a href="https://github.com/OpenOrbis/OpenOrbis-PS4-Toolchain/blob/0a1aaf9dd4a92695538bdeb09fb056d06dd11725/include/orbis/libkernel.h#L463"><code>libkernel.h</code></a> for the affinity declaration (corroboration, not a measured <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> contract)</li>
 </ul>
+</details>
       
       </div>
 
@@ -735,241 +1093,10 @@ each established behavior and error path. Runtime-only contributions do not need
 
 
 <script>
-(function () {
-'use strict';
-
-/* ── Theme ─────────────────────────────────────────────────── */
-var stored = localStorage.getItem('wk-theme') || 'dark';
-applyTheme(stored);
-document.getElementById('wk-toggle').addEventListener('click', function () {
-  applyTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
-});
-function applyTheme(t) {
-  document.documentElement.setAttribute('data-theme', t);
-  localStorage.setItem('wk-theme', t);
-  var btn = document.getElementById('wk-toggle');
-  if (btn) btn.textContent = t === 'dark' ? '☀' : '🌙';
-}
-
-/* ── Address map: a block opens its slice in a pop-up ──────── */
-(function () {
-  var map = document.querySelector('.wk-bankmap');
-  if (!map) return;
-  var modal = document.createElement('div');
-  modal.className = 'wk-slice-modal';
-  modal.setAttribute('role', 'dialog');
-  modal.setAttribute('aria-modal', 'true');
-  document.body.appendChild(modal);
-  function close() { modal.classList.remove('is-open'); }
-  map.addEventListener('click', function (e) {
-    var cell = e.target.closest('a.wk-bank-cell');
-    if (!cell) return;
-    var panel = document.getElementById(cell.getAttribute('href').slice(1));
-    if (!panel) return;
-    e.preventDefault();
-    modal.innerHTML = '';
-    modal.appendChild(panel.cloneNode(true));
-    modal.firstChild.removeAttribute('id');
-    requestAnimationFrame(function () { modal.classList.add('is-open'); });
-  });
-  modal.addEventListener('click', function (e) {
-    if (e.target === modal || e.target.closest('.wk-slice-close')) { e.preventDefault(); close(); }
-  });
-  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
-})();
-
-/* ── Mobile nav ────────────────────────────────────────────── */
-var navToggle  = document.getElementById('wk-nav-toggle');
-var navEl      = document.getElementById('wk-nav');
-var navBackdrop = document.getElementById('wk-nav-backdrop');
-var mainEl     = document.querySelector('.wk-main');
-var headerRight = document.querySelector('.wk-header-right');
-var wordmark = document.querySelector('.wk-wordmark');
-/* Matches the drawer breakpoint in wiki.css. */
-var drawerQuery = window.matchMedia('(max-width: 900px)');
-
-function closeNav() {
-  navEl.classList.remove('is-open');
-  navBackdrop.hidden = true;
-  navToggle.setAttribute('aria-expanded', 'false');
-  navToggle.setAttribute('aria-label', 'Open navigation');
-  navToggle.textContent = '☰';
-  if (mainEl) mainEl.inert = false;
-  if (headerRight) headerRight.inert = false;
-  if (wordmark) wordmark.inert = false;
-  if (drawerQuery.matches) navEl.inert = true;
-}
-function openNav() {
-  navEl.inert = false;
-  if (mainEl) mainEl.inert = true;
-  if (headerRight) headerRight.inert = true;
-  if (wordmark) wordmark.inert = true;
-  navEl.classList.add('is-open');
-  navBackdrop.hidden = false;
-  navToggle.setAttribute('aria-expanded', 'true');
-  navToggle.setAttribute('aria-label', 'Close navigation');
-  navToggle.textContent = '×';
-}
-if (navToggle && navEl && navBackdrop) {
-  navEl.inert = drawerQuery.matches;
-  navToggle.addEventListener('click', function () {
-    if (navEl.classList.contains('is-open')) { closeNav(); } else { openNav(); }
-  });
-  navBackdrop.addEventListener('click', function () { closeNav(); navToggle.focus(); });
-  navEl.addEventListener('click', function (e) {
-    if (e.target.closest('a')) { closeNav(); }
-  });
-  document.addEventListener('keydown', function (e) {
-    if (!navEl.classList.contains('is-open') || !drawerQuery.matches) return;
-    if (e.key === 'Escape') { closeNav(); navToggle.focus(); return; }
-    if (e.key !== 'Tab') return;
-    var links = Array.prototype.slice.call(navEl.querySelectorAll('a[href], button:not([disabled])'));
-    var focusable = [navToggle].concat(links);
-    var first = focusable[0];
-    var last = focusable[focusable.length - 1];
-    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
-    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
-  });
-  window.addEventListener('resize', function () {
-    if (!drawerQuery.matches) { navEl.inert = false; closeNav(); }
-    else if (!navEl.classList.contains('is-open')) navEl.inert = true;
-  });
-}
-
-/* ── Search ─────────────────────────────────────────────────── */
-var input   = document.getElementById('wk-q');
-var results = document.getElementById('wk-results');
-var docs    = null;
-if (input) {
-  fetch("../search/search_index.json")
-    .then(function (r) { return r.json(); })
-    .then(function (d) { docs = d.docs; });
-
-  input.addEventListener('input', onSearch);
-
-  document.addEventListener('click', function (e) {
-    if (results && !results.contains(e.target) && e.target !== input) results.hidden = true;
-  });
-  input.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape') { results.hidden = true; this.blur(); }
-    if (e.key === 'Enter' && results && !results.hidden) {
-      var first = results.querySelector('.wk-result');
-      if (first) { first.click(); }
-    }
-  });
-}
-
-/* Press / to focus search */
-document.addEventListener('keydown', function (e) {
-  if (e.key === '/' && document.activeElement !== input &&
-      document.activeElement.tagName !== 'INPUT' &&
-      document.activeElement.tagName !== 'TEXTAREA') {
-    e.preventDefault();
-    if (input) { input.focus(); input.select(); }
-  }
-});
-
-function onSearch() {
-  var q = this.value.trim().toLowerCase();
-  if (!docs || q.length < 2) { results.hidden = true; return; }
-  var hits = docs.filter(function (d) {
-    return (d.title + ' ' + d.text).toLowerCase().indexOf(q) !== -1;
-  }).slice(0, 8);
-  if (!hits.length) { results.hidden = true; return; }
-  var base = "..";
-  results.innerHTML = hits.map(function (d) {
-    var text  = d.text || '';
-    var i     = text.toLowerCase().indexOf(q);
-    var start = Math.max(0, i - 35);
-    var end   = Math.min(text.length, i + q.length + 70);
-    var snip  = (start > 0 ? '…' : '') + text.slice(start, end) + (end < text.length ? '…' : '');
-    var url   = base + '/' + d.location;
-    return '<a class="wk-result" href="' + esc(url) + '" role="option">'
-         + '<div class="wk-result-title">' + esc(d.title || d.location) + '</div>'
-         + '<div class="wk-result-snip">'  + esc(snip) + '</div></a>';
-  }).join('');
-  results.hidden = false;
-}
-
-function esc(s) {
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-
-/* ── Back to top ────────────────────────────────────────────── */
-var topBtn = document.getElementById('wk-top');
-if (topBtn) {
-  window.addEventListener('scroll', function () {
-    topBtn.classList.toggle('visible', window.scrollY > 400);
-  }, {passive: true});
-  topBtn.addEventListener('click', function () {
-    window.scrollTo({top: 0, behavior: 'smooth'});
-  });
-}
-
-/* ── Copy-to-clipboard ───────────────────────────────────────── */
-document.querySelectorAll('.highlight').forEach(function (block) {
-  var btn = document.createElement('button');
-  btn.className = 'wk-copy-btn';
-  btn.title     = 'Copy code';
-  btn.textContent = '⎘';
-  block.appendChild(btn);
-  btn.addEventListener('click', function () {
-    var pre = block.querySelector('pre');
-    if (!pre) return;
-    navigator.clipboard.writeText(pre.innerText).then(function () {
-      btn.textContent = '✓';
-      btn.classList.add('copied');
-      setTimeout(function () {
-        btn.textContent = '⎘';
-        btn.classList.remove('copied');
-      }, 1500);
-    });
-  });
-});
-
-/* ── Collapsible long code blocks ─────────────────────────────── */
-var COLLAPSE_THRESHOLD = 340;
-document.querySelectorAll('.wk-article-body .highlight').forEach(function (block) {
-  var pre = block.querySelector('pre');
-  if (!pre || pre.scrollHeight <= COLLAPSE_THRESHOLD + 40) return;
-
-  block.classList.add('wk-code-collapsed');
-  var toggle = document.createElement('button');
-  toggle.className = 'wk-code-toggle';
-  toggle.type = 'button';
-  toggle.textContent = 'Show more ▾';
-  toggle.addEventListener('click', function () {
-    var collapsed = block.classList.toggle('wk-code-collapsed');
-    toggle.textContent = collapsed ? 'Show more ▾' : 'Show less ▴';
-    if (collapsed) block.scrollIntoView({block: 'nearest'});
-  });
-  block.insertAdjacentElement('afterend', toggle);
-});
-
-/* ── TOC scroll spy ─────────────────────────────────────────── */
-var tocLinks = document.querySelectorAll('.wk-toc-link');
-if (tocLinks.length && 'IntersectionObserver' in window) {
-  var headings = Array.from(document.querySelectorAll('.wk-article h1, .wk-article h2, .wk-article h3'));
-  var active   = null;
-  var obs = new IntersectionObserver(function (entries) {
-    entries.forEach(function (e) {
-      if (e.isIntersecting) {
-        var id  = e.target.id;
-        var lnk = document.querySelector('.wk-toc-link[href="#' + id + '"]');
-        if (lnk && lnk !== active) {
-          if (active) active.classList.remove('is-current');
-          lnk.classList.add('is-current');
-          active = lnk;
-        }
-      }
-    });
-  }, {rootMargin: '-10% 0px -80% 0px'});
-  headings.forEach(function (h) { if (h.id) obs.observe(h); });
-}
-
-
-}());
+/* Page settings for wiki.js. The drawer query matches the drawer breakpoint in wiki.css. */
+window.WK = {base: "..", searchIndex: "../search/search_index.json",
+             drawerQuery: window.matchMedia('(max-width: 900px)')};
 </script>
-<script src="../javascripts/hunters.js" defer></script><script src="../search/main.js" defer></script>
+<script src="../javascripts/wiki.js?v=48af91151e" defer></script><script src="../javascripts/hunters.js?v=28a0e867eb" defer></script><script src="../search/main.js" defer></script>
 </body>
 </html>

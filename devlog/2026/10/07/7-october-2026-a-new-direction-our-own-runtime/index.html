@@ -10,45 +10,51 @@
   
   <title>7 October 2026: a new direction, our own runtime — Byrgenwerth</title>
   
+  <script>
+  /* Before first paint: the stored theme, and a flag that JavaScript (wiki.js) will run. */
+  (function () { var d = document.documentElement, t = 'dark';
+    try { t = localStorage.getItem('wk-theme') || 'dark'; } catch (e) {}
+    d.setAttribute('data-theme', t); d.classList.add('wk-js'); }());
+  </script>
   
-  <link rel="stylesheet" href="../../../../../stylesheets/wiki.css?v=680e958d94"><link rel="stylesheet" href="../../../../../stylesheets/hunters.css?v=e4f3c59dfb">
+  <link rel="stylesheet" href="../../../../../stylesheets/wiki.css?v=25121f2b45"><link rel="stylesheet" href="../../../../../stylesheets/hunters.css?v=e4f3c59dfb">
   
   
 </head>
 <body>
 
-<!-- ── Header ──────────────────────────────────────────────── -->
-<header class="wk-header">
+<!-- ── Header: wordmark, section tabs (wide screens), search, theme ── -->
+
+
+<header class="wk-header" id="wk-header">
   <button class="wk-nav-toggle" id="wk-nav-toggle" aria-label="Open navigation" aria-expanded="false" aria-controls="wk-nav">☰</button>
   <a class="wk-wordmark" href="/byrgenwerth-site/">Byrgenwerth<small>notes of Paleblood, rebuilding Bloodborne one verified function at a time</small></a>
+
+  <!-- Section tabs (wide screens; the drawer lists the same sections on small ones) -->
+  <nav class="wk-tabs" aria-label="Sections">
+    
+    <a class="wk-tab is-active" href="../../../../.." aria-current="true">The Hunt</a>
+    
+    <a class="wk-tab" href="../../../../../great-ones/">Encyclopedia</a>
+    
+    <a class="wk-tab" href="../../../../../systems/">Systems</a>
+    
+    <a class="wk-tab" href="../../../../../ARCHITECTURE/">How It Works</a>
+    
+    <a class="wk-tab" href="../../../../../CONTRIBUTING/">For Hunters</a>
+    
+  </nav>
 
   <div class="wk-header-right">
     
     <div class="wk-searchbox">
       <input class="wk-search-input" id="wk-q" type="search"
-             placeholder="Search the archives…  [/]" autocomplete="off" aria-label="Search">
+             placeholder="Search  [/]" autocomplete="off" aria-label="Search">
       <div class="wk-search-results" id="wk-results" hidden role="listbox"></div>
     </div>
     <button class="wk-toggle" id="wk-toggle" title="Toggle theme" aria-label="Toggle dark/light">☀</button>
   </div>
 </header>
-
-
-
-<!-- ── Section tabs (wide screens; the drawer lists the same sections on small ones) ── -->
-<nav class="wk-tabs" aria-label="Sections">
-  
-  <a class="wk-tab is-active" href="../../../../.." aria-current="true">The Hunt</a>
-  
-  <a class="wk-tab" href="../../../../../great-ones/">Encyclopedia</a>
-  
-  <a class="wk-tab" href="../../../../../systems/">Systems</a>
-  
-  <a class="wk-tab" href="../../../../../ARCHITECTURE/">How It Works</a>
-  
-  <a class="wk-tab" href="../../../../../CONTRIBUTING/">For Hunters</a>
-  
-</nav>
 
 <!-- ── Layout ──────────────────────────────────────────────── -->
 <div class="wk-layout">
@@ -362,7 +368,7 @@
       <span class="wk-stat-track" role="img" aria-label="0.033 percent of target code bytes verified">
         <span class="wk-stat-fill" style="width:0.033%"></span>
       </span>
-      <span class="wk-progress-foot">0.033% of code bytes verified · 31 replaced</span>
+      <span class="wk-progress-foot">0.033% of code bytes verified · 32 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -374,79 +380,93 @@
 
       
       
-      <div class="wk-toc" id="wk-toc">
-        <div class="wk-toc-header">
-          <b>Contents</b>
-          <button class="wk-toc-toggle"
-            onclick="var l=document.getElementById('wk-toc-list');l.hidden=!l.hidden;this.textContent=l.hidden?'[show]':'[hide]'">[hide]</button>
-        </div>
+      
+      
+      
+      <nav class="wk-toc" id="wk-toc" aria-label="On this page">
+        <div class="wk-toc-header"><b>On this page</b></div>
         <ol class="wk-toc-list" id="wk-toc-list">
           
-          <li>
-            <a href="#7-october-2026-a-new-direction-our-own-runtime" class="wk-toc-link">7 October 2026: a new direction, our own runtime</a>
-            
-            <ol><li><a href="#runtime-and-boot-progress" class="wk-toc-link">Runtime and boot progress</a></li><li><a href="#decompilation-and-verified-functions" class="wk-toc-link">Decompilation and verified functions</a></li><li><a href="#tooling-and-automation" class="wk-toc-link">Tooling and automation</a></li><li><a href="#documentation-and-website-changes" class="wk-toc-link">Documentation and website changes</a></li><li><a href="#tests-and-validation" class="wk-toc-link">Tests and validation</a></li><li><a href="#blockers-and-next-steps" class="wk-toc-link">Blockers and next steps</a></li></ol>
-            
-          </li>
+          <li><a href="#runtime-and-boot-progress" class="wk-toc-link">Runtime and boot progress</a></li>
+          
+          <li><a href="#decompilation-and-verified-functions" class="wk-toc-link">Decompilation and verified functions</a></li>
+          
+          <li><a href="#tooling-and-automation" class="wk-toc-link">Tooling and automation</a></li>
+          
+          <li><a href="#documentation-and-website-changes" class="wk-toc-link">Documentation and website changes</a></li>
+          
+          <li><a href="#tests-and-validation" class="wk-toc-link">Tests and validation</a></li>
+          
+          <li><a href="#blockers-and-next-steps" class="wk-toc-link">Blockers and next steps</a></li>
           
         </ol>
-      </div>
+      </nav>
+      
       
       
 
       <div class="wk-article-body">
       
 <article>
-  
-  <p class="wk-post-meta">
-    <time datetime="2026-10-07 00:00:00+00:00">2026-10-07</time>
+  <header class="wk-post-head">
     
-  </p>
-  
+    <p class="wk-post-meta">
+      <time datetime="2026-10-07 00:00:00+00:00">2026-10-07</time>
+      
+    </p>
+    
+  </header>
   
   <h1 id="7-october-2026-a-new-direction-our-own-runtime">7 October 2026: a new direction, our own <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr></h1>
 <p>Paleblood opened its code to contributors and began building a clean-room <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> of its own.
 This entry combines the day's <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> work and decompilation progress.</p>
 <!-- more -->
 
-<h2 id="runtime-and-boot-progress">Runtime and boot progress</h2>
+<section class="wk-devlog-section" data-section="runtime"><h2 id="runtime-and-boot-progress">Runtime and boot progress</h2>
 <p>Earlier that day, the former <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> ran the game at 60 FPS through Iosefka's Clinic. The project
 then began removing that borrowed <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> and its graphics dependency. Paleblood's new <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr>
 maps the executable byte for byte and its verification <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr> reproduced the earlier function
 results. At this point the new <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> did not run the game; its system-library work stopped at
 an unimplemented import. The roadmap still included threads and memory, files, input, audio,
-video out, and graphics.</p>
-<h2 id="decompilation-and-verified-functions">Decompilation and <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> functions</h2>
+video out, and graphics.</p></section>
+<section class="wk-devlog-section" data-section="decompilation"><h2 id="decompilation-and-verified-functions">Decompilation and <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> functions</h2>
 <p>The frame-loop work included the pad manager's step, reference-counted render updates,
 present/<abbr title="Vertical blank: the gap between two screen refreshes, when a frame is shown.">vblank</abbr> handling, YEBIS sample parameters, six task-manager functions, a physics
 constructor, the Havok AI manager, and a character update. Existing cases cover per-frame work and
 19 physics constructions. The AI manager's branches and idle paths use explicit test fixtures.
 Tests caught floating-point <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr>, stack arguments, thread-local state, shared patch data, and
-object memory that the <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr> needed to describe.</p>
-<h2 id="tooling-and-automation">Tooling and automation</h2>
+object memory that the <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr> needed to describe.</p></section>
+<section class="wk-devlog-section" data-section="tooling"><h2 id="tooling-and-automation">Tooling and automation</h2>
 <p>The verification <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr> learned to pass and return floating-point values, model stack arguments
 and thread-local state, apply the frame-rate patch to the original, and count calls without
 replacing functions. Deliberately incorrect replacements were used to check that the cases caught
 known mistakes. The project also introduced a readable-code review gate and a contributor route
-based on claimed work and pull-request evidence.</p>
-<h2 id="documentation-and-website-changes">Documentation and website changes</h2>
+based on claimed work and pull-request evidence.</p></section>
+<section class="wk-devlog-section" data-section="documentation"><h2 id="documentation-and-website-changes">Documentation and website changes</h2>
 <p>The public Paleblood repository opened with contribution guidance and protected pull requests.
-The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> roadmap and clean-room boundary were documented alongside the new <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr>.</p>
-<h2 id="tests-and-validation">Tests and validation</h2>
+The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> roadmap and clean-room boundary were documented alongside the new <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr>.</p></section>
+<section class="wk-devlog-section" data-section="tests"><h2 id="tests-and-validation">Tests and validation</h2>
 <p>The verification <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr> ran existing recorded and <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr>, and deliberately wrong versions
 exposed several test gaps. The new <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> reproduced the same verification results. These checks
 validated function behavior; they did not demonstrate full game execution on the project-owned
-<abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>.</p>
-<h2 id="blockers-and-next-steps">Blockers and next steps</h2>
+<abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>.</p></section>
+<section class="wk-devlog-section" data-section="blockers"><h2 id="blockers-and-next-steps">Blockers and next steps</h2>
 <p>At the time, the new <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> still needed its system imports and execution layers before it could
 boot the game. The decompilation continued independently, with every replacement requiring
-recorded inputs where available, <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr>, readable code, and matching verification evidence.</p>
+recorded inputs where available, <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr>, readable code, and matching verification evidence.</p></section>
 <!-- hunters:ack:start -->
 <section class="hunters-ack" aria-label="Hunters Involved">
 </section>
 <!-- hunters:ack:end -->
   
-  <p class="wk-post-back"><a href="../../../../">← Back to devlog</a></p>
+  
+  
+  <nav class="wk-post-nav" aria-label="More posts">
+    <a class="wk-post-prev" href="../../06/6-october-2026-from-an-empty-repository-to-the-frame-loop/"><span>← Older</span><b>6 October 2026: from an empty repository to the frame loop</b></a>
+    <a class="wk-post-next" href="../../09/9-october-2026-a-path-for-runtime-contributors/"><span>Newer →</span><b>9 October 2026: a path for runtime contributors</b></a>
+  </nav>
+  
+  <p class="wk-post-back"><a href="../../../../">← Back to the devlog</a></p>
 </article>
 
       </div>
@@ -469,241 +489,10 @@ recorded inputs where available, <abbr title="Generated inputs for situations a 
 
 
 <script>
-(function () {
-'use strict';
-
-/* ── Theme ─────────────────────────────────────────────────── */
-var stored = localStorage.getItem('wk-theme') || 'dark';
-applyTheme(stored);
-document.getElementById('wk-toggle').addEventListener('click', function () {
-  applyTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
-});
-function applyTheme(t) {
-  document.documentElement.setAttribute('data-theme', t);
-  localStorage.setItem('wk-theme', t);
-  var btn = document.getElementById('wk-toggle');
-  if (btn) btn.textContent = t === 'dark' ? '☀' : '🌙';
-}
-
-/* ── Address map: a block opens its slice in a pop-up ──────── */
-(function () {
-  var map = document.querySelector('.wk-bankmap');
-  if (!map) return;
-  var modal = document.createElement('div');
-  modal.className = 'wk-slice-modal';
-  modal.setAttribute('role', 'dialog');
-  modal.setAttribute('aria-modal', 'true');
-  document.body.appendChild(modal);
-  function close() { modal.classList.remove('is-open'); }
-  map.addEventListener('click', function (e) {
-    var cell = e.target.closest('a.wk-bank-cell');
-    if (!cell) return;
-    var panel = document.getElementById(cell.getAttribute('href').slice(1));
-    if (!panel) return;
-    e.preventDefault();
-    modal.innerHTML = '';
-    modal.appendChild(panel.cloneNode(true));
-    modal.firstChild.removeAttribute('id');
-    requestAnimationFrame(function () { modal.classList.add('is-open'); });
-  });
-  modal.addEventListener('click', function (e) {
-    if (e.target === modal || e.target.closest('.wk-slice-close')) { e.preventDefault(); close(); }
-  });
-  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
-})();
-
-/* ── Mobile nav ────────────────────────────────────────────── */
-var navToggle  = document.getElementById('wk-nav-toggle');
-var navEl      = document.getElementById('wk-nav');
-var navBackdrop = document.getElementById('wk-nav-backdrop');
-var mainEl     = document.querySelector('.wk-main');
-var headerRight = document.querySelector('.wk-header-right');
-var wordmark = document.querySelector('.wk-wordmark');
-/* Matches the drawer breakpoint in wiki.css. */
-var drawerQuery = window.matchMedia('(max-width: 900px)');
-
-function closeNav() {
-  navEl.classList.remove('is-open');
-  navBackdrop.hidden = true;
-  navToggle.setAttribute('aria-expanded', 'false');
-  navToggle.setAttribute('aria-label', 'Open navigation');
-  navToggle.textContent = '☰';
-  if (mainEl) mainEl.inert = false;
-  if (headerRight) headerRight.inert = false;
-  if (wordmark) wordmark.inert = false;
-  if (drawerQuery.matches) navEl.inert = true;
-}
-function openNav() {
-  navEl.inert = false;
-  if (mainEl) mainEl.inert = true;
-  if (headerRight) headerRight.inert = true;
-  if (wordmark) wordmark.inert = true;
-  navEl.classList.add('is-open');
-  navBackdrop.hidden = false;
-  navToggle.setAttribute('aria-expanded', 'true');
-  navToggle.setAttribute('aria-label', 'Close navigation');
-  navToggle.textContent = '×';
-}
-if (navToggle && navEl && navBackdrop) {
-  navEl.inert = drawerQuery.matches;
-  navToggle.addEventListener('click', function () {
-    if (navEl.classList.contains('is-open')) { closeNav(); } else { openNav(); }
-  });
-  navBackdrop.addEventListener('click', function () { closeNav(); navToggle.focus(); });
-  navEl.addEventListener('click', function (e) {
-    if (e.target.closest('a')) { closeNav(); }
-  });
-  document.addEventListener('keydown', function (e) {
-    if (!navEl.classList.contains('is-open') || !drawerQuery.matches) return;
-    if (e.key === 'Escape') { closeNav(); navToggle.focus(); return; }
-    if (e.key !== 'Tab') return;
-    var links = Array.prototype.slice.call(navEl.querySelectorAll('a[href], button:not([disabled])'));
-    var focusable = [navToggle].concat(links);
-    var first = focusable[0];
-    var last = focusable[focusable.length - 1];
-    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
-    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
-  });
-  window.addEventListener('resize', function () {
-    if (!drawerQuery.matches) { navEl.inert = false; closeNav(); }
-    else if (!navEl.classList.contains('is-open')) navEl.inert = true;
-  });
-}
-
-/* ── Search ─────────────────────────────────────────────────── */
-var input   = document.getElementById('wk-q');
-var results = document.getElementById('wk-results');
-var docs    = null;
-if (input) {
-  fetch("../../../../../search/search_index.json")
-    .then(function (r) { return r.json(); })
-    .then(function (d) { docs = d.docs; });
-
-  input.addEventListener('input', onSearch);
-
-  document.addEventListener('click', function (e) {
-    if (results && !results.contains(e.target) && e.target !== input) results.hidden = true;
-  });
-  input.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape') { results.hidden = true; this.blur(); }
-    if (e.key === 'Enter' && results && !results.hidden) {
-      var first = results.querySelector('.wk-result');
-      if (first) { first.click(); }
-    }
-  });
-}
-
-/* Press / to focus search */
-document.addEventListener('keydown', function (e) {
-  if (e.key === '/' && document.activeElement !== input &&
-      document.activeElement.tagName !== 'INPUT' &&
-      document.activeElement.tagName !== 'TEXTAREA') {
-    e.preventDefault();
-    if (input) { input.focus(); input.select(); }
-  }
-});
-
-function onSearch() {
-  var q = this.value.trim().toLowerCase();
-  if (!docs || q.length < 2) { results.hidden = true; return; }
-  var hits = docs.filter(function (d) {
-    return (d.title + ' ' + d.text).toLowerCase().indexOf(q) !== -1;
-  }).slice(0, 8);
-  if (!hits.length) { results.hidden = true; return; }
-  var base = "../../../../..";
-  results.innerHTML = hits.map(function (d) {
-    var text  = d.text || '';
-    var i     = text.toLowerCase().indexOf(q);
-    var start = Math.max(0, i - 35);
-    var end   = Math.min(text.length, i + q.length + 70);
-    var snip  = (start > 0 ? '…' : '') + text.slice(start, end) + (end < text.length ? '…' : '');
-    var url   = base + '/' + d.location;
-    return '<a class="wk-result" href="' + esc(url) + '" role="option">'
-         + '<div class="wk-result-title">' + esc(d.title || d.location) + '</div>'
-         + '<div class="wk-result-snip">'  + esc(snip) + '</div></a>';
-  }).join('');
-  results.hidden = false;
-}
-
-function esc(s) {
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-
-/* ── Back to top ────────────────────────────────────────────── */
-var topBtn = document.getElementById('wk-top');
-if (topBtn) {
-  window.addEventListener('scroll', function () {
-    topBtn.classList.toggle('visible', window.scrollY > 400);
-  }, {passive: true});
-  topBtn.addEventListener('click', function () {
-    window.scrollTo({top: 0, behavior: 'smooth'});
-  });
-}
-
-/* ── Copy-to-clipboard ───────────────────────────────────────── */
-document.querySelectorAll('.highlight').forEach(function (block) {
-  var btn = document.createElement('button');
-  btn.className = 'wk-copy-btn';
-  btn.title     = 'Copy code';
-  btn.textContent = '⎘';
-  block.appendChild(btn);
-  btn.addEventListener('click', function () {
-    var pre = block.querySelector('pre');
-    if (!pre) return;
-    navigator.clipboard.writeText(pre.innerText).then(function () {
-      btn.textContent = '✓';
-      btn.classList.add('copied');
-      setTimeout(function () {
-        btn.textContent = '⎘';
-        btn.classList.remove('copied');
-      }, 1500);
-    });
-  });
-});
-
-/* ── Collapsible long code blocks ─────────────────────────────── */
-var COLLAPSE_THRESHOLD = 340;
-document.querySelectorAll('.wk-article-body .highlight').forEach(function (block) {
-  var pre = block.querySelector('pre');
-  if (!pre || pre.scrollHeight <= COLLAPSE_THRESHOLD + 40) return;
-
-  block.classList.add('wk-code-collapsed');
-  var toggle = document.createElement('button');
-  toggle.className = 'wk-code-toggle';
-  toggle.type = 'button';
-  toggle.textContent = 'Show more ▾';
-  toggle.addEventListener('click', function () {
-    var collapsed = block.classList.toggle('wk-code-collapsed');
-    toggle.textContent = collapsed ? 'Show more ▾' : 'Show less ▴';
-    if (collapsed) block.scrollIntoView({block: 'nearest'});
-  });
-  block.insertAdjacentElement('afterend', toggle);
-});
-
-/* ── TOC scroll spy ─────────────────────────────────────────── */
-var tocLinks = document.querySelectorAll('.wk-toc-link');
-if (tocLinks.length && 'IntersectionObserver' in window) {
-  var headings = Array.from(document.querySelectorAll('.wk-article h1, .wk-article h2, .wk-article h3'));
-  var active   = null;
-  var obs = new IntersectionObserver(function (entries) {
-    entries.forEach(function (e) {
-      if (e.isIntersecting) {
-        var id  = e.target.id;
-        var lnk = document.querySelector('.wk-toc-link[href="#' + id + '"]');
-        if (lnk && lnk !== active) {
-          if (active) active.classList.remove('is-current');
-          lnk.classList.add('is-current');
-          active = lnk;
-        }
-      }
-    });
-  }, {rootMargin: '-10% 0px -80% 0px'});
-  headings.forEach(function (h) { if (h.id) obs.observe(h); });
-}
-
-
-}());
+/* Page settings for wiki.js. The drawer query matches the drawer breakpoint in wiki.css. */
+window.WK = {base: "../../../../..", searchIndex: "../../../../../search/search_index.json",
+             drawerQuery: window.matchMedia('(max-width: 900px)')};
 </script>
-<script src="../../../../../javascripts/hunters.js" defer></script><script src="../../../../../search/main.js" defer></script>
+<script src="../../../../../javascripts/wiki.js?v=48af91151e" defer></script><script src="../../../../../javascripts/hunters.js?v=28a0e867eb" defer></script><script src="../../../../../search/main.js" defer></script>
 </body>
 </html>

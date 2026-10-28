@@ -10,45 +10,51 @@
   
   <title>Overview — Byrgenwerth</title>
   
+  <script>
+  /* Before first paint: the stored theme, and a flag that JavaScript (wiki.js) will run. */
+  (function () { var d = document.documentElement, t = 'dark';
+    try { t = localStorage.getItem('wk-theme') || 'dark'; } catch (e) {}
+    d.setAttribute('data-theme', t); d.classList.add('wk-js'); }());
+  </script>
   
-  <link rel="stylesheet" href="../stylesheets/wiki.css?v=680e958d94"><link rel="stylesheet" href="../stylesheets/hunters.css?v=e4f3c59dfb">
+  <link rel="stylesheet" href="../stylesheets/wiki.css?v=25121f2b45"><link rel="stylesheet" href="../stylesheets/hunters.css?v=e4f3c59dfb">
   
   
 </head>
 <body>
 
-<!-- ── Header ──────────────────────────────────────────────── -->
-<header class="wk-header">
+<!-- ── Header: wordmark, section tabs (wide screens), search, theme ── -->
+
+
+<header class="wk-header" id="wk-header">
   <button class="wk-nav-toggle" id="wk-nav-toggle" aria-label="Open navigation" aria-expanded="false" aria-controls="wk-nav">☰</button>
   <a class="wk-wordmark" href="/byrgenwerth-site/">Byrgenwerth<small>notes of Paleblood, rebuilding Bloodborne one verified function at a time</small></a>
+
+  <!-- Section tabs (wide screens; the drawer lists the same sections on small ones) -->
+  <nav class="wk-tabs" aria-label="Sections">
+    
+    <a class="wk-tab" href="..">The Hunt</a>
+    
+    <a class="wk-tab" href="../great-ones/">Encyclopedia</a>
+    
+    <a class="wk-tab is-active" href="./" aria-current="true">Systems</a>
+    
+    <a class="wk-tab" href="../ARCHITECTURE/">How It Works</a>
+    
+    <a class="wk-tab" href="../CONTRIBUTING/">For Hunters</a>
+    
+  </nav>
 
   <div class="wk-header-right">
     
     <div class="wk-searchbox">
       <input class="wk-search-input" id="wk-q" type="search"
-             placeholder="Search the archives…  [/]" autocomplete="off" aria-label="Search">
+             placeholder="Search  [/]" autocomplete="off" aria-label="Search">
       <div class="wk-search-results" id="wk-results" hidden role="listbox"></div>
     </div>
     <button class="wk-toggle" id="wk-toggle" title="Toggle theme" aria-label="Toggle dark/light">☀</button>
   </div>
 </header>
-
-
-
-<!-- ── Section tabs (wide screens; the drawer lists the same sections on small ones) ── -->
-<nav class="wk-tabs" aria-label="Sections">
-  
-  <a class="wk-tab" href="..">The Hunt</a>
-  
-  <a class="wk-tab" href="../great-ones/">Encyclopedia</a>
-  
-  <a class="wk-tab is-active" href="./" aria-current="true">Systems</a>
-  
-  <a class="wk-tab" href="../ARCHITECTURE/">How It Works</a>
-  
-  <a class="wk-tab" href="../CONTRIBUTING/">For Hunters</a>
-  
-</nav>
 
 <!-- ── Layout ──────────────────────────────────────────────── -->
 <div class="wk-layout">
@@ -362,7 +368,7 @@
       <span class="wk-stat-track" role="img" aria-label="0.033 percent of target code bytes verified">
         <span class="wk-stat-fill" style="width:0.033%"></span>
       </span>
-      <span class="wk-progress-foot">0.033% of code bytes verified · 31 replaced</span>
+      <span class="wk-progress-foot">0.033% of code bytes verified · 32 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -374,37 +380,112 @@
 
       
       
-      <div class="wk-toc" id="wk-toc">
-        <div class="wk-toc-header">
-          <b>Contents</b>
-          <button class="wk-toc-toggle"
-            onclick="var l=document.getElementById('wk-toc-list');l.hidden=!l.hidden;this.textContent=l.hidden?'[show]':'[hide]'">[hide]</button>
-        </div>
+      
+      
+      
+      <nav class="wk-toc" id="wk-toc" aria-label="On this page">
+        <div class="wk-toc-header"><b>On this page</b></div>
         <ol class="wk-toc-list" id="wk-toc-list">
           
-          <li>
-            <a href="#systems" class="wk-toc-link">Systems</a>
-            
-          </li>
+          <li><a href="#how-to-read-a-system-page" class="wk-toc-link">How to read a system page</a></li>
+          
+          <li><a href="#the-pages" class="wk-toc-link">The pages</a></li>
+          
+          <li><a href="#progress" class="wk-toc-link">Progress</a></li>
           
         </ol>
-      </div>
+      </nav>
+      
       
       
 
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 6, 2026 16:29:07 UTC">October 6, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 28, 2026 05:15:03 UTC">October 28, 2026</span></p>
       
       <h1 id="systems">Systems</h1>
-<p>One page per game system, each with a summary, key functions, structs and
-globals, patch points and open questions. The function tables are generated from
-<code>symbols/functions.csv</code> in the code repo; everything else is written by hand.</p>
-<p>To add a system: add a directory under <code>game/</code> in the code repo, a page here
-(copy any existing one), a nav entry in <code>mkdocs.yml</code>, and run
-<code>tools/sync_progress.py</code>.</p>
-<table>
+<p class="wk-lede">One page per game system: what the engine does in that area, which functions have been mapped, and what is still open.</p>
+
+<div class="wk-glance">
+<p><span class="wk-label">At a glance</span></p>
+<dl>
+<dt>What a page holds</dt>
+<dd>A summary, key functions, structs and globals, patch points and open questions, always in that order.</dd>
+<dt>Generated parts</dt>
+<dd>The function tables come from <code>symbols/functions.csv</code> in Paleblood; everything else is written by hand.</dd>
+<dt>Where to start</dt>
+<dd><a href="frame_timing/">Frame timing</a>: the per-frame loop that the other systems hang from.</dd>
+</dl>
+</div>
+<h2 id="how-to-read-a-system-page">How to read a system page</h2>
+<p>Every page follows the same five sections, so you can compare systems side by side:</p>
+<ol>
+<li><strong>Summary</strong>: how the system works, in prose, with call chains and worked examples.</li>
+<li><strong>Key functions</strong>: the generated table of mapped functions, with address, size and status.</li>
+<li><strong>Structs and globals</strong>: the data layouts and singletons the functions use.</li>
+<li><strong>Patch points</strong>: where community patches or Paleblood's own options change the system.</li>
+<li><strong>Open questions</strong>: what is not yet known.</li>
+</ol>
+<p>Provenance (pull requests, sources, corrections) sits in collapsed boxes, so the explanation
+reads straight through.</p>
+<h2 id="the-pages">The pages</h2>
+<div class="wk-table"><table>
+<thead>
+<tr>
+<th>Page</th>
+<th>What it covers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="frame_timing/">Frame timing</a></td>
+<td>The frame limiter, the frame step, delta time and the task manager's frame</td>
+</tr>
+<tr>
+<td><a href="kernel/">Kernel</a></td>
+<td>The engine's thread, mutex and condition-variable wrappers over the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> kernel</td>
+</tr>
+<tr>
+<td><a href="event/">Event</a></td>
+<td>Event entries, Lua event scripts and event flags</td>
+</tr>
+<tr>
+<td><a href="camera/">Camera</a></td>
+<td>Camera update, targeting, world collision and field of view</td>
+</tr>
+<tr>
+<td><a href="input/">Input</a></td>
+<td>The pad manager and its per-frame step</td>
+</tr>
+<tr>
+<td><a href="character/">Character</a></td>
+<td>Per-frame updates of character instances</td>
+</tr>
+<tr>
+<td><a href="ai/">AI</a></td>
+<td>The shared Havok AI world and its per-frame step</td>
+</tr>
+<tr>
+<td><a href="physics/">Physics</a></td>
+<td>The rigid-body world, its tables, and the physics-instance constructor</td>
+</tr>
+<tr>
+<td><a href="render/">Render</a></td>
+<td>The render frame update and swap-chain presentation</td>
+</tr>
+<tr>
+<td><a href="loading/">Loading</a></td>
+<td>File, Fios and PlayGo interfaces the executable imports</td>
+</tr>
+<tr>
+<td><a href="audio/">Audio</a></td>
+<td>Sound playback, mixing and music</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="progress">Progress</h2>
+<div class="wk-table"><table>
 <thead>
 <tr>
 <th></th>
@@ -420,13 +501,13 @@ globals, patch points and open questions. The function tables are generated from
 </tr>
 <tr>
 <td>Replaced</td>
-<td style="text-align: right;">31 (0.02%)</td>
-<td style="text-align: right;">15,353 (0.04%)</td>
+<td style="text-align: right;">32 (0.02%)</td>
+<td style="text-align: right;">15,372 (0.04%)</td>
 </tr>
 <tr>
 <td>Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> (includes <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>)</td>
-<td style="text-align: right;">31 (0.02%)</td>
-<td style="text-align: right;">15,353 (0.04%)</td>
+<td style="text-align: right;">32 (0.02%)</td>
+<td style="text-align: right;">15,372 (0.04%)</td>
 </tr>
 <tr>
 <td>Verified</td>
@@ -434,9 +515,9 @@ globals, patch points and open questions. The function tables are generated from
 <td style="text-align: right;">14,010 (0.03%)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>Counts are cumulative: <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> functions are included in <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr> and <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> totals.</p>
-<table>
+<div class="wk-table"><table>
 <thead>
 <tr>
 <th>System</th>
@@ -490,11 +571,11 @@ globals, patch points and open questions. The function tables are generated from
 </tr>
 <tr>
 <td>frame_timing</td>
+<td style="text-align: right;">23</td>
 <td style="text-align: right;">22</td>
-<td style="text-align: right;">21</td>
-<td style="text-align: right;">21</td>
+<td style="text-align: right;">22</td>
 <td style="text-align: right;">12</td>
-<td style="text-align: right;">5,447</td>
+<td style="text-align: right;">5,466</td>
 </tr>
 <tr>
 <td>input</td>
@@ -537,8 +618,17 @@ globals, patch points and open questions. The function tables are generated from
 <td style="text-align: right;">1,837</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>Generated by <code>tools/sync_progress.py</code> from the code repo. Do not edit.</p>
+<details class="details">
+<summary>Adding a system</summary>
+<ol>
+<li>Add a directory under <code>game/</code> in Paleblood.</li>
+<li>Add a page here (copy any existing one).</li>
+<li>Add the page to the site navigation.</li>
+<li>Run <code>tools/sync_progress.py</code>.</li>
+</ol>
+</details>
       
       </div>
 
@@ -560,241 +650,10 @@ globals, patch points and open questions. The function tables are generated from
 
 
 <script>
-(function () {
-'use strict';
-
-/* ── Theme ─────────────────────────────────────────────────── */
-var stored = localStorage.getItem('wk-theme') || 'dark';
-applyTheme(stored);
-document.getElementById('wk-toggle').addEventListener('click', function () {
-  applyTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
-});
-function applyTheme(t) {
-  document.documentElement.setAttribute('data-theme', t);
-  localStorage.setItem('wk-theme', t);
-  var btn = document.getElementById('wk-toggle');
-  if (btn) btn.textContent = t === 'dark' ? '☀' : '🌙';
-}
-
-/* ── Address map: a block opens its slice in a pop-up ──────── */
-(function () {
-  var map = document.querySelector('.wk-bankmap');
-  if (!map) return;
-  var modal = document.createElement('div');
-  modal.className = 'wk-slice-modal';
-  modal.setAttribute('role', 'dialog');
-  modal.setAttribute('aria-modal', 'true');
-  document.body.appendChild(modal);
-  function close() { modal.classList.remove('is-open'); }
-  map.addEventListener('click', function (e) {
-    var cell = e.target.closest('a.wk-bank-cell');
-    if (!cell) return;
-    var panel = document.getElementById(cell.getAttribute('href').slice(1));
-    if (!panel) return;
-    e.preventDefault();
-    modal.innerHTML = '';
-    modal.appendChild(panel.cloneNode(true));
-    modal.firstChild.removeAttribute('id');
-    requestAnimationFrame(function () { modal.classList.add('is-open'); });
-  });
-  modal.addEventListener('click', function (e) {
-    if (e.target === modal || e.target.closest('.wk-slice-close')) { e.preventDefault(); close(); }
-  });
-  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
-})();
-
-/* ── Mobile nav ────────────────────────────────────────────── */
-var navToggle  = document.getElementById('wk-nav-toggle');
-var navEl      = document.getElementById('wk-nav');
-var navBackdrop = document.getElementById('wk-nav-backdrop');
-var mainEl     = document.querySelector('.wk-main');
-var headerRight = document.querySelector('.wk-header-right');
-var wordmark = document.querySelector('.wk-wordmark');
-/* Matches the drawer breakpoint in wiki.css. */
-var drawerQuery = window.matchMedia('(max-width: 900px)');
-
-function closeNav() {
-  navEl.classList.remove('is-open');
-  navBackdrop.hidden = true;
-  navToggle.setAttribute('aria-expanded', 'false');
-  navToggle.setAttribute('aria-label', 'Open navigation');
-  navToggle.textContent = '☰';
-  if (mainEl) mainEl.inert = false;
-  if (headerRight) headerRight.inert = false;
-  if (wordmark) wordmark.inert = false;
-  if (drawerQuery.matches) navEl.inert = true;
-}
-function openNav() {
-  navEl.inert = false;
-  if (mainEl) mainEl.inert = true;
-  if (headerRight) headerRight.inert = true;
-  if (wordmark) wordmark.inert = true;
-  navEl.classList.add('is-open');
-  navBackdrop.hidden = false;
-  navToggle.setAttribute('aria-expanded', 'true');
-  navToggle.setAttribute('aria-label', 'Close navigation');
-  navToggle.textContent = '×';
-}
-if (navToggle && navEl && navBackdrop) {
-  navEl.inert = drawerQuery.matches;
-  navToggle.addEventListener('click', function () {
-    if (navEl.classList.contains('is-open')) { closeNav(); } else { openNav(); }
-  });
-  navBackdrop.addEventListener('click', function () { closeNav(); navToggle.focus(); });
-  navEl.addEventListener('click', function (e) {
-    if (e.target.closest('a')) { closeNav(); }
-  });
-  document.addEventListener('keydown', function (e) {
-    if (!navEl.classList.contains('is-open') || !drawerQuery.matches) return;
-    if (e.key === 'Escape') { closeNav(); navToggle.focus(); return; }
-    if (e.key !== 'Tab') return;
-    var links = Array.prototype.slice.call(navEl.querySelectorAll('a[href], button:not([disabled])'));
-    var focusable = [navToggle].concat(links);
-    var first = focusable[0];
-    var last = focusable[focusable.length - 1];
-    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
-    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
-  });
-  window.addEventListener('resize', function () {
-    if (!drawerQuery.matches) { navEl.inert = false; closeNav(); }
-    else if (!navEl.classList.contains('is-open')) navEl.inert = true;
-  });
-}
-
-/* ── Search ─────────────────────────────────────────────────── */
-var input   = document.getElementById('wk-q');
-var results = document.getElementById('wk-results');
-var docs    = null;
-if (input) {
-  fetch("../search/search_index.json")
-    .then(function (r) { return r.json(); })
-    .then(function (d) { docs = d.docs; });
-
-  input.addEventListener('input', onSearch);
-
-  document.addEventListener('click', function (e) {
-    if (results && !results.contains(e.target) && e.target !== input) results.hidden = true;
-  });
-  input.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape') { results.hidden = true; this.blur(); }
-    if (e.key === 'Enter' && results && !results.hidden) {
-      var first = results.querySelector('.wk-result');
-      if (first) { first.click(); }
-    }
-  });
-}
-
-/* Press / to focus search */
-document.addEventListener('keydown', function (e) {
-  if (e.key === '/' && document.activeElement !== input &&
-      document.activeElement.tagName !== 'INPUT' &&
-      document.activeElement.tagName !== 'TEXTAREA') {
-    e.preventDefault();
-    if (input) { input.focus(); input.select(); }
-  }
-});
-
-function onSearch() {
-  var q = this.value.trim().toLowerCase();
-  if (!docs || q.length < 2) { results.hidden = true; return; }
-  var hits = docs.filter(function (d) {
-    return (d.title + ' ' + d.text).toLowerCase().indexOf(q) !== -1;
-  }).slice(0, 8);
-  if (!hits.length) { results.hidden = true; return; }
-  var base = "..";
-  results.innerHTML = hits.map(function (d) {
-    var text  = d.text || '';
-    var i     = text.toLowerCase().indexOf(q);
-    var start = Math.max(0, i - 35);
-    var end   = Math.min(text.length, i + q.length + 70);
-    var snip  = (start > 0 ? '…' : '') + text.slice(start, end) + (end < text.length ? '…' : '');
-    var url   = base + '/' + d.location;
-    return '<a class="wk-result" href="' + esc(url) + '" role="option">'
-         + '<div class="wk-result-title">' + esc(d.title || d.location) + '</div>'
-         + '<div class="wk-result-snip">'  + esc(snip) + '</div></a>';
-  }).join('');
-  results.hidden = false;
-}
-
-function esc(s) {
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-
-/* ── Back to top ────────────────────────────────────────────── */
-var topBtn = document.getElementById('wk-top');
-if (topBtn) {
-  window.addEventListener('scroll', function () {
-    topBtn.classList.toggle('visible', window.scrollY > 400);
-  }, {passive: true});
-  topBtn.addEventListener('click', function () {
-    window.scrollTo({top: 0, behavior: 'smooth'});
-  });
-}
-
-/* ── Copy-to-clipboard ───────────────────────────────────────── */
-document.querySelectorAll('.highlight').forEach(function (block) {
-  var btn = document.createElement('button');
-  btn.className = 'wk-copy-btn';
-  btn.title     = 'Copy code';
-  btn.textContent = '⎘';
-  block.appendChild(btn);
-  btn.addEventListener('click', function () {
-    var pre = block.querySelector('pre');
-    if (!pre) return;
-    navigator.clipboard.writeText(pre.innerText).then(function () {
-      btn.textContent = '✓';
-      btn.classList.add('copied');
-      setTimeout(function () {
-        btn.textContent = '⎘';
-        btn.classList.remove('copied');
-      }, 1500);
-    });
-  });
-});
-
-/* ── Collapsible long code blocks ─────────────────────────────── */
-var COLLAPSE_THRESHOLD = 340;
-document.querySelectorAll('.wk-article-body .highlight').forEach(function (block) {
-  var pre = block.querySelector('pre');
-  if (!pre || pre.scrollHeight <= COLLAPSE_THRESHOLD + 40) return;
-
-  block.classList.add('wk-code-collapsed');
-  var toggle = document.createElement('button');
-  toggle.className = 'wk-code-toggle';
-  toggle.type = 'button';
-  toggle.textContent = 'Show more ▾';
-  toggle.addEventListener('click', function () {
-    var collapsed = block.classList.toggle('wk-code-collapsed');
-    toggle.textContent = collapsed ? 'Show more ▾' : 'Show less ▴';
-    if (collapsed) block.scrollIntoView({block: 'nearest'});
-  });
-  block.insertAdjacentElement('afterend', toggle);
-});
-
-/* ── TOC scroll spy ─────────────────────────────────────────── */
-var tocLinks = document.querySelectorAll('.wk-toc-link');
-if (tocLinks.length && 'IntersectionObserver' in window) {
-  var headings = Array.from(document.querySelectorAll('.wk-article h1, .wk-article h2, .wk-article h3'));
-  var active   = null;
-  var obs = new IntersectionObserver(function (entries) {
-    entries.forEach(function (e) {
-      if (e.isIntersecting) {
-        var id  = e.target.id;
-        var lnk = document.querySelector('.wk-toc-link[href="#' + id + '"]');
-        if (lnk && lnk !== active) {
-          if (active) active.classList.remove('is-current');
-          lnk.classList.add('is-current');
-          active = lnk;
-        }
-      }
-    });
-  }, {rootMargin: '-10% 0px -80% 0px'});
-  headings.forEach(function (h) { if (h.id) obs.observe(h); });
-}
-
-
-}());
+/* Page settings for wiki.js. The drawer query matches the drawer breakpoint in wiki.css. */
+window.WK = {base: "..", searchIndex: "../search/search_index.json",
+             drawerQuery: window.matchMedia('(max-width: 900px)')};
 </script>
-<script src="../javascripts/hunters.js" defer></script><script src="../search/main.js" defer></script>
+<script src="../javascripts/wiki.js?v=48af91151e" defer></script><script src="../javascripts/hunters.js?v=28a0e867eb" defer></script><script src="../search/main.js" defer></script>
 </body>
 </html>

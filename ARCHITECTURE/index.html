@@ -10,45 +10,51 @@
   
   <title>Architecture — Byrgenwerth</title>
   
+  <script>
+  /* Before first paint: the stored theme, and a flag that JavaScript (wiki.js) will run. */
+  (function () { var d = document.documentElement, t = 'dark';
+    try { t = localStorage.getItem('wk-theme') || 'dark'; } catch (e) {}
+    d.setAttribute('data-theme', t); d.classList.add('wk-js'); }());
+  </script>
   
-  <link rel="stylesheet" href="../stylesheets/wiki.css?v=680e958d94"><link rel="stylesheet" href="../stylesheets/hunters.css?v=e4f3c59dfb">
+  <link rel="stylesheet" href="../stylesheets/wiki.css?v=25121f2b45"><link rel="stylesheet" href="../stylesheets/hunters.css?v=e4f3c59dfb">
   
   
 </head>
 <body>
 
-<!-- ── Header ──────────────────────────────────────────────── -->
-<header class="wk-header">
+<!-- ── Header: wordmark, section tabs (wide screens), search, theme ── -->
+
+
+<header class="wk-header" id="wk-header">
   <button class="wk-nav-toggle" id="wk-nav-toggle" aria-label="Open navigation" aria-expanded="false" aria-controls="wk-nav">☰</button>
   <a class="wk-wordmark" href="/byrgenwerth-site/">Byrgenwerth<small>notes of Paleblood, rebuilding Bloodborne one verified function at a time</small></a>
+
+  <!-- Section tabs (wide screens; the drawer lists the same sections on small ones) -->
+  <nav class="wk-tabs" aria-label="Sections">
+    
+    <a class="wk-tab" href="..">The Hunt</a>
+    
+    <a class="wk-tab" href="../great-ones/">Encyclopedia</a>
+    
+    <a class="wk-tab" href="../systems/">Systems</a>
+    
+    <a class="wk-tab is-active" href="./" aria-current="true">How It Works</a>
+    
+    <a class="wk-tab" href="../CONTRIBUTING/">For Hunters</a>
+    
+  </nav>
 
   <div class="wk-header-right">
     
     <div class="wk-searchbox">
       <input class="wk-search-input" id="wk-q" type="search"
-             placeholder="Search the archives…  [/]" autocomplete="off" aria-label="Search">
+             placeholder="Search  [/]" autocomplete="off" aria-label="Search">
       <div class="wk-search-results" id="wk-results" hidden role="listbox"></div>
     </div>
     <button class="wk-toggle" id="wk-toggle" title="Toggle theme" aria-label="Toggle dark/light">☀</button>
   </div>
 </header>
-
-
-
-<!-- ── Section tabs (wide screens; the drawer lists the same sections on small ones) ── -->
-<nav class="wk-tabs" aria-label="Sections">
-  
-  <a class="wk-tab" href="..">The Hunt</a>
-  
-  <a class="wk-tab" href="../great-ones/">Encyclopedia</a>
-  
-  <a class="wk-tab" href="../systems/">Systems</a>
-  
-  <a class="wk-tab is-active" href="./" aria-current="true">How It Works</a>
-  
-  <a class="wk-tab" href="../CONTRIBUTING/">For Hunters</a>
-  
-</nav>
 
 <!-- ── Layout ──────────────────────────────────────────────── -->
 <div class="wk-layout">
@@ -362,7 +368,7 @@
       <span class="wk-stat-track" role="img" aria-label="0.033 percent of target code bytes verified">
         <span class="wk-stat-fill" style="width:0.033%"></span>
       </span>
-      <span class="wk-progress-foot">0.033% of code bytes verified · 31 replaced</span>
+      <span class="wk-progress-foot">0.033% of code bytes verified · 32 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -374,35 +380,60 @@
 
       
       
-      <div class="wk-toc" id="wk-toc">
-        <div class="wk-toc-header">
-          <b>Contents</b>
-          <button class="wk-toc-toggle"
-            onclick="var l=document.getElementById('wk-toc-list');l.hidden=!l.hidden;this.textContent=l.hidden?'[show]':'[hide]'">[hide]</button>
-        </div>
+      
+      
+      
+      <nav class="wk-toc" id="wk-toc" aria-label="On this page">
+        <div class="wk-toc-header"><b>On this page</b></div>
         <ol class="wk-toc-list" id="wk-toc-list">
           
-          <li>
-            <a href="#architecture" class="wk-toc-link">Architecture</a>
-            
-            <ol><li><a href="#at-a-glance" class="wk-toc-link">At a glance</a></li><li><a href="#the-decompilation-track" class="wk-toc-link">The decompilation track</a></li><li><a href="#the-runtime-track" class="wk-toc-link">The runtime track</a></li><li><a href="#the-frame-pipeline" class="wk-toc-link">The frame pipeline</a></li><li><a href="#verification" class="wk-toc-link">Verification</a></li><li><a href="#addresses" class="wk-toc-link">Addresses</a></li><li><a href="#what-comes-next" class="wk-toc-link">What comes next</a></li></ol>
-            
-          </li>
+          <li><a href="#the-decompilation-track" class="wk-toc-link">The decompilation track</a></li>
+          
+          <li><a href="#the-runtime-track" class="wk-toc-link">The runtime track</a></li>
+          
+          <li><a href="#the-frame-pipeline" class="wk-toc-link">The frame pipeline</a></li>
+          
+          <li><a href="#verification" class="wk-toc-link">Verification</a></li>
+          
+          <li><a href="#addresses" class="wk-toc-link">Addresses</a></li>
+          
+          <li><a href="#what-comes-next" class="wk-toc-link">What comes next</a></li>
           
         </ol>
-      </div>
+      </nav>
+      
       
       
 
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 19, 2026 08:56:06 UTC">October 19, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 28, 2026 05:15:03 UTC">October 28, 2026</span></p>
       
       <h1 id="architecture">Architecture</h1>
-<p>How Paleblood fits together: two tracks, decompilation and <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>, and how a function moves
-from original code to <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>, readable C++.</p>
-<h2 id="at-a-glance">At a glance</h2>
+<p class="wk-lede">How Paleblood fits together: two tracks, decompilation and runtime, and how a function moves from original code to verified, readable C++.</p>
+
+<div class="wk-cards">
+  <a class="wk-card" href="../runtime/"><span class="wk-card-kicker">Runtime track</span><span class="wk-card-title">Runtime</span><span class="wk-card-sub">The loader, the boot harness and how far the game boots.</span><span class="wk-card-go">Read</span></a>
+  <a class="wk-card" href="../runtime-syscalls/"><span class="wk-card-kicker">Runtime track</span><span class="wk-card-title">Runtime system calls</span><span class="wk-card-sub">Each implemented call and the evidence behind it.</span><span class="wk-card-go">Read</span></a>
+  <a class="wk-card" href="../how-the-frame-limiter-works/"><span class="wk-card-kicker">First system</span><span class="wk-card-title">The Frame Limiter</span><span class="wk-card-sub">How each frame is paced, and how it was replaced.</span><span class="wk-card-go">Read</span></a>
+  <a class="wk-card" href="../ADDRESS_MAP/"><span class="wk-card-kicker">Map</span><span class="wk-card-title">Address Map</span><span class="wk-card-sub">The executable's code, slice by slice, and what is replaced.</span><span class="wk-card-go">Read</span></a>
+  <a class="wk-card" href="../target/"><span class="wk-card-kicker">Reference</span><span class="wk-card-title">Target</span><span class="wk-card-sub">The exact game version and executables the project works on.</span><span class="wk-card-go">Read</span></a>
+</div>
+
+<div class="wk-glance">
+<p><span class="wk-label">At a glance</span></p>
+<dl>
+<dt>Decompilation</dt>
+<dd>The game's code rewritten, function by function, as readable C++ proved to behave like the original.</dd>
+<dt>Runtime</dt>
+<dd>Paleblood's own <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> and a growing set of <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> system-call implementations.</dd>
+<dt>Game runs</dt>
+<dd>The game does not run on Paleblood's <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> yet; full runs still use an external host scaffold.</dd>
+<dt>Merge rule</dt>
+<dd>A function reaches main only when <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> and readable, checked by an independent reviewer.</dd>
+</dl>
+</div>
 <p><svg class="wk-diagram" viewBox="0 0 560 410" role="img" aria-label="From your own dump: the decompilation track and the runtime track">
 <defs><marker id="wk-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="wk-diag-arrowhead"></path></marker></defs>
 <path d="M138,76 L138,94" class="wk-diag-edge" marker-end="url(#wk-arrow)"></path>
@@ -459,12 +490,17 @@ from original code to <abbr title="A replaced function that behaved exactly like
 <text x="398" y="357" text-anchor="middle" class="wk-diag-sub">once the runtime is far enough along</text>
 </g>
 </svg></p>
-<p>Paleblood is a decompilation with its own <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>. The <strong>decompilation</strong> rewrites the game's code,
-function by function, as readable C++ that is proved to behave like the original. The <strong><abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr></strong>
-is what that code, and the original executable while it is being <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr>, runs on: Paleblood's
-own <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> and a growing set of <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> system-call implementations. The game does not run on
-Paleblood's <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> yet; the <a href="../runtime/">Runtime</a> page has the roadmap, implemented calls, and
-the latest saved boot result.</p>
+<p>Paleblood is a decompilation with its own <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>.</p>
+<ul>
+<li>The <strong>decompilation</strong> rewrites the game's code, function by function, as readable C++ that is
+  proved to behave like the original.</li>
+<li>The <strong><abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr></strong> is what that code, and the original executable while it is being <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr>, runs
+  on: Paleblood's own <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> and a growing set of <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> system-call implementations.</li>
+</ul>
+<p>The game does not run on Paleblood's <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> yet; the <a href="../runtime/">Runtime</a> page has the roadmap,
+implemented calls, and the latest saved boot result.</p>
+<details class="caveat">
+<summary>What runs where today</summary>
 <p>Full game runs still use an external host scaffold while the project-owned <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> is completed.
 The verification <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr> independently maps the executable and replays recorded inputs. Its
 <abbr title="Inputs recorded while the game ran, replayed by the harness.">capture</abbr> writer now supports stable, function/run-identified output and replay checks, but it has
@@ -472,23 +508,30 @@ no production call sites yet and does not automatically provide new game inputs.
 has a project-owned implementation of the version-1 <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> callback. A synthetic executable-memory
 test verifies that its jump reaches a replacement, but the callback is not yet wired into the
 full game-run scaffold and does not establish full-run equivalence.</p>
+</details>
 <h2 id="the-decompilation-track">The decompilation track</h2>
-<p>A replacement lives in the code repository's <code>game/&lt;system&gt;/</code> and is written to its style rules:
-the objects a function touches described as structures with named fields, the original's other
-functions and globals reached through named declarations instead of addresses, named constants,
-and no test plumbing inside the game's code. A function reaches the main branch only when it is
-both <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> and readable, and an independent reviewer, not the author, has checked both.</p>
-<p>Replacements are registered in a <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> table. When the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> runs the game, each registered
-function's entry will jump to its replacement, so every caller lands in the new code: a 14-byte
-jump, which is why a function shorter than that cannot be hooked this way.</p>
+<p>A replacement lives in the code repository's <code>game/&lt;system&gt;/</code> and follows its style rules:</p>
+<ul>
+<li>the objects a function touches are structures with named fields;</li>
+<li>the original's other functions and globals are reached through named declarations, not addresses;</li>
+<li>constants are named;</li>
+<li>there is no test plumbing inside the game's code.</li>
+</ul>
+<p>A function reaches the main branch only when it is both <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> and readable, and an independent
+reviewer, not the author, has checked both.</p>
+<p><strong>How a replacement takes over.</strong> Replacements are registered in a <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> table. When the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>
+runs the game, each registered function's entry will jump to its replacement, so every caller lands
+in the new code. It is a 14-byte jump, which is why a function shorter than that cannot be hooked
+this way.</p>
 <h2 id="the-runtime-track">The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> track</h2>
-<p>Paleblood's <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> maps the game's executable, together with the game's own C library and file
-system modules, applies every relocation and binds every system import, to one of those modules
-or to the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>'s own implementation. The boot <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr> starts the guest startup sequence and
-stops at the first system function the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> does not implement yet, naming it. The latest saved
-trace stops in the game's bundled <code>libc</code> before the executable reaches its first boot milestone.
-Each step of the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>'s work implements what the boot stops at, written clean-room from public
-documentation and our own reverse engineering.</p>
+<ol class="wk-steps">
+<li><strong>Load.</strong> Paleblood's <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> maps the game's executable, together with the game's own C library and file system modules.</li>
+<li><strong>Link.</strong> It applies every relocation and binds every system import, to one of those modules or to the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>'s own implementation.</li>
+<li><strong>Boot.</strong> The boot <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr> starts the guest startup sequence and stops at the first system function the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> does not implement yet, naming it.</li>
+<li><strong>Implement.</strong> The next piece of <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> work implements what the boot stopped at, written clean-room from public documentation and our own reverse engineering.</li>
+</ol>
+<p>The latest saved trace stops in the game's bundled <code>libc</code> before the executable reaches its first
+boot milestone.</p>
 <h2 id="the-frame-pipeline">The frame pipeline</h2>
 <p>The first system decompiled. Solid boxes are <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> C++; dashed boxes are still original code.</p>
 <p><svg class="wk-diagram" viewBox="0 0 560 336" role="img" aria-label="The per-frame pipeline: frame step, limiter, task update">
@@ -531,10 +574,14 @@ documentation and our own reverse engineering.</p>
 <text x="138" y="283" text-anchor="middle" class="wk-diag-sub">0x024512a0 · the game's frame of work</text>
 </g>
 </svg></p>
-<p>Once per frame the frame step checks that the window is running, creates the <code>SprjFlipper</code> on the
-first frame (its constructor reads <code>Game.FlipMode</code>), lets the flipper's limiter wait out the frame,
-and runs the game's task update. The full walk-through is in
-<a href="../how-the-frame-limiter-works/">How the Frame Limiter Works</a>.</p>
+<p>Once per frame, the frame step:</p>
+<ol>
+<li>checks that the window is running;</li>
+<li>creates the <code>SprjFlipper</code> on the first frame (its constructor reads <code>Game.FlipMode</code>);</li>
+<li>lets the flipper's limiter wait out the frame;</li>
+<li>runs the game's task update.</li>
+</ol>
+<p>The full walk-through is in <a href="../how-the-frame-limiter-works/">How the Frame Limiter Works</a>.</p>
 <h2 id="verification">Verification</h2>
 <p><svg class="wk-diagram" viewBox="0 0 560 410" role="img" aria-label="How a replacement is verified against the original">
 <defs><marker id="wk-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="wk-diag-arrowhead"></path></marker></defs>
@@ -580,42 +627,69 @@ and runs the game's task update. The full walk-through is in
 <text x="138" y="357" text-anchor="middle" class="wk-diag-sub">plus the independent review</text>
 </g>
 </svg></p>
-<p>A replacement is checked against the original outside the game. The <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr> maps the executable
-from your own dump with Paleblood's <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr>, scripts every library call the function makes, runs
-the original and the replacement on the same inputs, and compares ABI-selected return values,
-callee-saved registers, final bytes in declared memory regions, and scripted library calls.
-The inputs are cases recorded in earlier
-game runs (the <abbr title="Inputs recorded while the game ran, replayed by the harness.">capture</abbr> library) and <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr> generated for the corners. Deliberately wrong
-versions of the replacement must fail; if one passes, the cases are too weak and get fixed first.
-A function whose code no recording reaches yet is <em><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></em>; it becomes <em><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></em> once
-recordings for it exist and pass, and the independent review has approved it.</p>
+<p>A replacement is checked against the original outside the game.</p>
+<ol class="wk-steps">
+<li><strong>Map.</strong> The <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr> maps the executable from your own dump with Paleblood's <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr>, and scripts every library call the function makes.</li>
+<li><strong>Feed.</strong> The inputs are cases recorded in earlier game runs (the <abbr title="Inputs recorded while the game ran, replayed by the harness.">capture</abbr> library) and <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr> generated for the corners.</li>
+<li><strong>Run both.</strong> The original and the replacement run on the same inputs.</li>
+<li><strong>Compare.</strong> ABI-selected return values, callee-saved registers, final bytes in declared memory regions, and scripted library calls must match.</li>
+<li><strong>Break it on purpose.</strong> Deliberately wrong versions of the replacement must fail; if one passes, the cases are too weak and get fixed first.</li>
+</ol>
+<div class="wk-table"><table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td>Passes, but no recording reaches the function's code yet.</td>
+</tr>
+<tr>
+<td><span class="wk-badge wk-badge--verified"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></span></td>
+<td>Recordings for it exist and pass, and the independent review has approved it.</td>
+</tr>
+</tbody>
+</table></div>
 <h3 id="what-the-automated-tools-can-establish">What the automated tools can establish</h3>
 <p>The merged <a href="https://github.com/Yharnam-Hunters/Paleblood/blob/af97b90bb1e88853adfc04b8da2b3d7506516565/docs/VERIFY.md#differential-engine-phase-2">differential engine</a>
 adds deterministic fixture replay, bounded input exploration, mismatch minimization, and portable
 evidence reports. Its tests prove infrastructure behavior using synthetic instructions; they do
 not establish a new game function's semantics or promote a function automatically.</p>
-<p>Optional Linux instruction tracing observes supported guest memory reads and writes at byte
+<p><strong>Instruction tracing</strong> (optional, Linux) watches supported guest memory reads and writes at byte
 granularity, including unaligned accesses, aliased pointers, and writes that leave the same value.
-It records the instruction, access range, before/after bytes, and register context. The
-<a href="https://github.com/Yharnam-Hunters/Paleblood/blob/af97b90bb1e88853adfc04b8da2b3d7506516565/docs/INSTRUCTION_TRACE_SUPPORT.md">support matrix</a>
+For each access it records:</p>
+<ul>
+<li>the instruction;</li>
+<li>the access range;</li>
+<li>the bytes before and after;</li>
+<li>the register context.</li>
+</ul>
+<p><strong>Reading a difference.</strong> The first differing recorded memory event is a bounded diagnostic.
+Original and replacement code may take different instruction paths, so an internal trace difference
+with equal observable results is not treated as a behavior mismatch.</p>
+<details class="caveat">
+<summary>Limits of instruction tracing</summary>
+<p>The <a href="https://github.com/Yharnam-Hunters/Paleblood/blob/af97b90bb1e88853adfc04b8da2b3d7506516565/docs/INSTRUCTION_TRACE_SUPPORT.md">support matrix</a>
 defines its limits: classified string/repeat, vector-memory, atomic, and system instructions fail
 closed; host code outside the instrumented ranges leaves an explicit gap. Capstone does not
 identify every architectural implicit-memory operation, so completeness applies only to the
 audited instruction families.</p>
-<p>The first differing recorded memory event is a bounded diagnostic. Original and replacement code
-may take different instruction paths, and an internal trace difference with equal observable
-results is not treated as a behavior mismatch. The tool does not claim an exact first divergence
-of every register at every instruction.</p>
+<p>The tool does not claim an exact first divergence of every register at every instruction.</p>
+</details>
 <h3 id="coverage-and-the-candidate-pipeline">Coverage and the candidate pipeline</h3>
-<p>Supported instruction traces record executed basic blocks and outgoing edges per fixture.
-Complete traces can prioritize seeds that found new edges or a conditional outcome whose other
-outcome is still unseen. Partial and unavailable coverage remain explicit and cannot feed that
-ranking. This describes observed fixture paths, not a complete static map of every possible path.</p>
+<p>Supported instruction traces record executed basic blocks and outgoing edges per fixture. Complete
+traces can prioritize seeds that found new edges, or a conditional outcome whose other outcome is
+still unseen. Partial and unavailable coverage remain explicit and cannot feed that ranking. This
+describes observed fixture paths, not a complete static map of every possible path.</p>
 <p>The <a href="https://github.com/Yharnam-Hunters/Paleblood/blob/af97b90bb1e88853adfc04b8da2b3d7506516565/docs/AUTOMATION_PIPELINE.md">opt-in automation prototype</a>
 connects catalog qualification to an isolated worktree, local recorded fixtures, both compiler
 builds, differential tests, repository checks, and a reviewable draft pull request. It accepts a
-prewritten clean-room replacement patch; source generation is not automated.</p>
-<table>
+prewritten clean-room replacement patch; source generation is not automated. Each gate needs its
+evidence, and missing evidence rejects the run:</p>
+<div class="wk-table"><table>
 <thead>
 <tr>
 <th>Gate</th>
@@ -640,10 +714,13 @@ prewritten clean-room replacement patch; source generation is not automated.</p>
 <td>Compiler and repository checks, a reproducible evidence report, then GitHub CI and human review.</td>
 </tr>
 </tbody>
-</table>
+</table></div>
+<details class="caveat">
+<summary>What the pipeline has not shown</summary>
 <p>Missing evidence rejects the run. Dry-run mode performs local work only, and a regression canary
 cannot open a function PR. No complete real-game candidate-to-PR run has been established by the
 merged evidence. Synthetic pipeline success does not change the <a href="../progress/">verification counts</a>.</p>
+</details>
 <h2 id="addresses">Addresses</h2>
 <p>Every address in this wiki is a <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> virtual address with the executable at <code>0x400000</code>, the
 convention of the community patches. See <a href="../QUIRKS/"><abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr> &amp; <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> Quirks</a>.</p>
@@ -651,6 +728,11 @@ convention of the community patches. See <a href="../QUIRKS/"><abbr title="The N
 <p>The queues live in the code repository's <code>NEXT.md</code>: one for the decompilation track, one for the
 <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> track.</p>
 <h3 id="import-boundary-observations">Import-boundary observations</h3>
+<p><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/85">PR #85</a> takes bounded snapshots of registers
+and selected stack/fixture-buffer bytes when the <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr> enters and returns from a recognized
+import. They show the net change at that boundary, and nothing more.</p>
+<details class="caveat">
+<summary>What import-boundary snapshots do not show</summary>
 <p>Merged <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/85">PR #85</a> adds bounded snapshots of
 registers and selected stack/fixture-buffer bytes at recognized <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr> import entry and return.
 They expose net changes at that boundary; they do not trace host instructions, establish argument
@@ -658,6 +740,7 @@ types, observe every memory access, or prove host control-flow coverage. Compari
 acceptance and coverage feedback continue to reject external-execution evidence even if another
 label incorrectly calls the trace complete. These diagnostics cannot qualify a function for
 verification, and the import-dependent clock regression remains incomplete.</p>
+</details>
       
       </div>
 
@@ -679,241 +762,10 @@ verification, and the import-dependent clock regression remains incomplete.</p>
 
 
 <script>
-(function () {
-'use strict';
-
-/* ── Theme ─────────────────────────────────────────────────── */
-var stored = localStorage.getItem('wk-theme') || 'dark';
-applyTheme(stored);
-document.getElementById('wk-toggle').addEventListener('click', function () {
-  applyTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
-});
-function applyTheme(t) {
-  document.documentElement.setAttribute('data-theme', t);
-  localStorage.setItem('wk-theme', t);
-  var btn = document.getElementById('wk-toggle');
-  if (btn) btn.textContent = t === 'dark' ? '☀' : '🌙';
-}
-
-/* ── Address map: a block opens its slice in a pop-up ──────── */
-(function () {
-  var map = document.querySelector('.wk-bankmap');
-  if (!map) return;
-  var modal = document.createElement('div');
-  modal.className = 'wk-slice-modal';
-  modal.setAttribute('role', 'dialog');
-  modal.setAttribute('aria-modal', 'true');
-  document.body.appendChild(modal);
-  function close() { modal.classList.remove('is-open'); }
-  map.addEventListener('click', function (e) {
-    var cell = e.target.closest('a.wk-bank-cell');
-    if (!cell) return;
-    var panel = document.getElementById(cell.getAttribute('href').slice(1));
-    if (!panel) return;
-    e.preventDefault();
-    modal.innerHTML = '';
-    modal.appendChild(panel.cloneNode(true));
-    modal.firstChild.removeAttribute('id');
-    requestAnimationFrame(function () { modal.classList.add('is-open'); });
-  });
-  modal.addEventListener('click', function (e) {
-    if (e.target === modal || e.target.closest('.wk-slice-close')) { e.preventDefault(); close(); }
-  });
-  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
-})();
-
-/* ── Mobile nav ────────────────────────────────────────────── */
-var navToggle  = document.getElementById('wk-nav-toggle');
-var navEl      = document.getElementById('wk-nav');
-var navBackdrop = document.getElementById('wk-nav-backdrop');
-var mainEl     = document.querySelector('.wk-main');
-var headerRight = document.querySelector('.wk-header-right');
-var wordmark = document.querySelector('.wk-wordmark');
-/* Matches the drawer breakpoint in wiki.css. */
-var drawerQuery = window.matchMedia('(max-width: 900px)');
-
-function closeNav() {
-  navEl.classList.remove('is-open');
-  navBackdrop.hidden = true;
-  navToggle.setAttribute('aria-expanded', 'false');
-  navToggle.setAttribute('aria-label', 'Open navigation');
-  navToggle.textContent = '☰';
-  if (mainEl) mainEl.inert = false;
-  if (headerRight) headerRight.inert = false;
-  if (wordmark) wordmark.inert = false;
-  if (drawerQuery.matches) navEl.inert = true;
-}
-function openNav() {
-  navEl.inert = false;
-  if (mainEl) mainEl.inert = true;
-  if (headerRight) headerRight.inert = true;
-  if (wordmark) wordmark.inert = true;
-  navEl.classList.add('is-open');
-  navBackdrop.hidden = false;
-  navToggle.setAttribute('aria-expanded', 'true');
-  navToggle.setAttribute('aria-label', 'Close navigation');
-  navToggle.textContent = '×';
-}
-if (navToggle && navEl && navBackdrop) {
-  navEl.inert = drawerQuery.matches;
-  navToggle.addEventListener('click', function () {
-    if (navEl.classList.contains('is-open')) { closeNav(); } else { openNav(); }
-  });
-  navBackdrop.addEventListener('click', function () { closeNav(); navToggle.focus(); });
-  navEl.addEventListener('click', function (e) {
-    if (e.target.closest('a')) { closeNav(); }
-  });
-  document.addEventListener('keydown', function (e) {
-    if (!navEl.classList.contains('is-open') || !drawerQuery.matches) return;
-    if (e.key === 'Escape') { closeNav(); navToggle.focus(); return; }
-    if (e.key !== 'Tab') return;
-    var links = Array.prototype.slice.call(navEl.querySelectorAll('a[href], button:not([disabled])'));
-    var focusable = [navToggle].concat(links);
-    var first = focusable[0];
-    var last = focusable[focusable.length - 1];
-    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
-    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
-  });
-  window.addEventListener('resize', function () {
-    if (!drawerQuery.matches) { navEl.inert = false; closeNav(); }
-    else if (!navEl.classList.contains('is-open')) navEl.inert = true;
-  });
-}
-
-/* ── Search ─────────────────────────────────────────────────── */
-var input   = document.getElementById('wk-q');
-var results = document.getElementById('wk-results');
-var docs    = null;
-if (input) {
-  fetch("../search/search_index.json")
-    .then(function (r) { return r.json(); })
-    .then(function (d) { docs = d.docs; });
-
-  input.addEventListener('input', onSearch);
-
-  document.addEventListener('click', function (e) {
-    if (results && !results.contains(e.target) && e.target !== input) results.hidden = true;
-  });
-  input.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape') { results.hidden = true; this.blur(); }
-    if (e.key === 'Enter' && results && !results.hidden) {
-      var first = results.querySelector('.wk-result');
-      if (first) { first.click(); }
-    }
-  });
-}
-
-/* Press / to focus search */
-document.addEventListener('keydown', function (e) {
-  if (e.key === '/' && document.activeElement !== input &&
-      document.activeElement.tagName !== 'INPUT' &&
-      document.activeElement.tagName !== 'TEXTAREA') {
-    e.preventDefault();
-    if (input) { input.focus(); input.select(); }
-  }
-});
-
-function onSearch() {
-  var q = this.value.trim().toLowerCase();
-  if (!docs || q.length < 2) { results.hidden = true; return; }
-  var hits = docs.filter(function (d) {
-    return (d.title + ' ' + d.text).toLowerCase().indexOf(q) !== -1;
-  }).slice(0, 8);
-  if (!hits.length) { results.hidden = true; return; }
-  var base = "..";
-  results.innerHTML = hits.map(function (d) {
-    var text  = d.text || '';
-    var i     = text.toLowerCase().indexOf(q);
-    var start = Math.max(0, i - 35);
-    var end   = Math.min(text.length, i + q.length + 70);
-    var snip  = (start > 0 ? '…' : '') + text.slice(start, end) + (end < text.length ? '…' : '');
-    var url   = base + '/' + d.location;
-    return '<a class="wk-result" href="' + esc(url) + '" role="option">'
-         + '<div class="wk-result-title">' + esc(d.title || d.location) + '</div>'
-         + '<div class="wk-result-snip">'  + esc(snip) + '</div></a>';
-  }).join('');
-  results.hidden = false;
-}
-
-function esc(s) {
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-
-/* ── Back to top ────────────────────────────────────────────── */
-var topBtn = document.getElementById('wk-top');
-if (topBtn) {
-  window.addEventListener('scroll', function () {
-    topBtn.classList.toggle('visible', window.scrollY > 400);
-  }, {passive: true});
-  topBtn.addEventListener('click', function () {
-    window.scrollTo({top: 0, behavior: 'smooth'});
-  });
-}
-
-/* ── Copy-to-clipboard ───────────────────────────────────────── */
-document.querySelectorAll('.highlight').forEach(function (block) {
-  var btn = document.createElement('button');
-  btn.className = 'wk-copy-btn';
-  btn.title     = 'Copy code';
-  btn.textContent = '⎘';
-  block.appendChild(btn);
-  btn.addEventListener('click', function () {
-    var pre = block.querySelector('pre');
-    if (!pre) return;
-    navigator.clipboard.writeText(pre.innerText).then(function () {
-      btn.textContent = '✓';
-      btn.classList.add('copied');
-      setTimeout(function () {
-        btn.textContent = '⎘';
-        btn.classList.remove('copied');
-      }, 1500);
-    });
-  });
-});
-
-/* ── Collapsible long code blocks ─────────────────────────────── */
-var COLLAPSE_THRESHOLD = 340;
-document.querySelectorAll('.wk-article-body .highlight').forEach(function (block) {
-  var pre = block.querySelector('pre');
-  if (!pre || pre.scrollHeight <= COLLAPSE_THRESHOLD + 40) return;
-
-  block.classList.add('wk-code-collapsed');
-  var toggle = document.createElement('button');
-  toggle.className = 'wk-code-toggle';
-  toggle.type = 'button';
-  toggle.textContent = 'Show more ▾';
-  toggle.addEventListener('click', function () {
-    var collapsed = block.classList.toggle('wk-code-collapsed');
-    toggle.textContent = collapsed ? 'Show more ▾' : 'Show less ▴';
-    if (collapsed) block.scrollIntoView({block: 'nearest'});
-  });
-  block.insertAdjacentElement('afterend', toggle);
-});
-
-/* ── TOC scroll spy ─────────────────────────────────────────── */
-var tocLinks = document.querySelectorAll('.wk-toc-link');
-if (tocLinks.length && 'IntersectionObserver' in window) {
-  var headings = Array.from(document.querySelectorAll('.wk-article h1, .wk-article h2, .wk-article h3'));
-  var active   = null;
-  var obs = new IntersectionObserver(function (entries) {
-    entries.forEach(function (e) {
-      if (e.isIntersecting) {
-        var id  = e.target.id;
-        var lnk = document.querySelector('.wk-toc-link[href="#' + id + '"]');
-        if (lnk && lnk !== active) {
-          if (active) active.classList.remove('is-current');
-          lnk.classList.add('is-current');
-          active = lnk;
-        }
-      }
-    });
-  }, {rootMargin: '-10% 0px -80% 0px'});
-  headings.forEach(function (h) { if (h.id) obs.observe(h); });
-}
-
-
-}());
+/* Page settings for wiki.js. The drawer query matches the drawer breakpoint in wiki.css. */
+window.WK = {base: "..", searchIndex: "../search/search_index.json",
+             drawerQuery: window.matchMedia('(max-width: 900px)')};
 </script>
-<script src="../javascripts/hunters.js" defer></script><script src="../search/main.js" defer></script>
+<script src="../javascripts/wiki.js?v=48af91151e" defer></script><script src="../javascripts/hunters.js?v=28a0e867eb" defer></script><script src="../search/main.js" defer></script>
 </body>
 </html>

@@ -1,0 +1,11 @@
+# Approved open-licence web fonts (SIL OFL 1.1, latin subsets from the Fontsource 5.1.0 packages).
+# tools/check_policy.py and tools/check_publish.py accept a font file only if it is in this folder
+# and its SHA-256 is listed here; every other font stays refused. Licences: LICENSE-*.txt.
+29bffc887e1a255b1bd9f3f6ebf9fc4558bac2eeffa134e503bb25a29cd8b9f0  cinzel-latin-400-normal.woff2
+1c7206d2e9bc595f6b43967784e9be40d562a4744e77351a57ae674a355b9f77  cinzel-latin-600-normal.woff2
+66b937da1d31b12fa88c8ca30027b668961bc40421451700fc182f745a3f7a6e  cormorant-garamond-latin-500-italic.woff2
+991c8aba7707066e8d0f351d53a4eedee3b5f00d1db335d9a2ee39903b4b0c8c  cormorant-garamond-latin-500-normal.woff2
+066ec1ac2852906b7e7253ee3c129e0efd2343d8671712db064502f03228ccb0  cormorant-garamond-latin-600-normal.woff2
+4726a81268d672d0493c5130ed4d17b57e2b580b015c88c5caac3119dd80ddb6  literata-latin-400-italic.woff2
+73f131a03bd047c2e2f4e3748151c2862b6633c611907ff0b5be7613839cf311  literata-latin-400-normal.woff2
+d14082145dd6d86979f16637e65c99ee7d2b73a01aa6a50327d3d8c08e764849  literata-latin-600-normal.woff2

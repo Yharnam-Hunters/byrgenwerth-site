@@ -10,45 +10,51 @@
   
   <title>Address Map — Byrgenwerth</title>
   
+  <script>
+  /* Before first paint: the stored theme, and a flag that JavaScript (wiki.js) will run. */
+  (function () { var d = document.documentElement, t = 'dark';
+    try { t = localStorage.getItem('wk-theme') || 'dark'; } catch (e) {}
+    d.setAttribute('data-theme', t); d.classList.add('wk-js'); }());
+  </script>
   
-  <link rel="stylesheet" href="../stylesheets/wiki.css?v=680e958d94"><link rel="stylesheet" href="../stylesheets/hunters.css?v=e4f3c59dfb">
+  <link rel="stylesheet" href="../stylesheets/wiki.css?v=25121f2b45"><link rel="stylesheet" href="../stylesheets/hunters.css?v=e4f3c59dfb">
   
   
 </head>
 <body>
 
-<!-- ── Header ──────────────────────────────────────────────── -->
-<header class="wk-header">
+<!-- ── Header: wordmark, section tabs (wide screens), search, theme ── -->
+
+
+<header class="wk-header" id="wk-header">
   <button class="wk-nav-toggle" id="wk-nav-toggle" aria-label="Open navigation" aria-expanded="false" aria-controls="wk-nav">☰</button>
   <a class="wk-wordmark" href="/byrgenwerth-site/">Byrgenwerth<small>notes of Paleblood, rebuilding Bloodborne one verified function at a time</small></a>
+
+  <!-- Section tabs (wide screens; the drawer lists the same sections on small ones) -->
+  <nav class="wk-tabs" aria-label="Sections">
+    
+    <a class="wk-tab" href="..">The Hunt</a>
+    
+    <a class="wk-tab" href="../great-ones/">Encyclopedia</a>
+    
+    <a class="wk-tab" href="../systems/">Systems</a>
+    
+    <a class="wk-tab is-active" href="../ARCHITECTURE/" aria-current="true">How It Works</a>
+    
+    <a class="wk-tab" href="../CONTRIBUTING/">For Hunters</a>
+    
+  </nav>
 
   <div class="wk-header-right">
     
     <div class="wk-searchbox">
       <input class="wk-search-input" id="wk-q" type="search"
-             placeholder="Search the archives…  [/]" autocomplete="off" aria-label="Search">
+             placeholder="Search  [/]" autocomplete="off" aria-label="Search">
       <div class="wk-search-results" id="wk-results" hidden role="listbox"></div>
     </div>
     <button class="wk-toggle" id="wk-toggle" title="Toggle theme" aria-label="Toggle dark/light">☀</button>
   </div>
 </header>
-
-
-
-<!-- ── Section tabs (wide screens; the drawer lists the same sections on small ones) ── -->
-<nav class="wk-tabs" aria-label="Sections">
-  
-  <a class="wk-tab" href="..">The Hunt</a>
-  
-  <a class="wk-tab" href="../great-ones/">Encyclopedia</a>
-  
-  <a class="wk-tab" href="../systems/">Systems</a>
-  
-  <a class="wk-tab is-active" href="../ARCHITECTURE/" aria-current="true">How It Works</a>
-  
-  <a class="wk-tab" href="../CONTRIBUTING/">For Hunters</a>
-  
-</nav>
 
 <!-- ── Layout ──────────────────────────────────────────────── -->
 <div class="wk-layout">
@@ -362,7 +368,7 @@
       <span class="wk-stat-track" role="img" aria-label="0.033 percent of target code bytes verified">
         <span class="wk-stat-fill" style="width:0.033%"></span>
       </span>
-      <span class="wk-progress-foot">0.033% of code bytes verified · 31 replaced</span>
+      <span class="wk-progress-foot">0.033% of code bytes verified · 32 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -374,33 +380,31 @@
 
       
       
-      <div class="wk-toc" id="wk-toc">
-        <div class="wk-toc-header">
-          <b>Contents</b>
-          <button class="wk-toc-toggle"
-            onclick="var l=document.getElementById('wk-toc-list');l.hidden=!l.hidden;this.textContent=l.hidden?'[show]':'[hide]'">[hide]</button>
-        </div>
+      
+      
+      
+      <nav class="wk-toc" id="wk-toc" aria-label="On this page">
+        <div class="wk-toc-header"><b>On this page</b></div>
         <ol class="wk-toc-list" id="wk-toc-list">
           
-          <li>
-            <a href="#address-map" class="wk-toc-link">Address Map</a>
-            
-            <ol><li><a href="#how-to-read-it" class="wk-toc-link">How to read it</a></li><li><a href="#layout-of-the-executable" class="wk-toc-link">Layout of the executable</a></li></ol>
-            
-          </li>
+          <li><a href="#how-to-read-it" class="wk-toc-link">How to read it</a></li>
+          
+          <li><a href="#layout-of-the-executable" class="wk-toc-link">Layout of the executable</a></li>
           
         </ol>
-      </div>
+      </nav>
+      
       
       
 
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 6, 2026 21:12:13 UTC">October 6, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 28, 2026 05:15:03 UTC">October 28, 2026</span></p>
       
       <h1 id="address-map">Address Map</h1>
-<p>The game's code as <abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr> finds it in the executable's <code>.text</code>, cut into equal slices of address space. Each cell is one slice: how much code it holds (the percentage is relative to the densest slice), and a bar for the code already <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr>. Hover a cell for its address range, function count and bytes.</p>
+<p class="wk-lede">The game's code as Ghidra finds it in the executable's `.text`, cut into equal slices of address space. Each cell shows how much code a slice holds and, as a bar, how much is already replaced.</p>
+
 <div class="wk-bankmap" id="wk-map">
   <a class="wk-bank-cell" style="--pct: 96%;" href="#slice-00" title="0x00400020–0x004aefb3: 2,710 functions, 677,719 bytes of code — 0 replaced, 0 verified. Click for what is inside."><span class="wk-bank-id">4000</span><span class="wk-bank-pct">96%</span></a>
   <a class="wk-bank-cell" style="--pct: 97%;" href="#slice-01" title="0x004aefb3–0x0055df46: 2,013 functions, 685,578 bytes of code — 0 replaced, 0 verified. Click for what is inside."><span class="wk-bank-id">4aef</span><span class="wk-bank-pct">97%</span></a>
@@ -421,7 +425,7 @@
   <a class="wk-bank-cell" style="--pct: 99%;" href="#slice-16" title="0x00eef950–0x00f9e8e3: 1,606 functions, 695,954 bytes of code — 0 replaced, 0 verified. Click for what is inside."><span class="wk-bank-id">eef9</span><span class="wk-bank-pct">99%</span></a>
   <a class="wk-bank-cell wk-bank-matched" style="--pct: 98%;" href="#slice-17" title="0x00f9e8e3–0x0104d876: 1,744 functions, 692,297 bytes of code — 670 replaced, 670 verified. Click for what is inside."><span class="wk-bank-id">f9e8</span><span class="wk-bank-pct">98%</span><span class="wk-bank-progress" style="--matched-pct: 8%;"></span></a>
   <a class="wk-bank-cell" style="--pct: 94%;" href="#slice-18" title="0x0104d876–0x010fc809: 3,128 functions, 665,988 bytes of code — 0 replaced, 0 verified. Click for what is inside."><span class="wk-bank-id">04d8</span><span class="wk-bank-pct">94%</span></a>
-  <a class="wk-bank-cell wk-bank-matched" style="--pct: 96%;" href="#slice-19" title="0x010fc809–0x011ab79c: 2,503 functions, 680,961 bytes of code — 131 replaced, 131 verified. Click for what is inside."><span class="wk-bank-id">0fc8</span><span class="wk-bank-pct">96%</span><span class="wk-bank-progress" style="--matched-pct: 8%;"></span></a>
+  <a class="wk-bank-cell wk-bank-matched" style="--pct: 96%;" href="#slice-19" title="0x010fc809–0x011ab79c: 2,503 functions, 680,961 bytes of code — 150 replaced, 131 verified. Click for what is inside."><span class="wk-bank-id">0fc8</span><span class="wk-bank-pct">96%</span><span class="wk-bank-progress" style="--matched-pct: 8%;"></span></a>
   <a class="wk-bank-cell" style="--pct: 96%;" href="#slice-20" title="0x011ab79c–0x0125a72f: 2,746 functions, 677,827 bytes of code — 0 replaced, 0 verified. Click for what is inside."><span class="wk-bank-id">1ab7</span><span class="wk-bank-pct">96%</span></a>
   <a class="wk-bank-cell" style="--pct: 98%;" href="#slice-21" title="0x0125a72f–0x013096c2: 1,137 functions, 688,769 bytes of code — 0 replaced, 0 verified. Click for what is inside."><span class="wk-bank-id">25a7</span><span class="wk-bank-pct">98%</span></a>
   <a class="wk-bank-cell wk-bank-matched" style="--pct: 96%;" href="#slice-22" title="0x013096c2–0x013b8655: 2,928 functions, 679,570 bytes of code — 517 replaced, 517 verified. Click for what is inside."><span class="wk-bank-id">3096</span><span class="wk-bank-pct">96%</span><span class="wk-bank-progress" style="--matched-pct: 8%;"></span></a>
@@ -477,7 +481,7 @@
 <div class="wk-slice" id="slice-00">
 <p class="wk-slice-head"><a class="wk-slice-close" href="#wk-map" title="Close">×</a><b>0x00400020 – 0x004aefb3</b> · 2,710 functions · 677,719 bytes of code · 0 replaced · 0 verified</p>
 <table class="wk-slice-table"><thead><tr><th>Address</th><th>Function</th><th>Size</th><th>Status</th><th>System</th></tr></thead><tbody>
-<tr class="wk-status-original"><td><code>0x004632d0</code></td><td><code>frame_timing_get_time_us</code></td><td>67</td><td>original</td><td><a href="../systems/frame_timing/">frame_timing</a></td></tr>
+<tr class="wk-status-original"><td><code>0x004632d0</code></td><td><code>frame_timing_get_time_us</code></td><td>67</td><td><span class="wk-badge wk-badge--original">original</span></td><td><a href="../systems/frame_timing/">frame_timing</a></td></tr>
 </tbody></table>
 <p class="wk-slice-sub">Largest functions here without a name yet</p><p class="wk-slice-largest">
 <code>0x004722b0</code>&nbsp;5,285&nbsp;B <code>0x00427540</code>&nbsp;4,527&nbsp;B <code>0x0047f1d0</code>&nbsp;4,478&nbsp;B <code>0x004737a0</code>&nbsp;4,423&nbsp;B <code>0x00423700</code>&nbsp;4,123&nbsp;B <code>0x00458010</code>&nbsp;4,106&nbsp;B <code>0x00416e80</code>&nbsp;4,030&nbsp;B <code>0x0041d020</code>&nbsp;3,659&nbsp;B
@@ -598,7 +602,7 @@
 <div class="wk-slice" id="slice-17">
 <p class="wk-slice-head"><a class="wk-slice-close" href="#wk-map" title="Close">×</a><b>0x00f9e8e3 – 0x0104d876</b> · 1,744 functions · 692,297 bytes of code · 670 replaced · 670 verified</p>
 <table class="wk-slice-table"><thead><tr><th>Address</th><th>Function</th><th>Size</th><th>Status</th><th>System</th></tr></thead><tbody>
-<tr class="wk-status-verified"><td><code>0x00fbc3e0</code></td><td><code>render_yebis_get_recursive_sample_parameters</code></td><td>670</td><td>verified</td><td><a href="../systems/render/">render</a></td></tr>
+<tr class="wk-status-verified"><td><code>0x00fbc3e0</code></td><td><code>render_yebis_get_recursive_sample_parameters</code></td><td>670</td><td><span class="wk-badge wk-badge--verified">verified</span></td><td><a href="../systems/render/">render</a></td></tr>
 </tbody></table>
 <p class="wk-slice-sub">Largest functions here without a name yet</p><p class="wk-slice-largest">
 <code>0x00fc98b0</code>&nbsp;35,863&nbsp;B <code>0x01019270</code>&nbsp;17,446&nbsp;B <code>0x00feb7c0</code>&nbsp;14,426&nbsp;B <code>0x00fc21f0</code>&nbsp;11,512&nbsp;B <code>0x00ffadb0</code>&nbsp;9,743&nbsp;B <code>0x00fa84b0</code>&nbsp;7,004&nbsp;B <code>0x010383b0</code>&nbsp;6,801&nbsp;B <code>0x010037c0</code>&nbsp;6,567&nbsp;B
@@ -612,9 +616,10 @@
 </p>
 </div>
 <div class="wk-slice" id="slice-19">
-<p class="wk-slice-head"><a class="wk-slice-close" href="#wk-map" title="Close">×</a><b>0x010fc809 – 0x011ab79c</b> · 2,503 functions · 680,961 bytes of code · 131 replaced · 131 verified</p>
+<p class="wk-slice-head"><a class="wk-slice-close" href="#wk-map" title="Close">×</a><b>0x010fc809 – 0x011ab79c</b> · 2,503 functions · 680,961 bytes of code · 150 replaced · 131 verified</p>
 <table class="wk-slice-table"><thead><tr><th>Address</th><th>Function</th><th>Size</th><th>Status</th><th>System</th></tr></thead><tbody>
-<tr class="wk-status-verified"><td><code>0x0111a7f0</code></td><td><code>frame_timing_get_monotonic_ms</code></td><td>131</td><td>verified</td><td><a href="../systems/frame_timing/">frame_timing</a></td></tr>
+<tr class="wk-status-verified"><td><code>0x0111a7f0</code></td><td><code>frame_timing_get_monotonic_ms</code></td><td>131</td><td><span class="wk-badge wk-badge--verified">verified</span></td><td><a href="../systems/frame_timing/">frame_timing</a></td></tr>
+<tr class="wk-status-edge-verified"><td><code>0x0111a880</code></td><td><code>frame_timing_sleep_ms</code></td><td>19</td><td><span class="wk-badge wk-badge--edge-verified">edge-verified</span></td><td><a href="../systems/frame_timing/">frame_timing</a></td></tr>
 </tbody></table>
 <p class="wk-slice-sub">Largest functions here without a name yet</p><p class="wk-slice-largest">
 <code>0x01151a60</code>&nbsp;15,510&nbsp;B <code>0x0110ae90</code>&nbsp;12,822&nbsp;B <code>0x0114f1a0</code>&nbsp;10,083&nbsp;B <code>0x0117a6e0</code>&nbsp;8,863&nbsp;B <code>0x01120480</code>&nbsp;8,588&nbsp;B <code>0x01142ef0</code>&nbsp;8,307&nbsp;B <code>0x01176ce0</code>&nbsp;7,804&nbsp;B <code>0x011475b0</code>&nbsp;7,723&nbsp;B
@@ -637,9 +642,9 @@
 <div class="wk-slice" id="slice-22">
 <p class="wk-slice-head"><a class="wk-slice-close" href="#wk-map" title="Close">×</a><b>0x013096c2 – 0x013b8655</b> · 2,928 functions · 679,570 bytes of code · 517 replaced · 517 verified</p>
 <table class="wk-slice-table"><thead><tr><th>Address</th><th>Function</th><th>Size</th><th>Status</th><th>System</th></tr></thead><tbody>
-<tr class="wk-status-verified"><td><code>0x01388c60</code></td><td><code>frame_timing_task_run_all_01388c60</code></td><td>16</td><td>verified</td><td><a href="../systems/frame_timing/">frame_timing</a></td></tr>
-<tr class="wk-status-verified"><td><code>0x01388c70</code></td><td><code>frame_timing_task_run_01388c70</code></td><td>171</td><td>verified</td><td><a href="../systems/frame_timing/">frame_timing</a></td></tr>
-<tr class="wk-status-verified"><td><code>0x0138a370</code></td><td><code>frame_timing_task_dispatch_0138a370</code></td><td>330</td><td>verified</td><td><a href="../systems/frame_timing/">frame_timing</a></td></tr>
+<tr class="wk-status-verified"><td><code>0x01388c60</code></td><td><code>frame_timing_task_run_all_01388c60</code></td><td>16</td><td><span class="wk-badge wk-badge--verified">verified</span></td><td><a href="../systems/frame_timing/">frame_timing</a></td></tr>
+<tr class="wk-status-verified"><td><code>0x01388c70</code></td><td><code>frame_timing_task_run_01388c70</code></td><td>171</td><td><span class="wk-badge wk-badge--verified">verified</span></td><td><a href="../systems/frame_timing/">frame_timing</a></td></tr>
+<tr class="wk-status-verified"><td><code>0x0138a370</code></td><td><code>frame_timing_task_dispatch_0138a370</code></td><td>330</td><td><span class="wk-badge wk-badge--verified">verified</span></td><td><a href="../systems/frame_timing/">frame_timing</a></td></tr>
 </tbody></table>
 <p class="wk-slice-sub">Largest functions here without a name yet</p><p class="wk-slice-largest">
 <code>0x0130f8e0</code>&nbsp;13,317&nbsp;B <code>0x01321820</code>&nbsp;11,556&nbsp;B <code>0x0130d450</code>&nbsp;7,916&nbsp;B <code>0x01325dc0</code>&nbsp;7,633&nbsp;B <code>0x0130abc0</code>&nbsp;7,349&nbsp;B <code>0x01333c20</code>&nbsp;6,857&nbsp;B <code>0x0131a670</code>&nbsp;6,740&nbsp;B <code>0x01374b50</code>&nbsp;5,201&nbsp;B
@@ -648,10 +653,10 @@
 <div class="wk-slice" id="slice-23">
 <p class="wk-slice-head"><a class="wk-slice-close" href="#wk-map" title="Close">×</a><b>0x013b8655 – 0x014675e8</b> · 3,776 functions · 680,950 bytes of code · 459 replaced · 459 verified</p>
 <table class="wk-slice-table"><thead><tr><th>Address</th><th>Function</th><th>Size</th><th>Status</th><th>System</th></tr></thead><tbody>
-<tr class="wk-status-verified"><td><code>0x013d3520</code></td><td><code>frame_timing_task_013d3520</code></td><td>87</td><td>verified</td><td><a href="../systems/frame_timing/">frame_timing</a></td></tr>
-<tr class="wk-status-verified"><td><code>0x0143e490</code></td><td><code>frame_timing_task_flush_queue_0143e490</code></td><td>174</td><td>verified</td><td><a href="../systems/frame_timing/">frame_timing</a></td></tr>
-<tr class="wk-status-verified"><td><code>0x0143f9f0</code></td><td><code>frame_timing_task_set_frame_value_0143f9f0</code></td><td>18</td><td>verified</td><td><a href="../systems/frame_timing/">frame_timing</a></td></tr>
-<tr class="wk-status-verified"><td><code>0x014400a0</code></td><td><code>frame_timing_task_workers_step_014400a0</code></td><td>180</td><td>verified</td><td><a href="../systems/frame_timing/">frame_timing</a></td></tr>
+<tr class="wk-status-verified"><td><code>0x013d3520</code></td><td><code>frame_timing_task_013d3520</code></td><td>87</td><td><span class="wk-badge wk-badge--verified">verified</span></td><td><a href="../systems/frame_timing/">frame_timing</a></td></tr>
+<tr class="wk-status-verified"><td><code>0x0143e490</code></td><td><code>frame_timing_task_flush_queue_0143e490</code></td><td>174</td><td><span class="wk-badge wk-badge--verified">verified</span></td><td><a href="../systems/frame_timing/">frame_timing</a></td></tr>
+<tr class="wk-status-verified"><td><code>0x0143f9f0</code></td><td><code>frame_timing_task_set_frame_value_0143f9f0</code></td><td>18</td><td><span class="wk-badge wk-badge--verified">verified</span></td><td><a href="../systems/frame_timing/">frame_timing</a></td></tr>
+<tr class="wk-status-verified"><td><code>0x014400a0</code></td><td><code>frame_timing_task_workers_step_014400a0</code></td><td>180</td><td><span class="wk-badge wk-badge--verified">verified</span></td><td><a href="../systems/frame_timing/">frame_timing</a></td></tr>
 </tbody></table>
 <p class="wk-slice-sub">Largest functions here without a name yet</p><p class="wk-slice-largest">
 <code>0x013fa0f0</code>&nbsp;6,400&nbsp;B <code>0x01428da0</code>&nbsp;5,939&nbsp;B <code>0x0144c460</code>&nbsp;4,869&nbsp;B <code>0x013fc220</code>&nbsp;4,748&nbsp;B <code>0x01454790</code>&nbsp;4,409&nbsp;B <code>0x01452af0</code>&nbsp;4,243&nbsp;B <code>0x01430650</code>&nbsp;3,745&nbsp;B <code>0x01453b90</code>&nbsp;3,056&nbsp;B
@@ -681,7 +686,7 @@
 <div class="wk-slice" id="slice-27">
 <p class="wk-slice-head"><a class="wk-slice-close" href="#wk-map" title="Close">×</a><b>0x016744a1 – 0x01723434</b> · 2,619 functions · 633,453 bytes of code · 368 replaced · 368 verified</p>
 <table class="wk-slice-table"><thead><tr><th>Address</th><th>Function</th><th>Size</th><th>Status</th><th>System</th></tr></thead><tbody>
-<tr class="wk-status-verified"><td><code>0x016efd00</code></td><td><code>event_emk_add</code></td><td>368</td><td>verified</td><td><a href="../systems/event/">event</a></td></tr>
+<tr class="wk-status-verified"><td><code>0x016efd00</code></td><td><code>event_emk_add</code></td><td>368</td><td><span class="wk-badge wk-badge--verified">verified</span></td><td><a href="../systems/event/">event</a></td></tr>
 </tbody></table>
 <p class="wk-slice-sub">Largest functions here without a name yet</p><p class="wk-slice-largest">
 <code>0x016f5c40</code>&nbsp;13,922&nbsp;B <code>0x016a0960</code>&nbsp;7,371&nbsp;B <code>0x016ab4c0</code>&nbsp;6,167&nbsp;B <code>0x0168f060</code>&nbsp;5,762&nbsp;B <code>0x016fabe0</code>&nbsp;5,355&nbsp;B <code>0x016f2750</code>&nbsp;5,211&nbsp;B <code>0x016d5670</code>&nbsp;5,116&nbsp;B <code>0x016afae0</code>&nbsp;4,456&nbsp;B
@@ -690,7 +695,7 @@
 <div class="wk-slice" id="slice-28">
 <p class="wk-slice-head"><a class="wk-slice-close" href="#wk-map" title="Close">×</a><b>0x01723434 – 0x017d23c7</b> · 2,461 functions · 623,399 bytes of code · 177 replaced · 0 verified</p>
 <table class="wk-slice-table"><thead><tr><th>Address</th><th>Function</th><th>Size</th><th>Status</th><th>System</th></tr></thead><tbody>
-<tr class="wk-status-edge-verified"><td><code>0x017cfcc0</code></td><td><code>event_flag_write</code></td><td>177</td><td>edge-verified</td><td><a href="../systems/event/">event</a></td></tr>
+<tr class="wk-status-edge-verified"><td><code>0x017cfcc0</code></td><td><code>event_flag_write</code></td><td>177</td><td><span class="wk-badge wk-badge--edge-verified">edge-verified</span></td><td><a href="../systems/event/">event</a></td></tr>
 </tbody></table>
 <p class="wk-slice-sub">Largest functions here without a name yet</p><p class="wk-slice-largest">
 <code>0x0177d7a0</code>&nbsp;11,333&nbsp;B <code>0x017b89b0</code>&nbsp;11,205&nbsp;B <code>0x017b6540</code>&nbsp;8,979&nbsp;B <code>0x017beca0</code>&nbsp;8,386&nbsp;B <code>0x017a0250</code>&nbsp;5,478&nbsp;B <code>0x017941b0</code>&nbsp;5,275&nbsp;B <code>0x017a1970</code>&nbsp;5,257&nbsp;B <code>0x017a99b0</code>&nbsp;5,211&nbsp;B
@@ -713,7 +718,7 @@
 <div class="wk-slice" id="slice-31">
 <p class="wk-slice-head"><a class="wk-slice-close" href="#wk-map" title="Close">×</a><b>0x019302ed – 0x019df280</b> · 2,086 functions · 655,294 bytes of code · 426 replaced · 426 verified</p>
 <table class="wk-slice-table"><thead><tr><th>Address</th><th>Function</th><th>Size</th><th>Status</th><th>System</th></tr></thead><tbody>
-<tr class="wk-status-verified"><td><code>0x01972900</code></td><td><code>input_pad_step_01972900</code></td><td>426</td><td>verified</td><td><a href="../systems/input/">input</a></td></tr>
+<tr class="wk-status-verified"><td><code>0x01972900</code></td><td><code>input_pad_step_01972900</code></td><td>426</td><td><span class="wk-badge wk-badge--verified">verified</span></td><td><a href="../systems/input/">input</a></td></tr>
 </tbody></table>
 <p class="wk-slice-sub">Largest functions here without a name yet</p><p class="wk-slice-largest">
 <code>0x0195aae0</code>&nbsp;18,801&nbsp;B <code>0x01966290</code>&nbsp;12,004&nbsp;B <code>0x01973630</code>&nbsp;9,123&nbsp;B <code>0x01951390</code>&nbsp;8,655&nbsp;B <code>0x01976df0</code>&nbsp;7,716&nbsp;B <code>0x019ddd10</code>&nbsp;6,421&nbsp;B <code>0x01948740</code>&nbsp;6,393&nbsp;B <code>0x01933940</code>&nbsp;6,319&nbsp;B
@@ -743,7 +748,7 @@
 <div class="wk-slice" id="slice-35">
 <p class="wk-slice-head"><a class="wk-slice-close" href="#wk-map" title="Close">×</a><b>0x01bec139 – 0x01c9b0cc</b> · 1,966 functions · 649,235 bytes of code · 3,222 replaced · 3,222 verified</p>
 <table class="wk-slice-table"><thead><tr><th>Address</th><th>Function</th><th>Size</th><th>Status</th><th>System</th></tr></thead><tbody>
-<tr class="wk-status-verified"><td><code>0x01c0c2b0</code></td><td><code>physics_instance_construct_01c0c2b0</code></td><td>3,222</td><td>verified</td><td><a href="../systems/physics/">physics</a></td></tr>
+<tr class="wk-status-verified"><td><code>0x01c0c2b0</code></td><td><code>physics_instance_construct_01c0c2b0</code></td><td>3,222</td><td><span class="wk-badge wk-badge--verified">verified</span></td><td><a href="../systems/physics/">physics</a></td></tr>
 </tbody></table>
 <p class="wk-slice-sub">Largest functions here without a name yet</p><p class="wk-slice-largest">
 <code>0x01c8e900</code>&nbsp;13,862&nbsp;B <code>0x01c72360</code>&nbsp;6,971&nbsp;B <code>0x01c20ec0</code>&nbsp;5,434&nbsp;B <code>0x01c0df90</code>&nbsp;5,298&nbsp;B <code>0x01c136f0</code>&nbsp;5,117&nbsp;B <code>0x01c56290</code>&nbsp;4,858&nbsp;B <code>0x01c68f30</code>&nbsp;4,732&nbsp;B <code>0x01c1f270</code>&nbsp;4,630&nbsp;B
@@ -752,7 +757,7 @@
 <div class="wk-slice" id="slice-36">
 <p class="wk-slice-head"><a class="wk-slice-close" href="#wk-map" title="Close">×</a><b>0x01c9b0cc – 0x01d4a05f</b> · 2,201 functions · 661,825 bytes of code · 979 replaced · 979 verified</p>
 <table class="wk-slice-table"><thead><tr><th>Address</th><th>Function</th><th>Size</th><th>Status</th><th>System</th></tr></thead><tbody>
-<tr class="wk-status-verified"><td><code>0x01cbdb20</code></td><td><code>character_frame_update_01cbdb20</code></td><td>979</td><td>verified</td><td><a href="../systems/character/">character</a></td></tr>
+<tr class="wk-status-verified"><td><code>0x01cbdb20</code></td><td><code>character_frame_update_01cbdb20</code></td><td>979</td><td><span class="wk-badge wk-badge--verified">verified</span></td><td><a href="../systems/character/">character</a></td></tr>
 </tbody></table>
 <p class="wk-slice-sub">Largest functions here without a name yet</p><p class="wk-slice-largest">
 <code>0x01d3ac10</code>&nbsp;26,866&nbsp;B <code>0x01ceceb0</code>&nbsp;12,400&nbsp;B <code>0x01d20510</code>&nbsp;10,136&nbsp;B <code>0x01ccf620</code>&nbsp;9,856&nbsp;B <code>0x01cf4ff0</code>&nbsp;9,696&nbsp;B <code>0x01d15320</code>&nbsp;7,598&nbsp;B <code>0x01cb9ae0</code>&nbsp;5,535&nbsp;B <code>0x01cfef50</code>&nbsp;5,407&nbsp;B
@@ -782,7 +787,7 @@
 <div class="wk-slice" id="slice-40">
 <p class="wk-slice-head"><a class="wk-slice-close" href="#wk-map" title="Close">×</a><b>0x01f56f18 – 0x02005eab</b> · 3,535 functions · 667,458 bytes of code · 121 replaced · 0 verified</p>
 <table class="wk-slice-table"><thead><tr><th>Address</th><th>Function</th><th>Size</th><th>Status</th><th>System</th></tr></thead><tbody>
-<tr class="wk-status-edge-verified"><td><code>0x01f6a9f0</code></td><td><code>frame_timing_until_idle_01f6a9f0</code></td><td>121</td><td>edge-verified</td><td><a href="../systems/frame_timing/">frame_timing</a></td></tr>
+<tr class="wk-status-edge-verified"><td><code>0x01f6a9f0</code></td><td><code>frame_timing_until_idle_01f6a9f0</code></td><td>121</td><td><span class="wk-badge wk-badge--edge-verified">edge-verified</span></td><td><a href="../systems/frame_timing/">frame_timing</a></td></tr>
 </tbody></table>
 <p class="wk-slice-sub">Largest functions here without a name yet</p><p class="wk-slice-largest">
 <code>0x01ffb2a0</code>&nbsp;13,341&nbsp;B <code>0x01faf8c0</code>&nbsp;11,737&nbsp;B <code>0x01ff41c0</code>&nbsp;9,700&nbsp;B <code>0x01ff7c20</code>&nbsp;7,780&nbsp;B <code>0x01f61c40</code>&nbsp;7,228&nbsp;B <code>0x01fa80f0</code>&nbsp;6,156&nbsp;B <code>0x01fbc3a0</code>&nbsp;5,679&nbsp;B <code>0x01ff67c0</code>&nbsp;5,216&nbsp;B
@@ -791,14 +796,14 @@
 <div class="wk-slice" id="slice-41">
 <p class="wk-slice-head"><a class="wk-slice-close" href="#wk-map" title="Close">×</a><b>0x02005eab – 0x020b4e3e</b> · 3,110 functions · 663,085 bytes of code · 1,045 replaced · 0 verified</p>
 <table class="wk-slice-table"><thead><tr><th>Address</th><th>Function</th><th>Size</th><th>Status</th><th>System</th></tr></thead><tbody>
-<tr class="wk-status-edge-verified"><td><code>0x0200d8a0</code></td><td><code>frame_timing_until_idle_0200d8a0</code></td><td>137</td><td>edge-verified</td><td><a href="../systems/frame_timing/">frame_timing</a></td></tr>
-<tr class="wk-status-edge-verified"><td><code>0x0200e100</code></td><td><code>frame_timing_until_idle_0200e100</code></td><td>121</td><td>edge-verified</td><td><a href="../systems/frame_timing/">frame_timing</a></td></tr>
-<tr class="wk-status-edge-verified"><td><code>0x0200e270</code></td><td><code>frame_timing_request_7_0200e270</code></td><td>151</td><td>edge-verified</td><td><a href="../systems/frame_timing/">frame_timing</a></td></tr>
-<tr class="wk-status-edge-verified"><td><code>0x02012610</code></td><td><code>frame_timing_until_idle_02012610</code></td><td>121</td><td>edge-verified</td><td><a href="../systems/frame_timing/">frame_timing</a></td></tr>
-<tr class="wk-status-edge-verified"><td><code>0x02012780</code></td><td><code>frame_timing_request_10_02012780</code></td><td>122</td><td>edge-verified</td><td><a href="../systems/frame_timing/">frame_timing</a></td></tr>
-<tr class="wk-status-edge-verified"><td><code>0x020128f0</code></td><td><code>frame_timing_until_idle_020128f0</code></td><td>121</td><td>edge-verified</td><td><a href="../systems/frame_timing/">frame_timing</a></td></tr>
-<tr class="wk-status-edge-verified"><td><code>0x02012a60</code></td><td><code>frame_timing_request_7_02012a60</code></td><td>151</td><td>edge-verified</td><td><a href="../systems/frame_timing/">frame_timing</a></td></tr>
-<tr class="wk-status-edge-verified"><td><code>0x02012bf0</code></td><td><code>frame_timing_until_idle_02012bf0</code></td><td>121</td><td>edge-verified</td><td><a href="../systems/frame_timing/">frame_timing</a></td></tr>
+<tr class="wk-status-edge-verified"><td><code>0x0200d8a0</code></td><td><code>frame_timing_until_idle_0200d8a0</code></td><td>137</td><td><span class="wk-badge wk-badge--edge-verified">edge-verified</span></td><td><a href="../systems/frame_timing/">frame_timing</a></td></tr>
+<tr class="wk-status-edge-verified"><td><code>0x0200e100</code></td><td><code>frame_timing_until_idle_0200e100</code></td><td>121</td><td><span class="wk-badge wk-badge--edge-verified">edge-verified</span></td><td><a href="../systems/frame_timing/">frame_timing</a></td></tr>
+<tr class="wk-status-edge-verified"><td><code>0x0200e270</code></td><td><code>frame_timing_request_7_0200e270</code></td><td>151</td><td><span class="wk-badge wk-badge--edge-verified">edge-verified</span></td><td><a href="../systems/frame_timing/">frame_timing</a></td></tr>
+<tr class="wk-status-edge-verified"><td><code>0x02012610</code></td><td><code>frame_timing_until_idle_02012610</code></td><td>121</td><td><span class="wk-badge wk-badge--edge-verified">edge-verified</span></td><td><a href="../systems/frame_timing/">frame_timing</a></td></tr>
+<tr class="wk-status-edge-verified"><td><code>0x02012780</code></td><td><code>frame_timing_request_10_02012780</code></td><td>122</td><td><span class="wk-badge wk-badge--edge-verified">edge-verified</span></td><td><a href="../systems/frame_timing/">frame_timing</a></td></tr>
+<tr class="wk-status-edge-verified"><td><code>0x020128f0</code></td><td><code>frame_timing_until_idle_020128f0</code></td><td>121</td><td><span class="wk-badge wk-badge--edge-verified">edge-verified</span></td><td><a href="../systems/frame_timing/">frame_timing</a></td></tr>
+<tr class="wk-status-edge-verified"><td><code>0x02012a60</code></td><td><code>frame_timing_request_7_02012a60</code></td><td>151</td><td><span class="wk-badge wk-badge--edge-verified">edge-verified</span></td><td><a href="../systems/frame_timing/">frame_timing</a></td></tr>
+<tr class="wk-status-edge-verified"><td><code>0x02012bf0</code></td><td><code>frame_timing_until_idle_02012bf0</code></td><td>121</td><td><span class="wk-badge wk-badge--edge-verified">edge-verified</span></td><td><a href="../systems/frame_timing/">frame_timing</a></td></tr>
 </tbody></table>
 <p class="wk-slice-sub">Largest functions here without a name yet</p><p class="wk-slice-largest">
 <code>0x02037b30</code>&nbsp;15,077&nbsp;B <code>0x0207c3d0</code>&nbsp;9,350&nbsp;B <code>0x0207ee30</code>&nbsp;9,350&nbsp;B <code>0x02062700</code>&nbsp;7,394&nbsp;B <code>0x020973f0</code>&nbsp;5,641&nbsp;B <code>0x0206ab20</code>&nbsp;5,470&nbsp;B <code>0x02095f80</code>&nbsp;5,200&nbsp;B <code>0x0205b960</code>&nbsp;5,132&nbsp;B
@@ -821,7 +826,7 @@
 <div class="wk-slice" id="slice-44">
 <p class="wk-slice-head"><a class="wk-slice-close" href="#wk-map" title="Close">×</a><b>0x02212d64 – 0x022c1cf7</b> · 2,020 functions · 666,516 bytes of code · 2,693 replaced · 2,693 verified</p>
 <table class="wk-slice-table"><thead><tr><th>Address</th><th>Function</th><th>Size</th><th>Status</th><th>System</th></tr></thead><tbody>
-<tr class="wk-status-verified"><td><code>0x0222bc10</code></td><td><code>ai_hk_frame_update_0222bc10</code></td><td>2,693</td><td>verified</td><td><a href="../systems/ai/">ai</a></td></tr>
+<tr class="wk-status-verified"><td><code>0x0222bc10</code></td><td><code>ai_hk_frame_update_0222bc10</code></td><td>2,693</td><td><span class="wk-badge wk-badge--verified">verified</span></td><td><a href="../systems/ai/">ai</a></td></tr>
 </tbody></table>
 <p class="wk-slice-sub">Largest functions here without a name yet</p><p class="wk-slice-largest">
 <code>0x022b65e0</code>&nbsp;78,317&nbsp;B <code>0x022946e0</code>&nbsp;13,461&nbsp;B <code>0x02290e30</code>&nbsp;10,454&nbsp;B <code>0x02224a60</code>&nbsp;10,215&nbsp;B <code>0x0226e670</code>&nbsp;7,179&nbsp;B <code>0x02230ad0</code>&nbsp;6,042&nbsp;B <code>0x022b3d10</code>&nbsp;5,682&nbsp;B <code>0x02250f00</code>&nbsp;5,637&nbsp;B
@@ -837,8 +842,8 @@
 <div class="wk-slice" id="slice-46">
 <p class="wk-slice-head"><a class="wk-slice-close" href="#wk-map" title="Close">×</a><b>0x02370c8a – 0x0241fc1d</b> · 3,034 functions · 641,524 bytes of code · 866 replaced · 866 verified</p>
 <table class="wk-slice-table"><thead><tr><th>Address</th><th>Function</th><th>Size</th><th>Status</th><th>System</th></tr></thead><tbody>
-<tr class="wk-status-verified"><td><code>0x02377bd0</code></td><td><code>render_frame_update_02377bd0</code></td><td>399</td><td>verified</td><td><a href="../systems/render/">render</a></td></tr>
-<tr class="wk-status-verified"><td><code>0x02418d20</code></td><td><code>frame_timing_frame_step</code></td><td>467</td><td>verified</td><td><a href="../systems/frame_timing/">frame_timing</a></td></tr>
+<tr class="wk-status-verified"><td><code>0x02377bd0</code></td><td><code>render_frame_update_02377bd0</code></td><td>399</td><td><span class="wk-badge wk-badge--verified">verified</span></td><td><a href="../systems/render/">render</a></td></tr>
+<tr class="wk-status-verified"><td><code>0x02418d20</code></td><td><code>frame_timing_frame_step</code></td><td>467</td><td><span class="wk-badge wk-badge--verified">verified</span></td><td><a href="../systems/frame_timing/">frame_timing</a></td></tr>
 </tbody></table>
 <p class="wk-slice-sub">Largest functions here without a name yet</p><p class="wk-slice-largest">
 <code>0x023fe0c0</code>&nbsp;14,432&nbsp;B <code>0x0241ce40</code>&nbsp;5,739&nbsp;B <code>0x023a6a30</code>&nbsp;5,691&nbsp;B <code>0x023d5060</code>&nbsp;5,563&nbsp;B <code>0x023ce990</code>&nbsp;5,499&nbsp;B <code>0x0239dd40</code>&nbsp;5,387&nbsp;B <code>0x023dffd0</code>&nbsp;5,387&nbsp;B <code>0x02387b10</code>&nbsp;5,355&nbsp;B
@@ -847,10 +852,10 @@
 <div class="wk-slice" id="slice-47">
 <p class="wk-slice-head"><a class="wk-slice-close" href="#wk-map" title="Close">×</a><b>0x0241fc1d – 0x024cebb0</b> · 2,778 functions · 633,547 bytes of code · 2,911 replaced · 2,911 verified</p>
 <table class="wk-slice-table"><thead><tr><th>Address</th><th>Function</th><th>Size</th><th>Status</th><th>System</th></tr></thead><tbody>
-<tr class="wk-status-verified"><td><code>0x02434520</code></td><td><code>frame_timing_flipper_init</code></td><td>552</td><td>verified</td><td><a href="../systems/frame_timing/">frame_timing</a></td></tr>
-<tr class="wk-status-verified"><td><code>0x02434770</code></td><td><code>frame_timing_pace_frame</code></td><td>2,077</td><td>verified</td><td><a href="../systems/frame_timing/">frame_timing</a></td></tr>
-<tr class="wk-status-verified"><td><code>0x024512a0</code></td><td><code>frame_timing_task_frame_024512a0</code></td><td>78</td><td>verified</td><td><a href="../systems/frame_timing/">frame_timing</a></td></tr>
-<tr class="wk-status-verified"><td><code>0x02483e80</code></td><td><code>kernel_condition_wait</code></td><td>204</td><td>verified</td><td><a href="../systems/kernel/">kernel</a></td></tr>
+<tr class="wk-status-verified"><td><code>0x02434520</code></td><td><code>frame_timing_flipper_init</code></td><td>552</td><td><span class="wk-badge wk-badge--verified">verified</span></td><td><a href="../systems/frame_timing/">frame_timing</a></td></tr>
+<tr class="wk-status-verified"><td><code>0x02434770</code></td><td><code>frame_timing_pace_frame</code></td><td>2,077</td><td><span class="wk-badge wk-badge--verified">verified</span></td><td><a href="../systems/frame_timing/">frame_timing</a></td></tr>
+<tr class="wk-status-verified"><td><code>0x024512a0</code></td><td><code>frame_timing_task_frame_024512a0</code></td><td>78</td><td><span class="wk-badge wk-badge--verified">verified</span></td><td><a href="../systems/frame_timing/">frame_timing</a></td></tr>
+<tr class="wk-status-verified"><td><code>0x02483e80</code></td><td><code>kernel_condition_wait</code></td><td>204</td><td><span class="wk-badge wk-badge--verified">verified</span></td><td><a href="../systems/kernel/">kernel</a></td></tr>
 </tbody></table>
 <p class="wk-slice-sub">Largest functions here without a name yet</p><p class="wk-slice-largest">
 <code>0x0243ad60</code>&nbsp;17,799&nbsp;B <code>0x0243ffd0</code>&nbsp;16,985&nbsp;B <code>0x024c7080</code>&nbsp;11,839&nbsp;B <code>0x02451a90</code>&nbsp;10,405&nbsp;B <code>0x02490060</code>&nbsp;9,550&nbsp;B <code>0x024aadc0</code>&nbsp;9,000&nbsp;B <code>0x02463c50</code>&nbsp;7,406&nbsp;B <code>0x02467ac0</code>&nbsp;7,280&nbsp;B
@@ -866,7 +871,7 @@
 <div class="wk-slice" id="slice-49">
 <p class="wk-slice-head"><a class="wk-slice-close" href="#wk-map" title="Close">×</a><b>0x0257db43 – 0x0262cad6</b> · 1,399 functions · 687,218 bytes of code · 768 replaced · 768 verified</p>
 <table class="wk-slice-table"><thead><tr><th>Address</th><th>Function</th><th>Size</th><th>Status</th><th>System</th></tr></thead><tbody>
-<tr class="wk-status-verified"><td><code>0x025b2fb0</code></td><td><code>render_swap_chain_present</code></td><td>768</td><td>verified</td><td><a href="../systems/render/">render</a></td></tr>
+<tr class="wk-status-verified"><td><code>0x025b2fb0</code></td><td><code>render_swap_chain_present</code></td><td>768</td><td><span class="wk-badge wk-badge--verified">verified</span></td><td><a href="../systems/render/">render</a></td></tr>
 </tbody></table>
 <p class="wk-slice-sub">Largest functions here without a name yet</p><p class="wk-slice-largest">
 <code>0x025d9ea0</code>&nbsp;21,541&nbsp;B <code>0x02613ff0</code>&nbsp;17,470&nbsp;B <code>0x025d5f80</code>&nbsp;15,874&nbsp;B <code>0x025aeca0</code>&nbsp;14,846&nbsp;B <code>0x02594580</code>&nbsp;10,355&nbsp;B <code>0x0260b840</code>&nbsp;8,930&nbsp;B <code>0x02601740</code>&nbsp;8,662&nbsp;B <code>0x026071f0</code>&nbsp;8,269&nbsp;B
@@ -975,12 +980,13 @@
 <p>Every number here is generated from the code repository's function export and function table; nothing on this page is typed by hand.</p>
 <h2 id="how-to-read-it">How to read it</h2>
 <ul>
-<li>The executable keeps its code in one block from <code>0x00400000</code>; read-only data, the exception tables and the writable data follow it and are not code, so they are not on the map.</li>
-<li>A slice's address range says nothing about what system lives there: the game's systems are spread across the executable. The <a href="../systems/">system pages</a> say which functions belong where.</li>
-<li>The bar of a slice with <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> code is drawn at least a little wide so a single small function stays visible.</li>
+<li><strong>Density</strong> is relative to the densest slice. Hover a cell for its address range, function count and bytes.</li>
+<li><strong>Only code is mapped.</strong> The code is one block from <code>0x00400000</code>; read-only data, the exception tables and the writable data follow it and are not on the map.</li>
+<li><strong>Addresses are not systems.</strong> The game's systems are spread across the executable; the <a href="../systems/">system pages</a> say which functions belong where.</li>
+<li><strong>Small replacements stay visible.</strong> A slice with <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> code always gets a bar at least a little wide.</li>
 </ul>
 <h2 id="layout-of-the-executable">Layout of the executable</h2>
-<table>
+<div class="wk-table"><table>
 <thead>
 <tr>
 <th>Range</th>
@@ -1001,7 +1007,7 @@
 <td>Writable data and zero-initialized data</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>The exact block boundaries are the <abbr title="A Ghidra extension that loads PS4 executables and resolves NIDs to names.">GhidraOrbis</abbr> <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr>'s; see <a href="../QUIRKS/"><abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr> &amp; <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> Quirks</a> for how they were checked against the unwind tables.</p>
       
       </div>
@@ -1024,241 +1030,10 @@
 
 
 <script>
-(function () {
-'use strict';
-
-/* ── Theme ─────────────────────────────────────────────────── */
-var stored = localStorage.getItem('wk-theme') || 'dark';
-applyTheme(stored);
-document.getElementById('wk-toggle').addEventListener('click', function () {
-  applyTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
-});
-function applyTheme(t) {
-  document.documentElement.setAttribute('data-theme', t);
-  localStorage.setItem('wk-theme', t);
-  var btn = document.getElementById('wk-toggle');
-  if (btn) btn.textContent = t === 'dark' ? '☀' : '🌙';
-}
-
-/* ── Address map: a block opens its slice in a pop-up ──────── */
-(function () {
-  var map = document.querySelector('.wk-bankmap');
-  if (!map) return;
-  var modal = document.createElement('div');
-  modal.className = 'wk-slice-modal';
-  modal.setAttribute('role', 'dialog');
-  modal.setAttribute('aria-modal', 'true');
-  document.body.appendChild(modal);
-  function close() { modal.classList.remove('is-open'); }
-  map.addEventListener('click', function (e) {
-    var cell = e.target.closest('a.wk-bank-cell');
-    if (!cell) return;
-    var panel = document.getElementById(cell.getAttribute('href').slice(1));
-    if (!panel) return;
-    e.preventDefault();
-    modal.innerHTML = '';
-    modal.appendChild(panel.cloneNode(true));
-    modal.firstChild.removeAttribute('id');
-    requestAnimationFrame(function () { modal.classList.add('is-open'); });
-  });
-  modal.addEventListener('click', function (e) {
-    if (e.target === modal || e.target.closest('.wk-slice-close')) { e.preventDefault(); close(); }
-  });
-  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
-})();
-
-/* ── Mobile nav ────────────────────────────────────────────── */
-var navToggle  = document.getElementById('wk-nav-toggle');
-var navEl      = document.getElementById('wk-nav');
-var navBackdrop = document.getElementById('wk-nav-backdrop');
-var mainEl     = document.querySelector('.wk-main');
-var headerRight = document.querySelector('.wk-header-right');
-var wordmark = document.querySelector('.wk-wordmark');
-/* Matches the drawer breakpoint in wiki.css. */
-var drawerQuery = window.matchMedia('(max-width: 900px)');
-
-function closeNav() {
-  navEl.classList.remove('is-open');
-  navBackdrop.hidden = true;
-  navToggle.setAttribute('aria-expanded', 'false');
-  navToggle.setAttribute('aria-label', 'Open navigation');
-  navToggle.textContent = '☰';
-  if (mainEl) mainEl.inert = false;
-  if (headerRight) headerRight.inert = false;
-  if (wordmark) wordmark.inert = false;
-  if (drawerQuery.matches) navEl.inert = true;
-}
-function openNav() {
-  navEl.inert = false;
-  if (mainEl) mainEl.inert = true;
-  if (headerRight) headerRight.inert = true;
-  if (wordmark) wordmark.inert = true;
-  navEl.classList.add('is-open');
-  navBackdrop.hidden = false;
-  navToggle.setAttribute('aria-expanded', 'true');
-  navToggle.setAttribute('aria-label', 'Close navigation');
-  navToggle.textContent = '×';
-}
-if (navToggle && navEl && navBackdrop) {
-  navEl.inert = drawerQuery.matches;
-  navToggle.addEventListener('click', function () {
-    if (navEl.classList.contains('is-open')) { closeNav(); } else { openNav(); }
-  });
-  navBackdrop.addEventListener('click', function () { closeNav(); navToggle.focus(); });
-  navEl.addEventListener('click', function (e) {
-    if (e.target.closest('a')) { closeNav(); }
-  });
-  document.addEventListener('keydown', function (e) {
-    if (!navEl.classList.contains('is-open') || !drawerQuery.matches) return;
-    if (e.key === 'Escape') { closeNav(); navToggle.focus(); return; }
-    if (e.key !== 'Tab') return;
-    var links = Array.prototype.slice.call(navEl.querySelectorAll('a[href], button:not([disabled])'));
-    var focusable = [navToggle].concat(links);
-    var first = focusable[0];
-    var last = focusable[focusable.length - 1];
-    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
-    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
-  });
-  window.addEventListener('resize', function () {
-    if (!drawerQuery.matches) { navEl.inert = false; closeNav(); }
-    else if (!navEl.classList.contains('is-open')) navEl.inert = true;
-  });
-}
-
-/* ── Search ─────────────────────────────────────────────────── */
-var input   = document.getElementById('wk-q');
-var results = document.getElementById('wk-results');
-var docs    = null;
-if (input) {
-  fetch("../search/search_index.json")
-    .then(function (r) { return r.json(); })
-    .then(function (d) { docs = d.docs; });
-
-  input.addEventListener('input', onSearch);
-
-  document.addEventListener('click', function (e) {
-    if (results && !results.contains(e.target) && e.target !== input) results.hidden = true;
-  });
-  input.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape') { results.hidden = true; this.blur(); }
-    if (e.key === 'Enter' && results && !results.hidden) {
-      var first = results.querySelector('.wk-result');
-      if (first) { first.click(); }
-    }
-  });
-}
-
-/* Press / to focus search */
-document.addEventListener('keydown', function (e) {
-  if (e.key === '/' && document.activeElement !== input &&
-      document.activeElement.tagName !== 'INPUT' &&
-      document.activeElement.tagName !== 'TEXTAREA') {
-    e.preventDefault();
-    if (input) { input.focus(); input.select(); }
-  }
-});
-
-function onSearch() {
-  var q = this.value.trim().toLowerCase();
-  if (!docs || q.length < 2) { results.hidden = true; return; }
-  var hits = docs.filter(function (d) {
-    return (d.title + ' ' + d.text).toLowerCase().indexOf(q) !== -1;
-  }).slice(0, 8);
-  if (!hits.length) { results.hidden = true; return; }
-  var base = "..";
-  results.innerHTML = hits.map(function (d) {
-    var text  = d.text || '';
-    var i     = text.toLowerCase().indexOf(q);
-    var start = Math.max(0, i - 35);
-    var end   = Math.min(text.length, i + q.length + 70);
-    var snip  = (start > 0 ? '…' : '') + text.slice(start, end) + (end < text.length ? '…' : '');
-    var url   = base + '/' + d.location;
-    return '<a class="wk-result" href="' + esc(url) + '" role="option">'
-         + '<div class="wk-result-title">' + esc(d.title || d.location) + '</div>'
-         + '<div class="wk-result-snip">'  + esc(snip) + '</div></a>';
-  }).join('');
-  results.hidden = false;
-}
-
-function esc(s) {
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-
-/* ── Back to top ────────────────────────────────────────────── */
-var topBtn = document.getElementById('wk-top');
-if (topBtn) {
-  window.addEventListener('scroll', function () {
-    topBtn.classList.toggle('visible', window.scrollY > 400);
-  }, {passive: true});
-  topBtn.addEventListener('click', function () {
-    window.scrollTo({top: 0, behavior: 'smooth'});
-  });
-}
-
-/* ── Copy-to-clipboard ───────────────────────────────────────── */
-document.querySelectorAll('.highlight').forEach(function (block) {
-  var btn = document.createElement('button');
-  btn.className = 'wk-copy-btn';
-  btn.title     = 'Copy code';
-  btn.textContent = '⎘';
-  block.appendChild(btn);
-  btn.addEventListener('click', function () {
-    var pre = block.querySelector('pre');
-    if (!pre) return;
-    navigator.clipboard.writeText(pre.innerText).then(function () {
-      btn.textContent = '✓';
-      btn.classList.add('copied');
-      setTimeout(function () {
-        btn.textContent = '⎘';
-        btn.classList.remove('copied');
-      }, 1500);
-    });
-  });
-});
-
-/* ── Collapsible long code blocks ─────────────────────────────── */
-var COLLAPSE_THRESHOLD = 340;
-document.querySelectorAll('.wk-article-body .highlight').forEach(function (block) {
-  var pre = block.querySelector('pre');
-  if (!pre || pre.scrollHeight <= COLLAPSE_THRESHOLD + 40) return;
-
-  block.classList.add('wk-code-collapsed');
-  var toggle = document.createElement('button');
-  toggle.className = 'wk-code-toggle';
-  toggle.type = 'button';
-  toggle.textContent = 'Show more ▾';
-  toggle.addEventListener('click', function () {
-    var collapsed = block.classList.toggle('wk-code-collapsed');
-    toggle.textContent = collapsed ? 'Show more ▾' : 'Show less ▴';
-    if (collapsed) block.scrollIntoView({block: 'nearest'});
-  });
-  block.insertAdjacentElement('afterend', toggle);
-});
-
-/* ── TOC scroll spy ─────────────────────────────────────────── */
-var tocLinks = document.querySelectorAll('.wk-toc-link');
-if (tocLinks.length && 'IntersectionObserver' in window) {
-  var headings = Array.from(document.querySelectorAll('.wk-article h1, .wk-article h2, .wk-article h3'));
-  var active   = null;
-  var obs = new IntersectionObserver(function (entries) {
-    entries.forEach(function (e) {
-      if (e.isIntersecting) {
-        var id  = e.target.id;
-        var lnk = document.querySelector('.wk-toc-link[href="#' + id + '"]');
-        if (lnk && lnk !== active) {
-          if (active) active.classList.remove('is-current');
-          lnk.classList.add('is-current');
-          active = lnk;
-        }
-      }
-    });
-  }, {rootMargin: '-10% 0px -80% 0px'});
-  headings.forEach(function (h) { if (h.id) obs.observe(h); });
-}
-
-
-}());
+/* Page settings for wiki.js. The drawer query matches the drawer breakpoint in wiki.css. */
+window.WK = {base: "..", searchIndex: "../search/search_index.json",
+             drawerQuery: window.matchMedia('(max-width: 900px)')};
 </script>
-<script src="../javascripts/hunters.js" defer></script><script src="../search/main.js" defer></script>
+<script src="../javascripts/wiki.js?v=48af91151e" defer></script><script src="../javascripts/hunters.js?v=28a0e867eb" defer></script><script src="../search/main.js" defer></script>
 </body>
 </html>

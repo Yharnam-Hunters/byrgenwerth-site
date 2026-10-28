@@ -10,45 +10,51 @@
   
   <title>Ghidra & PS4 Quirks — Byrgenwerth</title>
   
+  <script>
+  /* Before first paint: the stored theme, and a flag that JavaScript (wiki.js) will run. */
+  (function () { var d = document.documentElement, t = 'dark';
+    try { t = localStorage.getItem('wk-theme') || 'dark'; } catch (e) {}
+    d.setAttribute('data-theme', t); d.classList.add('wk-js'); }());
+  </script>
   
-  <link rel="stylesheet" href="../stylesheets/wiki.css?v=680e958d94"><link rel="stylesheet" href="../stylesheets/hunters.css?v=e4f3c59dfb">
+  <link rel="stylesheet" href="../stylesheets/wiki.css?v=25121f2b45"><link rel="stylesheet" href="../stylesheets/hunters.css?v=e4f3c59dfb">
   
   
 </head>
 <body>
 
-<!-- ── Header ──────────────────────────────────────────────── -->
-<header class="wk-header">
+<!-- ── Header: wordmark, section tabs (wide screens), search, theme ── -->
+
+
+<header class="wk-header" id="wk-header">
   <button class="wk-nav-toggle" id="wk-nav-toggle" aria-label="Open navigation" aria-expanded="false" aria-controls="wk-nav">☰</button>
   <a class="wk-wordmark" href="/byrgenwerth-site/">Byrgenwerth<small>notes of Paleblood, rebuilding Bloodborne one verified function at a time</small></a>
+
+  <!-- Section tabs (wide screens; the drawer lists the same sections on small ones) -->
+  <nav class="wk-tabs" aria-label="Sections">
+    
+    <a class="wk-tab" href="..">The Hunt</a>
+    
+    <a class="wk-tab" href="../great-ones/">Encyclopedia</a>
+    
+    <a class="wk-tab" href="../systems/">Systems</a>
+    
+    <a class="wk-tab" href="../ARCHITECTURE/">How It Works</a>
+    
+    <a class="wk-tab is-active" href="../CONTRIBUTING/" aria-current="true">For Hunters</a>
+    
+  </nav>
 
   <div class="wk-header-right">
     
     <div class="wk-searchbox">
       <input class="wk-search-input" id="wk-q" type="search"
-             placeholder="Search the archives…  [/]" autocomplete="off" aria-label="Search">
+             placeholder="Search  [/]" autocomplete="off" aria-label="Search">
       <div class="wk-search-results" id="wk-results" hidden role="listbox"></div>
     </div>
     <button class="wk-toggle" id="wk-toggle" title="Toggle theme" aria-label="Toggle dark/light">☀</button>
   </div>
 </header>
-
-
-
-<!-- ── Section tabs (wide screens; the drawer lists the same sections on small ones) ── -->
-<nav class="wk-tabs" aria-label="Sections">
-  
-  <a class="wk-tab" href="..">The Hunt</a>
-  
-  <a class="wk-tab" href="../great-ones/">Encyclopedia</a>
-  
-  <a class="wk-tab" href="../systems/">Systems</a>
-  
-  <a class="wk-tab" href="../ARCHITECTURE/">How It Works</a>
-  
-  <a class="wk-tab is-active" href="../CONTRIBUTING/" aria-current="true">For Hunters</a>
-  
-</nav>
 
 <!-- ── Layout ──────────────────────────────────────────────── -->
 <div class="wk-layout">
@@ -362,7 +368,7 @@
       <span class="wk-stat-track" role="img" aria-label="0.033 percent of target code bytes verified">
         <span class="wk-stat-fill" style="width:0.033%"></span>
       </span>
-      <span class="wk-progress-foot">0.033% of code bytes verified · 31 replaced</span>
+      <span class="wk-progress-foot">0.033% of code bytes verified · 32 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -374,23 +380,36 @@
 
       
       
-      <div class="wk-toc" id="wk-toc">
-        <div class="wk-toc-header">
-          <b>Contents</b>
-          <button class="wk-toc-toggle"
-            onclick="var l=document.getElementById('wk-toc-list');l.hidden=!l.hidden;this.textContent=l.hidden?'[show]':'[hide]'">[hide]</button>
-        </div>
+      
+      
+      
+      <nav class="wk-toc" id="wk-toc" aria-label="On this page">
+        <div class="wk-toc-header"><b>On this page</b></div>
         <ol class="wk-toc-list" id="wk-toc-list">
           
-          <li>
-            <a href="#ghidra-ps4-quirks" class="wk-toc-link">Ghidra &amp; PS4 Quirks</a>
-            
-            <ol><li><a href="#the-converted-executable" class="wk-toc-link">The converted executable</a></li><li><a href="#address-conventions" class="wk-toc-link">Address conventions</a></li><li><a href="#ghidra-itself" class="wk-toc-link">Ghidra itself</a></li><li><a href="#calling-convention" class="wk-toc-link">Calling convention</a></li><li><a href="#cpu" class="wk-toc-link">CPU</a></li><li><a href="#imports-and-system-calls" class="wk-toc-link">Imports and system calls</a></li><li><a href="#hooks" class="wk-toc-link">Hooks</a></li><li><a href="#verification-traps" class="wk-toc-link">Verification traps</a></li><li><a href="#ghidra-hides-code-after-the-engines-fatal-error-call" class="wk-toc-link">Ghidra hides code after the engine's fatal error call</a></li><li><a href="#a-community-patch-edit-that-calls-into-the-middle-of-another-function" class="wk-toc-link">A community patch edit that calls into the middle of another function</a></li></ol>
-            
-          </li>
+          <li><a href="#the-converted-executable" class="wk-toc-link">The converted executable</a></li>
+          
+          <li><a href="#address-conventions" class="wk-toc-link">Address conventions</a></li>
+          
+          <li><a href="#ghidra-itself" class="wk-toc-link">Ghidra itself</a></li>
+          
+          <li><a href="#calling-convention" class="wk-toc-link">Calling convention</a></li>
+          
+          <li><a href="#cpu" class="wk-toc-link">CPU</a></li>
+          
+          <li><a href="#imports-and-system-calls" class="wk-toc-link">Imports and system calls</a></li>
+          
+          <li><a href="#hooks" class="wk-toc-link">Hooks</a></li>
+          
+          <li><a href="#verification-traps" class="wk-toc-link">Verification traps</a></li>
+          
+          <li><a href="#ghidra-hides-code-after-the-engines-fatal-error-call" class="wk-toc-link">Ghidra hides code after the engine's fatal error call</a></li>
+          
+          <li><a href="#replay-overlapping-community-patch-writes-in-order" class="wk-toc-link">Replay overlapping community patch writes in order</a></li>
           
         </ol>
-      </div>
+      </nav>
+      
       
       
 
@@ -451,7 +470,7 @@ yet; confirm or correct them when you hit them.</p>
 <code>0x400000</code></strong>, with <abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr>'s image base set to <code>0x400000</code>. Community patch files use the same
 address convention.</p>
 <p>Three conventions exist, one constant apart. V is the <abbr title="Executable and Linkable Format, the standard executable file format on Linux and FreeBSD.">ELF</abbr> <code>p_vaddr</code>.</p>
-<table>
+<div class="wk-table"><table>
 <thead>
 <tr>
 <th>Convention</th>
@@ -471,7 +490,7 @@ address convention.</p>
 <td><strong>ours</strong>, <abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr>, community patch files</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>To convert an address to the <abbr title="Executable and Linkable Format, the standard executable file format on Linux and FreeBSD.">ELF</abbr> virtual address, subtract <code>0x400000</code>.
 <code>tools/validate_functions.py</code> rejects any address below <code>0x00400000</code>, which catches a base-0
 import by mistake.</p>
@@ -492,6 +511,17 @@ SelfUtil build produced the <abbr title="Executable and Linkable Format, the sta
   <code>-loader-imageBase 0x400000</code> (<code>-loader-baseAddr</code> is ignored by this <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr>).</li>
 <li><code>-loader "Orbis ELF"</code> is rejected by headless as an invalid <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> name; leave <code>-loader</code> out,
   the <abbr title="The PS4's operating system, derived from FreeBSD.">Orbis</abbr> <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> is picked automatically for this file.</li>
+<li><abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr> 12.1.4's <a href="https://github.com/NationalSecurityAgency/ghidra/blob/Ghidra_12.1.4_build/Ghidra/Processors/x86/data/languages/avx.sinc">VEX <code>VSQRTSS</code> and <code>VSQRTSD</code> rules</a>
+  reverse the two source roles. The low
+  result must be the square root of source 2 (ModRM), with the upper lanes from source 1
+  (VEX.vvvv), as specified in <a href="https://cdrdv2-public.intel.com/774492/325383-sdm-vol-2abcd.pdf">Intel's instruction manual</a>.
+  For <code>vsqrtss xmm1,xmm0,xmm1</code>, distinct low inputs 9 and 25 must produce 5, retaining XMM0's
+  upper lanes. The stock rules produce 3 and retain XMM1's upper lanes. This was checked with
+  synthetic single/double probes in the x86-64 verification VM and through REA before and after
+  correcting an isolated private SDK copy. The original SDK remains intact; record the modified
+  SLEIGH/SLA hashes and start a fresh REA output directory when using the correction. The follow
+  camera update and pitch getter contain affected instructions. Instruction coverage alone
+  does not establish correct decompiler semantics.</li>
 </ul>
 <h2 id="calling-convention">Calling convention</h2>
 <ul>
@@ -549,15 +579,21 @@ The game's code does continue there (a jump to the return, or to another report)
 when a replacement is tested with that function stubbed. If a draft's disassembly has a gap after
 such a call, disassemble the bytes directly (objdump on the <abbr title="Executable and Linkable Format, the standard executable file format on Linux and FreeBSD.">ELF</abbr>) before writing the replacement.
 Example: <code>kernel_condition_wait</code> (<code>0x02483e80</code>) returns -3 after the EINVAL report.</p>
-<h2 id="a-community-patch-edit-that-calls-into-the-middle-of-another-function">A community patch edit that calls into the middle of another function</h2>
-<p><code>Uncap FPS++</code> replaces <code>vmovss xmm4, [0x04d29e74]</code> (1/30 s) at <code>0x02715d71</code>, in
-<code>0x02713870</code>, with <code>call 0x027166f7</code> and three <code>nop</code>s. In v1.09, <code>0x027166f7</code> is in the middle
-of a static initialiser (<code>0x02716680</code>, 231 bytes), just before an engine fatal-error call and
-stores to globals; no line of any patch in the file writes code there. Run that way, the block
-would call the fatal error, overwrite the initialiser's globals and return through an epilogue
-whose pushes never happened. The patched block is a cold path placed after the function's
-return, so it may simply never run. There is nothing faithful to replicate: a replacement keeps
-the stock 1/30 s there, and the option check for <code>Uncap FPS++</code> cannot cover that block.</p>
+<h2 id="replay-overlapping-community-patch-writes-in-order">Replay overlapping community patch writes in order</h2>
+<p>The <a href="https://github.com/shadps4-emu/ps4_cheats/blob/e34463942099072e5d8f5e2bcb3d7d927683b349/PATCHES/Bloodborne.xml">community XML at commit e344639</a>
+contains overlapping <code>Uncap FPS++</code> writes inside <code>0x02713870</code>. A five-byte call write at
+<code>0x02715d71</code> is partly overwritten by a later write starting at <code>0x02715d75</code>. The resulting
+instruction calls <code>0xffffffff917166f7</code>; analyzing the first write alone gives the wrong target.
+A still later edit at <code>0x02713d76</code> replaces the incoming stock branch with a live path that
+loads <code>SprjFlipper::frame_seconds</code>, applies scalar <code>min</code> with 1/30 s, and jumps past the malformed
+residual code to <code>0x02715d79</code>. Direct intraprocedural control-flow walking finds no reachable
+incoming edge to the malformed call. This does not establish the absence of unknown external
+jumps.</p>
+<p>The invalid-owner route instead reads <code>0x0575a908</code>, initialized by this patch to bits
+<code>0x3c088889</code> (1/120 s). A replacement must reproduce the reachable patched routes, including
+their float operand order, rather than keep the stock time step because one isolated edit
+looks invalid. Retain the exact XML revision and replay all its writes before reasoning about
+option coverage; other revisions may differ.</p>
       
       </div>
 
@@ -579,241 +615,10 @@ the stock 1/30 s there, and the option check for <code>Uncap FPS++</code> cannot
 
 
 <script>
-(function () {
-'use strict';
-
-/* ── Theme ─────────────────────────────────────────────────── */
-var stored = localStorage.getItem('wk-theme') || 'dark';
-applyTheme(stored);
-document.getElementById('wk-toggle').addEventListener('click', function () {
-  applyTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
-});
-function applyTheme(t) {
-  document.documentElement.setAttribute('data-theme', t);
-  localStorage.setItem('wk-theme', t);
-  var btn = document.getElementById('wk-toggle');
-  if (btn) btn.textContent = t === 'dark' ? '☀' : '🌙';
-}
-
-/* ── Address map: a block opens its slice in a pop-up ──────── */
-(function () {
-  var map = document.querySelector('.wk-bankmap');
-  if (!map) return;
-  var modal = document.createElement('div');
-  modal.className = 'wk-slice-modal';
-  modal.setAttribute('role', 'dialog');
-  modal.setAttribute('aria-modal', 'true');
-  document.body.appendChild(modal);
-  function close() { modal.classList.remove('is-open'); }
-  map.addEventListener('click', function (e) {
-    var cell = e.target.closest('a.wk-bank-cell');
-    if (!cell) return;
-    var panel = document.getElementById(cell.getAttribute('href').slice(1));
-    if (!panel) return;
-    e.preventDefault();
-    modal.innerHTML = '';
-    modal.appendChild(panel.cloneNode(true));
-    modal.firstChild.removeAttribute('id');
-    requestAnimationFrame(function () { modal.classList.add('is-open'); });
-  });
-  modal.addEventListener('click', function (e) {
-    if (e.target === modal || e.target.closest('.wk-slice-close')) { e.preventDefault(); close(); }
-  });
-  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
-})();
-
-/* ── Mobile nav ────────────────────────────────────────────── */
-var navToggle  = document.getElementById('wk-nav-toggle');
-var navEl      = document.getElementById('wk-nav');
-var navBackdrop = document.getElementById('wk-nav-backdrop');
-var mainEl     = document.querySelector('.wk-main');
-var headerRight = document.querySelector('.wk-header-right');
-var wordmark = document.querySelector('.wk-wordmark');
-/* Matches the drawer breakpoint in wiki.css. */
-var drawerQuery = window.matchMedia('(max-width: 900px)');
-
-function closeNav() {
-  navEl.classList.remove('is-open');
-  navBackdrop.hidden = true;
-  navToggle.setAttribute('aria-expanded', 'false');
-  navToggle.setAttribute('aria-label', 'Open navigation');
-  navToggle.textContent = '☰';
-  if (mainEl) mainEl.inert = false;
-  if (headerRight) headerRight.inert = false;
-  if (wordmark) wordmark.inert = false;
-  if (drawerQuery.matches) navEl.inert = true;
-}
-function openNav() {
-  navEl.inert = false;
-  if (mainEl) mainEl.inert = true;
-  if (headerRight) headerRight.inert = true;
-  if (wordmark) wordmark.inert = true;
-  navEl.classList.add('is-open');
-  navBackdrop.hidden = false;
-  navToggle.setAttribute('aria-expanded', 'true');
-  navToggle.setAttribute('aria-label', 'Close navigation');
-  navToggle.textContent = '×';
-}
-if (navToggle && navEl && navBackdrop) {
-  navEl.inert = drawerQuery.matches;
-  navToggle.addEventListener('click', function () {
-    if (navEl.classList.contains('is-open')) { closeNav(); } else { openNav(); }
-  });
-  navBackdrop.addEventListener('click', function () { closeNav(); navToggle.focus(); });
-  navEl.addEventListener('click', function (e) {
-    if (e.target.closest('a')) { closeNav(); }
-  });
-  document.addEventListener('keydown', function (e) {
-    if (!navEl.classList.contains('is-open') || !drawerQuery.matches) return;
-    if (e.key === 'Escape') { closeNav(); navToggle.focus(); return; }
-    if (e.key !== 'Tab') return;
-    var links = Array.prototype.slice.call(navEl.querySelectorAll('a[href], button:not([disabled])'));
-    var focusable = [navToggle].concat(links);
-    var first = focusable[0];
-    var last = focusable[focusable.length - 1];
-    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
-    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
-  });
-  window.addEventListener('resize', function () {
-    if (!drawerQuery.matches) { navEl.inert = false; closeNav(); }
-    else if (!navEl.classList.contains('is-open')) navEl.inert = true;
-  });
-}
-
-/* ── Search ─────────────────────────────────────────────────── */
-var input   = document.getElementById('wk-q');
-var results = document.getElementById('wk-results');
-var docs    = null;
-if (input) {
-  fetch("../search/search_index.json")
-    .then(function (r) { return r.json(); })
-    .then(function (d) { docs = d.docs; });
-
-  input.addEventListener('input', onSearch);
-
-  document.addEventListener('click', function (e) {
-    if (results && !results.contains(e.target) && e.target !== input) results.hidden = true;
-  });
-  input.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape') { results.hidden = true; this.blur(); }
-    if (e.key === 'Enter' && results && !results.hidden) {
-      var first = results.querySelector('.wk-result');
-      if (first) { first.click(); }
-    }
-  });
-}
-
-/* Press / to focus search */
-document.addEventListener('keydown', function (e) {
-  if (e.key === '/' && document.activeElement !== input &&
-      document.activeElement.tagName !== 'INPUT' &&
-      document.activeElement.tagName !== 'TEXTAREA') {
-    e.preventDefault();
-    if (input) { input.focus(); input.select(); }
-  }
-});
-
-function onSearch() {
-  var q = this.value.trim().toLowerCase();
-  if (!docs || q.length < 2) { results.hidden = true; return; }
-  var hits = docs.filter(function (d) {
-    return (d.title + ' ' + d.text).toLowerCase().indexOf(q) !== -1;
-  }).slice(0, 8);
-  if (!hits.length) { results.hidden = true; return; }
-  var base = "..";
-  results.innerHTML = hits.map(function (d) {
-    var text  = d.text || '';
-    var i     = text.toLowerCase().indexOf(q);
-    var start = Math.max(0, i - 35);
-    var end   = Math.min(text.length, i + q.length + 70);
-    var snip  = (start > 0 ? '…' : '') + text.slice(start, end) + (end < text.length ? '…' : '');
-    var url   = base + '/' + d.location;
-    return '<a class="wk-result" href="' + esc(url) + '" role="option">'
-         + '<div class="wk-result-title">' + esc(d.title || d.location) + '</div>'
-         + '<div class="wk-result-snip">'  + esc(snip) + '</div></a>';
-  }).join('');
-  results.hidden = false;
-}
-
-function esc(s) {
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-
-/* ── Back to top ────────────────────────────────────────────── */
-var topBtn = document.getElementById('wk-top');
-if (topBtn) {
-  window.addEventListener('scroll', function () {
-    topBtn.classList.toggle('visible', window.scrollY > 400);
-  }, {passive: true});
-  topBtn.addEventListener('click', function () {
-    window.scrollTo({top: 0, behavior: 'smooth'});
-  });
-}
-
-/* ── Copy-to-clipboard ───────────────────────────────────────── */
-document.querySelectorAll('.highlight').forEach(function (block) {
-  var btn = document.createElement('button');
-  btn.className = 'wk-copy-btn';
-  btn.title     = 'Copy code';
-  btn.textContent = '⎘';
-  block.appendChild(btn);
-  btn.addEventListener('click', function () {
-    var pre = block.querySelector('pre');
-    if (!pre) return;
-    navigator.clipboard.writeText(pre.innerText).then(function () {
-      btn.textContent = '✓';
-      btn.classList.add('copied');
-      setTimeout(function () {
-        btn.textContent = '⎘';
-        btn.classList.remove('copied');
-      }, 1500);
-    });
-  });
-});
-
-/* ── Collapsible long code blocks ─────────────────────────────── */
-var COLLAPSE_THRESHOLD = 340;
-document.querySelectorAll('.wk-article-body .highlight').forEach(function (block) {
-  var pre = block.querySelector('pre');
-  if (!pre || pre.scrollHeight <= COLLAPSE_THRESHOLD + 40) return;
-
-  block.classList.add('wk-code-collapsed');
-  var toggle = document.createElement('button');
-  toggle.className = 'wk-code-toggle';
-  toggle.type = 'button';
-  toggle.textContent = 'Show more ▾';
-  toggle.addEventListener('click', function () {
-    var collapsed = block.classList.toggle('wk-code-collapsed');
-    toggle.textContent = collapsed ? 'Show more ▾' : 'Show less ▴';
-    if (collapsed) block.scrollIntoView({block: 'nearest'});
-  });
-  block.insertAdjacentElement('afterend', toggle);
-});
-
-/* ── TOC scroll spy ─────────────────────────────────────────── */
-var tocLinks = document.querySelectorAll('.wk-toc-link');
-if (tocLinks.length && 'IntersectionObserver' in window) {
-  var headings = Array.from(document.querySelectorAll('.wk-article h1, .wk-article h2, .wk-article h3'));
-  var active   = null;
-  var obs = new IntersectionObserver(function (entries) {
-    entries.forEach(function (e) {
-      if (e.isIntersecting) {
-        var id  = e.target.id;
-        var lnk = document.querySelector('.wk-toc-link[href="#' + id + '"]');
-        if (lnk && lnk !== active) {
-          if (active) active.classList.remove('is-current');
-          lnk.classList.add('is-current');
-          active = lnk;
-        }
-      }
-    });
-  }, {rootMargin: '-10% 0px -80% 0px'});
-  headings.forEach(function (h) { if (h.id) obs.observe(h); });
-}
-
-
-}());
+/* Page settings for wiki.js. The drawer query matches the drawer breakpoint in wiki.css. */
+window.WK = {base: "..", searchIndex: "../search/search_index.json",
+             drawerQuery: window.matchMedia('(max-width: 900px)')};
 </script>
-<script src="../javascripts/hunters.js" defer></script><script src="../search/main.js" defer></script>
+<script src="../javascripts/wiki.js?v=48af91151e" defer></script><script src="../javascripts/hunters.js?v=28a0e867eb" defer></script><script src="../search/main.js" defer></script>
 </body>
 </html>

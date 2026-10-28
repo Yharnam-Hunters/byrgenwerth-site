@@ -10,45 +10,51 @@
   
   <title>Runtime — Byrgenwerth</title>
   
+  <script>
+  /* Before first paint: the stored theme, and a flag that JavaScript (wiki.js) will run. */
+  (function () { var d = document.documentElement, t = 'dark';
+    try { t = localStorage.getItem('wk-theme') || 'dark'; } catch (e) {}
+    d.setAttribute('data-theme', t); d.classList.add('wk-js'); }());
+  </script>
   
-  <link rel="stylesheet" href="../stylesheets/wiki.css?v=680e958d94"><link rel="stylesheet" href="../stylesheets/hunters.css?v=e4f3c59dfb">
+  <link rel="stylesheet" href="../stylesheets/wiki.css?v=25121f2b45"><link rel="stylesheet" href="../stylesheets/hunters.css?v=e4f3c59dfb">
   
   
 </head>
 <body>
 
-<!-- ── Header ──────────────────────────────────────────────── -->
-<header class="wk-header">
+<!-- ── Header: wordmark, section tabs (wide screens), search, theme ── -->
+
+
+<header class="wk-header" id="wk-header">
   <button class="wk-nav-toggle" id="wk-nav-toggle" aria-label="Open navigation" aria-expanded="false" aria-controls="wk-nav">☰</button>
   <a class="wk-wordmark" href="/byrgenwerth-site/">Byrgenwerth<small>notes of Paleblood, rebuilding Bloodborne one verified function at a time</small></a>
+
+  <!-- Section tabs (wide screens; the drawer lists the same sections on small ones) -->
+  <nav class="wk-tabs" aria-label="Sections">
+    
+    <a class="wk-tab" href="..">The Hunt</a>
+    
+    <a class="wk-tab" href="../great-ones/">Encyclopedia</a>
+    
+    <a class="wk-tab" href="../systems/">Systems</a>
+    
+    <a class="wk-tab is-active" href="../ARCHITECTURE/" aria-current="true">How It Works</a>
+    
+    <a class="wk-tab" href="../CONTRIBUTING/">For Hunters</a>
+    
+  </nav>
 
   <div class="wk-header-right">
     
     <div class="wk-searchbox">
       <input class="wk-search-input" id="wk-q" type="search"
-             placeholder="Search the archives…  [/]" autocomplete="off" aria-label="Search">
+             placeholder="Search  [/]" autocomplete="off" aria-label="Search">
       <div class="wk-search-results" id="wk-results" hidden role="listbox"></div>
     </div>
     <button class="wk-toggle" id="wk-toggle" title="Toggle theme" aria-label="Toggle dark/light">☀</button>
   </div>
 </header>
-
-
-
-<!-- ── Section tabs (wide screens; the drawer lists the same sections on small ones) ── -->
-<nav class="wk-tabs" aria-label="Sections">
-  
-  <a class="wk-tab" href="..">The Hunt</a>
-  
-  <a class="wk-tab" href="../great-ones/">Encyclopedia</a>
-  
-  <a class="wk-tab" href="../systems/">Systems</a>
-  
-  <a class="wk-tab is-active" href="../ARCHITECTURE/" aria-current="true">How It Works</a>
-  
-  <a class="wk-tab" href="../CONTRIBUTING/">For Hunters</a>
-  
-</nav>
 
 <!-- ── Layout ──────────────────────────────────────────────── -->
 <div class="wk-layout">
@@ -362,7 +368,7 @@
       <span class="wk-stat-track" role="img" aria-label="0.033 percent of target code bytes verified">
         <span class="wk-stat-fill" style="width:0.033%"></span>
       </span>
-      <span class="wk-progress-foot">0.033% of code bytes verified · 31 replaced</span>
+      <span class="wk-progress-foot">0.033% of code bytes verified · 32 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -374,41 +380,93 @@
 
       
       
-      <div class="wk-toc" id="wk-toc">
-        <div class="wk-toc-header">
-          <b>Contents</b>
-          <button class="wk-toc-toggle"
-            onclick="var l=document.getElementById('wk-toc-list');l.hidden=!l.hidden;this.textContent=l.hidden?'[show]':'[hide]'">[hide]</button>
-        </div>
+      
+      
+      
+      <nav class="wk-toc" id="wk-toc" aria-label="On this page">
+        <div class="wk-toc-header"><b>On this page</b></div>
         <ol class="wk-toc-list" id="wk-toc-list">
           
-          <li>
-            <a href="#runtime" class="wk-toc-link">Runtime</a>
-            
-            <ol><li><a href="#what-works-in-palebloods-runtime" class="wk-toc-link">What works in Paleblood's runtime</a></li><li><a href="#capture-and-replay" class="wk-toc-link">Capture and replay</a></li><li><a href="#boot-history-and-the-current-blocker" class="wk-toc-link">Boot history and the current blocker</a></li><li><a href="#decompilation-progress" class="wk-toc-link">Decompilation progress</a></li><li><a href="#roadmap" class="wk-toc-link">Roadmap</a></li><li><a href="#full-run-dependency-and-replacement-path" class="wk-toc-link">Full-run dependency and replacement path</a></li></ol>
-            
-          </li>
+          <li><a href="#what-works-in-palebloods-runtime" class="wk-toc-link">What works in Paleblood's runtime</a></li>
+          
+          <li><a href="#runtime-services-added-since-the-saved-run" class="wk-toc-link">Runtime services added since the saved run</a></li>
+          
+          <li><a href="#capture-and-replay" class="wk-toc-link">Capture and replay</a></li>
+          
+          <li><a href="#boot-history-and-the-current-blocker" class="wk-toc-link">Boot history and the current blocker</a></li>
+          
+          <li><a href="#decompilation-progress" class="wk-toc-link">Decompilation progress</a></li>
+          
+          <li><a href="#roadmap" class="wk-toc-link">Roadmap</a></li>
+          
+          <li><a href="#full-run-dependency-and-replacement-path" class="wk-toc-link">Full-run dependency and replacement path</a></li>
           
         </ol>
-      </div>
+      </nav>
+      
       
       
 
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 28, 2026 03:39:07 UTC">October 28, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 28, 2026 05:15:03 UTC">October 28, 2026</span></p>
       
       <h1 id="runtime">Runtime</h1>
-<p>Paleblood is building a <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> of its own. A <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> is the software that loads a program and provides the system services it expects. The project has an <abbr title="Executable and Linkable Format, the standard executable file format on Linux and FreeBSD.">ELF</abbr> <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> and boot <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr> that can load the game's executable and bundled system modules, bind imports, and run the entry point until it reaches a call the current <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> does not implement.</p>
-<p>That is different from running the full game. Full native game runs still use a third-party host scaffold for the broader execution environment, system-library coverage, and Vulkan rendering. Paleblood supplies a project-owned <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> plug-in and host interface, but the project-owned <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> has not <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> that host or passed equivalent full-run checks.</p>
+<p class="wk-lede">Paleblood is building a runtime of its own. A runtime is the software that loads a program and provides the system services it expects.</p>
+
+<div class="wk-glance">
+<p><span class="wk-label">At a glance</span></p>
+<dl>
+<dt>Works</dt>
+<dd>An <abbr title="Executable and Linkable Format, the standard executable file format on Linux and FreeBSD.">ELF</abbr> <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> and boot <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr> load the executable and bundled modules, bind imports and run the entry point.</dd>
+<dt>Stops at</dt>
+<dd>The first call the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> does not implement; today <code>scePthreadAttrGetaffinity</code>.</dd>
+<dt>Full game</dt>
+<dd>Still runs on a third-party host scaffold; the project-owned <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> has not <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> it.</dd>
+<dt>Evidence</dt>
+<dd>The boot result below is a saved run, not a live measurement.</dd>
+</dl>
+</div>
+<p>The project has an <abbr title="Executable and Linkable Format, the standard executable file format on Linux and FreeBSD.">ELF</abbr> <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> and boot <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr> that can load the game's executable and bundled
+system modules, bind imports, and run the entry point until it reaches a call the current <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>
+does not implement.</p>
+<p>That is different from running the full game. Full native game runs still use a third-party host
+scaffold for the broader execution environment, system-library coverage, and Vulkan rendering.
+Paleblood supplies a project-owned <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> plug-in and host interface, but the project-owned <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>
+has not <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> that host or passed equivalent full-run checks.</p>
 <h2 id="what-works-in-palebloods-runtime">What works in Paleblood's <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr></h2>
+<p><strong><abbr title="Executable and Linkable Format, the standard executable file format on Linux and FreeBSD.">ELF</abbr> loading and boot diagnostics.</strong> <code>runtime/loader.c</code> maps the executable and bundled modules,
+applies relocations, and binds known imports. <code>runtime/boot.c</code> and <code>tools/boot.py</code> run the entry
+point and record how far it gets.</p>
+<p><strong>Selected system calls.</strong> The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> supplies:</p>
 <ul>
-<li><strong><abbr title="Executable and Linkable Format, the standard executable file format on Linux and FreeBSD.">ELF</abbr> loading and boot diagnostics.</strong> <code>runtime/loader.c</code> maps the executable and bundled modules, applies relocations, and binds known imports. <code>runtime/boot.c</code> and <code>tools/boot.py</code> run the entry point and record how far it gets.</li>
-<li><strong>Selected system calls.</strong> The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> supplies a small set of kernel/thread calls, four <code>libSceNet</code> byte-order conversions, an observed IPv4 text-to-binary conversion, and four constrained offline <code>libSceNetCtl</code> behaviors: <code>sceNetCtlGetState</code>, <code>sceNetCtlCheckCallback</code>, <code>sceNetCtlRegisterCallback</code>, and <code>sceNetCtlUnregisterCallback</code>. Together these are 9 of 175 imports in the network and online-services issue group. <code>sceNetInetPton</code> implements the observed AF_INET path only; other families and null-pointer error behavior remain fail-loud. The other imported NetCtl calls, <code>sceNetCtlGetInfo</code> and <code>sceNetCtlGetNatInfo</code>, remain fail-loud diagnostics because the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> information layouts and offline values are not established. The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> does not implement sockets, resolvers, HTTP, or online services. See <a href="../runtime-syscalls/"><abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> system-call notes</a> and <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/41">issue #41</a> for the group checklist.</li>
-<li><strong>Function replacements and <abbr title="14-byte jumps written over the start of original functions, sending their callers to the replacements.">hooks</abbr>.</strong> The project's plug-in receives the guest image and a <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr>-install callback, then registers its function replacements. Paleblood now also provides a small implementation of the version-1 <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> callback: it checks the requested function range and writes a jump to the replacement. A synthetic executable-memory test confirms the patched entry reaches the replacement. The callback is not connected to the full game-run scaffold, and the test does not run the game.</li>
+<li>a small set of kernel/thread calls;</li>
+<li>four <code>libSceNet</code> byte-order conversions;</li>
+<li>an observed IPv4 text-to-binary conversion: <code>sceNetInetPton</code> implements the observed AF_INET path only;</li>
+<li>four constrained offline <code>libSceNetCtl</code> behaviors: <code>sceNetCtlGetState</code>, <code>sceNetCtlCheckCallback</code>,
+  <code>sceNetCtlRegisterCallback</code>, and <code>sceNetCtlUnregisterCallback</code>.</li>
 </ul>
-<table>
+<p>Together these are 9 of 175 imports in the network and online-services issue group. The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>
+does not implement sockets, resolvers, HTTP, or online services. See
+<a href="../runtime-syscalls/"><abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> system-call notes</a> and <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/41">issue #41</a>
+for the group checklist.</p>
+<details class="caveat">
+<summary>Network calls that still fail loudly</summary>
+<p>For <code>sceNetInetPton</code>, other families and null-pointer error behavior remain fail-loud. The other
+imported NetCtl calls, <code>sceNetCtlGetInfo</code> and <code>sceNetCtlGetNatInfo</code>, remain fail-loud diagnostics
+because the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> information layouts and offline values are not established.</p>
+</details>
+<p><strong>Function replacements and <abbr title="14-byte jumps written over the start of original functions, sending their callers to the replacements.">hooks</abbr>.</strong> The project's plug-in receives the guest image and a
+<abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr>-install callback, then registers its function replacements. Paleblood now also provides a small
+implementation of the version-1 <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> callback:</p>
+<ol>
+<li>it checks the requested function range;</li>
+<li>it writes a jump to the replacement.</li>
+</ol>
+<p>A synthetic executable-memory test confirms the patched entry reaches the replacement. The callback
+is not connected to the full game-run scaffold, and the test does not run the game.</p>
+<div class="wk-table"><table>
 <thead>
 <tr>
 <th>Runtime</th>
@@ -429,10 +487,78 @@
 <td><code>scePthreadAttrGetaffinity</code> (libkernel, called by libc.elf)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>Last recorded run: 2026-10-19. This is saved evidence, not a live measurement.</p>
 <p>Generated by <code>tools/sync_progress.py</code> from the code repo. Do not edit.</p>
-<p>The table above is generated from the saved Paleblood boot record. Its date identifies the last recorded run; changing <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> code does not refresh the result by itself.</p>
+<p>The table above is generated from the saved Paleblood boot record. Its date identifies the last
+recorded run; changing <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> code does not refresh the result by itself.</p>
+<h2 id="runtime-services-added-since-the-saved-run">Runtime services added since the saved run</h2>
+<p>None of these has been through a boot run yet. Details per call are in the
+<a href="../runtime-syscalls/"><abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> system-call notes</a> and on <a href="../systems/kernel/">Kernel</a>.</p>
+<div class="wk-table is-stack"><table class="wk-stack">
+<thead>
+<tr>
+<th>Call</th>
+<th>Added by</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td data-label="Call">Guest-thread handle comparison</td>
+<td data-label="Added by"><a href="https://github.com/EzequielRindello">@EzequielRindello</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/62">PR #62</a></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+</tr>
+<tr>
+<td data-label="Call">Host-thread yield through <code>sched_yield</code></td>
+<td data-label="Added by"><a href="https://github.com/EzequielRindello">@EzequielRindello</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/72">PR #72</a></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+</tr>
+<tr>
+<td data-label="Call"><code>scePthreadYield</code> (<abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> return signature unknown)</td>
+<td data-label="Added by"></td>
+<td data-label="Status"><span class="wk-badge wk-badge--unresolved">unresolved</span></td>
+</tr>
+<tr>
+<td data-label="Call">Thread-attribute detach-state setters, with SCE and POSIX error conventions</td>
+<td data-label="Added by"><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/81">PR #81</a></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+</tr>
+<tr>
+<td data-label="Call">Reading the system-supplied detach-state default</td>
+<td data-label="Added by"><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/81">PR #81</a></td>
+<td data-label="Status"><span class="wk-badge wk-badge--unresolved">unresolved</span></td>
+</tr>
+<tr>
+<td data-label="Call">Imported <code>memcpy</code> and <code>memset</code>, through the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> symbol registry</td>
+<td data-label="Added by"><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/82">PR #82</a></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+</tr>
+<tr>
+<td data-label="Call"><code>sceKernelUsleep</code> and <code>usleep</code> (sleep the host thread)</td>
+<td data-label="Added by"><a href="https://github.com/EzequielRindello">@EzequielRindello</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/94">PR #94</a></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+</tr>
+<tr>
+<td data-label="Call"><code>usleep</code> of a second or more; any SCE error for <code>sceKernelUsleep</code></td>
+<td data-label="Added by"><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/94">PR #94</a></td>
+<td data-label="Status"><span class="wk-badge wk-badge--unresolved">unresolved</span></td>
+</tr>
+<tr>
+<td data-label="Call"><code>pthread_self</code>, <code>pthread_attr_init</code>, <code>pthread_attr_destroy</code> under POSIX names, alongside the SCE names</td>
+<td data-label="Added by"><a href="https://github.com/EzequielRindello">@EzequielRindello</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/95">PR #95</a></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+</tr>
+<tr>
+<td data-label="Call"><code>__stack_chk_fail</code>: ends the program by name when the stack protector calls it</td>
+<td data-label="Added by"><a href="https://github.com/EzequielRindello">@EzequielRindello</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/97">PR #97</a></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+</tr>
+</tbody>
+</table></div>
+<p>Unresolved calls stop by name when called, because their <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> answer is not established.</p>
+<details class="caveat">
+<summary>What these merges do and do not show</summary>
 <p>After that saved run, contributor <a href="https://github.com/EzequielRindello">@EzequielRindello</a> added
 guest-thread handle comparison in <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/62">PR #62</a>
 and host-thread yielding through <code>sched_yield</code> in <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/72">PR #72</a>.
@@ -440,14 +566,6 @@ Their registry tests check the implemented contracts; they do not demonstrate th
 path ran. The similarly named <code>scePthreadYield</code> remains an unresolved diagnostic because its
 <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr>-visible return signature is not established. See <a href="../systems/kernel/">Kernel</a> for the evidence
 and limitations.</p>
-<h2 id="capture-and-replay">Capture and replay</h2>
-<p>Paleblood has a local <abbr title="Inputs recorded while the game ran, replayed by the harness.">capture</abbr> writer and replay verifier. Saved cases carry function and run identifiers, use stable buffer ordering, and replay checks reject a case for a different function or address. The version-1 production <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> interface does not observe function returns or describe pointer buffers, and current replacements do not call the recorder.</p>
-<p>A separate test adapter proves that explicitly described <strong>synthetic</strong> inputs can be serialized and replayed. This checks the case format and verifier path only. It does not <abbr title="Inputs recorded while the game ran, replayed by the harness.">capture</abbr> real game calls, prove a replacement against a real recording, or supply production run inputs. <code>tools/promote.py</code> consumes existing recorded cases and generated <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr>; it does not create <abbr title="Inputs recorded while the game ran, replayed by the harness.">captures</abbr>.</p>
-<p>The merged differential tools can now replay fixtures, observe supported guest instruction memory
-accesses, collect bounded control-flow coverage, minimize mismatches, and coordinate an opt-in
-candidate workflow. Unsupported instructions and skipped host-call bodies reject the trace;
-synthetic automation tests establish tool behavior only. The <a href="../ARCHITECTURE/#verification">Architecture verification guide</a>
-explains what is observed and which stages still require original-game evidence and human review.</p>
 <p>Merged <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/82">PR #82</a> supplies imported
 <code>memcpy</code> and <code>memset</code> through the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> symbol registry. <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/81">PR #81</a>
 adds explicit thread-attribute detach-state setters with SCE and POSIX error conventions;
@@ -464,12 +582,71 @@ whole contract. Cases with no established <abbr title="PlayStation 4: an AMD x86
 more, and any SCE error for <code>sceKernelUsleep</code>. None of these touches the current stop at
 <code>scePthreadAttrGetaffinity</code>, and the saved boot has not been rerun since they merged. See the
 <a href="../runtime-syscalls/"><abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> system-call notes</a> for the evidence behind each.</p>
+</details>
+<h2 id="capture-and-replay">Capture and replay</h2>
+<p>Paleblood has a local <abbr title="Inputs recorded while the game ran, replayed by the harness.">capture</abbr> writer and replay verifier.</p>
+<ul>
+<li>Saved cases carry function and run identifiers and use stable buffer ordering.</li>
+<li>Replay checks reject a case for a different function or address.</li>
+<li>The version-1 production <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> interface does not observe function returns or describe pointer
+  buffers, and current replacements do not call the recorder.</li>
+</ul>
+<p>A separate test adapter proves that explicitly described <strong>synthetic</strong> inputs can be serialized and
+replayed. This checks the case format and verifier path only. It does not <abbr title="Inputs recorded while the game ran, replayed by the harness.">capture</abbr> real game calls,
+prove a replacement against a real recording, or supply production run inputs. <code>tools/promote.py</code>
+consumes existing recorded cases and generated <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr>; it does not create <abbr title="Inputs recorded while the game ran, replayed by the harness.">captures</abbr>.</p>
+<p>The merged differential tools can now replay fixtures, observe supported guest instruction memory
+accesses, collect bounded control-flow coverage, minimize mismatches, and coordinate an opt-in
+candidate workflow. Unsupported instructions and skipped host-call bodies reject the trace;
+synthetic automation tests establish tool behavior only. The <a href="../ARCHITECTURE/#verification">Architecture verification guide</a>
+explains what is observed and which stages still require original-game evidence and human review.</p>
 <h2 id="boot-history-and-the-current-blocker">Boot history and the current blocker</h2>
+<p>The latest genuine boot trace was recorded with merged Paleblood main in PR #92 (<code>7bb7828</code>).</p>
+<div class="wk-table"><table>
+<thead>
+<tr>
+<th></th>
+<th>Latest trace</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Imports resolved</td>
+<td>252/686: 219 from the game's bundled modules, 33 implemented by the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr></td>
+</tr>
+<tr>
+<td>Not resolved</td>
+<td>four unresolved diagnostics and 430 unbound imports</td>
+</tr>
+<tr>
+<td>Import calls reached</td>
+<td>seven</td>
+</tr>
+<tr>
+<td>Stopped at</td>
+<td><code>scePthreadAttrGetaffinity</code> in <code>libc.elf</code>, returning to <code>libc.elf+0x81ad5</code></td>
+</tr>
+<tr>
+<td>Milestone</td>
+<td><code>loaded</code> (0/8)</td>
+</tr>
+</tbody>
+</table></div>
+<p>Compared with the 247/686 trace from PR #63, <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> changes merged since then, including module
+loading at run time (PR #83), raised the supplied-import count, but startup did not advance. The
+generated status above is synchronized from that run.</p>
+<p><strong>Why it is still the blocker.</strong> Issue #34 tracks claims call by call; no contributor has claimed
+<code>scePthreadAttrGetaffinity</code>, and its main-thread affinity behavior is not yet established, so the
+<abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> leaves it unimplemented.</p>
+<details class="reference">
+<summary>Boot history fields (PR #51)</summary>
 <p><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/51">PR #51</a> extended new <code>symbols/boot_history.csv</code> rows with the run outcome, execution phase, unresolved-import return site, and guest-fault location, signal, and address. A changed failure location is recorded even when import counts and the blocking symbol stay the same. Existing rows remain readable.</p>
-<p>The latest genuine boot trace was recorded with merged Paleblood main in PR #92 (<code>7bb7828</code>). It resolved 252/686 imports: 219 from the game's bundled modules and 33 implemented by the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>, with four unresolved diagnostics and 430 unbound imports. Seven import calls were reached. The trace stopped at <code>scePthreadAttrGetaffinity</code> in <code>libc.elf</code>, returning to <code>libc.elf+0x81ad5</code>; the milestone remained <code>loaded</code> (0/8). Compared with the 247/686 trace from PR #63, <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> changes merged since then, including module loading at run time (PR #83), raised the supplied-import count, but startup did not advance. The generated status below is synchronized from that run. Issue #34 tracks claims call by call; no contributor has claimed <code>scePthreadAttrGetaffinity</code>, and its main-thread affinity behavior is not yet established, so the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> leaves it unimplemented. After relevant changes merge, compare the history fields added by PR #51 against the saved failure location and trace.</p>
+<p>After relevant changes merge, compare the history fields added by PR #51 against the saved failure location and trace.</p>
+</details>
 <h2 id="decompilation-progress">Decompilation progress</h2>
-<p>The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> is developed alongside the decompilation. The <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>-function counts below come from Paleblood's function table; see the <a href="../progress/">progress dashboard</a> for the generated breakdown.</p>
-<table>
+<p>The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> is developed alongside the decompilation. The <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>-function counts below come from
+Paleblood's function table; see the <a href="../progress/">progress dashboard</a> for the generated breakdown.</p>
+<div class="wk-table"><table>
 <thead>
 <tr>
 <th></th>
@@ -485,13 +662,13 @@ more, and any SCE error for <code>sceKernelUsleep</code>. None of these touches 
 </tr>
 <tr>
 <td>Replaced</td>
-<td style="text-align: right;">31 (0.02%)</td>
-<td style="text-align: right;">15,353 (0.04%)</td>
+<td style="text-align: right;">32 (0.02%)</td>
+<td style="text-align: right;">15,372 (0.04%)</td>
 </tr>
 <tr>
 <td>Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> (includes <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>)</td>
-<td style="text-align: right;">31 (0.02%)</td>
-<td style="text-align: right;">15,353 (0.04%)</td>
+<td style="text-align: right;">32 (0.02%)</td>
+<td style="text-align: right;">15,372 (0.04%)</td>
 </tr>
 <tr>
 <td>Verified</td>
@@ -499,9 +676,9 @@ more, and any SCE error for <code>sceKernelUsleep</code>. None of these touches 
 <td style="text-align: right;">14,010 (0.03%)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>Counts are cumulative: <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> functions are included in <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr> and <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> totals.</p>
-<table>
+<div class="wk-table"><table>
 <thead>
 <tr>
 <th>System</th>
@@ -555,11 +732,11 @@ more, and any SCE error for <code>sceKernelUsleep</code>. None of these touches 
 </tr>
 <tr>
 <td>frame_timing</td>
+<td style="text-align: right;">23</td>
 <td style="text-align: right;">22</td>
-<td style="text-align: right;">21</td>
-<td style="text-align: right;">21</td>
+<td style="text-align: right;">22</td>
 <td style="text-align: right;">12</td>
-<td style="text-align: right;">5,447</td>
+<td style="text-align: right;">5,466</td>
 </tr>
 <tr>
 <td>input</td>
@@ -602,19 +779,37 @@ more, and any SCE error for <code>sceKernelUsleep</code>. None of these touches 
 <td style="text-align: right;">1,837</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>Generated by <code>tools/sync_progress.py</code> from the code repo. Do not edit.</p>
 <h2 id="roadmap">Roadmap</h2>
-<ol>
+<ol class="wk-steps">
 <li><strong>Loader and boot <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr>:</strong> project-owned and independently tested. The latest saved run of merged main <code>68d5f93</code> reaches the <code>loaded</code> milestone (0/8), before the executable's entry has completed.</li>
 <li><strong>Kernel, threads, and memory:</strong> the present boot blocker. Issue #34 is contributor-claimed; preserve that ownership and run the <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr> after the relevant change merges.</li>
 <li><strong>Capture integration:</strong> add a return-aware, ABI-described observation boundary before connecting recordings to production <abbr title="14-byte jumps written over the start of original functions, sending their callers to the replacements.">hooks</abbr>. Synthetic tests are not a substitute for real <abbr title="Inputs recorded while the game ran, replayed by the harness.">captures</abbr>.</li>
 <li><strong>Files, input, audio, and video output:</strong> implement and measure each milestone as the boot <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr> reaches it.</li>
 <li><strong><abbr title="The PS4's low-level graphics API.">GNM</abbr> and shaders:</strong> rebuild the game's graphics layer at its engine interface, then prove the first rendered frame.</li>
 </ol>
-<p>System-library work is tracked separately from boot milestones. The network issue group has nine implemented imports: four byte-order conversions, the AF_INET path of <code>sceNetInetPton</code>, and four offline NetCtl behaviors. <code>GetInfo</code> and <code>GetNatInfo</code> remain callable unresolved diagnostics, as do sockets, resolvers, epoll, HTTP, and online services. Merged <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/60">PR #60</a> makes the registry and coverage tools preserve that distinction: unresolved diagnostics are excluded from implemented counts while still producing useful failure messages when called. Merged <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/63">PR #63</a> adds the documented IPv4 text conversion for Bloodborne's observed AF_INET calls. The generated checklist reports 9/175 network-group imports implemented. See Paleblood's <a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/NEXT.md"><abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> queue</a> and <a href="https://github.com/Yharnam-Hunters/Paleblood/issues?q=is%3Aissue+is%3Aopen+label%3Aruntime"><abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> issues</a>.</p>
+<p>System-library work is tracked separately from boot milestones. The network issue group has nine
+implemented imports: four byte-order conversions, the AF_INET path of <code>sceNetInetPton</code>, and four
+offline NetCtl behaviors. <code>GetInfo</code> and <code>GetNatInfo</code> remain callable unresolved diagnostics, as do
+sockets, resolvers, epoll, HTTP, and online services. The generated checklist reports 9/175
+network-group imports implemented. See Paleblood's <a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/NEXT.md"><abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> queue</a>
+and <a href="https://github.com/Yharnam-Hunters/Paleblood/issues?q=is%3Aissue+is%3Aopen+label%3Aruntime"><abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> issues</a>.</p>
+<details class="reference">
+<summary>Network-group pull requests</summary>
+<p>Merged <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/60">PR #60</a> makes the registry and coverage tools preserve that distinction: unresolved diagnostics are excluded from implemented counts while still producing useful failure messages when called. Merged <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/63">PR #63</a> adds the documented IPv4 text conversion for Bloodborne's observed AF_INET calls.</p>
+</details>
 <h2 id="full-run-dependency-and-replacement-path">Full-run dependency and replacement path</h2>
-<p>The current full-game path retains an external GPL-2.0-or-later scaffold and its required host, system-library, and graphics dependencies. Paleblood's new <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> callback covers only one host responsibility; it is not yet integrated into the full game-run path. Paleblood's own <code>pbboot</code> <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr> builds and tests without that scaffold, but it does not yet provide equivalent full-game loading, services, rendering, or route checks. The scaffold and its required attribution stay in the code repository until a project-owned replacement passes the same native game-run checks.</p>
+<p>The current full-game path retains an external GPL-2.0-or-later scaffold and its required host,
+system-library, and graphics dependencies.</p>
+<ul>
+<li>Paleblood's new <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> callback covers only one host responsibility; it is not yet integrated into
+  the full game-run path.</li>
+<li>Paleblood's own <code>pbboot</code> <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr> builds and tests without that scaffold, but it does not yet
+  provide equivalent full-game loading, services, rendering, or route checks.</li>
+<li>The scaffold and its required attribution stay in the code repository until a project-owned
+  replacement passes the same native game-run checks.</li>
+</ul>
       
       </div>
 
@@ -636,241 +831,10 @@ more, and any SCE error for <code>sceKernelUsleep</code>. None of these touches 
 
 
 <script>
-(function () {
-'use strict';
-
-/* ── Theme ─────────────────────────────────────────────────── */
-var stored = localStorage.getItem('wk-theme') || 'dark';
-applyTheme(stored);
-document.getElementById('wk-toggle').addEventListener('click', function () {
-  applyTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
-});
-function applyTheme(t) {
-  document.documentElement.setAttribute('data-theme', t);
-  localStorage.setItem('wk-theme', t);
-  var btn = document.getElementById('wk-toggle');
-  if (btn) btn.textContent = t === 'dark' ? '☀' : '🌙';
-}
-
-/* ── Address map: a block opens its slice in a pop-up ──────── */
-(function () {
-  var map = document.querySelector('.wk-bankmap');
-  if (!map) return;
-  var modal = document.createElement('div');
-  modal.className = 'wk-slice-modal';
-  modal.setAttribute('role', 'dialog');
-  modal.setAttribute('aria-modal', 'true');
-  document.body.appendChild(modal);
-  function close() { modal.classList.remove('is-open'); }
-  map.addEventListener('click', function (e) {
-    var cell = e.target.closest('a.wk-bank-cell');
-    if (!cell) return;
-    var panel = document.getElementById(cell.getAttribute('href').slice(1));
-    if (!panel) return;
-    e.preventDefault();
-    modal.innerHTML = '';
-    modal.appendChild(panel.cloneNode(true));
-    modal.firstChild.removeAttribute('id');
-    requestAnimationFrame(function () { modal.classList.add('is-open'); });
-  });
-  modal.addEventListener('click', function (e) {
-    if (e.target === modal || e.target.closest('.wk-slice-close')) { e.preventDefault(); close(); }
-  });
-  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
-})();
-
-/* ── Mobile nav ────────────────────────────────────────────── */
-var navToggle  = document.getElementById('wk-nav-toggle');
-var navEl      = document.getElementById('wk-nav');
-var navBackdrop = document.getElementById('wk-nav-backdrop');
-var mainEl     = document.querySelector('.wk-main');
-var headerRight = document.querySelector('.wk-header-right');
-var wordmark = document.querySelector('.wk-wordmark');
-/* Matches the drawer breakpoint in wiki.css. */
-var drawerQuery = window.matchMedia('(max-width: 900px)');
-
-function closeNav() {
-  navEl.classList.remove('is-open');
-  navBackdrop.hidden = true;
-  navToggle.setAttribute('aria-expanded', 'false');
-  navToggle.setAttribute('aria-label', 'Open navigation');
-  navToggle.textContent = '☰';
-  if (mainEl) mainEl.inert = false;
-  if (headerRight) headerRight.inert = false;
-  if (wordmark) wordmark.inert = false;
-  if (drawerQuery.matches) navEl.inert = true;
-}
-function openNav() {
-  navEl.inert = false;
-  if (mainEl) mainEl.inert = true;
-  if (headerRight) headerRight.inert = true;
-  if (wordmark) wordmark.inert = true;
-  navEl.classList.add('is-open');
-  navBackdrop.hidden = false;
-  navToggle.setAttribute('aria-expanded', 'true');
-  navToggle.setAttribute('aria-label', 'Close navigation');
-  navToggle.textContent = '×';
-}
-if (navToggle && navEl && navBackdrop) {
-  navEl.inert = drawerQuery.matches;
-  navToggle.addEventListener('click', function () {
-    if (navEl.classList.contains('is-open')) { closeNav(); } else { openNav(); }
-  });
-  navBackdrop.addEventListener('click', function () { closeNav(); navToggle.focus(); });
-  navEl.addEventListener('click', function (e) {
-    if (e.target.closest('a')) { closeNav(); }
-  });
-  document.addEventListener('keydown', function (e) {
-    if (!navEl.classList.contains('is-open') || !drawerQuery.matches) return;
-    if (e.key === 'Escape') { closeNav(); navToggle.focus(); return; }
-    if (e.key !== 'Tab') return;
-    var links = Array.prototype.slice.call(navEl.querySelectorAll('a[href], button:not([disabled])'));
-    var focusable = [navToggle].concat(links);
-    var first = focusable[0];
-    var last = focusable[focusable.length - 1];
-    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
-    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
-  });
-  window.addEventListener('resize', function () {
-    if (!drawerQuery.matches) { navEl.inert = false; closeNav(); }
-    else if (!navEl.classList.contains('is-open')) navEl.inert = true;
-  });
-}
-
-/* ── Search ─────────────────────────────────────────────────── */
-var input   = document.getElementById('wk-q');
-var results = document.getElementById('wk-results');
-var docs    = null;
-if (input) {
-  fetch("../search/search_index.json")
-    .then(function (r) { return r.json(); })
-    .then(function (d) { docs = d.docs; });
-
-  input.addEventListener('input', onSearch);
-
-  document.addEventListener('click', function (e) {
-    if (results && !results.contains(e.target) && e.target !== input) results.hidden = true;
-  });
-  input.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape') { results.hidden = true; this.blur(); }
-    if (e.key === 'Enter' && results && !results.hidden) {
-      var first = results.querySelector('.wk-result');
-      if (first) { first.click(); }
-    }
-  });
-}
-
-/* Press / to focus search */
-document.addEventListener('keydown', function (e) {
-  if (e.key === '/' && document.activeElement !== input &&
-      document.activeElement.tagName !== 'INPUT' &&
-      document.activeElement.tagName !== 'TEXTAREA') {
-    e.preventDefault();
-    if (input) { input.focus(); input.select(); }
-  }
-});
-
-function onSearch() {
-  var q = this.value.trim().toLowerCase();
-  if (!docs || q.length < 2) { results.hidden = true; return; }
-  var hits = docs.filter(function (d) {
-    return (d.title + ' ' + d.text).toLowerCase().indexOf(q) !== -1;
-  }).slice(0, 8);
-  if (!hits.length) { results.hidden = true; return; }
-  var base = "..";
-  results.innerHTML = hits.map(function (d) {
-    var text  = d.text || '';
-    var i     = text.toLowerCase().indexOf(q);
-    var start = Math.max(0, i - 35);
-    var end   = Math.min(text.length, i + q.length + 70);
-    var snip  = (start > 0 ? '…' : '') + text.slice(start, end) + (end < text.length ? '…' : '');
-    var url   = base + '/' + d.location;
-    return '<a class="wk-result" href="' + esc(url) + '" role="option">'
-         + '<div class="wk-result-title">' + esc(d.title || d.location) + '</div>'
-         + '<div class="wk-result-snip">'  + esc(snip) + '</div></a>';
-  }).join('');
-  results.hidden = false;
-}
-
-function esc(s) {
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-
-/* ── Back to top ────────────────────────────────────────────── */
-var topBtn = document.getElementById('wk-top');
-if (topBtn) {
-  window.addEventListener('scroll', function () {
-    topBtn.classList.toggle('visible', window.scrollY > 400);
-  }, {passive: true});
-  topBtn.addEventListener('click', function () {
-    window.scrollTo({top: 0, behavior: 'smooth'});
-  });
-}
-
-/* ── Copy-to-clipboard ───────────────────────────────────────── */
-document.querySelectorAll('.highlight').forEach(function (block) {
-  var btn = document.createElement('button');
-  btn.className = 'wk-copy-btn';
-  btn.title     = 'Copy code';
-  btn.textContent = '⎘';
-  block.appendChild(btn);
-  btn.addEventListener('click', function () {
-    var pre = block.querySelector('pre');
-    if (!pre) return;
-    navigator.clipboard.writeText(pre.innerText).then(function () {
-      btn.textContent = '✓';
-      btn.classList.add('copied');
-      setTimeout(function () {
-        btn.textContent = '⎘';
-        btn.classList.remove('copied');
-      }, 1500);
-    });
-  });
-});
-
-/* ── Collapsible long code blocks ─────────────────────────────── */
-var COLLAPSE_THRESHOLD = 340;
-document.querySelectorAll('.wk-article-body .highlight').forEach(function (block) {
-  var pre = block.querySelector('pre');
-  if (!pre || pre.scrollHeight <= COLLAPSE_THRESHOLD + 40) return;
-
-  block.classList.add('wk-code-collapsed');
-  var toggle = document.createElement('button');
-  toggle.className = 'wk-code-toggle';
-  toggle.type = 'button';
-  toggle.textContent = 'Show more ▾';
-  toggle.addEventListener('click', function () {
-    var collapsed = block.classList.toggle('wk-code-collapsed');
-    toggle.textContent = collapsed ? 'Show more ▾' : 'Show less ▴';
-    if (collapsed) block.scrollIntoView({block: 'nearest'});
-  });
-  block.insertAdjacentElement('afterend', toggle);
-});
-
-/* ── TOC scroll spy ─────────────────────────────────────────── */
-var tocLinks = document.querySelectorAll('.wk-toc-link');
-if (tocLinks.length && 'IntersectionObserver' in window) {
-  var headings = Array.from(document.querySelectorAll('.wk-article h1, .wk-article h2, .wk-article h3'));
-  var active   = null;
-  var obs = new IntersectionObserver(function (entries) {
-    entries.forEach(function (e) {
-      if (e.isIntersecting) {
-        var id  = e.target.id;
-        var lnk = document.querySelector('.wk-toc-link[href="#' + id + '"]');
-        if (lnk && lnk !== active) {
-          if (active) active.classList.remove('is-current');
-          lnk.classList.add('is-current');
-          active = lnk;
-        }
-      }
-    });
-  }, {rootMargin: '-10% 0px -80% 0px'});
-  headings.forEach(function (h) { if (h.id) obs.observe(h); });
-}
-
-
-}());
+/* Page settings for wiki.js. The drawer query matches the drawer breakpoint in wiki.css. */
+window.WK = {base: "..", searchIndex: "../search/search_index.json",
+             drawerQuery: window.matchMedia('(max-width: 900px)')};
 </script>
-<script src="../javascripts/hunters.js" defer></script><script src="../search/main.js" defer></script>
+<script src="../javascripts/wiki.js?v=48af91151e" defer></script><script src="../javascripts/hunters.js?v=28a0e867eb" defer></script><script src="../search/main.js" defer></script>
 </body>
 </html>
