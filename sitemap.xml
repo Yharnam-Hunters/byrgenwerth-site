@@ -2,186 +2,222 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://yharnam-hunters.github.io/byrgenwerth-site/</loc>
-         <lastmod>2026-10-15</lastmod>
+         <lastmod>2026-10-28</lastmod>
     </url>
     <url>
          <loc>https://yharnam-hunters.github.io/byrgenwerth-site/ADDRESS_MAP/</loc>
-         <lastmod>2026-10-15</lastmod>
+         <lastmod>2026-10-28</lastmod>
     </url>
     <url>
          <loc>https://yharnam-hunters.github.io/byrgenwerth-site/ARCHITECTURE/</loc>
-         <lastmod>2026-10-15</lastmod>
+         <lastmod>2026-10-28</lastmod>
     </url>
     <url>
          <loc>https://yharnam-hunters.github.io/byrgenwerth-site/CI_SETUP/</loc>
-         <lastmod>2026-10-15</lastmod>
+         <lastmod>2026-10-28</lastmod>
     </url>
     <url>
          <loc>https://yharnam-hunters.github.io/byrgenwerth-site/CONTRIBUTING/</loc>
-         <lastmod>2026-10-15</lastmod>
+         <lastmod>2026-10-28</lastmod>
     </url>
     <url>
          <loc>https://yharnam-hunters.github.io/byrgenwerth-site/MEDIA_POLICY/</loc>
-         <lastmod>2026-10-15</lastmod>
+         <lastmod>2026-10-28</lastmod>
     </url>
     <url>
          <loc>https://yharnam-hunters.github.io/byrgenwerth-site/QUIRKS/</loc>
-         <lastmod>2026-10-15</lastmod>
+         <lastmod>2026-10-28</lastmod>
     </url>
     <url>
          <loc>https://yharnam-hunters.github.io/byrgenwerth-site/credits/</loc>
-         <lastmod>2026-10-15</lastmod>
+         <lastmod>2026-10-28</lastmod>
     </url>
     <url>
          <loc>https://yharnam-hunters.github.io/byrgenwerth-site/glossary/</loc>
-         <lastmod>2026-10-15</lastmod>
+         <lastmod>2026-10-28</lastmod>
     </url>
     <url>
          <loc>https://yharnam-hunters.github.io/byrgenwerth-site/how-the-frame-limiter-works/</loc>
-         <lastmod>2026-10-15</lastmod>
+         <lastmod>2026-10-28</lastmod>
     </url>
     <url>
          <loc>https://yharnam-hunters.github.io/byrgenwerth-site/progress/</loc>
-         <lastmod>2026-10-15</lastmod>
+         <lastmod>2026-10-28</lastmod>
     </url>
     <url>
          <loc>https://yharnam-hunters.github.io/byrgenwerth-site/runtime-syscalls/</loc>
-         <lastmod>2026-10-15</lastmod>
+         <lastmod>2026-10-28</lastmod>
     </url>
     <url>
          <loc>https://yharnam-hunters.github.io/byrgenwerth-site/runtime/</loc>
-         <lastmod>2026-10-15</lastmod>
+         <lastmod>2026-10-28</lastmod>
     </url>
     <url>
          <loc>https://yharnam-hunters.github.io/byrgenwerth-site/target/</loc>
-         <lastmod>2026-10-15</lastmod>
+         <lastmod>2026-10-28</lastmod>
     </url>
     <url>
          <loc>https://yharnam-hunters.github.io/byrgenwerth-site/beasts-of-yharnam/</loc>
-         <lastmod>2026-10-15</lastmod>
+         <lastmod>2026-10-28</lastmod>
     </url>
     <url>
          <loc>https://yharnam-hunters.github.io/byrgenwerth-site/beasts-of-yharnam/ai-and-behavior/</loc>
-         <lastmod>2026-10-15</lastmod>
+         <lastmod>2026-10-28</lastmod>
     </url>
     <url>
          <loc>https://yharnam-hunters.github.io/byrgenwerth-site/beasts-of-yharnam/enemy-directory/</loc>
-         <lastmod>2026-10-15</lastmod>
+         <lastmod>2026-10-28</lastmod>
     </url>
     <url>
          <loc>https://yharnam-hunters.github.io/byrgenwerth-site/beasts-of-yharnam/npcs-and-hunters/</loc>
-         <lastmod>2026-10-15</lastmod>
+         <lastmod>2026-10-28</lastmod>
     </url>
     <url>
          <loc>https://yharnam-hunters.github.io/byrgenwerth-site/devlog/</loc>
-         <lastmod>2026-10-15</lastmod>
+         <lastmod>2026-10-28</lastmod>
     </url>
     <url>
          <loc>https://yharnam-hunters.github.io/byrgenwerth-site/devlog/2026/10/06/6-october-2026-from-an-empty-repository-to-the-frame-loop/</loc>
-         <lastmod>2026-10-15</lastmod>
+         <lastmod>2026-10-28</lastmod>
     </url>
     <url>
          <loc>https://yharnam-hunters.github.io/byrgenwerth-site/devlog/2026/10/07/7-october-2026-a-new-direction-our-own-runtime/</loc>
-         <lastmod>2026-10-15</lastmod>
+         <lastmod>2026-10-28</lastmod>
     </url>
     <url>
          <loc>https://yharnam-hunters.github.io/byrgenwerth-site/devlog/2026/10/09/9-october-2026-a-path-for-runtime-contributors/</loc>
-         <lastmod>2026-10-15</lastmod>
+         <lastmod>2026-10-28</lastmod>
     </url>
     <url>
          <loc>https://yharnam-hunters.github.io/byrgenwerth-site/devlog/2026/10/10/10-october-2026-recorded-verification-and-runtime-foundations/</loc>
-         <lastmod>2026-10-15</lastmod>
+         <lastmod>2026-10-28</lastmod>
     </url>
     <url>
          <loc>https://yharnam-hunters.github.io/byrgenwerth-site/devlog/2026/10/11/11-october-2026-more-imports-supplied-same-boot-blocker/</loc>
-         <lastmod>2026-10-15</lastmod>
+         <lastmod>2026-10-28</lastmod>
+    </url>
+    <url>
+         <loc>https://yharnam-hunters.github.io/byrgenwerth-site/devlog/2026/10/19/19-october-2026-a-bounded-verification-pipeline-with-limits-made-explicit/</loc>
+         <lastmod>2026-10-28</lastmod>
+    </url>
+    <url>
+         <loc>https://yharnam-hunters.github.io/byrgenwerth-site/devlog/2026/10/26/week-of-26-october-2026-5-merged-and-26-open-pull-requests/</loc>
+         <lastmod>2026-10-28</lastmod>
     </url>
     <url>
          <loc>https://yharnam-hunters.github.io/byrgenwerth-site/great-ones/</loc>
-         <lastmod>2026-10-15</lastmod>
+         <lastmod>2026-10-28</lastmod>
     </url>
     <url>
          <loc>https://yharnam-hunters.github.io/byrgenwerth-site/great-ones/ai-and-phases/</loc>
-         <lastmod>2026-10-15</lastmod>
+         <lastmod>2026-10-28</lastmod>
     </url>
     <url>
          <loc>https://yharnam-hunters.github.io/byrgenwerth-site/great-ones/boss-directory/</loc>
-         <lastmod>2026-10-15</lastmod>
+         <lastmod>2026-10-28</lastmod>
     </url>
     <url>
          <loc>https://yharnam-hunters.github.io/byrgenwerth-site/great-ones/mechanics/</loc>
-         <lastmod>2026-10-15</lastmod>
+         <lastmod>2026-10-28</lastmod>
+    </url>
+    <url>
+         <loc>https://yharnam-hunters.github.io/byrgenwerth-site/hunters/</loc>
+         <lastmod>2026-10-28</lastmod>
     </url>
     <url>
          <loc>https://yharnam-hunters.github.io/byrgenwerth-site/systems/</loc>
-         <lastmod>2026-10-15</lastmod>
+         <lastmod>2026-10-28</lastmod>
     </url>
     <url>
          <loc>https://yharnam-hunters.github.io/byrgenwerth-site/systems/ai/</loc>
-         <lastmod>2026-10-15</lastmod>
+         <lastmod>2026-10-28</lastmod>
     </url>
     <url>
          <loc>https://yharnam-hunters.github.io/byrgenwerth-site/systems/audio/</loc>
-         <lastmod>2026-10-15</lastmod>
+         <lastmod>2026-10-28</lastmod>
     </url>
     <url>
          <loc>https://yharnam-hunters.github.io/byrgenwerth-site/systems/camera/</loc>
-         <lastmod>2026-10-15</lastmod>
+         <lastmod>2026-10-28</lastmod>
     </url>
     <url>
          <loc>https://yharnam-hunters.github.io/byrgenwerth-site/systems/character/</loc>
-         <lastmod>2026-10-15</lastmod>
+         <lastmod>2026-10-28</lastmod>
     </url>
     <url>
          <loc>https://yharnam-hunters.github.io/byrgenwerth-site/systems/event/</loc>
-         <lastmod>2026-10-15</lastmod>
+         <lastmod>2026-10-28</lastmod>
     </url>
     <url>
          <loc>https://yharnam-hunters.github.io/byrgenwerth-site/systems/frame_timing/</loc>
-         <lastmod>2026-10-15</lastmod>
+         <lastmod>2026-10-28</lastmod>
     </url>
     <url>
          <loc>https://yharnam-hunters.github.io/byrgenwerth-site/systems/input/</loc>
-         <lastmod>2026-10-15</lastmod>
+         <lastmod>2026-10-28</lastmod>
     </url>
     <url>
          <loc>https://yharnam-hunters.github.io/byrgenwerth-site/systems/kernel/</loc>
-         <lastmod>2026-10-15</lastmod>
+         <lastmod>2026-10-28</lastmod>
     </url>
     <url>
          <loc>https://yharnam-hunters.github.io/byrgenwerth-site/systems/loading/</loc>
-         <lastmod>2026-10-15</lastmod>
+         <lastmod>2026-10-28</lastmod>
     </url>
     <url>
          <loc>https://yharnam-hunters.github.io/byrgenwerth-site/systems/physics/</loc>
-         <lastmod>2026-10-15</lastmod>
+         <lastmod>2026-10-28</lastmod>
     </url>
     <url>
          <loc>https://yharnam-hunters.github.io/byrgenwerth-site/systems/render/</loc>
-         <lastmod>2026-10-15</lastmod>
+         <lastmod>2026-10-28</lastmod>
     </url>
     <url>
          <loc>https://yharnam-hunters.github.io/byrgenwerth-site/workshop/</loc>
-         <lastmod>2026-10-15</lastmod>
+         <lastmod>2026-10-28</lastmod>
     </url>
     <url>
          <loc>https://yharnam-hunters.github.io/byrgenwerth-site/workshop/combat-damage/</loc>
-         <lastmod>2026-10-15</lastmod>
+         <lastmod>2026-10-28</lastmod>
     </url>
     <url>
          <loc>https://yharnam-hunters.github.io/byrgenwerth-site/workshop/hitboxes-collision/</loc>
-         <lastmod>2026-10-15</lastmod>
+         <lastmod>2026-10-28</lastmod>
     </url>
     <url>
          <loc>https://yharnam-hunters.github.io/byrgenwerth-site/workshop/movement-stamina/</loc>
-         <lastmod>2026-10-15</lastmod>
+         <lastmod>2026-10-28</lastmod>
     </url>
     <url>
          <loc>https://yharnam-hunters.github.io/byrgenwerth-site/workshop/stats-progression/</loc>
-         <lastmod>2026-10-15</lastmod>
+         <lastmod>2026-10-28</lastmod>
     </url>
     <url>
          <loc>https://yharnam-hunters.github.io/byrgenwerth-site/workshop/weapons-transformations/</loc>
-         <lastmod>2026-10-15</lastmod>
+         <lastmod>2026-10-28</lastmod>
+    </url>
+    <url>
+         <loc>https://yharnam-hunters.github.io/byrgenwerth-site/hunters/clee/</loc>
+         <lastmod>2026-10-28</lastmod>
+    </url>
+    <url>
+         <loc>https://yharnam-hunters.github.io/byrgenwerth-site/hunters/adurham/</loc>
+         <lastmod>2026-10-28</lastmod>
+    </url>
+    <url>
+         <loc>https://yharnam-hunters.github.io/byrgenwerth-site/hunters/ThisIsAkill/</loc>
+         <lastmod>2026-10-28</lastmod>
+    </url>
+    <url>
+         <loc>https://yharnam-hunters.github.io/byrgenwerth-site/hunters/BluePinetree/</loc>
+         <lastmod>2026-10-28</lastmod>
+    </url>
+    <url>
+         <loc>https://yharnam-hunters.github.io/byrgenwerth-site/hunters/gabee12/</loc>
+         <lastmod>2026-10-28</lastmod>
+    </url>
+    <url>
+         <loc>https://yharnam-hunters.github.io/byrgenwerth-site/hunters/EzequielRindello/</loc>
+         <lastmod>2026-10-28</lastmod>
     </url>
 </urlset>

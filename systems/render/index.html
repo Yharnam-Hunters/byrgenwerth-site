@@ -11,7 +11,7 @@
   <title>Render — Byrgenwerth</title>
   
   
-  <link rel="stylesheet" href="../../stylesheets/wiki.css?v=901045f4c4">
+  <link rel="stylesheet" href="../../stylesheets/wiki.css?v=680e958d94"><link rel="stylesheet" href="../../stylesheets/hunters.css?v=e4f3c59dfb">
   
   
 </head>
@@ -20,7 +20,7 @@
 <!-- ── Header ──────────────────────────────────────────────── -->
 <header class="wk-header">
   <button class="wk-nav-toggle" id="wk-nav-toggle" aria-label="Open navigation" aria-expanded="false" aria-controls="wk-nav">☰</button>
-  <a class="wk-wordmark" href="../../">Byrgenwerth<small>notes of Paleblood, rebuilding Bloodborne one verified function at a time</small></a>
+  <a class="wk-wordmark" href="/byrgenwerth-site/">Byrgenwerth<small>notes of Paleblood, rebuilding Bloodborne one verified function at a time</small></a>
 
   <div class="wk-header-right">
     
@@ -33,357 +33,338 @@
   </div>
 </header>
 
+
+
+<!-- ── Section tabs (wide screens; the drawer lists the same sections on small ones) ── -->
+<nav class="wk-tabs" aria-label="Sections">
+  
+  <a class="wk-tab" href="../..">The Hunt</a>
+  
+  <a class="wk-tab" href="../../great-ones/">Encyclopedia</a>
+  
+  <a class="wk-tab is-active" href="../" aria-current="true">Systems</a>
+  
+  <a class="wk-tab" href="../../ARCHITECTURE/">How It Works</a>
+  
+  <a class="wk-tab" href="../../CONTRIBUTING/">For Hunters</a>
+  
+</nav>
+
 <!-- ── Layout ──────────────────────────────────────────────── -->
 <div class="wk-layout">
 
   <div class="wk-nav-backdrop" id="wk-nav-backdrop" hidden></div>
 
   <!-- Left sidebar -->
-  <nav class="wk-nav" id="wk-nav" aria-label="Site navigation">
+  <nav class="wk-nav has-current" id="wk-nav" aria-label="Site navigation">
     <!-- Menu artwork: credited on the Credits page; provenance and rights notes in the private media review -->
     <figure class="wk-portal-icon">
-      <a href="../../" aria-label="Byrgenwerth home">
+      <a href="/byrgenwerth-site/" aria-label="Byrgenwerth home">
         <img src="../../assets/media/bloodborne-menu-art.png" width="256" height="256" alt="A lone Bloodborne hunter stands in a rain-darkened Yharnam street beneath the game's gothic architecture.">
       </a>
     </figure>
 
     
+    <section class="wk-nav-section">
       
-      <a class="wk-nav-link" href="../..">Home</a>
       
+      
+      
+      
+      
+      <p class="wk-nav-heading">The Hunt</p>
+      
+      <ul class="wk-nav-list">
+        
+        
+        <li><a class="wk-nav-link" href="../..">Home</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../devlog/">Devlog</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../progress/">Progress</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../hunters/">The Hunters</a></li>
+        
+        
+      </ul>
     
       
-        
-        
-        
-        
-        
-        
-        <section class="wk-nav-section" id="wk-nav-section-the-hunt-group" data-nav-section data-current="false" data-default-open="true">
-          <div class="wk-nav-section-heading">
-            
-            <span class="wk-nav-heading">The Hunt</span>
-            
-            <button class="wk-nav-section-toggle" type="button" aria-controls="wk-nav-section-the-hunt" aria-expanded="true" aria-label="Collapse The Hunt">
-              <span aria-hidden="true">⌄</span>
-            </button>
-          </div>
-          <div class="wk-nav-section-links" id="wk-nav-section-the-hunt">
-          
-            
-            <a class="wk-nav-link" href="../../devlog/">Devlog</a>
-            
-          
-            
-            <a class="wk-nav-link" href="../../progress/">Progress</a>
-            
-          
-          </div>
-        </section>
+    </section>
+    
+    <section class="wk-nav-section">
       
+      
+      
+      
+      
+      
+      <p class="wk-nav-heading">Encyclopedia</p>
+      
+      <ul class="wk-nav-list">
+        
+        
+        <li class="wk-nav-group">
+      
+      
+      
+        
+        
+      
+      
+      <a class="wk-nav-subheading" href="../../great-ones/">The Great Ones</a>
+      
+      <ul class="wk-nav-list">
+        
+        
+        <li><a class="wk-nav-link" href="../../great-ones/boss-directory/">Boss Directory</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../great-ones/ai-and-phases/">Boss AI & Phases</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../great-ones/mechanics/">Boss Mechanics</a></li>
+        
+        
+      </ul>
+    </li>
+        
+        
+        
+        <li class="wk-nav-group">
+      
+      
+      
+        
+        
+      
+      
+      <a class="wk-nav-subheading" href="../../beasts-of-yharnam/">Beasts of Yharnam</a>
+      
+      <ul class="wk-nav-list">
+        
+        
+        <li><a class="wk-nav-link" href="../../beasts-of-yharnam/enemy-directory/">Enemy Directory</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../beasts-of-yharnam/ai-and-behavior/">Enemy AI & Behavior</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../beasts-of-yharnam/npcs-and-hunters/">NPCs & Hunters</a></li>
+        
+        
+      </ul>
+    </li>
+        
+        
+        
+        <li class="wk-nav-group">
+      
+      
+      
+        
+        
+      
+      
+      <a class="wk-nav-subheading" href="../../workshop/">The Hunter's Workshop</a>
+      
+      <ul class="wk-nav-list">
+        
+        
+        <li><a class="wk-nav-link" href="../../workshop/combat-damage/">Combat & Damage</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../workshop/weapons-transformations/">Weapons & Transformations</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../workshop/movement-stamina/">Movement & Stamina</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../workshop/hitboxes-collision/">Hitboxes & Collision</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../workshop/stats-progression/">Stats & Progression</a></li>
+        
+        
+      </ul>
+    </li>
+        
+        
+      </ul>
     
       
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        <section class="wk-nav-section" id="wk-nav-section-the-great-ones-group" data-nav-section data-current="false" data-default-open="false">
-          <div class="wk-nav-section-heading">
-            
-            <a class="wk-nav-heading wk-nav-heading-link" href="../../great-ones/">The Great Ones</a>
-            
-            <button class="wk-nav-section-toggle" type="button" aria-controls="wk-nav-section-the-great-ones" aria-expanded="false" aria-label="Expand The Great Ones">
-              <span aria-hidden="true">›</span>
-            </button>
-          </div>
-          <div class="wk-nav-section-links" id="wk-nav-section-the-great-ones" hidden>
-          
-            
-            <a class="wk-nav-link" href="../../great-ones/boss-directory/">Boss Directory</a>
-            
-          
-            
-            <a class="wk-nav-link" href="../../great-ones/ai-and-phases/">Boss AI & Phases</a>
-            
-          
-            
-            <a class="wk-nav-link" href="../../great-ones/mechanics/">Boss Mechanics</a>
-            
-          
-          </div>
-        </section>
+    </section>
+    
+    <section class="wk-nav-section is-current">
       
+      
+      
+      
+      
+      
+      <p class="wk-nav-heading">Systems</p>
+      
+      <ul class="wk-nav-list">
+        
+        
+        <li><a class="wk-nav-link" href="../">Overview</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../frame_timing/">Frame timing</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../kernel/">Kernel</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../event/">Event</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../camera/">Camera</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../input/">Input</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../character/">Character</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../ai/">AI</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../physics/">Physics</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link is-active" href="./" aria-current="page">Render</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../loading/">Loading</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../audio/">Audio</a></li>
+        
+        
+      </ul>
     
       
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        <section class="wk-nav-section" id="wk-nav-section-beasts-of-yharnam-group" data-nav-section data-current="false" data-default-open="false">
-          <div class="wk-nav-section-heading">
-            
-            <a class="wk-nav-heading wk-nav-heading-link" href="../../beasts-of-yharnam/">Beasts of Yharnam</a>
-            
-            <button class="wk-nav-section-toggle" type="button" aria-controls="wk-nav-section-beasts-of-yharnam" aria-expanded="false" aria-label="Expand Beasts of Yharnam">
-              <span aria-hidden="true">›</span>
-            </button>
-          </div>
-          <div class="wk-nav-section-links" id="wk-nav-section-beasts-of-yharnam" hidden>
-          
-            
-            <a class="wk-nav-link" href="../../beasts-of-yharnam/enemy-directory/">Enemy Directory</a>
-            
-          
-            
-            <a class="wk-nav-link" href="../../beasts-of-yharnam/ai-and-behavior/">Enemy AI & Behavior</a>
-            
-          
-            
-            <a class="wk-nav-link" href="../../beasts-of-yharnam/npcs-and-hunters/">NPCs & Hunters</a>
-            
-          
-          </div>
-        </section>
+    </section>
+    
+    <section class="wk-nav-section">
       
+      
+      
+      
+      
+      
+      <p class="wk-nav-heading">How It Works</p>
+      
+      <ul class="wk-nav-list">
+        
+        
+        <li><a class="wk-nav-link" href="../../ARCHITECTURE/">Architecture</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../runtime/">Runtime</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../runtime-syscalls/">Runtime system calls</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../how-the-frame-limiter-works/">The Frame Limiter</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../ADDRESS_MAP/">Address Map</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../target/">Target</a></li>
+        
+        
+      </ul>
     
       
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        <section class="wk-nav-section" id="wk-nav-section-the-hunters-workshop-group" data-nav-section data-current="false" data-default-open="false">
-          <div class="wk-nav-section-heading">
-            
-            <a class="wk-nav-heading wk-nav-heading-link" href="../../workshop/">The Hunter's Workshop</a>
-            
-            <button class="wk-nav-section-toggle" type="button" aria-controls="wk-nav-section-the-hunters-workshop" aria-expanded="false" aria-label="Expand The Hunter's Workshop">
-              <span aria-hidden="true">›</span>
-            </button>
-          </div>
-          <div class="wk-nav-section-links" id="wk-nav-section-the-hunters-workshop" hidden>
-          
-            
-            <a class="wk-nav-link" href="../../workshop/combat-damage/">Combat & Damage</a>
-            
-          
-            
-            <a class="wk-nav-link" href="../../workshop/weapons-transformations/">Weapons & Transformations</a>
-            
-          
-            
-            <a class="wk-nav-link" href="../../workshop/movement-stamina/">Movement & Stamina</a>
-            
-          
-            
-            <a class="wk-nav-link" href="../../workshop/hitboxes-collision/">Hitboxes & Collision</a>
-            
-          
-            
-            <a class="wk-nav-link" href="../../workshop/stats-progression/">Stats & Progression</a>
-            
-          
-          </div>
-        </section>
+    </section>
+    
+    <section class="wk-nav-section">
       
+      
+      
+      
+      
+      
+      <p class="wk-nav-heading">For Hunters</p>
+      
+      <ul class="wk-nav-list">
+        
+        
+        <li><a class="wk-nav-link" href="../../CONTRIBUTING/">Contributing</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../QUIRKS/">Ghidra & PS4 Quirks</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../glossary/">Glossary</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../CI_SETUP/">CI Setup</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../credits/">Credits</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../MEDIA_POLICY/">Evidence & Media Review</a></li>
+        
+        
+      </ul>
     
       
-        
-        
-        
-        
-        
-        
-        <section class="wk-nav-section is-current" id="wk-nav-section-systems-group" data-nav-section data-current="true" data-default-open="true">
-          <div class="wk-nav-section-heading">
-            
-            <span class="wk-nav-heading">Systems</span>
-            
-            <button class="wk-nav-section-toggle" type="button" aria-controls="wk-nav-section-systems" aria-expanded="true" aria-label="Collapse Systems">
-              <span aria-hidden="true">⌄</span>
-            </button>
-          </div>
-          <div class="wk-nav-section-links" id="wk-nav-section-systems">
-          
-            
-            <a class="wk-nav-link" href="../">Overview</a>
-            
-          
-            
-            <a class="wk-nav-link" href="../frame_timing/">Frame timing</a>
-            
-          
-            
-            <a class="wk-nav-link" href="../kernel/">Kernel</a>
-            
-          
-            
-            <a class="wk-nav-link" href="../event/">Event</a>
-            
-          
-            
-            <a class="wk-nav-link" href="../camera/">Camera</a>
-            
-          
-            
-            <a class="wk-nav-link" href="../input/">Input</a>
-            
-          
-            
-            <a class="wk-nav-link" href="../character/">Character</a>
-            
-          
-            
-            <a class="wk-nav-link" href="../ai/">AI</a>
-            
-          
-            
-            <a class="wk-nav-link" href="../physics/">Physics</a>
-            
-          
-            
-            <a class="wk-nav-link is-active" href="./">Render</a>
-            
-          
-            
-            <a class="wk-nav-link" href="../loading/">Loading</a>
-            
-          
-            
-            <a class="wk-nav-link" href="../audio/">Audio</a>
-            
-          
-          </div>
-        </section>
-      
-    
-      
-        
-        
-        
-        
-        
-        
-        <section class="wk-nav-section" id="wk-nav-section-how-it-works-group" data-nav-section data-current="false" data-default-open="false">
-          <div class="wk-nav-section-heading">
-            
-            <span class="wk-nav-heading">How It Works</span>
-            
-            <button class="wk-nav-section-toggle" type="button" aria-controls="wk-nav-section-how-it-works" aria-expanded="false" aria-label="Expand How It Works">
-              <span aria-hidden="true">›</span>
-            </button>
-          </div>
-          <div class="wk-nav-section-links" id="wk-nav-section-how-it-works" hidden>
-          
-            
-            <a class="wk-nav-link" href="../../ARCHITECTURE/">Architecture</a>
-            
-          
-            
-            <a class="wk-nav-link" href="../../runtime/">Runtime</a>
-            
-          
-            
-            <a class="wk-nav-link" href="../../runtime-syscalls/">Runtime system calls</a>
-            
-          
-            
-            <a class="wk-nav-link" href="../../how-the-frame-limiter-works/">The Frame Limiter</a>
-            
-          
-            
-            <a class="wk-nav-link" href="../../ADDRESS_MAP/">Address Map</a>
-            
-          
-            
-            <a class="wk-nav-link" href="../../target/">Target</a>
-            
-          
-          </div>
-        </section>
-      
-    
-      
-        
-        
-        
-        
-        
-        
-        <section class="wk-nav-section" id="wk-nav-section-for-hunters-group" data-nav-section data-current="false" data-default-open="false">
-          <div class="wk-nav-section-heading">
-            
-            <span class="wk-nav-heading">For Hunters</span>
-            
-            <button class="wk-nav-section-toggle" type="button" aria-controls="wk-nav-section-for-hunters" aria-expanded="false" aria-label="Expand For Hunters">
-              <span aria-hidden="true">›</span>
-            </button>
-          </div>
-          <div class="wk-nav-section-links" id="wk-nav-section-for-hunters" hidden>
-          
-            
-            <a class="wk-nav-link" href="../../CONTRIBUTING/">Contributing</a>
-            
-          
-            
-            <a class="wk-nav-link" href="../../QUIRKS/">Ghidra & PS4 Quirks</a>
-            
-          
-            
-            <a class="wk-nav-link" href="../../glossary/">Glossary</a>
-            
-          
-            
-            <a class="wk-nav-link" href="../../CI_SETUP/">CI Setup</a>
-            
-          
-            
-            <a class="wk-nav-link" href="../../credits/">Credits</a>
-            
-          
-            
-            <a class="wk-nav-link" href="../../MEDIA_POLICY/">Evidence & Media Review</a>
-            
-          
-          </div>
-        </section>
-      
+    </section>
     
 
-    <!-- Project stats widget: every value from docs/data/progress.json (hooks/progress_extra.py) -->
+    <!-- Progress card: every value from docs/data/progress.json (hooks/progress_extra.py) -->
     
     
-    <div class="wk-stats">
-      <p class="wk-nav-heading" title="Project stats">Insight</p>
-      <div class="wk-stat-row"><span>Verified bytes</span><span class="wk-stat-val">14,010 / 42,487,347</span></div>
-      <div class="wk-stat-row"><span>Verified functions</span><span class="wk-stat-val">21 / 157,757</span></div>
-      <div class="wk-stat-row"><span>Replaced functions</span><span class="wk-stat-val">31 / 157,757</span></div>
-      <p class="wk-stat-sublabel">Replaced code size (target bytes)</p>
-      <div class="wk-stat-track" title="0.0361% of target code bytes" role="img" aria-label="0.0361 percent of target code bytes replaced">
-        <div class="wk-stat-fill" style="width:0.0361%"></div>
-      </div>
-      <p class="wk-stat-pct">0.0361%</p>
-      <p class="wk-stat-sublabel">Verified code size (target bytes)</p>
-      <div class="wk-stat-track" title="0.033% of target code bytes" role="img" aria-label="0.033 percent of target code bytes verified">
-        <div class="wk-stat-fill wk-stat-fill-dim" style="width:0.033%"></div>
-      </div>
-      <p class="wk-stat-pct">0.033%</p>
-      <p class="wk-stat-link"><a href="../../progress/">View full progress →</a></p>
-    </div>
+    <a class="wk-progress-card" href="../../progress/">
+      <span class="wk-progress-label">Verified functions</span>
+      <span class="wk-progress-value">21 <small>of 157,757</small></span>
+      <span class="wk-stat-track" role="img" aria-label="0.033 percent of target code bytes verified">
+        <span class="wk-stat-fill" style="width:0.033%"></span>
+      </span>
+      <span class="wk-progress-foot">0.033% of code bytes verified · 31 replaced</span>
+      <span class="wk-progress-more">Full progress →</span>
+    </a>
     
   </nav>
 
@@ -565,20 +546,9 @@ var navBackdrop = document.getElementById('wk-nav-backdrop');
 var mainEl     = document.querySelector('.wk-main');
 var headerRight = document.querySelector('.wk-header-right');
 var wordmark = document.querySelector('.wk-wordmark');
+/* Matches the drawer breakpoint in wiki.css. */
+var drawerQuery = window.matchMedia('(max-width: 900px)');
 
-/* The sidebar is set, not scrolled: step through the fitting levels (wiki.css) until it fits. */
-function fitNav() {
-  if (!navEl || window.matchMedia('(max-width: 720px)').matches) return;
-  for (var i = 1; i <= 3; i++) navEl.classList.remove('wk-fit-' + i);
-  navEl.classList.remove('wk-fit-scroll');
-  for (var level = 1; level <= 3 && navEl.scrollHeight > navEl.clientHeight + 1; level++) {
-    navEl.classList.add('wk-fit-' + level);
-  }
-  if (navEl.scrollHeight > navEl.clientHeight + 1) navEl.classList.add('wk-fit-scroll');
-}
-fitNav();
-window.addEventListener('resize', fitNav);
-window.addEventListener('load', fitNav);
 function closeNav() {
   navEl.classList.remove('is-open');
   navBackdrop.hidden = true;
@@ -588,7 +558,7 @@ function closeNav() {
   if (mainEl) mainEl.inert = false;
   if (headerRight) headerRight.inert = false;
   if (wordmark) wordmark.inert = false;
-  if (window.matchMedia('(max-width: 720px)').matches) navEl.inert = true;
+  if (drawerQuery.matches) navEl.inert = true;
 }
 function openNav() {
   navEl.inert = false;
@@ -602,7 +572,7 @@ function openNav() {
   navToggle.textContent = '×';
 }
 if (navToggle && navEl && navBackdrop) {
-  navEl.inert = window.matchMedia('(max-width: 720px)').matches;
+  navEl.inert = drawerQuery.matches;
   navToggle.addEventListener('click', function () {
     if (navEl.classList.contains('is-open')) { closeNav(); } else { openNav(); }
   });
@@ -611,7 +581,7 @@ if (navToggle && navEl && navBackdrop) {
     if (e.target.closest('a')) { closeNav(); }
   });
   document.addEventListener('keydown', function (e) {
-    if (!navEl.classList.contains('is-open') || !window.matchMedia('(max-width: 720px)').matches) return;
+    if (!navEl.classList.contains('is-open') || !drawerQuery.matches) return;
     if (e.key === 'Escape') { closeNav(); navToggle.focus(); return; }
     if (e.key !== 'Tab') return;
     var links = Array.prototype.slice.call(navEl.querySelectorAll('a[href], button:not([disabled])'));
@@ -622,55 +592,10 @@ if (navToggle && navEl && navBackdrop) {
     else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
   });
   window.addEventListener('resize', function () {
-    if (window.innerWidth > 720) { navEl.inert = false; closeNav(); }
+    if (!drawerQuery.matches) { navEl.inert = false; closeNav(); }
     else if (!navEl.classList.contains('is-open')) navEl.inert = true;
   });
 }
-
-/* ── Collapsible navigation groups: one open at a time ────── */
-(function () {
-  var groups = Array.prototype.slice.call(document.querySelectorAll('[data-nav-section]'));
-  if (!groups.length) return;
-  var key = 'wk-nav-groups-v1';
-  var preferences = {};
-  try { preferences = JSON.parse(localStorage.getItem(key) || '{}') || {}; } catch (_) { preferences = {}; }
-  function setOpen(section, open, save) {
-    var button = section.querySelector('.wk-nav-section-toggle');
-    if (!button) return;
-    var panel = document.getElementById(button.getAttribute('aria-controls'));
-    var label = section.querySelector('.wk-nav-heading, .wk-nav-heading-link');
-    if (!panel || !label) return;
-    var title = label.textContent.trim();
-    button.setAttribute('aria-expanded', String(open));
-    button.setAttribute('aria-label', (open ? 'Collapse ' : 'Expand ') + title);
-    button.querySelector('span').textContent = open ? '⌄' : '›';
-    panel.hidden = !open;
-    section.classList.toggle('is-open', open);
-    if (save) {
-      preferences[panel.id] = open;
-      try { localStorage.setItem(key, JSON.stringify(preferences)); } catch (_) { /* Storage is optional. */ }
-    }
-  }
-  /* The current page's section opens; elsewhere (the homepage) the last section opened does. */
-  var hasCurrent = groups.some(function (s) { return s.getAttribute('data-current') === 'true'; });
-  var opened = false;
-  groups.forEach(function (section) {
-    var panel = section.querySelector('.wk-nav-section-links');
-    var button = section.querySelector('.wk-nav-section-toggle');
-    if (!panel || !button) return;
-    var storedOpen = preferences[panel.id];
-    var wanted = hasCurrent ? section.getAttribute('data-current') === 'true'
-      : (typeof storedOpen === 'boolean' ? storedOpen : section.getAttribute('data-default-open') === 'true');
-    setOpen(section, wanted && !opened, false);
-    if (wanted) opened = true;
-    button.addEventListener('click', function () {
-      var open = button.getAttribute('aria-expanded') !== 'true';
-      if (open) groups.forEach(function (other) { if (other !== section) setOpen(other, false, true); });
-      setOpen(section, open, true);
-      fitNav();
-    });
-  });
-})();
 
 /* ── Search ─────────────────────────────────────────────────── */
 var input   = document.getElementById('wk-q');
@@ -806,5 +731,6 @@ if (tocLinks.length && 'IntersectionObserver' in window) {
 
 }());
 </script>
+<script src="../../javascripts/hunters.js" defer></script><script src="../../search/main.js" defer></script>
 </body>
 </html>

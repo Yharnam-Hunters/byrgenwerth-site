@@ -1,0 +1,994 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  
+  <meta name="description" content="Notes of Paleblood, a decompilation of Bloodborne (PS4, CUSA03173 v1.09) with its own runtime, one verified function at a time, and an open place to learn how a console game works and how it is reverse engineered">
+  <link rel="canonical" href="https://yharnam-hunters.github.io/byrgenwerth-site/hunters/ThisIsAkill/">
+  
+  
+  <title>ThisIsAkill — Byrgenwerth</title>
+  
+  
+  <link rel="stylesheet" href="../../stylesheets/wiki.css?v=680e958d94"><link rel="stylesheet" href="../../stylesheets/hunters.css?v=e4f3c59dfb">
+  
+  
+</head>
+<body>
+
+<!-- ── Header ──────────────────────────────────────────────── -->
+<header class="wk-header">
+  <button class="wk-nav-toggle" id="wk-nav-toggle" aria-label="Open navigation" aria-expanded="false" aria-controls="wk-nav">☰</button>
+  <a class="wk-wordmark" href="/byrgenwerth-site/">Byrgenwerth<small>notes of Paleblood, rebuilding Bloodborne one verified function at a time</small></a>
+
+  <div class="wk-header-right">
+    
+    <div class="wk-searchbox">
+      <input class="wk-search-input" id="wk-q" type="search"
+             placeholder="Search the archives…  [/]" autocomplete="off" aria-label="Search">
+      <div class="wk-search-results" id="wk-results" hidden role="listbox"></div>
+    </div>
+    <button class="wk-toggle" id="wk-toggle" title="Toggle theme" aria-label="Toggle dark/light">☀</button>
+  </div>
+</header>
+
+
+
+<!-- ── Section tabs (wide screens; the drawer lists the same sections on small ones) ── -->
+<nav class="wk-tabs" aria-label="Sections">
+  
+  <a class="wk-tab" href="../..">The Hunt</a>
+  
+  <a class="wk-tab" href="../../great-ones/">Encyclopedia</a>
+  
+  <a class="wk-tab" href="../../systems/">Systems</a>
+  
+  <a class="wk-tab" href="../../ARCHITECTURE/">How It Works</a>
+  
+  <a class="wk-tab" href="../../CONTRIBUTING/">For Hunters</a>
+  
+</nav>
+
+<!-- ── Layout ──────────────────────────────────────────────── -->
+<div class="wk-layout">
+
+  <div class="wk-nav-backdrop" id="wk-nav-backdrop" hidden></div>
+
+  <!-- Left sidebar -->
+  <nav class="wk-nav" id="wk-nav" aria-label="Site navigation">
+    <!-- Menu artwork: credited on the Credits page; provenance and rights notes in the private media review -->
+    <figure class="wk-portal-icon">
+      <a href="/byrgenwerth-site/" aria-label="Byrgenwerth home">
+        <img src="../../assets/media/bloodborne-menu-art.png" width="256" height="256" alt="A lone Bloodborne hunter stands in a rain-darkened Yharnam street beneath the game's gothic architecture.">
+      </a>
+    </figure>
+
+    
+    <section class="wk-nav-section">
+      
+      
+      
+      
+      
+      
+      <p class="wk-nav-heading">The Hunt</p>
+      
+      <ul class="wk-nav-list">
+        
+        
+        <li><a class="wk-nav-link" href="../..">Home</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../devlog/">Devlog</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../progress/">Progress</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../">The Hunters</a></li>
+        
+        
+      </ul>
+    
+      
+    </section>
+    
+    <section class="wk-nav-section">
+      
+      
+      
+      
+      
+      
+      <p class="wk-nav-heading">Encyclopedia</p>
+      
+      <ul class="wk-nav-list">
+        
+        
+        <li class="wk-nav-group">
+      
+      
+      
+        
+        
+      
+      
+      <a class="wk-nav-subheading" href="../../great-ones/">The Great Ones</a>
+      
+      <ul class="wk-nav-list">
+        
+        
+        <li><a class="wk-nav-link" href="../../great-ones/boss-directory/">Boss Directory</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../great-ones/ai-and-phases/">Boss AI & Phases</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../great-ones/mechanics/">Boss Mechanics</a></li>
+        
+        
+      </ul>
+    </li>
+        
+        
+        
+        <li class="wk-nav-group">
+      
+      
+      
+        
+        
+      
+      
+      <a class="wk-nav-subheading" href="../../beasts-of-yharnam/">Beasts of Yharnam</a>
+      
+      <ul class="wk-nav-list">
+        
+        
+        <li><a class="wk-nav-link" href="../../beasts-of-yharnam/enemy-directory/">Enemy Directory</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../beasts-of-yharnam/ai-and-behavior/">Enemy AI & Behavior</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../beasts-of-yharnam/npcs-and-hunters/">NPCs & Hunters</a></li>
+        
+        
+      </ul>
+    </li>
+        
+        
+        
+        <li class="wk-nav-group">
+      
+      
+      
+        
+        
+      
+      
+      <a class="wk-nav-subheading" href="../../workshop/">The Hunter's Workshop</a>
+      
+      <ul class="wk-nav-list">
+        
+        
+        <li><a class="wk-nav-link" href="../../workshop/combat-damage/">Combat & Damage</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../workshop/weapons-transformations/">Weapons & Transformations</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../workshop/movement-stamina/">Movement & Stamina</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../workshop/hitboxes-collision/">Hitboxes & Collision</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../workshop/stats-progression/">Stats & Progression</a></li>
+        
+        
+      </ul>
+    </li>
+        
+        
+      </ul>
+    
+      
+    </section>
+    
+    <section class="wk-nav-section">
+      
+      
+      
+      
+      
+      
+      <p class="wk-nav-heading">Systems</p>
+      
+      <ul class="wk-nav-list">
+        
+        
+        <li><a class="wk-nav-link" href="../../systems/">Overview</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../systems/frame_timing/">Frame timing</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../systems/kernel/">Kernel</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../systems/event/">Event</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../systems/camera/">Camera</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../systems/input/">Input</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../systems/character/">Character</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../systems/ai/">AI</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../systems/physics/">Physics</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../systems/render/">Render</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../systems/loading/">Loading</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../systems/audio/">Audio</a></li>
+        
+        
+      </ul>
+    
+      
+    </section>
+    
+    <section class="wk-nav-section">
+      
+      
+      
+      
+      
+      
+      <p class="wk-nav-heading">How It Works</p>
+      
+      <ul class="wk-nav-list">
+        
+        
+        <li><a class="wk-nav-link" href="../../ARCHITECTURE/">Architecture</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../runtime/">Runtime</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../runtime-syscalls/">Runtime system calls</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../how-the-frame-limiter-works/">The Frame Limiter</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../ADDRESS_MAP/">Address Map</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../target/">Target</a></li>
+        
+        
+      </ul>
+    
+      
+    </section>
+    
+    <section class="wk-nav-section">
+      
+      
+      
+      
+      
+      
+      <p class="wk-nav-heading">For Hunters</p>
+      
+      <ul class="wk-nav-list">
+        
+        
+        <li><a class="wk-nav-link" href="../../CONTRIBUTING/">Contributing</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../QUIRKS/">Ghidra & PS4 Quirks</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../glossary/">Glossary</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../CI_SETUP/">CI Setup</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../credits/">Credits</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../MEDIA_POLICY/">Evidence & Media Review</a></li>
+        
+        
+      </ul>
+    
+      
+    </section>
+    
+
+    <!-- Progress card: every value from docs/data/progress.json (hooks/progress_extra.py) -->
+    
+    
+    <a class="wk-progress-card" href="../../progress/">
+      <span class="wk-progress-label">Verified functions</span>
+      <span class="wk-progress-value">21 <small>of 157,757</small></span>
+      <span class="wk-stat-track" role="img" aria-label="0.033 percent of target code bytes verified">
+        <span class="wk-stat-fill" style="width:0.033%"></span>
+      </span>
+      <span class="wk-progress-foot">0.033% of code bytes verified · 31 replaced</span>
+      <span class="wk-progress-more">Full progress →</span>
+    </a>
+    
+  </nav>
+
+  <!-- Main content -->
+  <main class="wk-main">
+    <div class="wk-article">
+
+      
+      
+      <div class="wk-toc" id="wk-toc">
+        <div class="wk-toc-header">
+          <b>Contents</b>
+          <button class="wk-toc-toggle"
+            onclick="var l=document.getElementById('wk-toc-list');l.hidden=!l.hidden;this.textContent=l.hidden?'[show]':'[hide]'">[hide]</button>
+        </div>
+        <ol class="wk-toc-list" id="wk-toc-list">
+          
+          <li>
+            <a href="#thisisakill" class="wk-toc-link">ThisIsAkill</a>
+            
+            <ol><li><a href="#completed-hunts" class="wk-toc-link">Completed Hunts</a></li><li><a href="#hunts-in-progress" class="wk-toc-link">Hunts in Progress</a></li><li><a href="#research-and-discoveries" class="wk-toc-link">Research and Discoveries</a></li><li><a href="#fellow-hunters" class="wk-toc-link">Fellow Hunters</a></li><li><a href="#contribution-timeline" class="wk-toc-link">Contribution Timeline</a></li><li><a href="#related-devlogs" class="wk-toc-link">Related Devlogs</a></li></ol>
+            
+          </li>
+          
+        </ol>
+      </div>
+      
+      
+
+      <div class="wk-article-body">
+      
+      
+      <h1 id="thisisakill">ThisIsAkill</h1>
+<div class="hunter-profile-header"><span class="hunter-avatar" aria-hidden="true"><svg viewBox="0 0 80 80" focusable="false"><circle cx="40" cy="27" r="14"/><path d="M12 76c0-34 56-34 56 0z"/></svg><img src="https://avatars.githubusercontent.com/u/24420588?v=4" alt="" loading="lazy" width="80" height="80" referrerpolicy="no-referrer"></span><div><p>decompilation, documentation, project contributions, runtime, tooling</p><p><a href="https://github.com/ThisIsAkill">@ThisIsAkill on GitHub</a></p></div></div>
+
+<h2 id="completed-hunts">Completed Hunts</h2>
+<ol class="hunter-history">
+<li><time>2026-10-19</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/85">diagnostics: observe bounded import entry and return state</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-10-19</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/81">runtime: implement scePthreadAttrSetdetachstate</a><span class="hunter-meta"> · merged · runtime</span></li>
+<li><time>2026-10-19</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/82">runtime: implement memcpy and memset (libSceLibcInternal)</a><span class="hunter-meta"> · merged · runtime</span></li>
+<li><time>2026-10-19</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/80">diagnostics: identify incomplete harness import traces</a><span class="hunter-meta"> · merged · tooling</span></li>
+<li><time>2026-10-19</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/84">docs: align system pages with verification evidence</a><span class="hunter-meta"> · merged · documentation</span></li>
+<li><time>2026-10-15</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/79">feat: add opt-in candidate automation pipeline</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-10-15</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/78">tools: add bounded CFG coverage feedback</a><span class="hunter-meta"> · merged · tooling</span></li>
+<li><time>2026-10-15</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/76">trace: reject unsupported implicit memory operations</a><span class="hunter-meta"> · merged · tooling</span></li>
+<li><time>2026-10-15</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/77">docs: sync Kernel page with merged thread calls</a><span class="hunter-meta"> · merged · documentation, runtime</span></li>
+<li><time>2026-10-15</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/75">tools: fix POP RSP-relative trace addresses</a><span class="hunter-meta"> · merged · tooling</span></li>
+<li><time>2026-10-15</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/74">tools: trace guest instruction memory accesses</a><span class="hunter-meta"> · merged · tooling</span></li>
+<li><time>2026-10-15</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/70">tools: add bounded differential verification engine</a><span class="hunter-meta"> · merged · tooling</span></li>
+<li><time>2026-10-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/71">docs: distinguish unresolved getpagesize import</a><span class="hunter-meta"> · merged · documentation</span></li>
+<li><time>2026-10-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/62">runtime: implement scePthreadEqual</a><span class="hunter-meta"> · merged · runtime</span></li>
+<li><time>2026-10-12</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/68">docs: the target hashes decide, not the title id</a><span class="hunter-meta"> · merged · documentation</span></li>
+<li><time>2026-10-12</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/66">kernel: fail getpagesize loudly until the PS4 page size is established</a><span class="hunter-meta"> · merged · runtime</span></li>
+<li><time>2026-10-11</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/67">tools: qualify candidates with ownership and evidence</a><span class="hunter-meta"> · merged · tooling</span></li>
+<li><time>2026-10-11</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/65">tools: add evidence-aware function catalog</a><span class="hunter-meta"> · merged · decompilation, tooling</span></li>
+<li><time>2026-10-11</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/64">event: differentially verify event flag writes</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-10-11</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/63">runtime: implement observed IPv4 text conversion</a><span class="hunter-meta"> · merged · runtime</span></li>
+<li><time>2026-10-11</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/61">runtime: exclude unresolved diagnostics from import coverage</a><span class="hunter-meta"> · merged · runtime</span></li>
+<li><time>2026-10-11</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/60">runtime: distinguish unresolved syscall entries from coverage</a><span class="hunter-meta"> · merged · runtime</span></li>
+<li><time>2026-10-11</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/59">netctl: implement the offline libSceNetCtl group</a><span class="hunter-meta"> · merged · runtime</span></li>
+<li><time>2026-10-11</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/58">test: honor the configured temporary directory</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-10-11</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/57">docs: clarify code and site media rules</a><span class="hunter-meta"> · merged · documentation</span></li>
+<li><time>2026-10-10</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/55">runtime: add v1 host hook callback</a><span class="hunter-meta"> · merged · runtime</span></li>
+<li><time>2026-10-10</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/54">test: cover runtime host plugin contract</a><span class="hunter-meta"> · merged · runtime</span></li>
+<li><time>2026-10-10</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/53">Count runtime registrations in issue progress</a><span class="hunter-meta"> · merged · runtime</span></li>
+<li><time>2026-10-10</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/52">Clarify retained game-run scaffold</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-10-10</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/51">tools: retain boot failure locations in history</a><span class="hunter-meta"> · merged · tooling</span></li>
+<li><time>2026-10-10</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/50">runtime: add libSceNet byte-order conversions</a><span class="hunter-meta"> · merged · runtime</span></li>
+<li><time>2026-10-10</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/49">docs: refresh verified frame limiter status</a><span class="hunter-meta"> · merged · documentation</span></li>
+<li><time>2026-10-10</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/48">test: keep promotion outputs outside capture libraries</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-10-10</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/47">test: prove typed capture replay with synthetic fixtures</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-10-10</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/46">runtime: harden generic capture serialization and replay identity</a><span class="hunter-meta"> · merged · runtime</span></li>
+<li><time>2026-10-09</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/45">docs: map loading interfaces and open questions</a><span class="hunter-meta"> · merged · documentation</span></li>
+<li><time>2026-10-09</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/44">docs: prepare runtime contributor readiness</a><span class="hunter-meta"> · merged · documentation, runtime</span></li>
+<li><time>2026-10-09</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/43">fix(hooks): dispatch shared hooks to the active worktree</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-10-08</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/7131ec1a106806e3ebd4c6fc138a12fdd8de7c85">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-08</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/585db40070b50227cd29085ddc222db925ee63b1">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-08</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/8131ca0018449d0e23d8bf7fe7a2454e7dd6615e">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-08</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/b6f349507f95806f4fcc22744298378c27693683">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-08</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/be613ef8ac38d8412e9e4da9a37bf1608279480d">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-08</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/7beebc532df625178e9cdd9d04b432bff5e06b32">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-08</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/6a91dd01662b53a67a99d9ec0559689171f51e82">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-08</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/37f3efd0576c55e4a6fde2af050a689c75b47356">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-08</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/1db4c228fe7dd81ff36b7bc3a37b1a88dec929c2">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-08</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/e5d65eaa01196668f12bc49732e9578f0f1ad8e2">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-08</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/e21034d1f9f3397070291963996be37446470252">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-08</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/a5490a81fa337d20654ee58d515c1ae647e93fde">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-08</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/f1f70d1173c674bc9292bd2380cb2678e6e20185">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-08</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/b38dce5cf35758db0a0afba9f74c29e704dfbd84">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-08</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/5cacf79de4de433d33413d24b9adc56135ddff26">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-08</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/a54edf3b14eb449ea30cd68ffa3f48123141f801">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-08</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/f7cd82ffc7d50c8867894487ddb4ab2c7e6b85ed">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-08</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/b6f92208c493a05683fa771ddf2c9dfc2f6aa820">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/19a7a098b220f59ac0d3db0def4dc67b8f18dc6b">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/9796ba15c61727e151012daca9b6d3e3fbfd5cf3">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/d61f8f4b07068c240d36bd668e1bdd59034f58f2">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/8d962771bee695e989b6983a3b99c44cd4b93e75">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/27152cfe9f046995bb5d20d1f87c399844b55bfb">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/7485e9cbc82ca211ee308262f429047359c9baf6">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/ad8189e86825f03cf832b5af697a2229c2e858d1">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/835e1e039c30a15a67aa6f87a28bf2d6d18d611f">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/c0238311376fc8aa708da1ebf627ab7604f79879">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/7751c816fbd0e73804e618711ca2185245ba14ca">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/302544d5c23a051ebe9365a053db6277a11835ed">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/3b32f3588a3cf65e34bcd3ff89ab9ea9d653f3f3">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/ac0f7365fce7b20b0638b5e29e625f2b623d24ee">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/9ce43f02c6f599abd4068e1e808c471fd93c347c">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/a2dce49ed9cfba0de3616ff0dc50cfe337cbcbdd">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/a063d336456c81acba3593a36e6538269e51f39d">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/25f368f2c246ca926a3115d7afe9ea5f05b61e57">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/8e5f798564b48b7e2abc075d8aebe9ff65efb568">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/4e623ef84a0478845e4715f45d01f81f103c9e54">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/fb5b11ebfd18a8d911703ca71b082b151e382382">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/6bdb3cf91ace75e283f5e1c70fbe621cbfec78c9">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/cb0cd891dd1dc5c26f808d1a2947041afdfdbec7">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/4def283a2de4b6387b8abbee9efe13fd34903586">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/79412f3fffb78f8a7c6e019f1dbe7a1375270e30">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/1d35c5c63514d937603edd9682ff7c540c362de5">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/72b267ae318b7c6d57e06d8445ecffacb4547f89">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/6dc73166a44b33041537f6aaf509ef303702f760">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/cf6ce2b049979b4ee57646023c20254170ed1422">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/ad0b1c937375cd0edb74b519d2bd66e8ca8080f9">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/6f518d759d1ac3eb6948bae2dfdeddb743689905">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/4c367009cf755d63164c975f108c7476b1789eda">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/11009baeb798a7974a56e1898845ab65e4767ad3">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/f454ffe775489243d8cefc0fcb51fcf09ebd9f37">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/d033f4d8c237f05f212bc5a16b8426f383fae57e">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/f3d305d0e4431d155c7788b0d57cbbe431c84c56">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/b6e299c0719880114b2acc82fe8f984e44a049ba">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+</ol>
+
+<h2 id="hunts-in-progress">Hunts in Progress</h2>
+<ol class="hunter-history">
+<li><time>2026-10-18</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/83">runtime: report stub modules loaded at run time</a><span class="hunter-meta"> · open · runtime</span></li>
+<li><time>2026-10-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/73">input: name 0x02a8c420 input_initialize_mouse_for_initial_user</a><span class="hunter-meta"> · open · project contributions</span></li>
+<li><time>2026-10-11</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/69">net: answer sceNetErrnoLoc for the offline runtime</a><span class="hunter-meta"> · open · runtime</span></li>
+</ol>
+
+<h2 id="research-and-discoveries">Research and Discoveries</h2>
+<ol class="hunter-history">
+<li><time>2026-10-19</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/83#issuecomment-6262892752">Technical discussion: runtime: report stub modules loaded at run time</a><span class="hunter-meta"> · research · runtime</span></li>
+<li><time>2026-10-15</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/34#issuecomment-6187883148">Technical discussion: Runtime: Kernel, threads and memory</a><span class="hunter-meta"> · research · runtime</span></li>
+<li><time>2026-10-15</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/69#issuecomment-6183571817">Technical discussion: net: answer sceNetErrnoLoc for the offline runtime</a><span class="hunter-meta"> · research · runtime</span></li>
+<li><time>2026-10-15</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/69#issuecomment-6183566981">Technical discussion: net: answer sceNetErrnoLoc for the offline runtime</a><span class="hunter-meta"> · research · runtime</span></li>
+<li><time>2026-10-15</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/73#issuecomment-6183554484">Technical discussion: input: name 0x02a8c420 input_initialize_mouse_for_initial_user</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-10-11</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/41#issuecomment-6111965674">Technical discussion: Runtime: Network and online services (offline)</a><span class="hunter-meta"> · research · runtime</span></li>
+<li><time>2026-10-11</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/41#issuecomment-6111896934">Technical discussion: Runtime: Network and online services (offline)</a><span class="hunter-meta"> · research · runtime</span></li>
+<li><time>2026-10-11</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/41#issuecomment-6111610923">Technical discussion: Runtime: Network and online services (offline)</a><span class="hunter-meta"> · research · runtime</span></li>
+<li><time>2026-10-11</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/59#issuecomment-6111256603">Technical discussion: netctl: implement the offline libSceNetCtl group</a><span class="hunter-meta"> · research · runtime</span></li>
+<li><time>2026-10-10</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/41#issuecomment-6094482398">Technical discussion: Runtime: Network and online services (offline)</a><span class="hunter-meta"> · research · runtime</span></li>
+<li><time>2026-10-10</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/29#issuecomment-6091373444">Technical discussion: document: render</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-10-10</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/32#issuecomment-6091366982">Technical discussion: Frame limiter: the remaining frame-rate patched functions</a><span class="hunter-meta"> · research · decompilation</span></li>
+<li><time>2026-10-10</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/32#issuecomment-6091345142">Technical discussion: Frame limiter: the remaining frame-rate patched functions</a><span class="hunter-meta"> · research · decompilation</span></li>
+<li><time>2026-10-10</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/30#issuecomment-6091340828">Technical discussion: document: loading</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-10-09</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/32#issuecomment-6091224021">Technical discussion: Frame limiter: the remaining frame-rate patched functions</a><span class="hunter-meta"> · research · decompilation</span></li>
+<li><time>2026-10-09</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/32#issuecomment-6091192669">Technical discussion: Frame limiter: the remaining frame-rate patched functions</a><span class="hunter-meta"> · research · decompilation</span></li>
+<li><time>2026-10-09</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/34#issuecomment-6091106770">Technical discussion: Runtime: Kernel, threads and memory</a><span class="hunter-meta"> · research · runtime</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/41">Runtime: Network and online services (offline)</a><span class="hunter-meta"> · research · runtime</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/40">Runtime: System services and dialogs</a><span class="hunter-meta"> · research · runtime</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/39">Runtime: GNM (GPU commands)</a><span class="hunter-meta"> · research · runtime</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/38">Runtime: Video out</a><span class="hunter-meta"> · research · runtime</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/37">Runtime: Audio</a><span class="hunter-meta"> · research · runtime</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/36">Runtime: Input and users</a><span class="hunter-meta"> · research · runtime</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/35">Runtime: Files and saves</a><span class="hunter-meta"> · research · runtime</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/34">Runtime: Kernel, threads and memory</a><span class="hunter-meta"> · research · runtime</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/32">Frame limiter: the remaining frame-rate patched functions</a><span class="hunter-meta"> · research · decompilation</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/31">Start here</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-10-06</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/3#issuecomment-6031129637">Technical discussion: claim: frame_timing: 0x0111a880 (sceKernelUsleep)</a><span class="hunter-meta"> · research · runtime</span></li>
+<li><time>2026-10-06</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/1#issuecomment-6031128985">Technical discussion: claim: frame_timing: 0x0111a760 (sceKernelClockGettime)</a><span class="hunter-meta"> · research · runtime</span></li>
+<li><time>2026-10-06</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/2#issuecomment-6031129339">Technical discussion: claim: frame_timing: 0x0111a7f0 (sceKernelClockGettime)</a><span class="hunter-meta"> · research · runtime</span></li>
+<li><time>2026-10-06</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/30">document: loading</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-10-06</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/29">document: render</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-10-06</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/28">document: input</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-10-06</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/27">document: camera</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-10-06</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/26">document: frame_timing</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-10-06</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/25">claim: input: 0x02a8c420 (sceMouseOpen / sceMouseClose / sceUserServiceGetInitialUser)</a><span class="hunter-meta"> · research · runtime</span></li>
+<li><time>2026-10-06</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/24">claim: input: 0x02a8c210 (sceMouseInit / sceSysmoduleLoadModule)</a><span class="hunter-meta"> · research · runtime</span></li>
+<li><time>2026-10-06</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/23">claim: input: 0x02a8bf30 (sceMouseOpen / sceMouseClose / sceUserServiceGetInitialUser)</a><span class="hunter-meta"> · research · runtime</span></li>
+<li><time>2026-10-06</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/22">claim: input: 0x02a9c790 (scePadSetVibration)</a><span class="hunter-meta"> · research · runtime</span></li>
+<li><time>2026-10-06</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/21">claim: loading: 0x02e67d20 (fclose)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-10-06</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/20">claim: loading: 0x00464b90 (__error / rewind / fopen)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-10-06</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/19">claim: loading: 0x0084d5a0 (sceFiosDHCloseSync)</a><span class="hunter-meta"> · research · runtime</span></li>
+<li><time>2026-10-06</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/18">claim: loading: 0x0085cda0 (sceFiosFHOpenSync)</a><span class="hunter-meta"> · research · runtime</span></li>
+<li><time>2026-10-06</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/17">claim: loading: 0x00857cd0 (sceFiosFHOpenSync)</a><span class="hunter-meta"> · research · runtime</span></li>
+<li><time>2026-10-06</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/16">claim: loading: 0x02a70920 (sceKernelRead)</a><span class="hunter-meta"> · research · runtime</span></li>
+<li><time>2026-10-06</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/15">claim: loading: 0x02a70890 (sceKernelOpen)</a><span class="hunter-meta"> · research · runtime</span></li>
+<li><time>2026-10-06</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/14">claim: loading: 0x0111a6e0 (sceKernelRead)</a><span class="hunter-meta"> · research · runtime</span></li>
+<li><time>2026-10-06</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/13">claim: loading: 0x0111a620 (sceKernelOpen / sceKernelFstat)</a><span class="hunter-meta"> · research · runtime</span></li>
+<li><time>2026-10-06</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/12">claim: frame_timing: 0x01448620 (gettimeofday)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-10-06</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/11">claim: frame_timing: 0x01448580 (gettimeofday)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-10-06</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/10">claim: frame_timing: 0x02e61280 (gettimeofday)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-10-06</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/9">claim: frame_timing: 0x02e61140 (gettimeofday)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-10-06</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/8">claim: frame_timing: 0x02c6d580 (gettimeofday)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-10-06</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/7">claim: frame_timing: 0x01088550 (gettimeofday)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-10-06</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/6">claim: frame_timing: 0x024bd150 (sceKernelUsleep)</a><span class="hunter-meta"> · research · runtime</span></li>
+<li><time>2026-10-06</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/5">claim: frame_timing: 0x024bdd40 (sceKernelUsleep)</a><span class="hunter-meta"> · research · runtime</span></li>
+<li><time>2026-10-06</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/4">claim: frame_timing: 0x00466810 (usleep)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-10-06</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/3">claim: frame_timing: 0x0111a880 (sceKernelUsleep)</a><span class="hunter-meta"> · research · runtime</span></li>
+<li><time>2026-10-06</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/2">claim: frame_timing: 0x0111a7f0 (sceKernelClockGettime)</a><span class="hunter-meta"> · research · runtime</span></li>
+<li><time>2026-10-06</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/1">claim: frame_timing: 0x0111a760 (sceKernelClockGettime)</a><span class="hunter-meta"> · research · runtime</span></li>
+</ol>
+
+<h2 id="fellow-hunters">Fellow Hunters</h2>
+<p class="hunter-meta">No qualifying public records in this category.</p>
+
+<h2 id="contribution-timeline">Contribution Timeline</h2>
+<ol class="hunter-history">
+<li><time>2026-10-19</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/85">diagnostics: observe bounded import entry and return state</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-10-19</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/81">runtime: implement scePthreadAttrSetdetachstate</a><span class="hunter-meta"> · merged · runtime</span></li>
+<li><time>2026-10-19</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/83#issuecomment-6262892752">Technical discussion: runtime: report stub modules loaded at run time</a><span class="hunter-meta"> · research · runtime</span></li>
+<li><time>2026-10-19</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/82">runtime: implement memcpy and memset (libSceLibcInternal)</a><span class="hunter-meta"> · merged · runtime</span></li>
+<li><time>2026-10-19</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/80">diagnostics: identify incomplete harness import traces</a><span class="hunter-meta"> · merged · tooling</span></li>
+<li><time>2026-10-19</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/84">docs: align system pages with verification evidence</a><span class="hunter-meta"> · merged · documentation</span></li>
+<li><time>2026-10-18</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/83">runtime: report stub modules loaded at run time</a><span class="hunter-meta"> · open · runtime</span></li>
+<li><time>2026-10-15</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/79">feat: add opt-in candidate automation pipeline</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-10-15</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/78">tools: add bounded CFG coverage feedback</a><span class="hunter-meta"> · merged · tooling</span></li>
+<li><time>2026-10-15</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/76">trace: reject unsupported implicit memory operations</a><span class="hunter-meta"> · merged · tooling</span></li>
+<li><time>2026-10-15</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/77">docs: sync Kernel page with merged thread calls</a><span class="hunter-meta"> · merged · documentation, runtime</span></li>
+<li><time>2026-10-15</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/34#issuecomment-6187883148">Technical discussion: Runtime: Kernel, threads and memory</a><span class="hunter-meta"> · research · runtime</span></li>
+<li><time>2026-10-15</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/75">tools: fix POP RSP-relative trace addresses</a><span class="hunter-meta"> · merged · tooling</span></li>
+<li><time>2026-10-15</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/74">tools: trace guest instruction memory accesses</a><span class="hunter-meta"> · merged · tooling</span></li>
+<li><time>2026-10-15</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/69#issuecomment-6183571817">Technical discussion: net: answer sceNetErrnoLoc for the offline runtime</a><span class="hunter-meta"> · research · runtime</span></li>
+<li><time>2026-10-15</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/69#issuecomment-6183566981">Technical discussion: net: answer sceNetErrnoLoc for the offline runtime</a><span class="hunter-meta"> · research · runtime</span></li>
+<li><time>2026-10-15</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/73#issuecomment-6183554484">Technical discussion: input: name 0x02a8c420 input_initialize_mouse_for_initial_user</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-10-15</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/70">tools: add bounded differential verification engine</a><span class="hunter-meta"> · merged · tooling</span></li>
+<li><time>2026-10-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/73">input: name 0x02a8c420 input_initialize_mouse_for_initial_user</a><span class="hunter-meta"> · open · project contributions</span></li>
+<li><time>2026-10-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/71">docs: distinguish unresolved getpagesize import</a><span class="hunter-meta"> · merged · documentation</span></li>
+<li><time>2026-10-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/62">runtime: implement scePthreadEqual</a><span class="hunter-meta"> · merged · runtime</span></li>
+<li><time>2026-10-12</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/68">docs: the target hashes decide, not the title id</a><span class="hunter-meta"> · merged · documentation</span></li>
+<li><time>2026-10-12</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/66">kernel: fail getpagesize loudly until the PS4 page size is established</a><span class="hunter-meta"> · merged · runtime</span></li>
+<li><time>2026-10-11</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/67">tools: qualify candidates with ownership and evidence</a><span class="hunter-meta"> · merged · tooling</span></li>
+<li><time>2026-10-11</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/69">net: answer sceNetErrnoLoc for the offline runtime</a><span class="hunter-meta"> · open · runtime</span></li>
+<li><time>2026-10-11</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/65">tools: add evidence-aware function catalog</a><span class="hunter-meta"> · merged · decompilation, tooling</span></li>
+<li><time>2026-10-11</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/64">event: differentially verify event flag writes</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-10-11</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/63">runtime: implement observed IPv4 text conversion</a><span class="hunter-meta"> · merged · runtime</span></li>
+<li><time>2026-10-11</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/41#issuecomment-6111965674">Technical discussion: Runtime: Network and online services (offline)</a><span class="hunter-meta"> · research · runtime</span></li>
+<li><time>2026-10-11</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/41#issuecomment-6111896934">Technical discussion: Runtime: Network and online services (offline)</a><span class="hunter-meta"> · research · runtime</span></li>
+<li><time>2026-10-11</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/61">runtime: exclude unresolved diagnostics from import coverage</a><span class="hunter-meta"> · merged · runtime</span></li>
+<li><time>2026-10-11</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/41#issuecomment-6111610923">Technical discussion: Runtime: Network and online services (offline)</a><span class="hunter-meta"> · research · runtime</span></li>
+<li><time>2026-10-11</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/60">runtime: distinguish unresolved syscall entries from coverage</a><span class="hunter-meta"> · merged · runtime</span></li>
+<li><time>2026-10-11</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/59">netctl: implement the offline libSceNetCtl group</a><span class="hunter-meta"> · merged · runtime</span></li>
+<li><time>2026-10-11</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/58">test: honor the configured temporary directory</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-10-11</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/59#issuecomment-6111256603">Technical discussion: netctl: implement the offline libSceNetCtl group</a><span class="hunter-meta"> · research · runtime</span></li>
+<li><time>2026-10-11</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/57">docs: clarify code and site media rules</a><span class="hunter-meta"> · merged · documentation</span></li>
+<li><time>2026-10-10</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/55">runtime: add v1 host hook callback</a><span class="hunter-meta"> · merged · runtime</span></li>
+<li><time>2026-10-10</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/54">test: cover runtime host plugin contract</a><span class="hunter-meta"> · merged · runtime</span></li>
+<li><time>2026-10-10</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/41#issuecomment-6094482398">Technical discussion: Runtime: Network and online services (offline)</a><span class="hunter-meta"> · research · runtime</span></li>
+<li><time>2026-10-10</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/53">Count runtime registrations in issue progress</a><span class="hunter-meta"> · merged · runtime</span></li>
+<li><time>2026-10-10</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/52">Clarify retained game-run scaffold</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-10-10</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/51">tools: retain boot failure locations in history</a><span class="hunter-meta"> · merged · tooling</span></li>
+<li><time>2026-10-10</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/50">runtime: add libSceNet byte-order conversions</a><span class="hunter-meta"> · merged · runtime</span></li>
+<li><time>2026-10-10</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/49">docs: refresh verified frame limiter status</a><span class="hunter-meta"> · merged · documentation</span></li>
+<li><time>2026-10-10</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/48">test: keep promotion outputs outside capture libraries</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-10-10</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/47">test: prove typed capture replay with synthetic fixtures</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-10-10</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/46">runtime: harden generic capture serialization and replay identity</a><span class="hunter-meta"> · merged · runtime</span></li>
+<li><time>2026-10-10</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/29#issuecomment-6091373444">Technical discussion: document: render</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-10-10</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/32#issuecomment-6091366982">Technical discussion: Frame limiter: the remaining frame-rate patched functions</a><span class="hunter-meta"> · research · decompilation</span></li>
+<li><time>2026-10-10</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/32#issuecomment-6091345142">Technical discussion: Frame limiter: the remaining frame-rate patched functions</a><span class="hunter-meta"> · research · decompilation</span></li>
+<li><time>2026-10-10</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/30#issuecomment-6091340828">Technical discussion: document: loading</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-10-09</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/45">docs: map loading interfaces and open questions</a><span class="hunter-meta"> · merged · documentation</span></li>
+<li><time>2026-10-09</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/32#issuecomment-6091224021">Technical discussion: Frame limiter: the remaining frame-rate patched functions</a><span class="hunter-meta"> · research · decompilation</span></li>
+<li><time>2026-10-09</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/32#issuecomment-6091192669">Technical discussion: Frame limiter: the remaining frame-rate patched functions</a><span class="hunter-meta"> · research · decompilation</span></li>
+<li><time>2026-10-09</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/34#issuecomment-6091106770">Technical discussion: Runtime: Kernel, threads and memory</a><span class="hunter-meta"> · research · runtime</span></li>
+<li><time>2026-10-09</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/44">docs: prepare runtime contributor readiness</a><span class="hunter-meta"> · merged · documentation, runtime</span></li>
+<li><time>2026-10-09</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/43">fix(hooks): dispatch shared hooks to the active worktree</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-10-08</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/7131ec1a106806e3ebd4c6fc138a12fdd8de7c85">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-08</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/585db40070b50227cd29085ddc222db925ee63b1">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-08</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/8131ca0018449d0e23d8bf7fe7a2454e7dd6615e">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-08</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/b6f349507f95806f4fcc22744298378c27693683">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-08</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/be613ef8ac38d8412e9e4da9a37bf1608279480d">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-08</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/7beebc532df625178e9cdd9d04b432bff5e06b32">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-08</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/6a91dd01662b53a67a99d9ec0559689171f51e82">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-08</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/37f3efd0576c55e4a6fde2af050a689c75b47356">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-08</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/1db4c228fe7dd81ff36b7bc3a37b1a88dec929c2">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-08</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/e5d65eaa01196668f12bc49732e9578f0f1ad8e2">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-08</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/e21034d1f9f3397070291963996be37446470252">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-08</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/a5490a81fa337d20654ee58d515c1ae647e93fde">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-08</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/f1f70d1173c674bc9292bd2380cb2678e6e20185">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-08</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/b38dce5cf35758db0a0afba9f74c29e704dfbd84">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-08</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/5cacf79de4de433d33413d24b9adc56135ddff26">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-08</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/a54edf3b14eb449ea30cd68ffa3f48123141f801">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-08</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/f7cd82ffc7d50c8867894487ddb4ab2c7e6b85ed">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-08</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/b6f92208c493a05683fa771ddf2c9dfc2f6aa820">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/19a7a098b220f59ac0d3db0def4dc67b8f18dc6b">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/9796ba15c61727e151012daca9b6d3e3fbfd5cf3">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/d61f8f4b07068c240d36bd668e1bdd59034f58f2">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/8d962771bee695e989b6983a3b99c44cd4b93e75">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/27152cfe9f046995bb5d20d1f87c399844b55bfb">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/7485e9cbc82ca211ee308262f429047359c9baf6">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/41">Runtime: Network and online services (offline)</a><span class="hunter-meta"> · research · runtime</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/40">Runtime: System services and dialogs</a><span class="hunter-meta"> · research · runtime</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/39">Runtime: GNM (GPU commands)</a><span class="hunter-meta"> · research · runtime</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/38">Runtime: Video out</a><span class="hunter-meta"> · research · runtime</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/37">Runtime: Audio</a><span class="hunter-meta"> · research · runtime</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/36">Runtime: Input and users</a><span class="hunter-meta"> · research · runtime</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/35">Runtime: Files and saves</a><span class="hunter-meta"> · research · runtime</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/34">Runtime: Kernel, threads and memory</a><span class="hunter-meta"> · research · runtime</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/ad8189e86825f03cf832b5af697a2229c2e858d1">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/835e1e039c30a15a67aa6f87a28bf2d6d18d611f">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/c0238311376fc8aa708da1ebf627ab7604f79879">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/7751c816fbd0e73804e618711ca2185245ba14ca">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/302544d5c23a051ebe9365a053db6277a11835ed">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/3b32f3588a3cf65e34bcd3ff89ab9ea9d653f3f3">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/ac0f7365fce7b20b0638b5e29e625f2b623d24ee">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/9ce43f02c6f599abd4068e1e808c471fd93c347c">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/a2dce49ed9cfba0de3616ff0dc50cfe337cbcbdd">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/a063d336456c81acba3593a36e6538269e51f39d">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/25f368f2c246ca926a3115d7afe9ea5f05b61e57">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/8e5f798564b48b7e2abc075d8aebe9ff65efb568">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/4e623ef84a0478845e4715f45d01f81f103c9e54">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/fb5b11ebfd18a8d911703ca71b082b151e382382">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/6bdb3cf91ace75e283f5e1c70fbe621cbfec78c9">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/cb0cd891dd1dc5c26f808d1a2947041afdfdbec7">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/4def283a2de4b6387b8abbee9efe13fd34903586">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/32">Frame limiter: the remaining frame-rate patched functions</a><span class="hunter-meta"> · research · decompilation</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/31">Start here</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/79412f3fffb78f8a7c6e019f1dbe7a1375270e30">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/1d35c5c63514d937603edd9682ff7c540c362de5">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/72b267ae318b7c6d57e06d8445ecffacb4547f89">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/6dc73166a44b33041537f6aaf509ef303702f760">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/cf6ce2b049979b4ee57646023c20254170ed1422">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/ad0b1c937375cd0edb74b519d2bd66e8ca8080f9">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/6f518d759d1ac3eb6948bae2dfdeddb743689905">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/4c367009cf755d63164c975f108c7476b1789eda">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/11009baeb798a7974a56e1898845ab65e4767ad3">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/f454ffe775489243d8cefc0fcb51fcf09ebd9f37">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/d033f4d8c237f05f212bc5a16b8426f383fae57e">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/f3d305d0e4431d155c7788b0d57cbbe431c84c56">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-07</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/b6e299c0719880114b2acc82fe8f984e44a049ba">Default-branch commit</a><span class="hunter-meta"> · commit · project contributions</span></li>
+<li><time>2026-10-06</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/3#issuecomment-6031129637">Technical discussion: claim: frame_timing: 0x0111a880 (sceKernelUsleep)</a><span class="hunter-meta"> · research · runtime</span></li>
+<li><time>2026-10-06</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/1#issuecomment-6031128985">Technical discussion: claim: frame_timing: 0x0111a760 (sceKernelClockGettime)</a><span class="hunter-meta"> · research · runtime</span></li>
+<li><time>2026-10-06</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/2#issuecomment-6031129339">Technical discussion: claim: frame_timing: 0x0111a7f0 (sceKernelClockGettime)</a><span class="hunter-meta"> · research · runtime</span></li>
+<li><time>2026-10-06</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/30">document: loading</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-10-06</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/29">document: render</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-10-06</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/28">document: input</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-10-06</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/27">document: camera</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-10-06</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/26">document: frame_timing</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-10-06</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/25">claim: input: 0x02a8c420 (sceMouseOpen / sceMouseClose / sceUserServiceGetInitialUser)</a><span class="hunter-meta"> · research · runtime</span></li>
+<li><time>2026-10-06</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/24">claim: input: 0x02a8c210 (sceMouseInit / sceSysmoduleLoadModule)</a><span class="hunter-meta"> · research · runtime</span></li>
+<li><time>2026-10-06</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/23">claim: input: 0x02a8bf30 (sceMouseOpen / sceMouseClose / sceUserServiceGetInitialUser)</a><span class="hunter-meta"> · research · runtime</span></li>
+<li><time>2026-10-06</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/22">claim: input: 0x02a9c790 (scePadSetVibration)</a><span class="hunter-meta"> · research · runtime</span></li>
+<li><time>2026-10-06</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/21">claim: loading: 0x02e67d20 (fclose)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-10-06</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/20">claim: loading: 0x00464b90 (__error / rewind / fopen)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-10-06</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/19">claim: loading: 0x0084d5a0 (sceFiosDHCloseSync)</a><span class="hunter-meta"> · research · runtime</span></li>
+<li><time>2026-10-06</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/18">claim: loading: 0x0085cda0 (sceFiosFHOpenSync)</a><span class="hunter-meta"> · research · runtime</span></li>
+<li><time>2026-10-06</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/17">claim: loading: 0x00857cd0 (sceFiosFHOpenSync)</a><span class="hunter-meta"> · research · runtime</span></li>
+<li><time>2026-10-06</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/16">claim: loading: 0x02a70920 (sceKernelRead)</a><span class="hunter-meta"> · research · runtime</span></li>
+<li><time>2026-10-06</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/15">claim: loading: 0x02a70890 (sceKernelOpen)</a><span class="hunter-meta"> · research · runtime</span></li>
+<li><time>2026-10-06</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/14">claim: loading: 0x0111a6e0 (sceKernelRead)</a><span class="hunter-meta"> · research · runtime</span></li>
+<li><time>2026-10-06</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/13">claim: loading: 0x0111a620 (sceKernelOpen / sceKernelFstat)</a><span class="hunter-meta"> · research · runtime</span></li>
+<li><time>2026-10-06</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/12">claim: frame_timing: 0x01448620 (gettimeofday)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-10-06</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/11">claim: frame_timing: 0x01448580 (gettimeofday)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-10-06</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/10">claim: frame_timing: 0x02e61280 (gettimeofday)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-10-06</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/9">claim: frame_timing: 0x02e61140 (gettimeofday)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-10-06</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/8">claim: frame_timing: 0x02c6d580 (gettimeofday)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-10-06</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/7">claim: frame_timing: 0x01088550 (gettimeofday)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-10-06</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/6">claim: frame_timing: 0x024bd150 (sceKernelUsleep)</a><span class="hunter-meta"> · research · runtime</span></li>
+<li><time>2026-10-06</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/5">claim: frame_timing: 0x024bdd40 (sceKernelUsleep)</a><span class="hunter-meta"> · research · runtime</span></li>
+<li><time>2026-10-06</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/4">claim: frame_timing: 0x00466810 (usleep)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-10-06</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/3">claim: frame_timing: 0x0111a880 (sceKernelUsleep)</a><span class="hunter-meta"> · research · runtime</span></li>
+<li><time>2026-10-06</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/2">claim: frame_timing: 0x0111a7f0 (sceKernelClockGettime)</a><span class="hunter-meta"> · research · runtime</span></li>
+<li><time>2026-10-06</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/1">claim: frame_timing: 0x0111a760 (sceKernelClockGettime)</a><span class="hunter-meta"> · research · runtime</span></li>
+</ol>
+
+<h2 id="related-devlogs">Related Devlogs</h2>
+<ul><li><a href="/byrgenwerth-site/devlog/2026/10/09/9-october-2026-a-path-for-runtime-contributors/">9 October 2026: a path for runtime contributors</a></li><li><a href="/byrgenwerth-site/devlog/2026/10/10/10-october-2026-recorded-verification-and-runtime-foundations/">10 October 2026: recorded verification and runtime foundations</a></li><li><a href="/byrgenwerth-site/devlog/2026/10/11/11-october-2026-more-imports-supplied-same-boot-blocker/">11 October 2026: more imports supplied, same boot blocker</a></li><li><a href="/byrgenwerth-site/devlog/2026/10/19/19-october-2026-a-bounded-verification-pipeline-with-limits-made-explicit/">Week of 19 October 2026: A bounded verification pipeline and a clearer site</a></li></ul>
+
+<p><a href="/byrgenwerth-site/hunters/">← All Hunters</a></p>
+      
+      </div>
+
+    </div>
+    <footer class="wk-footer">
+      <p class="wk-footer-motto">Fear the old blood</p>
+      <p>Made by people who love Bloodborne, so that it can be studied, preserved and played
+      natively, one verified function at a time.</p>
+      <p>A fan project. Not affiliated with or endorsed by Sony Interactive Entertainment or
+      FromSoftware. No game files are shared here: bring your own copy.</p>
+    </footer>
+  </main>
+
+</div>
+
+
+<!-- Back to top -->
+<button class="wk-top" id="wk-top" title="Back to top" aria-label="Scroll to top">↑</button>
+
+
+<script>
+(function () {
+'use strict';
+
+/* ── Theme ─────────────────────────────────────────────────── */
+var stored = localStorage.getItem('wk-theme') || 'dark';
+applyTheme(stored);
+document.getElementById('wk-toggle').addEventListener('click', function () {
+  applyTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+});
+function applyTheme(t) {
+  document.documentElement.setAttribute('data-theme', t);
+  localStorage.setItem('wk-theme', t);
+  var btn = document.getElementById('wk-toggle');
+  if (btn) btn.textContent = t === 'dark' ? '☀' : '🌙';
+}
+
+/* ── Address map: a block opens its slice in a pop-up ──────── */
+(function () {
+  var map = document.querySelector('.wk-bankmap');
+  if (!map) return;
+  var modal = document.createElement('div');
+  modal.className = 'wk-slice-modal';
+  modal.setAttribute('role', 'dialog');
+  modal.setAttribute('aria-modal', 'true');
+  document.body.appendChild(modal);
+  function close() { modal.classList.remove('is-open'); }
+  map.addEventListener('click', function (e) {
+    var cell = e.target.closest('a.wk-bank-cell');
+    if (!cell) return;
+    var panel = document.getElementById(cell.getAttribute('href').slice(1));
+    if (!panel) return;
+    e.preventDefault();
+    modal.innerHTML = '';
+    modal.appendChild(panel.cloneNode(true));
+    modal.firstChild.removeAttribute('id');
+    requestAnimationFrame(function () { modal.classList.add('is-open'); });
+  });
+  modal.addEventListener('click', function (e) {
+    if (e.target === modal || e.target.closest('.wk-slice-close')) { e.preventDefault(); close(); }
+  });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+})();
+
+/* ── Mobile nav ────────────────────────────────────────────── */
+var navToggle  = document.getElementById('wk-nav-toggle');
+var navEl      = document.getElementById('wk-nav');
+var navBackdrop = document.getElementById('wk-nav-backdrop');
+var mainEl     = document.querySelector('.wk-main');
+var headerRight = document.querySelector('.wk-header-right');
+var wordmark = document.querySelector('.wk-wordmark');
+/* Matches the drawer breakpoint in wiki.css. */
+var drawerQuery = window.matchMedia('(max-width: 900px)');
+
+function closeNav() {
+  navEl.classList.remove('is-open');
+  navBackdrop.hidden = true;
+  navToggle.setAttribute('aria-expanded', 'false');
+  navToggle.setAttribute('aria-label', 'Open navigation');
+  navToggle.textContent = '☰';
+  if (mainEl) mainEl.inert = false;
+  if (headerRight) headerRight.inert = false;
+  if (wordmark) wordmark.inert = false;
+  if (drawerQuery.matches) navEl.inert = true;
+}
+function openNav() {
+  navEl.inert = false;
+  if (mainEl) mainEl.inert = true;
+  if (headerRight) headerRight.inert = true;
+  if (wordmark) wordmark.inert = true;
+  navEl.classList.add('is-open');
+  navBackdrop.hidden = false;
+  navToggle.setAttribute('aria-expanded', 'true');
+  navToggle.setAttribute('aria-label', 'Close navigation');
+  navToggle.textContent = '×';
+}
+if (navToggle && navEl && navBackdrop) {
+  navEl.inert = drawerQuery.matches;
+  navToggle.addEventListener('click', function () {
+    if (navEl.classList.contains('is-open')) { closeNav(); } else { openNav(); }
+  });
+  navBackdrop.addEventListener('click', function () { closeNav(); navToggle.focus(); });
+  navEl.addEventListener('click', function (e) {
+    if (e.target.closest('a')) { closeNav(); }
+  });
+  document.addEventListener('keydown', function (e) {
+    if (!navEl.classList.contains('is-open') || !drawerQuery.matches) return;
+    if (e.key === 'Escape') { closeNav(); navToggle.focus(); return; }
+    if (e.key !== 'Tab') return;
+    var links = Array.prototype.slice.call(navEl.querySelectorAll('a[href], button:not([disabled])'));
+    var focusable = [navToggle].concat(links);
+    var first = focusable[0];
+    var last = focusable[focusable.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  });
+  window.addEventListener('resize', function () {
+    if (!drawerQuery.matches) { navEl.inert = false; closeNav(); }
+    else if (!navEl.classList.contains('is-open')) navEl.inert = true;
+  });
+}
+
+/* ── Search ─────────────────────────────────────────────────── */
+var input   = document.getElementById('wk-q');
+var results = document.getElementById('wk-results');
+var docs    = null;
+if (input) {
+  fetch("../../search/search_index.json")
+    .then(function (r) { return r.json(); })
+    .then(function (d) { docs = d.docs; });
+
+  input.addEventListener('input', onSearch);
+
+  document.addEventListener('click', function (e) {
+    if (results && !results.contains(e.target) && e.target !== input) results.hidden = true;
+  });
+  input.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { results.hidden = true; this.blur(); }
+    if (e.key === 'Enter' && results && !results.hidden) {
+      var first = results.querySelector('.wk-result');
+      if (first) { first.click(); }
+    }
+  });
+}
+
+/* Press / to focus search */
+document.addEventListener('keydown', function (e) {
+  if (e.key === '/' && document.activeElement !== input &&
+      document.activeElement.tagName !== 'INPUT' &&
+      document.activeElement.tagName !== 'TEXTAREA') {
+    e.preventDefault();
+    if (input) { input.focus(); input.select(); }
+  }
+});
+
+function onSearch() {
+  var q = this.value.trim().toLowerCase();
+  if (!docs || q.length < 2) { results.hidden = true; return; }
+  var hits = docs.filter(function (d) {
+    return (d.title + ' ' + d.text).toLowerCase().indexOf(q) !== -1;
+  }).slice(0, 8);
+  if (!hits.length) { results.hidden = true; return; }
+  var base = "../..";
+  results.innerHTML = hits.map(function (d) {
+    var text  = d.text || '';
+    var i     = text.toLowerCase().indexOf(q);
+    var start = Math.max(0, i - 35);
+    var end   = Math.min(text.length, i + q.length + 70);
+    var snip  = (start > 0 ? '…' : '') + text.slice(start, end) + (end < text.length ? '…' : '');
+    var url   = base + '/' + d.location;
+    return '<a class="wk-result" href="' + esc(url) + '" role="option">'
+         + '<div class="wk-result-title">' + esc(d.title || d.location) + '</div>'
+         + '<div class="wk-result-snip">'  + esc(snip) + '</div></a>';
+  }).join('');
+  results.hidden = false;
+}
+
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+/* ── Back to top ────────────────────────────────────────────── */
+var topBtn = document.getElementById('wk-top');
+if (topBtn) {
+  window.addEventListener('scroll', function () {
+    topBtn.classList.toggle('visible', window.scrollY > 400);
+  }, {passive: true});
+  topBtn.addEventListener('click', function () {
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  });
+}
+
+/* ── Copy-to-clipboard ───────────────────────────────────────── */
+document.querySelectorAll('.highlight').forEach(function (block) {
+  var btn = document.createElement('button');
+  btn.className = 'wk-copy-btn';
+  btn.title     = 'Copy code';
+  btn.textContent = '⎘';
+  block.appendChild(btn);
+  btn.addEventListener('click', function () {
+    var pre = block.querySelector('pre');
+    if (!pre) return;
+    navigator.clipboard.writeText(pre.innerText).then(function () {
+      btn.textContent = '✓';
+      btn.classList.add('copied');
+      setTimeout(function () {
+        btn.textContent = '⎘';
+        btn.classList.remove('copied');
+      }, 1500);
+    });
+  });
+});
+
+/* ── Collapsible long code blocks ─────────────────────────────── */
+var COLLAPSE_THRESHOLD = 340;
+document.querySelectorAll('.wk-article-body .highlight').forEach(function (block) {
+  var pre = block.querySelector('pre');
+  if (!pre || pre.scrollHeight <= COLLAPSE_THRESHOLD + 40) return;
+
+  block.classList.add('wk-code-collapsed');
+  var toggle = document.createElement('button');
+  toggle.className = 'wk-code-toggle';
+  toggle.type = 'button';
+  toggle.textContent = 'Show more ▾';
+  toggle.addEventListener('click', function () {
+    var collapsed = block.classList.toggle('wk-code-collapsed');
+    toggle.textContent = collapsed ? 'Show more ▾' : 'Show less ▴';
+    if (collapsed) block.scrollIntoView({block: 'nearest'});
+  });
+  block.insertAdjacentElement('afterend', toggle);
+});
+
+/* ── TOC scroll spy ─────────────────────────────────────────── */
+var tocLinks = document.querySelectorAll('.wk-toc-link');
+if (tocLinks.length && 'IntersectionObserver' in window) {
+  var headings = Array.from(document.querySelectorAll('.wk-article h1, .wk-article h2, .wk-article h3'));
+  var active   = null;
+  var obs = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) {
+        var id  = e.target.id;
+        var lnk = document.querySelector('.wk-toc-link[href="#' + id + '"]');
+        if (lnk && lnk !== active) {
+          if (active) active.classList.remove('is-current');
+          lnk.classList.add('is-current');
+          active = lnk;
+        }
+      }
+    });
+  }, {rootMargin: '-10% 0px -80% 0px'});
+  headings.forEach(function (h) { if (h.id) obs.observe(h); });
+}
+
+
+}());
+</script>
+<script src="../../javascripts/hunters.js" defer></script><script src="../../search/main.js" defer></script>
+</body>
+</html>

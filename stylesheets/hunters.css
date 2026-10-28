@@ -1,0 +1,22 @@
+/* The Hunters uses the wiki's inherited colors and fonts in both palettes. */
+.hunters-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr)); gap:1.25rem; margin:2rem 0; }
+.hunter-card { border:1px solid var(--wk-line, #6d6048); border-top:2px solid var(--wk-gold, #bda16b); padding:1.5rem; background:color-mix(in srgb,currentColor 3%,transparent); }
+.hunter-card h2 { margin:.7rem 0; font-size:1.4rem; overflow-wrap:anywhere; }
+.hunter-card p { margin:.6rem 0; }
+.hunter-avatar { display:inline-block; position:relative; width:80px; height:80px; flex:0 0 80px; border-radius:50%; overflow:hidden; border:1px solid var(--wk-line, #6d6048); background:var(--wk-bg, #171719); }
+.hunter-avatar svg { position:absolute; inset:0; width:100%; height:100%; fill:#a99c84; }
+.hunter-avatar img { position:absolute; inset:0; display:block; width:100%; height:100%; object-fit:cover; }
+.hunter-avatar img[data-failed] { display:none; }
+.hunter-meta, .hunter-policy { opacity:.75; font-size:.88em; }
+.hunter-latest { font-size:.88em; overflow-wrap:anywhere; }
+.hunter-profile-header { display:flex; align-items:center; gap:1.2rem; margin:1.5rem 0 2.5rem; }
+.hunter-history { padding-left:1.5rem; }
+.hunter-history li { padding:.6rem 0 .6rem .3rem; border-bottom:1px solid var(--wk-line, #6d6048); overflow-wrap:anywhere; }
+.hunter-history time { font-variant-numeric:tabular-nums; font-size:.85em; margin-right:.5em; }
+.hunters-ack { margin-top:2rem; }
+.hunters-ack-list { list-style:none; padding:0; }
+.hunters-ack-list li { display:flex; gap:.9rem; padding:1rem 0; align-items:start; }
+.hunters-ack-list .hunter-avatar { width:42px; height:42px; flex-basis:42px; }
+.hunters-ack-list p { font-size:.9em; margin:.35em 0; }
+.hunter-name { font-family:inherit; font-weight:bold; }
+@media(max-width:480px) { .hunter-card { padding:1.1rem; } .hunter-profile-header { align-items:start; } }

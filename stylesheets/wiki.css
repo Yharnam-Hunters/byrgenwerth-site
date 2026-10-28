@@ -248,205 +248,6 @@ img { max-width: 100%; }
   min-height: calc(100vh - 44px);
 }
 
-/* ── Left sidebar nav ────────────────────────────────────── */
-.wk-nav {
-  width: 220px;
-  flex-shrink: 0;
-  background: var(--bg-s);
-  border-right: 1px solid var(--border);
-  padding: 10px 0 24px;
-  position: sticky;
-  top: 44px;
-  height: calc(100vh - 44px);
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-}
-
-/* ── Portal icon (top of sidebar) ───────────────────────────── */
-.wk-portal-icon {
-  margin: 0;
-  padding: 16px 18px 14px;
-  border-bottom: 1px solid var(--border);
-  text-align: center;
-  flex-shrink: 0;
-}
-.wk-portal-icon > a { display: block; width: min(100%, 176px); margin: 0 auto; line-height: 0; }
-.wk-portal-icon img {
-  width: 100%;
-  height: auto;
-  display: block;
-  object-fit: cover;
-  border: 1px solid var(--border-l);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, .45);
-  transition: opacity .2s;
-}
-.wk-portal-icon a:hover img { opacity: .85; }
-.wk-portal-icon a:focus-visible { outline: 2px solid var(--logo-gold); outline-offset: 3px; }
-
-.wk-nav-heading {
-  font-family: system-ui, sans-serif;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  color: var(--text-dd);
-  padding: 14px 12px 3px;
-  border-top: 1px solid var(--border);
-  margin-top: 4px;
-}
-.wk-nav-heading-link {
-  display: block;
-  color: var(--logo-gold);
-  text-decoration: none;
-}
-.wk-nav-heading-link:hover { color: var(--text); text-decoration: underline; }
-.wk-nav-heading-link:focus-visible { outline: 2px solid var(--logo-gold); outline-offset: 2px; }
-.wk-nav-heading:first-child { border-top: none; margin-top: 0; }
-
-.wk-nav-section { flex: 0 0 auto; }
-.wk-nav-section-heading {
-  display: flex;
-  align-items: center;
-  min-height: 29px;
-  margin-top: 3px;
-  border-top: 1px solid var(--border);
-}
-.wk-nav-section:first-of-type .wk-nav-section-heading { margin-top: 0; border-top: 0; }
-.wk-nav-section-heading .wk-nav-heading,
-.wk-nav-section-heading .wk-nav-heading-link {
-  flex: 1 1 auto;
-  min-width: 0;
-  margin: 0;
-  padding: 8px 4px 2px 20px;
-  border: 0;
-  font-size: 10.5px;
-  letter-spacing: .09em;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.wk-nav-section-heading .wk-nav-heading-link { color: var(--logo-gold); }
-.wk-nav-section-toggle {
-  display: inline-flex;
-  flex: 0 0 30px;
-  align-items: center;
-  justify-content: center;
-  min-width: 30px;
-  min-height: 28px;
-  margin: 1px 6px 0 0;
-  padding: 0;
-  border: 1px solid transparent;
-  border-radius: 3px;
-  background: transparent;
-  color: var(--logo-gold);
-  font: 700 18px/1 system-ui, sans-serif;
-  cursor: pointer;
-}
-.wk-nav-section-toggle:hover { border-color: var(--border-l); background: var(--bg-h); }
-.wk-nav-section-toggle:focus-visible,
-.wk-nav-section-heading a:focus-visible {
-  outline: 2px solid var(--logo-gold);
-  outline-offset: 1px;
-}
-.wk-nav-section-links { padding-bottom: 2px; }
-.wk-nav-section-links[hidden] { display: none; }
-.wk-nav-section-links > .wk-nav-link { padding-top: 2px; padding-bottom: 2px; }
-.wk-nav-section-links > .wk-nav-subheading { padding-top: 5px; }
-
-/* Gap between portal icon and first nav link */
-.wk-portal-icon + .wk-nav-link { margin-top: 10px; }
-
-.wk-nav-subheading {
-  font-family: system-ui, sans-serif;
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: .05em;
-  text-transform: uppercase;
-  color: var(--text-dd);
-  padding: 8px 12px 2px 22px;
-}
-
-.wk-nav-link {
-  display: block;
-  font-family: system-ui, sans-serif;
-  font-size: 13px;
-  padding: 4px 12px;
-  color: var(--link);
-  text-decoration: none;
-  line-height: 1.4;
-}
-.wk-nav-link.wk-nav-sub { padding-left: 22px; font-size: 12.5px; }
-.wk-nav-link:visited { color: var(--link-v); }
-.wk-nav-link:hover { background: var(--bg-h); text-decoration: underline; }
-.wk-nav-link.is-active {
-  color: var(--text);
-  font-weight: bold;
-  border-left: 2px solid var(--link);
-  padding-left: 10px;
-  background: transparent;
-}
-.wk-nav-link.wk-nav-sub.is-active { padding-left: 20px; }
-
-/* ── Stats widget (sidebar) ──────────────────────────────── */
-.wk-stats {
-  margin-top: auto;
-  padding-bottom: 4px;
-}
-.wk-stat-row {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  column-gap: 6px;
-  font-family: system-ui, sans-serif;
-  font-size: 12px;
-  padding: 3px 12px;
-  color: var(--text-d);
-}
-.wk-stat-val {
-  font-variant-numeric: tabular-nums;
-  font-weight: 600;
-  color: var(--text);
-  text-align: right;
-  white-space: nowrap;
-  margin-left: auto;
-}
-.wk-stat-sublabel {
-  font-family: system-ui, sans-serif;
-  font-size: 10px;
-  color: var(--text-dd);
-  padding: 6px 12px 2px;
-  letter-spacing: .03em;
-}
-.wk-stat-track {
-  height: 6px;
-  background: var(--bg-h);
-  border-radius: 3px;
-  overflow: hidden;
-  margin: 0 12px;
-}
-.wk-stat-fill {
-  height: 100%;
-  background: var(--link);
-  border-radius: 3px;
-  min-width: 2px;
-}
-.wk-stat-fill-dim { opacity: .55; }
-.wk-stat-pct {
-  font-family: system-ui, sans-serif;
-  font-size: 11px;
-  color: var(--text-dd);
-  text-align: right;
-  padding: 2px 12px 4px;
-  font-variant-numeric: tabular-nums;
-}
-.wk-stat-link {
-  font-family: system-ui, sans-serif;
-  font-size: 11.5px;
-  padding: 4px 12px 0;
-  text-align: center;
-}
-
 /* ── Main content area ───────────────────────────────────── */
 .wk-main {
   flex: 1;
@@ -985,24 +786,11 @@ summary {
 }
 @media (max-width: 720px) {
   .wk-header { padding-right: 8px; padding-left: 8px; }
-  .wk-nav-toggle { display: inline-flex; align-items: center; }
   .wk-wordmark { min-width: 0; flex-shrink: 1; font-size: 16px; letter-spacing: .08em; margin-right: 6px; }
   .wk-wordmark small { display: none; }
   .wk-header-right { gap: 4px; min-width: 0; }
   .wk-searchbox { width: clamp(82px, 27vw, 160px); }
   .wk-toggle { padding-right: 6px; padding-left: 6px; }
-  .wk-nav {
-    position: fixed;
-    top: 44px;
-    left: 0;
-    height: calc(100vh - 44px);
-    z-index: 250;
-    transform: translateX(-100%);
-    transition: transform .2s ease;
-    box-shadow: 2px 0 12px rgba(0,0,0,.3);
-  }
-  .wk-nav.is-open { transform: translateX(0); }
-  .wk-nav-backdrop:not([hidden]) { display: block; }
   .wk-main { padding: 16px; }
   .wk-article { max-width: 100%; }
 }
@@ -1305,13 +1093,12 @@ a:hover { color: var(--blood-l); text-decoration: underline; text-decoration-thi
   color: var(--text-dd);
   margin-left: .55em;
 }
-.wk-nav-heading, .wk-toc-header b {
+.wk-toc-header b {
   font-family: "Cinzel", Georgia, serif;
   letter-spacing: .14em;
   text-transform: uppercase;
   color: var(--lamp);
 }
-.wk-nav-link.is-active { border-left-color: var(--blood-l) !important; color: var(--heading); }
 
 /* Headings: engraved serif with a thin gilt rule */
 h1, h2, h3, h4 { font-family: "Cormorant Garamond", Georgia, serif; color: var(--heading); font-weight: 600; }
@@ -1501,40 +1288,6 @@ figcaption { font-family: "Cormorant Garamond", Georgia, serif; font-style: ital
 
 .wk-visually-hidden { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
-/* Sidebar: a tidy index, readable at a glance */
-.wk-nav { width: 232px; padding: 0 0 18px; }
-.wk-nav-heading {
-  font-family: "Cinzel", Georgia, serif;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: .18em;
-  color: var(--lamp);
-  padding: 18px 18px 6px;
-  margin: 0;
-  border-top: none;
-}
-.wk-nav-link {
-  font-family: "Literata", Georgia, serif;
-  font-size: 14px;
-  color: var(--text-d);
-  padding: 4px 18px 4px 20px;
-  border-left: 2px solid transparent;
-  line-height: 1.45;
-}
-.wk-nav-link:visited { color: var(--text-d); }
-.wk-nav-link:hover { color: var(--heading); background: var(--bg-h); text-decoration: none; border-left-color: var(--border-l); }
-.wk-nav-link.is-active, .wk-nav-link.wk-nav-sub.is-active {
-  color: var(--heading);
-  font-weight: 600;
-  border-left: 2px solid var(--blood-l) !important;
-  padding-left: 20px;
-  background: color-mix(in srgb, var(--blood) 14%, transparent);
-}
-.wk-portal-icon + .wk-nav-link { margin-top: 12px; }
-.wk-stats { margin: 18px 12px 0; padding: 4px 6px 10px; border: 1px solid var(--border); border-radius: 3px; background: var(--bg); }
-.wk-stats .wk-nav-heading { padding: 10px 8px 6px; }
-.wk-stat-row, .wk-stat-sublabel, .wk-stat-pct, .wk-stat-link { font-family: "Literata", Georgia, serif; padding-left: 8px; padding-right: 8px; }
-
 /* Footer lives in the main column so the sidebar never runs off the page */
 .wk-main .wk-footer { max-width: none; margin: 3.5em 0 0; }
 
@@ -1579,31 +1332,176 @@ figcaption { font-family: "Cormorant Garamond", Georgia, serif; font-style: ital
 .wk-main > .wk-article, .wk-main > .wk-footer { width: 100%; }
 .wk-main > .wk-footer { max-width: 960px; }
 
-/* Sidebar is set, not scrolled: compact enough to fit; on short windows the stats shrink, then hide */
-.wk-nav { overflow: hidden; padding-bottom: 8px; }
-.wk-nav-heading { padding: 12px 18px 3px; }
-.wk-nav-link { padding-top: 2.5px; padding-bottom: 2.5px; font-size: 13.5px; line-height: 1.4; }
-.wk-portal-icon + .wk-nav-link { margin-top: 6px; }
-.wk-stats { margin-top: 12px; padding-bottom: 6px; }
-.wk-stats .wk-nav-heading { padding: 8px 8px 4px; }
-/* Fitting levels, set by the script in main.html until the sidebar fits the window: 1 hides the
-   stats' fine print, 2 hides the stats, 3 shortens the picture. The menu's own spacing is never
-   squeezed; a window too short for all of that scrolls the menu instead. */
-.wk-nav.wk-fit-1 .wk-stats .wk-stat-sublabel, .wk-nav.wk-fit-1 .wk-stats .wk-stat-track,
-.wk-nav.wk-fit-1 .wk-stats .wk-stat-pct { display: none; }
-.wk-nav.wk-fit-2 .wk-stats { display: none; }
-.wk-nav.wk-fit-3 .wk-portal-icon img { max-height: 90px; object-fit: cover; object-position: 50% 30%; }
-.wk-nav.wk-fit-scroll { overflow-y: auto; }
 
-/* Submenu: indented under its heading along a thin guide line, with room between entries; the
-   current page is marked on the line. */
-.wk-nav-section-links { margin: 3px 0 10px 21px; padding: 0; }
-.wk-nav-section-links > .wk-nav-link {
-  padding: 5px 14px;
-  border-left: 2px solid var(--border);
-  font-size: 13.5px;
-  line-height: 1.4;
+/* ════════════════════════════════════════════════════════════
+   Navigation: section tabs under the header, and a sidebar that lists only the current
+   section's pages (overrides/main.html). On small screens the tabs give way to a drawer that
+   lists every section.
+   ════════════════════════════════════════════════════════════ */
+:root { --wk-header-h: 44px; --wk-tabs-h: 42px; }
+
+.wk-tabs {
+  position: sticky;
+  top: var(--wk-header-h);
+  z-index: 190;
+  display: flex;
+  gap: 2px;
+  height: var(--wk-tabs-h);
+  padding: 0 18px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  background: var(--bg-s);
+  border-bottom: 1px solid var(--border);
 }
-.wk-nav-section-links > .wk-nav-link:hover { border-left-color: var(--lamp); }
-.wk-nav-section-links > .wk-nav-link.is-active { padding-left: 14px; }
-@media (max-width: 720px) { .wk-nav { overflow-y: auto; } .wk-nav .wk-stats { display: block; } }
+.wk-tabs::-webkit-scrollbar { display: none; }
+.wk-tab {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  padding: 0 14px;
+  font-family: "Literata", Georgia, serif;
+  font-size: 14.5px;
+  color: var(--text-d);
+  border-bottom: 2px solid transparent;
+  white-space: nowrap;
+}
+.wk-tab:hover { color: var(--heading); text-decoration: none; border-bottom-color: var(--border-l); }
+.wk-tab.is-active { color: var(--heading); font-weight: 600; border-bottom-color: var(--blood-l); }
+.wk-tab:focus-visible { outline: 2px solid var(--logo-gold); outline-offset: -4px; }
+
+.wk-layout { min-height: calc(100vh - var(--wk-header-h) - var(--wk-tabs-h)); }
+
+.wk-nav {
+  width: 264px;
+  flex-shrink: 0;
+  position: sticky;
+  top: calc(var(--wk-header-h) + var(--wk-tabs-h));
+  height: calc(100vh - var(--wk-header-h) - var(--wk-tabs-h));
+  overflow-y: auto;
+  padding: 20px 14px 28px;
+  background: var(--bg-s);
+  border-right: 1px solid var(--border);
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-l) transparent;
+}
+
+/* Menu artwork (MEDIA_POLICY.md): a small picture above the Home link on every page. */
+.wk-portal-icon { margin: 0 0 20px; }
+.wk-portal-icon > a { display: block; line-height: 0; }
+.wk-portal-icon img {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  object-position: 50% 30%;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+.wk-portal-icon a:hover img { opacity: .85; }
+.wk-portal-icon a:focus-visible { outline: 2px solid var(--logo-gold); outline-offset: 3px; }
+
+.wk-nav-section + .wk-nav-section { margin-top: 24px; }
+.wk-nav-heading {
+  margin: 0 0 8px;
+  padding: 0 10px;
+  font-family: "Cinzel", Georgia, serif;
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--lamp);
+}
+.wk-nav-heading a { color: inherit; }
+.wk-nav-list { list-style: none; margin: 0; padding: 0; }
+.wk-nav-list > li + li { margin-top: 1px; }
+
+.wk-nav-link,
+a.wk-nav-subheading {
+  display: block;
+  padding: 7px 10px;
+  border-radius: 6px;
+  font-family: "Literata", Georgia, serif;
+  font-size: 14.5px;
+  line-height: 1.35;
+  color: var(--text-d);
+}
+.wk-nav-link:visited { color: var(--text-d); }
+.wk-nav-link:hover,
+a.wk-nav-subheading:hover { color: var(--heading); background: var(--bg-h); text-decoration: none; }
+.wk-nav-link.is-active,
+a.wk-nav-subheading.is-active {
+  color: var(--heading);
+  font-weight: 600;
+  background: color-mix(in srgb, var(--blood) 18%, transparent);
+  box-shadow: inset 3px 0 0 var(--blood-l);
+}
+.wk-nav-link:focus-visible,
+.wk-nav-subheading:focus-visible,
+.wk-nav-heading a:focus-visible { outline: 2px solid var(--logo-gold); outline-offset: 1px; }
+
+/* A group inside a section (the encyclopedia's three parts): a heading, then its pages
+   indented along a guide line. */
+.wk-nav-group { margin-top: 14px; }
+.wk-nav-list > .wk-nav-group:first-child { margin-top: 0; }
+.wk-nav-subheading { margin: 0; padding: 7px 10px; font-weight: 600; color: var(--heading); }
+p.wk-nav-subheading { font-family: "Literata", Georgia, serif; font-size: 14.5px; }
+a.wk-nav-subheading { font-weight: 600; color: var(--heading); }
+.wk-nav-group .wk-nav-list { margin: 2px 0 0 12px; padding-left: 8px; border-left: 1px solid var(--border); }
+.wk-nav-group .wk-nav-link { font-size: 14px; padding-top: 6px; padding-bottom: 6px; }
+
+/* Progress card: generated numbers only (hooks/progress_extra.py). */
+.wk-progress-card {
+  display: block;
+  margin-top: 28px;
+  padding: 14px 14px 12px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+}
+.wk-progress-card:hover { border-color: var(--lamp); color: var(--text); text-decoration: none; }
+.wk-progress-card:focus-visible { outline: 2px solid var(--logo-gold); outline-offset: 2px; }
+.wk-progress-card > span { display: block; }
+.wk-progress-label {
+  font-family: "Cinzel", Georgia, serif;
+  font-size: 11.5px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--lamp);
+}
+.wk-progress-value {
+  margin-top: 4px;
+  font-family: "Literata", Georgia, serif;
+  font-size: 22px;
+  color: var(--heading);
+  font-variant-numeric: tabular-nums;
+}
+.wk-progress-value small { font-size: 13px; color: var(--text-dd); }
+.wk-stat-track { height: 4px; margin: 10px 0 8px; background: var(--bg-h); border-radius: 2px; overflow: hidden; }
+.wk-stat-fill { display: block; height: 100%; min-width: 2px; border-radius: 2px; }
+.wk-progress-foot { font-size: 12.5px; line-height: 1.4; color: var(--text-dd); }
+.wk-progress-more { margin-top: 8px; font-size: 13px; color: var(--link); }
+
+/* Wide screens: only the current section (every section when the page belongs to none). */
+@media (min-width: 901px) {
+  .wk-nav.has-current .wk-nav-section:not(.is-current) { display: none; }
+}
+
+/* Small screens: no tabs; the menu button opens a drawer with every section. */
+@media (max-width: 900px) {
+  .wk-tabs { display: none; }
+  .wk-nav-toggle { display: inline-flex; align-items: center; }
+  .wk-layout { min-height: calc(100vh - var(--wk-header-h)); }
+  .wk-nav {
+    position: fixed;
+    top: var(--wk-header-h);
+    left: 0;
+    z-index: 250;
+    width: min(320px, 86vw);
+    height: calc(100vh - var(--wk-header-h));
+    transform: translateX(-100%);
+    transition: transform .2s ease;
+    box-shadow: 2px 0 16px rgba(0,0,0,.35);
+  }
+  .wk-nav.is-open { transform: translateX(0); }
+  .wk-nav-backdrop:not([hidden]) { display: block; }
+}

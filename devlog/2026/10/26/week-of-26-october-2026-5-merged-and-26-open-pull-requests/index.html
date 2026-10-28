@@ -1,0 +1,949 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  
+  <meta name="description" content="Notes of Paleblood, a decompilation of Bloodborne (PS4, CUSA03173 v1.09) with its own runtime, one verified function at a time, and an open place to learn how a console game works and how it is reverse engineered">
+  <link rel="canonical" href="https://yharnam-hunters.github.io/byrgenwerth-site/devlog/2026/10/26/week-of-26-october-2026-5-merged-and-26-open-pull-requests/">
+  
+  
+  <title>Week of 26 October 2026: 5 merged and 26 open pull requests — Byrgenwerth</title>
+  
+  
+  <link rel="stylesheet" href="../../../../../stylesheets/wiki.css?v=680e958d94"><link rel="stylesheet" href="../../../../../stylesheets/hunters.css?v=e4f3c59dfb">
+  
+  
+</head>
+<body>
+
+<!-- ── Header ──────────────────────────────────────────────── -->
+<header class="wk-header">
+  <button class="wk-nav-toggle" id="wk-nav-toggle" aria-label="Open navigation" aria-expanded="false" aria-controls="wk-nav">☰</button>
+  <a class="wk-wordmark" href="/byrgenwerth-site/">Byrgenwerth<small>notes of Paleblood, rebuilding Bloodborne one verified function at a time</small></a>
+
+  <div class="wk-header-right">
+    
+    <div class="wk-searchbox">
+      <input class="wk-search-input" id="wk-q" type="search"
+             placeholder="Search the archives…  [/]" autocomplete="off" aria-label="Search">
+      <div class="wk-search-results" id="wk-results" hidden role="listbox"></div>
+    </div>
+    <button class="wk-toggle" id="wk-toggle" title="Toggle theme" aria-label="Toggle dark/light">☀</button>
+  </div>
+</header>
+
+
+
+<!-- ── Section tabs (wide screens; the drawer lists the same sections on small ones) ── -->
+<nav class="wk-tabs" aria-label="Sections">
+  
+  <a class="wk-tab is-active" href="../../../../.." aria-current="true">The Hunt</a>
+  
+  <a class="wk-tab" href="../../../../../great-ones/">Encyclopedia</a>
+  
+  <a class="wk-tab" href="../../../../../systems/">Systems</a>
+  
+  <a class="wk-tab" href="../../../../../ARCHITECTURE/">How It Works</a>
+  
+  <a class="wk-tab" href="../../../../../CONTRIBUTING/">For Hunters</a>
+  
+</nav>
+
+<!-- ── Layout ──────────────────────────────────────────────── -->
+<div class="wk-layout">
+
+  <div class="wk-nav-backdrop" id="wk-nav-backdrop" hidden></div>
+
+  <!-- Left sidebar -->
+  <nav class="wk-nav has-current" id="wk-nav" aria-label="Site navigation">
+    <!-- Menu artwork: credited on the Credits page; provenance and rights notes in the private media review -->
+    <figure class="wk-portal-icon">
+      <a href="/byrgenwerth-site/" aria-label="Byrgenwerth home">
+        <img src="../../../../../assets/media/bloodborne-menu-art.png" width="256" height="256" alt="A lone Bloodborne hunter stands in a rain-darkened Yharnam street beneath the game's gothic architecture.">
+      </a>
+    </figure>
+
+    
+    <section class="wk-nav-section is-current">
+      
+      
+      
+      
+      
+      
+      <p class="wk-nav-heading">The Hunt</p>
+      
+      <ul class="wk-nav-list">
+        
+        
+        <li><a class="wk-nav-link" href="../../../../..">Home</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link is-active" href="../../../../" aria-current="page">Devlog</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../../../../progress/">Progress</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../../../../hunters/">The Hunters</a></li>
+        
+        
+      </ul>
+    
+      
+    </section>
+    
+    <section class="wk-nav-section">
+      
+      
+      
+      
+      
+      
+      <p class="wk-nav-heading">Encyclopedia</p>
+      
+      <ul class="wk-nav-list">
+        
+        
+        <li class="wk-nav-group">
+      
+      
+      
+        
+        
+      
+      
+      <a class="wk-nav-subheading" href="../../../../../great-ones/">The Great Ones</a>
+      
+      <ul class="wk-nav-list">
+        
+        
+        <li><a class="wk-nav-link" href="../../../../../great-ones/boss-directory/">Boss Directory</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../../../../great-ones/ai-and-phases/">Boss AI & Phases</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../../../../great-ones/mechanics/">Boss Mechanics</a></li>
+        
+        
+      </ul>
+    </li>
+        
+        
+        
+        <li class="wk-nav-group">
+      
+      
+      
+        
+        
+      
+      
+      <a class="wk-nav-subheading" href="../../../../../beasts-of-yharnam/">Beasts of Yharnam</a>
+      
+      <ul class="wk-nav-list">
+        
+        
+        <li><a class="wk-nav-link" href="../../../../../beasts-of-yharnam/enemy-directory/">Enemy Directory</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../../../../beasts-of-yharnam/ai-and-behavior/">Enemy AI & Behavior</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../../../../beasts-of-yharnam/npcs-and-hunters/">NPCs & Hunters</a></li>
+        
+        
+      </ul>
+    </li>
+        
+        
+        
+        <li class="wk-nav-group">
+      
+      
+      
+        
+        
+      
+      
+      <a class="wk-nav-subheading" href="../../../../../workshop/">The Hunter's Workshop</a>
+      
+      <ul class="wk-nav-list">
+        
+        
+        <li><a class="wk-nav-link" href="../../../../../workshop/combat-damage/">Combat & Damage</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../../../../workshop/weapons-transformations/">Weapons & Transformations</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../../../../workshop/movement-stamina/">Movement & Stamina</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../../../../workshop/hitboxes-collision/">Hitboxes & Collision</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../../../../workshop/stats-progression/">Stats & Progression</a></li>
+        
+        
+      </ul>
+    </li>
+        
+        
+      </ul>
+    
+      
+    </section>
+    
+    <section class="wk-nav-section">
+      
+      
+      
+      
+      
+      
+      <p class="wk-nav-heading">Systems</p>
+      
+      <ul class="wk-nav-list">
+        
+        
+        <li><a class="wk-nav-link" href="../../../../../systems/">Overview</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../../../../systems/frame_timing/">Frame timing</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../../../../systems/kernel/">Kernel</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../../../../systems/event/">Event</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../../../../systems/camera/">Camera</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../../../../systems/input/">Input</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../../../../systems/character/">Character</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../../../../systems/ai/">AI</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../../../../systems/physics/">Physics</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../../../../systems/render/">Render</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../../../../systems/loading/">Loading</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../../../../systems/audio/">Audio</a></li>
+        
+        
+      </ul>
+    
+      
+    </section>
+    
+    <section class="wk-nav-section">
+      
+      
+      
+      
+      
+      
+      <p class="wk-nav-heading">How It Works</p>
+      
+      <ul class="wk-nav-list">
+        
+        
+        <li><a class="wk-nav-link" href="../../../../../ARCHITECTURE/">Architecture</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../../../../runtime/">Runtime</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../../../../runtime-syscalls/">Runtime system calls</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../../../../how-the-frame-limiter-works/">The Frame Limiter</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../../../../ADDRESS_MAP/">Address Map</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../../../../target/">Target</a></li>
+        
+        
+      </ul>
+    
+      
+    </section>
+    
+    <section class="wk-nav-section">
+      
+      
+      
+      
+      
+      
+      <p class="wk-nav-heading">For Hunters</p>
+      
+      <ul class="wk-nav-list">
+        
+        
+        <li><a class="wk-nav-link" href="../../../../../CONTRIBUTING/">Contributing</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../../../../QUIRKS/">Ghidra & PS4 Quirks</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../../../../glossary/">Glossary</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../../../../CI_SETUP/">CI Setup</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../../../../credits/">Credits</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../../../../MEDIA_POLICY/">Evidence & Media Review</a></li>
+        
+        
+      </ul>
+    
+      
+    </section>
+    
+
+    <!-- Progress card: every value from docs/data/progress.json (hooks/progress_extra.py) -->
+    
+    
+    <a class="wk-progress-card" href="../../../../../progress/">
+      <span class="wk-progress-label">Verified functions</span>
+      <span class="wk-progress-value">21 <small>of 157,757</small></span>
+      <span class="wk-stat-track" role="img" aria-label="0.033 percent of target code bytes verified">
+        <span class="wk-stat-fill" style="width:0.033%"></span>
+      </span>
+      <span class="wk-progress-foot">0.033% of code bytes verified · 31 replaced</span>
+      <span class="wk-progress-more">Full progress →</span>
+    </a>
+    
+  </nav>
+
+  <!-- Main content -->
+  <main class="wk-main">
+    <div class="wk-article">
+
+      
+      
+      <div class="wk-toc" id="wk-toc">
+        <div class="wk-toc-header">
+          <b>Contents</b>
+          <button class="wk-toc-toggle"
+            onclick="var l=document.getElementById('wk-toc-list');l.hidden=!l.hidden;this.textContent=l.hidden?'[show]':'[hide]'">[hide]</button>
+        </div>
+        <ol class="wk-toc-list" id="wk-toc-list">
+          
+          <li>
+            <a href="#week-of-26-october-2026-5-merged-and-26-open-pull-requests" class="wk-toc-link">Week of 26 October 2026: 5 merged and 26 open pull requests</a>
+            
+            <ol><li><a href="#runtime-and-boot-progress" class="wk-toc-link">Runtime and boot progress</a></li><li><a href="#decompilation-and-verified-functions" class="wk-toc-link">Decompilation and verified functions</a></li><li><a href="#tooling-and-automation" class="wk-toc-link">Tooling and automation</a></li><li><a href="#documentation-and-website-changes" class="wk-toc-link">Documentation and website changes</a></li></ol>
+            
+          </li>
+          
+        </ol>
+      </div>
+      
+      
+
+      <div class="wk-article-body">
+      
+<article>
+  
+  <p class="wk-post-meta">
+    <time datetime="2026-10-26 00:00:00+00:00">2026-10-26</time>
+    
+  </p>
+  
+  
+  <h1 id="week-of-26-october-2026-5-merged-and-26-open-pull-requests">Week of 26 October 2026: 5 merged and 26 open pull requests</h1>
+<p>Pull requests by @EzequielRindello, @evill33t. No new function was <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> this week. The maintainer reviews this draft before it is published.</p>
+<!-- more -->
+
+<h2 id="runtime-and-boot-progress">Runtime and boot progress</h2>
+<!-- milestone:pr-94 order=2026-10-26T03:18:01.000000Z -->
+<p><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/94">#94</a> <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>: implement sceKernelUsleep and usleep</strong>, by <a href="https://github.com/EzequielRindello">@EzequielRindello</a>. Merged 2026-10-26.
+- System calls: sceKernelUsleep; usleep.
+- Tests: 2 synthetic <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> test(s); the effect on the real boot is measured after merge, so this is not a boot result.
+- Left unresolved: usleep with 1000000 or more stops by name (sleep vs EINVAL not established for <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr>); sceKernelUsleep SCE error values are not established; host failure stops by name.</p>
+<!-- /milestone -->
+
+<!-- milestone:pr-95 order=2026-10-26T03:18:16.000000Z -->
+<p><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/95">#95</a> <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>: implement pthread_self, pthread_attr_init and pthread_attr_destroy (libScePosix)</strong>, by <a href="https://github.com/EzequielRindello">@EzequielRindello</a>. Merged 2026-10-26.
+- System calls: pthread_self; pthread_attr_init; pthread_attr_destroy.
+- Tests: 2 synthetic <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> test(s); the effect on the real boot is measured after merge, so this is not a boot result.
+- Left unresolved: pthread_attr_init with a missing variable answers EINVAL like the existing SCE name; question raised whether it should stop by name instead.</p>
+<!-- /milestone -->
+
+<!-- milestone:pr-97 order=2026-10-28T03:07:50.000000Z -->
+<p><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/97">#97</a> <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>: implement __stack_chk_fail</strong>, by <a href="https://github.com/EzequielRindello">@EzequielRindello</a>. Merged 2026-10-28.
+- System calls: __stack_chk_fail.
+- Tests: 2 synthetic <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> test(s); the effect on the real boot is measured after merge, so this is not a boot result.
+- Left unresolved: the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr>'s own message or crash report is not modelled; __stack_chk_guard is a separate data import; its <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> value is not established.</p>
+<!-- /milestone -->
+<h2 id="decompilation-and-verified-functions">Decompilation and <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> functions</h2>
+<!-- milestone:pr-103 order=2026-10-26T17:50:36.000000Z -->
+<p><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/103">#103</a> frame_timing: replace the monotonic microsecond clock</strong>, by <a href="https://github.com/evill33t">@evill33t</a>. Open pull request: proposed, not merged.
+- Named: <code>frame_timing_get_monotonic_us</code> (<code>0x0111a760</code>).
+- Replaced: <code>frame_timing_get_monotonic_us</code> (<code>0x0111a760</code>).
+- Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>: <code>frame_timing_get_monotonic_us</code> (<code>0x0111a760</code>).
+- Differential verification: 1 function(s), 20 of 20 cases passed.
+- Capture sets used: 1.
+- Findings: Synthetic edge comparisons and deliberately wrong versions are recorded per selected function; no genuine recordings are claimed.</p>
+<!-- /milestone -->
+
+<!-- milestone:pr-104 order=2026-10-26T17:50:42.000000Z -->
+<p><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/104">#104</a> frame_timing: replace the millisecond sleep wrapper</strong>, by <a href="https://github.com/evill33t">@evill33t</a>. Open pull request: proposed, not merged.
+- Named: <code>frame_timing_sleep_ms</code> (<code>0x0111a880</code>).
+- Replaced: <code>frame_timing_sleep_ms</code> (<code>0x0111a880</code>).
+- Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>: <code>frame_timing_sleep_ms</code> (<code>0x0111a880</code>).
+- Differential verification: 1 function(s), 10 of 10 cases passed.
+- Capture sets used: 1.
+- Findings: Synthetic edge comparisons and deliberately wrong versions are recorded per selected function; no genuine recordings are claimed.</p>
+<!-- /milestone -->
+
+<!-- milestone:pr-105 order=2026-10-26T17:50:47.000000Z -->
+<p><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/105">#105</a> kernel: replace the current-thread handle wrapper</strong>, by <a href="https://github.com/evill33t">@evill33t</a>. Open pull request: proposed, not merged.
+- Named: <code>kernel_thread_self</code> (<code>0x0111a8a0</code>).
+- Replaced: <code>kernel_thread_self</code> (<code>0x0111a8a0</code>).
+- Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>: <code>kernel_thread_self</code> (<code>0x0111a8a0</code>).
+- Differential verification: 1 function(s), 7 of 7 cases passed.
+- Capture sets used: 1.
+- Findings: Synthetic edge comparisons and deliberately wrong versions are recorded per selected function; no genuine recordings are claimed.</p>
+<!-- /milestone -->
+
+<!-- milestone:pr-106 order=2026-10-26T17:50:52.000000Z -->
+<p><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/106">#106</a> audio: replace the FMOD thread affinity lookup</strong>, by <a href="https://github.com/evill33t">@evill33t</a>. Open pull request: proposed, not merged.
+- Named: <code>audio_fmod_thread_affinity_lookup</code> (<code>0x0111a8c0</code>).
+- Replaced: <code>audio_fmod_thread_affinity_lookup</code> (<code>0x0111a8c0</code>).
+- Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>: <code>audio_fmod_thread_affinity_lookup</code> (<code>0x0111a8c0</code>).
+- Differential verification: 1 function(s), 21 of 21 cases passed.
+- Capture sets used: 1.
+- Findings: Synthetic edge comparisons and deliberately wrong versions are recorded per selected function; no genuine recordings are claimed.</p>
+<!-- /milestone -->
+
+<!-- milestone:pr-107 order=2026-10-26T17:50:56.000000Z -->
+<p><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/107">#107</a> engine: replace signed byte string comparisons</strong>, by <a href="https://github.com/evill33t">@evill33t</a>. Open pull request: proposed, not merged.
+- Named: <code>engine_compare_signed_strings</code> (<code>0x011c4970</code>); <code>engine_compare_signed_prefix</code> (<code>0x011c4990</code>).
+- Replaced: <code>engine_compare_signed_strings</code> (<code>0x011c4970</code>); <code>engine_compare_signed_prefix</code> (<code>0x011c4990</code>).
+- Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>: <code>engine_compare_signed_strings</code> (<code>0x011c4970</code>); <code>engine_compare_signed_prefix</code> (<code>0x011c4990</code>).
+- Differential verification: 2 function(s), 42 of 42 cases passed.
+- Capture sets used: 2.
+- Findings: Synthetic edge comparisons and deliberately wrong versions are recorded per selected function; no genuine recordings are claimed.</p>
+<!-- /milestone -->
+
+<!-- milestone:pr-108 order=2026-10-26T17:51:01.000000Z -->
+<p><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/108">#108</a> kernel: replace the recursive mutex wrapper lifecycle</strong>, by <a href="https://github.com/evill33t">@evill33t</a>. Open pull request: proposed, not merged.
+- Named: <code>kernel_mutex_create</code> (<code>0x0111abb0</code>); <code>kernel_mutex_destroy</code> (<code>0x0111ac80</code>); <code>kernel_mutex_lock</code> (<code>0x0111acd0</code>); <code>kernel_mutex_unlock</code> (<code>0x0111acf0</code>).
+- Replaced: <code>kernel_mutex_create</code> (<code>0x0111abb0</code>); <code>kernel_mutex_destroy</code> (<code>0x0111ac80</code>); <code>kernel_mutex_lock</code> (<code>0x0111acd0</code>); <code>kernel_mutex_unlock</code> (<code>0x0111acf0</code>).
+- Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>: <code>kernel_mutex_create</code> (<code>0x0111abb0</code>); <code>kernel_mutex_destroy</code> (<code>0x0111ac80</code>); <code>kernel_mutex_lock</code> (<code>0x0111acd0</code>); <code>kernel_mutex_unlock</code> (<code>0x0111acf0</code>).
+- Differential verification: 4 function(s), 83 of 83 cases passed.
+- Capture sets used: 4.
+- Findings: Synthetic edge comparisons and deliberately wrong versions are recorded per selected function; no genuine recordings are claimed.</p>
+<!-- /milestone -->
+
+<!-- milestone:pr-109 order=2026-10-26T17:51:05.000000Z -->
+<p><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/109">#109</a> camera: replace follow-camera pitch and yaw getters</strong>, by <a href="https://github.com/evill33t">@evill33t</a>. Open pull request: proposed, not merged.
+- Named: <code>camera_follow_pitch</code> (<code>0x0183fad0</code>); <code>camera_follow_yaw</code> (<code>0x0183fb20</code>).
+- Replaced: <code>camera_follow_pitch</code> (<code>0x0183fad0</code>); <code>camera_follow_yaw</code> (<code>0x0183fb20</code>).
+- Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>: <code>camera_follow_pitch</code> (<code>0x0183fad0</code>); <code>camera_follow_yaw</code> (<code>0x0183fb20</code>).
+- Differential verification: 2 function(s), 62 of 62 cases passed.
+- Capture sets used: 2.
+- Findings: Synthetic edge comparisons and deliberately wrong versions are recorded per selected function; no genuine recordings are claimed.</p>
+<!-- /milestone -->
+
+<!-- milestone:pr-110 order=2026-10-26T17:51:10.000000Z -->
+<p><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/110">#110</a> engine: replace handle-table entry resolution</strong>, by <a href="https://github.com/evill33t">@evill33t</a>. Open pull request: proposed, not merged.
+- Named: <code>engine_entry_manager_resolve</code> (<code>0x01314320</code>).
+- Replaced: <code>engine_entry_manager_resolve</code> (<code>0x01314320</code>).
+- Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>: <code>engine_entry_manager_resolve</code> (<code>0x01314320</code>).
+- Differential verification: 1 function(s), 25 of 25 cases passed.
+- Capture sets used: 1.
+- Findings: Synthetic edge comparisons and deliberately wrong versions are recorded per selected function; no genuine recordings are claimed.</p>
+<!-- /milestone -->
+
+<!-- milestone:pr-111 order=2026-10-26T17:51:14.000000Z -->
+<p><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/111">#111</a> kernel: replace the audio semaphore wrapper lifecycle</strong>, by <a href="https://github.com/evill33t">@evill33t</a>. Open pull request: proposed, not merged.
+- Named: <code>kernel_semaphore_create</code> (<code>0x0111ad10</code>); <code>kernel_semaphore_destroy</code> (<code>0x0111ad80</code>); <code>kernel_semaphore_wait</code> (<code>0x0111ada0</code>); <code>kernel_semaphore_signal</code> (<code>0x0111adc0</code>).
+- Replaced: <code>kernel_semaphore_create</code> (<code>0x0111ad10</code>); <code>kernel_semaphore_destroy</code> (<code>0x0111ad80</code>); <code>kernel_semaphore_wait</code> (<code>0x0111ada0</code>); <code>kernel_semaphore_signal</code> (<code>0x0111adc0</code>).
+- Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>: <code>kernel_semaphore_create</code> (<code>0x0111ad10</code>); <code>kernel_semaphore_destroy</code> (<code>0x0111ad80</code>); <code>kernel_semaphore_wait</code> (<code>0x0111ada0</code>); <code>kernel_semaphore_signal</code> (<code>0x0111adc0</code>).
+- Differential verification: 4 function(s), 88 of 88 cases passed.
+- Capture sets used: 4.
+- Findings: Synthetic edge comparisons and deliberately wrong versions are recorded per selected function; no genuine recordings are claimed.</p>
+<!-- /milestone -->
+
+<!-- milestone:pr-112 order=2026-10-26T17:51:19.000000Z -->
+<p><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/112">#112</a> camera: replace the follow-camera update function</strong>, by <a href="https://github.com/evill33t">@evill33t</a>. Open pull request: proposed, not merged.
+- Named: <code>camera_update_follow</code> (<code>0x0183ac60</code>).
+- Replaced: <code>camera_update_follow</code> (<code>0x0183ac60</code>).
+- Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>: <code>camera_update_follow</code> (<code>0x0183ac60</code>).
+- Differential verification: 1 function(s), 64 of 64 cases passed.
+- Capture sets used: 1.
+- Findings: Synthetic edge comparisons and deliberately wrong versions are recorded per selected function; no genuine recordings are claimed.</p>
+<!-- /milestone -->
+
+<!-- milestone:pr-113 order=2026-10-26T17:51:24.000000Z -->
+<p><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/113">#113</a> engine: replace the stderr string writer</strong>, by <a href="https://github.com/evill33t">@evill33t</a>. Open pull request: proposed, not merged.
+- Named: <code>engine_write_stderr</code> (<code>0x0111a740</code>).
+- Replaced: <code>engine_write_stderr</code> (<code>0x0111a740</code>).
+- Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>: <code>engine_write_stderr</code> (<code>0x0111a740</code>).
+- Differential verification: 1 function(s), 28 of 28 cases passed.
+- Capture sets used: 1.
+- Findings: Synthetic edge comparisons and deliberately wrong versions are recorded per selected function; no genuine recordings are claimed.</p>
+<!-- /milestone -->
+
+<!-- milestone:pr-114 order=2026-10-26T17:51:29.000000Z -->
+<p><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/114">#114</a> kernel: replace nullable word output helpers</strong>, by <a href="https://github.com/evill33t">@evill33t</a>. Open pull request: proposed, not merged.
+- Named: <code>kernel_optional_word_one</code> (<code>0x0111b060</code>); <code>kernel_optional_words</code> (<code>0x0111b0b0</code>).
+- Replaced: <code>kernel_optional_word_one</code> (<code>0x0111b060</code>); <code>kernel_optional_words</code> (<code>0x0111b0b0</code>).
+- Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>: <code>kernel_optional_word_one</code> (<code>0x0111b060</code>); <code>kernel_optional_words</code> (<code>0x0111b0b0</code>).
+- Differential verification: 2 function(s), 61 of 61 cases passed.
+- Capture sets used: 2.
+- Findings: Synthetic edge comparisons and deliberately wrong versions are recorded per selected function; no genuine recordings are claimed.</p>
+<!-- /milestone -->
+
+<!-- milestone:pr-115 order=2026-10-26T17:51:33.000000Z -->
+<p><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/115">#115</a> engine: replace the ordered word product stores</strong>, by <a href="https://github.com/evill33t">@evill33t</a>. Open pull request: proposed, not merged.
+- Named: <code>engine_store_word_product</code> (<code>0x011c4510</code>).
+- Replaced: <code>engine_store_word_product</code> (<code>0x011c4510</code>).
+- Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>: <code>engine_store_word_product</code> (<code>0x011c4510</code>).
+- Differential verification: 1 function(s), 32 of 32 cases passed.
+- Capture sets used: 1.
+- Findings: Synthetic edge comparisons and deliberately wrong versions are recorded per selected function; no genuine recordings are claimed.</p>
+<!-- /milestone -->
+
+<!-- milestone:pr-116 order=2026-10-26T17:51:38.000000Z -->
+<p><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/116">#116</a> engine: replace forward byte copy helpers</strong>, by <a href="https://github.com/evill33t">@evill33t</a>. Open pull request: proposed, not merged.
+- Named: <code>engine_copy_bytes_until_zero</code> (<code>0x011c4810</code>); <code>engine_copy_bytes_counted</code> (<code>0x011c4840</code>).
+- Replaced: <code>engine_copy_bytes_until_zero</code> (<code>0x011c4810</code>); <code>engine_copy_bytes_counted</code> (<code>0x011c4840</code>).
+- Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>: <code>engine_copy_bytes_until_zero</code> (<code>0x011c4810</code>); <code>engine_copy_bytes_counted</code> (<code>0x011c4840</code>).
+- Differential verification: 2 function(s), 94 of 94 cases passed.
+- Capture sets used: 2.
+- Findings: Synthetic edge comparisons and deliberately wrong versions are recorded per selected function; no genuine recordings are claimed.</p>
+<!-- /milestone -->
+
+<!-- milestone:pr-117 order=2026-10-26T17:51:43.000000Z -->
+<p><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/117">#117</a> engine: replace the modulo-32 byte length scan</strong>, by <a href="https://github.com/evill33t">@evill33t</a>. Open pull request: proposed, not merged.
+- Named: <code>engine_byte_length_modulo32</code> (<code>0x011c47f0</code>).
+- Replaced: <code>engine_byte_length_modulo32</code> (<code>0x011c47f0</code>).
+- Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>: <code>engine_byte_length_modulo32</code> (<code>0x011c47f0</code>).
+- Differential verification: 1 function(s), 30 of 30 cases passed.
+- Capture sets used: 1.
+- Findings: Synthetic edge comparisons and deliberately wrong versions are recorded per selected function; no genuine recordings are claimed.</p>
+<!-- /milestone -->
+
+<!-- milestone:pr-118 order=2026-10-26T17:51:48.000000Z -->
+<p><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/118">#118</a> engine: replace forward byte append helpers</strong>, by <a href="https://github.com/evill33t">@evill33t</a>. Open pull request: proposed, not merged.
+- Named: <code>engine_append_bytes_until_zero</code> (<code>0x011c4870</code>); <code>engine_append_bytes_counted_terminated</code> (<code>0x011c48b0</code>).
+- Replaced: <code>engine_append_bytes_until_zero</code> (<code>0x011c4870</code>); <code>engine_append_bytes_counted_terminated</code> (<code>0x011c48b0</code>).
+- Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>: <code>engine_append_bytes_until_zero</code> (<code>0x011c4870</code>); <code>engine_append_bytes_counted_terminated</code> (<code>0x011c48b0</code>).
+- Differential verification: 2 function(s), 74 of 74 cases passed.
+- Capture sets used: 2.
+- Findings: Synthetic edge comparisons and deliberately wrong versions are recorded per selected function; no genuine recordings are claimed.</p>
+<!-- /milestone -->
+
+<!-- milestone:pr-119 order=2026-10-26T17:56:10.000000Z -->
+<p><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/119">#119</a> engine: replace in-place ASCII case conversion</strong>, by <a href="https://github.com/evill33t">@evill33t</a>. Open pull request: proposed, not merged.
+- Named: <code>engine_map_ascii_upper_inplace</code> (<code>0x011c4910</code>); <code>engine_map_ascii_lower_inplace</code> (<code>0x011c4940</code>).
+- Replaced: <code>engine_map_ascii_upper_inplace</code> (<code>0x011c4910</code>); <code>engine_map_ascii_lower_inplace</code> (<code>0x011c4940</code>).
+- Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>: <code>engine_map_ascii_upper_inplace</code> (<code>0x011c4910</code>); <code>engine_map_ascii_lower_inplace</code> (<code>0x011c4940</code>).
+- Differential verification: 2 function(s), 60 of 60 cases passed.
+- Capture sets used: 2.
+- Findings: Synthetic edge comparisons and deliberately wrong versions are recorded per selected function; no genuine recordings are claimed.</p>
+<!-- /milestone -->
+
+<!-- milestone:pr-120 order=2026-10-26T17:56:15.000000Z -->
+<p><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/120">#120</a> engine: replace signed ASCII-folded comparison</strong>, by <a href="https://github.com/evill33t">@evill33t</a>. Open pull request: proposed, not merged.
+- Named: <code>engine_compare_ascii_folded_signed_bytes</code> (<code>0x011c49c0</code>).
+- Replaced: <code>engine_compare_ascii_folded_signed_bytes</code> (<code>0x011c49c0</code>).
+- Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>: <code>engine_compare_ascii_folded_signed_bytes</code> (<code>0x011c49c0</code>).
+- Differential verification: 1 function(s), 49 of 49 cases passed.
+- Capture sets used: 1.
+- Findings: Synthetic edge comparisons and deliberately wrong versions are recorded per selected function; no genuine recordings are claimed.</p>
+<!-- /milestone -->
+
+<!-- milestone:pr-122 order=2026-10-26T17:57:49.000000Z -->
+<p><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/122">#122</a> kernel: replace the file wrapper cluster</strong>, by <a href="https://github.com/evill33t">@evill33t</a>. Open pull request: proposed, not merged.
+- Named: <code>kernel_file_open</code> (<code>0x0111a620</code>); <code>kernel_file_close</code> (<code>0x0111a6b0</code>); <code>kernel_file_read_count</code> (<code>0x0111a6e0</code>); <code>kernel_file_seek_absolute</code> (<code>0x0111a720</code>).
+- Replaced: <code>kernel_file_open</code> (<code>0x0111a620</code>); <code>kernel_file_close</code> (<code>0x0111a6b0</code>); <code>kernel_file_read_count</code> (<code>0x0111a6e0</code>); <code>kernel_file_seek_absolute</code> (<code>0x0111a720</code>).
+- Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>: <code>kernel_file_open</code> (<code>0x0111a620</code>); <code>kernel_file_close</code> (<code>0x0111a6b0</code>); <code>kernel_file_read_count</code> (<code>0x0111a6e0</code>); <code>kernel_file_seek_absolute</code> (<code>0x0111a720</code>).
+- Differential verification: 4 function(s), 117 of 117 cases passed.
+- Capture sets used: 4.
+- Findings: Synthetic edge comparisons and deliberately wrong versions are recorded per selected function; no genuine recordings are claimed.</p>
+<!-- /milestone -->
+
+<!-- milestone:pr-123 order=2026-10-26T17:59:24.000000Z -->
+<p><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/123">#123</a> engine: replace guarded wide-string initialization and destruction</strong>, by <a href="https://github.com/evill33t">@evill33t</a>. Open pull request: proposed, not merged.
+- Named: <code>engine_initialize_static_wide_string_0217ffb0</code> (<code>0x0217ffb0</code>); <code>engine_destroy_wide_string_02a44140</code> (<code>0x02a44140</code>).
+- Replaced: <code>engine_initialize_static_wide_string_0217ffb0</code> (<code>0x0217ffb0</code>); <code>engine_destroy_wide_string_02a44140</code> (<code>0x02a44140</code>).
+- Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>: <code>engine_initialize_static_wide_string_0217ffb0</code> (<code>0x0217ffb0</code>); <code>engine_destroy_wide_string_02a44140</code> (<code>0x02a44140</code>).
+- Differential verification: 2 function(s), 58 of 58 cases passed.
+- Capture sets used: 2.
+- Findings: Synthetic edge comparisons and deliberately wrong versions are recorded per selected function; no genuine recordings are claimed.</p>
+<!-- /milestone -->
+
+<!-- milestone:pr-124 order=2026-10-26T17:59:29.000000Z -->
+<p><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/124">#124</a> engine: replace cache storage allocation and release</strong>, by <a href="https://github.com/evill33t">@evill33t</a>. Open pull request: proposed, not merged.
+- Named: <code>engine_release_cache_storage</code> (<code>0x0132c590</code>); <code>engine_resize_cache_storage</code> (<code>0x0132c6c0</code>).
+- Replaced: <code>engine_release_cache_storage</code> (<code>0x0132c590</code>); <code>engine_resize_cache_storage</code> (<code>0x0132c6c0</code>).
+- Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>: <code>engine_release_cache_storage</code> (<code>0x0132c590</code>); <code>engine_resize_cache_storage</code> (<code>0x0132c6c0</code>).
+- Differential verification: 2 function(s), 65 of 65 cases passed.
+- Capture sets used: 2.
+- Findings: Synthetic edge comparisons and deliberately wrong versions are recorded per selected function; no genuine recordings are claimed.</p>
+<!-- /milestone -->
+
+<!-- milestone:pr-125 order=2026-10-26T18:03:29.000000Z -->
+<p><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/125">#125</a> engine: replace the low-byte ASCII mapper</strong>, by <a href="https://github.com/evill33t">@evill33t</a>. Open pull request: proposed, not merged.
+- Named: <code>engine_map_low_byte</code> (<code>0x011c48f0</code>).
+- Replaced: <code>engine_map_low_byte</code> (<code>0x011c48f0</code>).
+- Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>: <code>engine_map_low_byte</code> (<code>0x011c48f0</code>).
+- Differential verification: 1 function(s), 291 of 291 cases passed.
+- Capture sets used: 1.
+- Findings: Synthetic edge comparisons and deliberately wrong versions are recorded per selected function; no genuine recordings are claimed.</p>
+<!-- /milestone -->
+<h2 id="tooling-and-automation">Tooling and automation</h2>
+<!-- milestone:pr-100 order=2026-10-26T17:50:20.000000Z -->
+<p><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/100">#100</a> tools: bound overflow arguments in scripted callbacks</strong>, by <a href="https://github.com/evill33t">@evill33t</a>. Open pull request: proposed, not merged.
+- Findings: Observe explicitly selected SysV integer/pointer overflow arguments in import and internal callbacks. Validate selectors before execution, preserve the entry stack pointer, and turn callback access errors into failed results.</p>
+<!-- /milestone -->
+
+<!-- milestone:pr-101 order=2026-10-26T17:50:26.000000Z -->
+<p><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/101">#101</a> tools: validate raw SSE fixture input bytes</strong>, by <a href="https://github.com/evill33t">@evill33t</a>. Open pull request: proposed, not merged.
+- Findings: Treat XMM fixture inputs as bounded raw register bytes. Reject malformed or oversized values before execution and preserve upper-lane payloads.</p>
+<!-- /milestone -->
+
+<!-- milestone:pr-102 order=2026-10-28T03:16:58.000000Z -->
+<p><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/102">#102</a> tools: skip byte scans of unchanged <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr> snapshots</strong>, by <a href="https://github.com/evill33t">@evill33t</a>. Merged 2026-10-28.
+- Findings: Skip Python byte-by-byte scanning when the before/after writable snapshots are identical. Changed snapshots continue through the existing difference extraction.</p>
+<!-- /milestone -->
+
+<!-- milestone:pr-98 order=2026-10-28T03:19:16.000000Z -->
+<p><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/98">#98</a> tools: prepare extracted backups without copying assets</strong>, by <a href="https://github.com/evill33t">@evill33t</a>. Merged 2026-10-28.
+- Findings: Accept an already extracted backup, convert only its executable modules, and avoid duplicating game assets. Reject overlapping or unsafe output paths and propagate conversion/target failures.</p>
+<!-- /milestone -->
+
+<!-- milestone:pr-99 order=2026-10-28T03:19:42.000000Z -->
+<p><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/99">#99</a> tools: add resumable private REA function analysis</strong>, by <a href="https://github.com/evill33t">@evill33t</a>. Open pull request: proposed, not merged.
+- Findings: Keep REA images and decompiler output outside the public checkout. Resume only hash- and profile-matching analyses, recover complete retained evidence after transport limits, and preserve cleanup failures.</p>
+<!-- /milestone -->
+<h2 id="documentation-and-website-changes">Documentation and website changes</h2>
+<!-- milestone:pr-121 order=2026-10-26T17:56:20.000000Z -->
+<p><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/121">#121</a> docs: correct scalar square roots and ordered FPS patch analysis</strong>, by <a href="https://github.com/evill33t">@evill33t</a>. Open pull request: proposed, not merged.
+- Correct the scalar square-root operand roles and replay overlapping FPS patch writes in their declared order before drawing control-flow conclusions.
+- Pages: QUIRKS.md.</p>
+<!-- /milestone -->
+
+<!-- hunters:ack:start -->
+<section class="hunters-ack" aria-label="Hunters Involved">
+</section>
+<!-- hunters:ack:end -->
+  
+  <p class="wk-post-back"><a href="../../../../">← Back to devlog</a></p>
+</article>
+
+      </div>
+
+    </div>
+    <footer class="wk-footer">
+      <p class="wk-footer-motto">Fear the old blood</p>
+      <p>Made by people who love Bloodborne, so that it can be studied, preserved and played
+      natively, one verified function at a time.</p>
+      <p>A fan project. Not affiliated with or endorsed by Sony Interactive Entertainment or
+      FromSoftware. No game files are shared here: bring your own copy.</p>
+    </footer>
+  </main>
+
+</div>
+
+
+<!-- Back to top -->
+<button class="wk-top" id="wk-top" title="Back to top" aria-label="Scroll to top">↑</button>
+
+
+<script>
+(function () {
+'use strict';
+
+/* ── Theme ─────────────────────────────────────────────────── */
+var stored = localStorage.getItem('wk-theme') || 'dark';
+applyTheme(stored);
+document.getElementById('wk-toggle').addEventListener('click', function () {
+  applyTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+});
+function applyTheme(t) {
+  document.documentElement.setAttribute('data-theme', t);
+  localStorage.setItem('wk-theme', t);
+  var btn = document.getElementById('wk-toggle');
+  if (btn) btn.textContent = t === 'dark' ? '☀' : '🌙';
+}
+
+/* ── Address map: a block opens its slice in a pop-up ──────── */
+(function () {
+  var map = document.querySelector('.wk-bankmap');
+  if (!map) return;
+  var modal = document.createElement('div');
+  modal.className = 'wk-slice-modal';
+  modal.setAttribute('role', 'dialog');
+  modal.setAttribute('aria-modal', 'true');
+  document.body.appendChild(modal);
+  function close() { modal.classList.remove('is-open'); }
+  map.addEventListener('click', function (e) {
+    var cell = e.target.closest('a.wk-bank-cell');
+    if (!cell) return;
+    var panel = document.getElementById(cell.getAttribute('href').slice(1));
+    if (!panel) return;
+    e.preventDefault();
+    modal.innerHTML = '';
+    modal.appendChild(panel.cloneNode(true));
+    modal.firstChild.removeAttribute('id');
+    requestAnimationFrame(function () { modal.classList.add('is-open'); });
+  });
+  modal.addEventListener('click', function (e) {
+    if (e.target === modal || e.target.closest('.wk-slice-close')) { e.preventDefault(); close(); }
+  });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+})();
+
+/* ── Mobile nav ────────────────────────────────────────────── */
+var navToggle  = document.getElementById('wk-nav-toggle');
+var navEl      = document.getElementById('wk-nav');
+var navBackdrop = document.getElementById('wk-nav-backdrop');
+var mainEl     = document.querySelector('.wk-main');
+var headerRight = document.querySelector('.wk-header-right');
+var wordmark = document.querySelector('.wk-wordmark');
+/* Matches the drawer breakpoint in wiki.css. */
+var drawerQuery = window.matchMedia('(max-width: 900px)');
+
+function closeNav() {
+  navEl.classList.remove('is-open');
+  navBackdrop.hidden = true;
+  navToggle.setAttribute('aria-expanded', 'false');
+  navToggle.setAttribute('aria-label', 'Open navigation');
+  navToggle.textContent = '☰';
+  if (mainEl) mainEl.inert = false;
+  if (headerRight) headerRight.inert = false;
+  if (wordmark) wordmark.inert = false;
+  if (drawerQuery.matches) navEl.inert = true;
+}
+function openNav() {
+  navEl.inert = false;
+  if (mainEl) mainEl.inert = true;
+  if (headerRight) headerRight.inert = true;
+  if (wordmark) wordmark.inert = true;
+  navEl.classList.add('is-open');
+  navBackdrop.hidden = false;
+  navToggle.setAttribute('aria-expanded', 'true');
+  navToggle.setAttribute('aria-label', 'Close navigation');
+  navToggle.textContent = '×';
+}
+if (navToggle && navEl && navBackdrop) {
+  navEl.inert = drawerQuery.matches;
+  navToggle.addEventListener('click', function () {
+    if (navEl.classList.contains('is-open')) { closeNav(); } else { openNav(); }
+  });
+  navBackdrop.addEventListener('click', function () { closeNav(); navToggle.focus(); });
+  navEl.addEventListener('click', function (e) {
+    if (e.target.closest('a')) { closeNav(); }
+  });
+  document.addEventListener('keydown', function (e) {
+    if (!navEl.classList.contains('is-open') || !drawerQuery.matches) return;
+    if (e.key === 'Escape') { closeNav(); navToggle.focus(); return; }
+    if (e.key !== 'Tab') return;
+    var links = Array.prototype.slice.call(navEl.querySelectorAll('a[href], button:not([disabled])'));
+    var focusable = [navToggle].concat(links);
+    var first = focusable[0];
+    var last = focusable[focusable.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  });
+  window.addEventListener('resize', function () {
+    if (!drawerQuery.matches) { navEl.inert = false; closeNav(); }
+    else if (!navEl.classList.contains('is-open')) navEl.inert = true;
+  });
+}
+
+/* ── Search ─────────────────────────────────────────────────── */
+var input   = document.getElementById('wk-q');
+var results = document.getElementById('wk-results');
+var docs    = null;
+if (input) {
+  fetch("../../../../../search/search_index.json")
+    .then(function (r) { return r.json(); })
+    .then(function (d) { docs = d.docs; });
+
+  input.addEventListener('input', onSearch);
+
+  document.addEventListener('click', function (e) {
+    if (results && !results.contains(e.target) && e.target !== input) results.hidden = true;
+  });
+  input.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { results.hidden = true; this.blur(); }
+    if (e.key === 'Enter' && results && !results.hidden) {
+      var first = results.querySelector('.wk-result');
+      if (first) { first.click(); }
+    }
+  });
+}
+
+/* Press / to focus search */
+document.addEventListener('keydown', function (e) {
+  if (e.key === '/' && document.activeElement !== input &&
+      document.activeElement.tagName !== 'INPUT' &&
+      document.activeElement.tagName !== 'TEXTAREA') {
+    e.preventDefault();
+    if (input) { input.focus(); input.select(); }
+  }
+});
+
+function onSearch() {
+  var q = this.value.trim().toLowerCase();
+  if (!docs || q.length < 2) { results.hidden = true; return; }
+  var hits = docs.filter(function (d) {
+    return (d.title + ' ' + d.text).toLowerCase().indexOf(q) !== -1;
+  }).slice(0, 8);
+  if (!hits.length) { results.hidden = true; return; }
+  var base = "../../../../..";
+  results.innerHTML = hits.map(function (d) {
+    var text  = d.text || '';
+    var i     = text.toLowerCase().indexOf(q);
+    var start = Math.max(0, i - 35);
+    var end   = Math.min(text.length, i + q.length + 70);
+    var snip  = (start > 0 ? '…' : '') + text.slice(start, end) + (end < text.length ? '…' : '');
+    var url   = base + '/' + d.location;
+    return '<a class="wk-result" href="' + esc(url) + '" role="option">'
+         + '<div class="wk-result-title">' + esc(d.title || d.location) + '</div>'
+         + '<div class="wk-result-snip">'  + esc(snip) + '</div></a>';
+  }).join('');
+  results.hidden = false;
+}
+
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+/* ── Back to top ────────────────────────────────────────────── */
+var topBtn = document.getElementById('wk-top');
+if (topBtn) {
+  window.addEventListener('scroll', function () {
+    topBtn.classList.toggle('visible', window.scrollY > 400);
+  }, {passive: true});
+  topBtn.addEventListener('click', function () {
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  });
+}
+
+/* ── Copy-to-clipboard ───────────────────────────────────────── */
+document.querySelectorAll('.highlight').forEach(function (block) {
+  var btn = document.createElement('button');
+  btn.className = 'wk-copy-btn';
+  btn.title     = 'Copy code';
+  btn.textContent = '⎘';
+  block.appendChild(btn);
+  btn.addEventListener('click', function () {
+    var pre = block.querySelector('pre');
+    if (!pre) return;
+    navigator.clipboard.writeText(pre.innerText).then(function () {
+      btn.textContent = '✓';
+      btn.classList.add('copied');
+      setTimeout(function () {
+        btn.textContent = '⎘';
+        btn.classList.remove('copied');
+      }, 1500);
+    });
+  });
+});
+
+/* ── Collapsible long code blocks ─────────────────────────────── */
+var COLLAPSE_THRESHOLD = 340;
+document.querySelectorAll('.wk-article-body .highlight').forEach(function (block) {
+  var pre = block.querySelector('pre');
+  if (!pre || pre.scrollHeight <= COLLAPSE_THRESHOLD + 40) return;
+
+  block.classList.add('wk-code-collapsed');
+  var toggle = document.createElement('button');
+  toggle.className = 'wk-code-toggle';
+  toggle.type = 'button';
+  toggle.textContent = 'Show more ▾';
+  toggle.addEventListener('click', function () {
+    var collapsed = block.classList.toggle('wk-code-collapsed');
+    toggle.textContent = collapsed ? 'Show more ▾' : 'Show less ▴';
+    if (collapsed) block.scrollIntoView({block: 'nearest'});
+  });
+  block.insertAdjacentElement('afterend', toggle);
+});
+
+/* ── TOC scroll spy ─────────────────────────────────────────── */
+var tocLinks = document.querySelectorAll('.wk-toc-link');
+if (tocLinks.length && 'IntersectionObserver' in window) {
+  var headings = Array.from(document.querySelectorAll('.wk-article h1, .wk-article h2, .wk-article h3'));
+  var active   = null;
+  var obs = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) {
+        var id  = e.target.id;
+        var lnk = document.querySelector('.wk-toc-link[href="#' + id + '"]');
+        if (lnk && lnk !== active) {
+          if (active) active.classList.remove('is-current');
+          lnk.classList.add('is-current');
+          active = lnk;
+        }
+      }
+    });
+  }, {rootMargin: '-10% 0px -80% 0px'});
+  headings.forEach(function (h) { if (h.id) obs.observe(h); });
+}
+
+
+}());
+</script>
+<script src="../../../../../javascripts/hunters.js" defer></script><script src="../../../../../search/main.js" defer></script>
+</body>
+</html>
