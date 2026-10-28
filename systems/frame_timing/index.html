@@ -727,7 +727,7 @@ piece of the game's own per-frame work, the next layer to map.</p>
 <td style="text-align: right;" data-label="Size">2077</td>
 <td data-label="Name"><code>frame_timing_pace_frame</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--verified"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></span></td>
-<td data-label="Notes">Frame limiter: target interval at +0x18 (1/30 or 1/60 s); sleeps then spins; 32-frame ring; every FPS patch edits it</td>
+<td data-label="Notes">Frame limiter: target interval at +0x18 (1/30 or 1/60 s); spins out the frame (the sleeping wait is compiled in but unused); 32-frame ring; every FPS patch edits it</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x024512a0</code></td>
