@@ -451,7 +451,9 @@
           
           <li><a href="#thread-priorities-scepthreadgetprio-scepthreadsetprio-issue-34" class="wk-toc-link">Thread priorities (scePthreadGetprio, scePthreadSetprio, issue #34)</a></li>
           
-          <li><a href="#clock_gettime-libkernel-issue-34" class="wk-toc-link">clock_gettime (libkernel, issue #34)</a></li>
+          <li><a href="#clock_gettime-and-scekernelclockgettime-libkernel-issue-34" class="wk-toc-link">clock_gettime and sceKernelClockGettime (libkernel, issue #34)</a></li>
+          
+          <li><a href="#process-time-scekernelgetprocesstime-issue-34" class="wk-toc-link">Process time (sceKernelGetProcessTime, issue #34)</a></li>
           
           <li><a href="#implementation-rule" class="wk-toc-link">Implementation rule</a></li>
           
@@ -1123,7 +1125,7 @@ change nothing else.</p>
 - main thread settings in the process parameters (which slot is the priority is not established);
 - a priority outside 256–767;
 - a missing thread or variable.</p>
-<h2 id="clock_gettime-libkernel-issue-34"><code>clock_gettime</code> (libkernel, issue #34)</h2>
+<h2 id="clock_gettime-and-scekernelclockgettime-libkernel-issue-34"><code>clock_gettime</code> and <code>sceKernelClockGettime</code> (libkernel, issue #34)</h2>
 <p><code>clock_gettime(clockid_t id, struct timespec *tp)</code> is POSIX, with FreeBSD's clock numbers and
 amd64 <code>struct timespec</code> (two 64-bit fields, seconds and nanoseconds).</p>
 <p>The bundled libc's <code>time()</code> (<code>libc.elf+0x2f030</code>) asks for clock 13 and returns its seconds. Clock
@@ -1134,6 +1136,18 @@ nanoseconds (<code>kern_clock_gettime</code>).</p>
 - <code>CLOCK_MONOTONIC</code> (4), from the host's monotonic clock.</p>
 <p><strong>What stops by name:</strong> other clocks and a missing timespec. Their errors go through <code>errno</code>,
 which the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> does not model.</p>
+<p><code>sceKernelClockGettime(id, tp)</code> is the same call under its SCE name. It returns <code>0x80020000</code> plus
+the error number: <code>EINVAL</code> for another clock and <code>EFAULT</code> for a missing timespec, as FreeBSD
+answers them. The executable's call (<code>0x0111a815</code>) asks for clock 4, and treats anything but 0 as
+failure.</p>
+<h2 id="process-time-scekernelgetprocesstime-issue-34">Process time (<code>sceKernelGetProcessTime</code>, issue #34)</h2>
+<p><code>uint64_t sceKernelGetProcessTime(void)</code>, as the OpenOrbis homebrew SDK's <code>libkernel.h</code> declares
+it, is the time since the process started.</p>
+<p>Its unit is microseconds. The executable turns it into seconds by dividing by 1,000,000:
+- at <code>0x00e4fb6e</code>, through the compiler's multiply by <code>0x431bde83</code> and shift by 50;
+- at <code>0x0252607e</code>, through a division by the double 1000000.0.</p>
+<p>It also seeds a random generator with it (<code>0x00835dba</code>).</p>
+<p><strong>What the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> does.</strong> It measures from its own start, on the host's monotonic clock.</p>
 <h2 id="implementation-rule">Implementation rule</h2>
 <p>Implement the established contract and test the <code>RT_SYSLIB</code> entry through its library and symbol name. Keep target-specific values separate from host values. When an argument, ID, return value, or error case is unknown, fail loudly with the call name and leave the question open; never choose a value to make <code>tools/boot.py</code> advance.</p>
 <h2 id="references">References</h2>

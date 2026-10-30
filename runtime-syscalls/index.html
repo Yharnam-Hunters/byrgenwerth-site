@@ -437,11 +437,13 @@
       
       
       <aside class="wk-freshness" role="note">
-        <p><b>Not yet updated for 8 merged changes.</b>
+        <p><b>Not yet updated for 9 merged changes.</b>
         This page was last checked against Paleblood
         <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/7dcea0e47419e52dccf484925746a80820245520"><code>7dcea0e</code></a>;
         these pull requests changed what it describes since:</p>
         <ul>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/165">#165</a> runtime: process time and sceKernelClockGettime</li>
           
           <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/164">#164</a> runtime: answer clock_gettime with FreeBSD's clocks</li>
           
@@ -457,9 +459,7 @@
           
           <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/159">#159</a> runtime: create HTTP templates offline (sceHttpCreateTemplate, sceHttpSetNonblock)</li>
           
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/158">#158</a> runtime: start the SSL and HTTP libraries offline (sceSslInit, sceHttpInit)</li>
-          
-          
+          <li>and 1 more</li>
         </ul>
       </aside>
       
@@ -1293,6 +1293,11 @@ call is registered only to name itself and stop, because its answer is not estab
 <td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_memory.c"><code>runtime/syslib/kernel_memory.c</code></a></td>
 </tr>
 <tr>
+<td><code>sceKernelClockGettime</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_time_of_day.c"><code>runtime/syslib/kernel_time_of_day.c</code></a></td>
+</tr>
+<tr>
 <td><code>sceKernelCreateSema</code></td>
 <td><span class="wk-badge wk-badge--implemented">implemented</span></td>
 <td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_sema.c"><code>runtime/syslib/kernel_sema.c</code></a></td>
@@ -1306,6 +1311,11 @@ call is registered only to name itself and stop, because its answer is not estab
 <td><code>sceKernelGetDirectMemorySize</code></td>
 <td><span class="wk-badge wk-badge--implemented">implemented</span></td>
 <td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_memory.c"><code>runtime/syslib/kernel_memory.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceKernelGetProcessTime</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_time_of_day.c"><code>runtime/syslib/kernel_time_of_day.c</code></a></td>
 </tr>
 <tr>
 <td><code>sceKernelGetProcParam</code></td>
