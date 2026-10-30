@@ -451,6 +451,8 @@
           
           <li><a href="#thread-priorities-scepthreadgetprio-scepthreadsetprio-issue-34" class="wk-toc-link">Thread priorities (scePthreadGetprio, scePthreadSetprio, issue #34)</a></li>
           
+          <li><a href="#clock_gettime-libkernel-issue-34" class="wk-toc-link">clock_gettime (libkernel, issue #34)</a></li>
+          
           <li><a href="#implementation-rule" class="wk-toc-link">Implementation rule</a></li>
           
           <li><a href="#references" class="wk-toc-link">References</a></li>
@@ -1121,6 +1123,17 @@ change nothing else.</p>
 - main thread settings in the process parameters (which slot is the priority is not established);
 - a priority outside 256–767;
 - a missing thread or variable.</p>
+<h2 id="clock_gettime-libkernel-issue-34"><code>clock_gettime</code> (libkernel, issue #34)</h2>
+<p><code>clock_gettime(clockid_t id, struct timespec *tp)</code> is POSIX, with FreeBSD's clock numbers and
+amd64 <code>struct timespec</code> (two 64-bit fields, seconds and nanoseconds).</p>
+<p>The bundled libc's <code>time()</code> (<code>libc.elf+0x2f030</code>) asks for clock 13 and returns its seconds. Clock
+13 is FreeBSD's <code>CLOCK_SECOND</code>, which FreeBSD answers with the wall clock's whole seconds and 0
+nanoseconds (<code>kern_clock_gettime</code>).</p>
+<p><strong>What the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> does.</strong> It answers the clocks whose meaning FreeBSD fixes and the host has:
+- <code>CLOCK_REALTIME</code> (0) and <code>CLOCK_SECOND</code> (13), from the host's wall clock;
+- <code>CLOCK_MONOTONIC</code> (4), from the host's monotonic clock.</p>
+<p><strong>What stops by name:</strong> other clocks and a missing timespec. Their errors go through <code>errno</code>,
+which the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> does not model.</p>
 <h2 id="implementation-rule">Implementation rule</h2>
 <p>Implement the established contract and test the <code>RT_SYSLIB</code> entry through its library and symbol name. Keep target-specific values separate from host values. When an argument, ID, return value, or error case is unknown, fail loudly with the call name and leave the question open; never choose a value to make <code>tools/boot.py</code> advance.</p>
 <h2 id="references">References</h2>
