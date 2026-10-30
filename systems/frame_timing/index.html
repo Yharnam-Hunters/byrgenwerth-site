@@ -368,7 +368,7 @@
       <span class="wk-stat-track" role="img" aria-label="0.033 percent of target code bytes verified">
         <span class="wk-stat-fill" style="width:0.033%"></span>
       </span>
-      <span class="wk-progress-foot">0.033% of code bytes verified · 37 replaced</span>
+      <span class="wk-progress-foot">0.033% of code bytes verified · 41 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -681,67 +681,95 @@ piece of the game's own per-frame work, the next layer to map.</p>
 <td data-label="Notes">SprjDungeonGateIns handler of event 3000: when idle, request 10 and advance the gate state one fixed step</td>
 </tr>
 <tr>
+<td data-label="Address"><code>0x01f03210</code></td>
+<td style="text-align: right;" data-label="Size">307</td>
+<td data-label="Name"><code>frame_timing_holygrail_wait_for_dungeon_mode</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">state method: advance the current Chalice Dungeon gate (event flags 9020..9026 pick it) one fixed step while busy, then report whether it is in a dungeon mode; not reached by the routes yet</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x01f03680</code></td>
+<td style="text-align: right;" data-label="Size">296</td>
+<td data-label="Name"><code>frame_timing_holygrail_wait_for_ritual_mode</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">state method: advance the current Chalice Dungeon gate one fixed step while busy, then report whether it is in a ritual mode; not reached by the routes yet</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x01f6a9f0</code></td>
 <td style="text-align: right;" data-label="Size">121</td>
 <td data-label="Name"><code>frame_timing_until_idle_01f6a9f0</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
-<td data-label="Notes">state method: advance the owner one fixed step while busy (1/30 s; 1/60 s in the 60 FPS patches) (a Chalice Dungeon state machine: built next to SprjHolygrail; not reached by the routes yet)</td>
+<td data-label="Notes">state method: advance the owner one fixed step while busy (1/30 s; 1/60 s in the 60 FPS patches) (the Chalice Dungeon gate's state, at +0x108 in SprjDungeonGateIns; not reached by the routes yet)</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x0200d8a0</code></td>
 <td style="text-align: right;" data-label="Size">137</td>
 <td data-label="Name"><code>frame_timing_until_idle_0200d8a0</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
-<td data-label="Notes">state method: advance the owner one fixed step while busy (1/30 s; 1/60 s in the 60 FPS patches) (a Chalice Dungeon state machine: built next to SprjHolygrail; not reached by the routes yet)</td>
+<td data-label="Notes">state method: advance the owner one fixed step while busy (1/30 s; 1/60 s in the 60 FPS patches) (the Chalice Dungeon gate's state, at +0x108 in SprjDungeonGateIns; not reached by the routes yet)</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x0200e100</code></td>
 <td style="text-align: right;" data-label="Size">121</td>
 <td data-label="Name"><code>frame_timing_until_idle_0200e100</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
-<td data-label="Notes">state method: advance the owner one fixed step while busy (1/30 s; 1/60 s in the 60 FPS patches) (a Chalice Dungeon state machine: built next to SprjHolygrail; not reached by the routes yet)</td>
+<td data-label="Notes">state method: advance the owner one fixed step while busy (1/30 s; 1/60 s in the 60 FPS patches) (the Chalice Dungeon gate's state, at +0x108 in SprjDungeonGateIns; not reached by the routes yet)</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x0200e270</code></td>
 <td style="text-align: right;" data-label="Size">151</td>
 <td data-label="Name"><code>frame_timing_request_7_0200e270</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
-<td data-label="Notes">state method: when idle in states 2..5, request 7 and advance the owner one fixed step (a Chalice Dungeon state machine: built next to SprjHolygrail; not reached by the routes yet)</td>
+<td data-label="Notes">state method: when idle in states 2..5, request 7 and advance the owner one fixed step (the Chalice Dungeon gate's state, at +0x108 in SprjDungeonGateIns; not reached by the routes yet)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0200f970</code></td>
+<td style="text-align: right;" data-label="Size">283</td>
+<td data-label="Name"><code>frame_timing_holygrail_until_idle_0200f970</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">state method: advance the current Chalice Dungeon gate one fixed step while busy; done once idle; not reached by the routes yet</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x020118f0</code></td>
+<td style="text-align: right;" data-label="Size">283</td>
+<td data-label="Name"><code>frame_timing_holygrail_until_idle_020118f0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">state method: advance the current Chalice Dungeon gate one fixed step while busy; done once idle; not reached by the routes yet</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x02012610</code></td>
 <td style="text-align: right;" data-label="Size">121</td>
 <td data-label="Name"><code>frame_timing_until_idle_02012610</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
-<td data-label="Notes">state method: advance the owner one fixed step while busy (1/30 s; 1/60 s in the 60 FPS patches) (a Chalice Dungeon state machine: built next to SprjHolygrail; not reached by the routes yet)</td>
+<td data-label="Notes">state method: advance the owner one fixed step while busy (1/30 s; 1/60 s in the 60 FPS patches) (the Chalice Dungeon gate's state, at +0x108 in SprjDungeonGateIns; not reached by the routes yet)</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x02012780</code></td>
 <td style="text-align: right;" data-label="Size">122</td>
 <td data-label="Name"><code>frame_timing_request_10_02012780</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
-<td data-label="Notes">state method: when idle, request 10 and advance the owner one fixed step (a Chalice Dungeon state machine: built next to SprjHolygrail; not reached by the routes yet)</td>
+<td data-label="Notes">state method: when idle, request 10 and advance the owner one fixed step (the Chalice Dungeon gate's state, at +0x108 in SprjDungeonGateIns; not reached by the routes yet)</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x020128f0</code></td>
 <td style="text-align: right;" data-label="Size">121</td>
 <td data-label="Name"><code>frame_timing_until_idle_020128f0</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
-<td data-label="Notes">state method: advance the owner one fixed step while busy (1/30 s; 1/60 s in the 60 FPS patches) (a Chalice Dungeon state machine: built next to SprjHolygrail; not reached by the routes yet)</td>
+<td data-label="Notes">state method: advance the owner one fixed step while busy (1/30 s; 1/60 s in the 60 FPS patches) (the Chalice Dungeon gate's state, at +0x108 in SprjDungeonGateIns; not reached by the routes yet)</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x02012a60</code></td>
 <td style="text-align: right;" data-label="Size">151</td>
 <td data-label="Name"><code>frame_timing_request_7_02012a60</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
-<td data-label="Notes">state method: when idle in states 2..5, request 7 and advance the owner one fixed step (a Chalice Dungeon state machine: built next to SprjHolygrail; not reached by the routes yet)</td>
+<td data-label="Notes">state method: when idle in states 2..5, request 7 and advance the owner one fixed step (the Chalice Dungeon gate's state, at +0x108 in SprjDungeonGateIns; not reached by the routes yet)</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x02012bf0</code></td>
 <td style="text-align: right;" data-label="Size">121</td>
 <td data-label="Name"><code>frame_timing_until_idle_02012bf0</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
-<td data-label="Notes">state method: advance the owner one fixed step while busy (1/30 s; 1/60 s in the 60 FPS patches) (a Chalice Dungeon state machine: built next to SprjHolygrail; not reached by the routes yet)</td>
+<td data-label="Notes">state method: advance the owner one fixed step while busy (1/30 s; 1/60 s in the 60 FPS patches) (the Chalice Dungeon gate's state, at +0x108 in SprjDungeonGateIns; not reached by the routes yet)</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x02418d20</code></td>

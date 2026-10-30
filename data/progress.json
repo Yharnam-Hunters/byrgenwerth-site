@@ -1,19 +1,19 @@
 {
   "edge_verified": {
-    "bytes": 16463,
+    "bytes": 17632,
     "bytes_pct": 0.04,
-    "functions": 37,
-    "functions_pct": 0.02
+    "functions": 41,
+    "functions_pct": 0.03
   },
   "inputs": {
-    "functions_sha256": "cff7ed1fc1d584e0dae6ff297ff5f6b54c8e821eab0b4799c7ebd4aa6a6f72c2",
+    "functions_sha256": "bb3f3d9466e1a58b48ace531209983ff8ebd6ec9cd3d7ee125146a4d528169af",
     "ghidra_functions_sha256": "fc7e244dc9f211963118a9ab97716de03e0f342421c63cafc9a8ae747abb8ebd"
   },
   "replaced": {
-    "bytes": 16463,
+    "bytes": 17632,
     "bytes_pct": 0.04,
-    "functions": 37,
-    "functions_pct": 0.02
+    "functions": 41,
+    "functions_pct": 0.03
   },
   "runtime": {
     "fault": null,
@@ -355,7 +355,7 @@
       "bytes": 656173,
       "end": "0x01f56f18",
       "functions": 3295,
-      "replaced_bytes": 1091,
+      "replaced_bytes": 1694,
       "start": "0x01ea7f85",
       "verified_bytes": 0
     },
@@ -371,7 +371,7 @@
       "bytes": 663085,
       "end": "0x020b4e3e",
       "functions": 3110,
-      "replaced_bytes": 1045,
+      "replaced_bytes": 1611,
       "start": "0x02005eab",
       "verified_bytes": 0
     },
@@ -575,10 +575,10 @@
       "verified": 1
     },
     "frame_timing": {
-      "edge_verified": 27,
-      "replaced": 27,
-      "replaced_bytes": 6557,
-      "tracked": 28,
+      "edge_verified": 31,
+      "replaced": 31,
+      "replaced_bytes": 7726,
+      "tracked": 32,
       "verified": 12
     },
     "input": {
@@ -615,8 +615,8 @@
     "functions": 157757
   },
   "tracked": {
-    "bytes": 16530,
-    "functions": 38
+    "bytes": 17699,
+    "functions": 42
   },
   "verified": {
     "bytes": 14010,
