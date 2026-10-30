@@ -437,11 +437,15 @@
       
       
       <aside class="wk-freshness" role="note">
-        <p><b>Not yet updated for 5 merged changes.</b>
+        <p><b>Not yet updated for 7 merged changes.</b>
         This page was last checked against Paleblood
         <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/7dcea0e47419e52dccf484925746a80820245520"><code>7dcea0e</code></a>;
         these pull requests changed what it describes since:</p>
         <ul>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/163">#163</a> runtime: record thread priorities (scePthreadGetprio, scePthreadSetprio)</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/131">#131</a> runtime: implement scePthreadRwlock init, destroy, locks and unlock</li>
           
           <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/162">#162</a> runtime: release every level of a recursive mutex in a condition wait</li>
           
@@ -1412,6 +1416,11 @@ call is registered only to name itself and stop, because its answer is not estab
 <td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_thread.c"><code>runtime/syslib/kernel_thread.c</code></a></td>
 </tr>
 <tr>
+<td><code>scePthreadGetprio</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_thread.c"><code>runtime/syslib/kernel_thread.c</code></a></td>
+</tr>
+<tr>
 <td><code>scePthreadMutexattrDestroy</code></td>
 <td><span class="wk-badge wk-badge--implemented">implemented</span></td>
 <td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_mutex.c"><code>runtime/syslib/kernel_mutex.c</code></a></td>
@@ -1457,12 +1466,52 @@ call is registered only to name itself and stop, because its answer is not estab
 <td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_mutex.c"><code>runtime/syslib/kernel_mutex.c</code></a></td>
 </tr>
 <tr>
+<td><code>scePthreadRwlockDestroy</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_rwlock.c"><code>runtime/syslib/kernel_rwlock.c</code></a></td>
+</tr>
+<tr>
+<td><code>scePthreadRwlockInit</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_rwlock.c"><code>runtime/syslib/kernel_rwlock.c</code></a></td>
+</tr>
+<tr>
+<td><code>scePthreadRwlockRdlock</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_rwlock.c"><code>runtime/syslib/kernel_rwlock.c</code></a></td>
+</tr>
+<tr>
+<td><code>scePthreadRwlockTryrdlock</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_rwlock.c"><code>runtime/syslib/kernel_rwlock.c</code></a></td>
+</tr>
+<tr>
+<td><code>scePthreadRwlockTrywrlock</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_rwlock.c"><code>runtime/syslib/kernel_rwlock.c</code></a></td>
+</tr>
+<tr>
+<td><code>scePthreadRwlockUnlock</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_rwlock.c"><code>runtime/syslib/kernel_rwlock.c</code></a></td>
+</tr>
+<tr>
+<td><code>scePthreadRwlockWrlock</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_rwlock.c"><code>runtime/syslib/kernel_rwlock.c</code></a></td>
+</tr>
+<tr>
 <td><code>scePthreadSelf</code></td>
 <td><span class="wk-badge wk-badge--implemented">implemented</span></td>
 <td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_thread.c"><code>runtime/syslib/kernel_thread.c</code></a></td>
 </tr>
 <tr>
 <td><code>scePthreadSetaffinity</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_thread.c"><code>runtime/syslib/kernel_thread.c</code></a></td>
+</tr>
+<tr>
+<td><code>scePthreadSetprio</code></td>
 <td><span class="wk-badge wk-badge--implemented">implemented</span></td>
 <td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_thread.c"><code>runtime/syslib/kernel_thread.c</code></a></td>
 </tr>

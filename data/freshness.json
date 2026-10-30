@@ -127,6 +127,16 @@
  "runtime-syscalls.md": {
   "behind": [
    {
+    "commit": "00af53cce5e4",
+    "pr": 163,
+    "title": "runtime: record thread priorities (scePthreadGetprio, scePthreadSetprio)"
+   },
+   {
+    "commit": "a446983c6609",
+    "pr": 131,
+    "title": "runtime: implement scePthreadRwlock init, destroy, locks and unlock"
+   },
+   {
     "commit": "8fe3ea2777f9",
     "pr": 162,
     "title": "runtime: release every level of a recursive mutex in a condition wait"
@@ -156,6 +166,16 @@
  },
  "runtime.md": {
   "behind": [
+   {
+    "commit": "00af53cce5e4",
+    "pr": 163,
+    "title": "runtime: record thread priorities (scePthreadGetprio, scePthreadSetprio)"
+   },
+   {
+    "commit": "a446983c6609",
+    "pr": 131,
+    "title": "runtime: implement scePthreadRwlock init, destroy, locks and unlock"
+   },
    {
     "commit": "8fe3ea2777f9",
     "pr": 162,
