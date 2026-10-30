@@ -461,6 +461,8 @@
           
           <li><a href="#attribute-priority-and-cpu-mask-scepthreadattrsetschedparam-scepthreadattrsetaffinity-issue-34" class="wk-toc-link">Attribute priority and CPU mask (scePthreadAttrSetschedparam, scePthreadAttrSetaffinity, issue #34)</a></li>
           
+          <li><a href="#the-titles-files-app0-scekernelstat-opening-and-reading-issue-35" class="wk-toc-link">The title's files: /app0, sceKernelStat, opening and reading (issue #35)</a></li>
+          
           <li><a href="#implementation-rule" class="wk-toc-link">Implementation rule</a></li>
           
           <li><a href="#references" class="wk-toc-link">References</a></li>
@@ -1224,6 +1226,44 @@ attribute is <code>EINVAL</code> (libthr).</p>
 the CPU mask its caller chose. As for <code>scePthreadSetaffinity</code>, the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> records the mask (the
 created thread takes it) and the host schedules. An empty mask stops by name, and a variable
 holding no attribute is <code>EINVAL</code>.</p>
+<h2 id="the-titles-files-app0-scekernelstat-opening-and-reading-issue-35">The title's files: <code>/app0</code>, <code>sceKernelStat</code>, opening and reading (issue #35)</h2>
+<p>The title reads its own data under <code>/app0</code>, the console's read-only mount of its package. The
+<abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> serves <code>/app0</code> from your own copy and never writes to it:
+- <code>tools/boot.py --app0 DIR</code> chooses the copy, defaulting to <code>$BB_APP0</code>, then
+  <code>$BB_DATA_ROOT/merged</code>.
+- <code>pbboot</code> takes it as <code>--app0</code>.
+- A path under any other mount, and one with a <code>..</code> component (which could leave the copy), stops by
+  name.</p>
+<p><code>sceKernelStat(path, struct stat *)</code> is FreeBSD's <code>stat(2)</code> under its SCE name, which returns
+<code>0x80020000</code> plus the error number. The <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr>'s <code>struct stat</code> is FreeBSD 9's amd64 layout, 120 bytes
+(OpenOrbis' <code>_types/kernel.h</code>, <code>OrbisKernelStat</code>).</p>
+<p><strong>What the executable does.</strong> Its call at <code>0x02474519</code> asks whether
+<code>/app0/dvdroot_ps4/sound/sprj_mixer.fev</code> exists:
+- 0 means yes;
+- exactly <code>0x80020002</code> (<code>ENOENT</code>) means no;
+- anything else goes to its error path.</p>
+<p><strong>What the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> does.</strong> It fills the structure from the host file:
+- type, size, block count and size, link count and times;
+- the permission bits without write (the mount is read-only);
+- device and inode numbers as the host's (they only identify the file);
+- the birth time as the modification time (the host's stat has none);
+- owner, group, flags and generation 0.</p>
+<p><strong>Errors.</strong> A missing file answers <code>ENOENT</code>, and a missing directory component <code>ENOTDIR</code> (the same
+numbers on FreeBSD and Linux). Any other host error stops by name.</p>
+<h3 id="opening-and-reading">Opening and reading</h3>
+<p><code>sceKernelOpen</code>, <code>sceKernelRead</code>, <code>sceKernelPread</code>, <code>sceKernelLseek</code>, <code>sceKernelFstat</code> and
+<code>sceKernelClose</code> are FreeBSD's <code>open(2)</code>, <code>read(2)</code>, <code>pread(2)</code>, <code>lseek(2)</code>, <code>fstat(2)</code> and
+<code>close(2)</code> under their SCE names. The OpenOrbis homebrew SDK's <code>libkernel.h</code> declares the shapes.
+Each returns a result, or <code>0x80020000</code> plus the error number. The executable opens its data with
+flags 0 (<code>O_RDONLY</code>) and mode 0555.</p>
+<p><strong>What the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> does:</strong>
+- <strong>Opening.</strong> It opens the host file read-only. A request to write, create, truncate or append
+  answers <code>EROFS</code>, as FreeBSD does on a read-only mount. The lookup comes first: a missing file
+  without <code>O_CREAT</code> is <code>ENOENT</code>. Other flag bits stop by name.
+- <strong>Descriptors.</strong> A descriptor is the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>'s own number, from 3 up, standing for a host
+  descriptor (the title only passes it back). One the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> did not hand out is <code>EBADF</code>.
+- <strong>Seeking.</strong> A whence other than 0, 1 or 2 (<code>SEEK_SET</code>, <code>SEEK_CUR</code>, <code>SEEK_END</code>, the same on
+  FreeBSD and Linux), and a seek before the start, are <code>EINVAL</code>.</p>
 <h2 id="implementation-rule">Implementation rule</h2>
 <p>Implement the established contract and test the <code>RT_SYSLIB</code> entry through its library and symbol name. Keep target-specific values separate from host values. When an argument, ID, return value, or error case is unknown, fail loudly with the call name and leave the question open; never choose a value to make <code>tools/boot.py</code> advance.</p>
 <h2 id="references">References</h2>

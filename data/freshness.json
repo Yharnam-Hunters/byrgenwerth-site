@@ -127,6 +127,11 @@
  "runtime-syscalls.md": {
   "behind": [
    {
+    "commit": "cbeec5cec86d",
+    "pr": 170,
+    "title": "runtime: serve /app0 from your copy, and open and read its files"
+   },
+   {
     "commit": "1fa55af42fda",
     "pr": 169,
     "title": "runtime: pace audio output in real time (sceAudioOutOutput)"
@@ -196,6 +201,11 @@
  },
  "runtime.md": {
   "behind": [
+   {
+    "commit": "cbeec5cec86d",
+    "pr": 170,
+    "title": "runtime: serve /app0 from your copy, and open and read its files"
+   },
    {
     "commit": "1fa55af42fda",
     "pr": 169,

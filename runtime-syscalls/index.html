@@ -437,11 +437,13 @@
       
       
       <aside class="wk-freshness" role="note">
-        <p><b>Not yet updated for 13 merged changes.</b>
+        <p><b>Not yet updated for 14 merged changes.</b>
         This page was last checked against Paleblood
         <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/7dcea0e47419e52dccf484925746a80820245520"><code>7dcea0e</code></a>;
         these pull requests changed what it describes since:</p>
         <ul>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/170">#170</a> runtime: serve /app0 from your copy, and open and read its files</li>
           
           <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/169">#169</a> runtime: pace audio output in real time (sceAudioOutOutput)</li>
           
@@ -457,9 +459,7 @@
           
           <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/163">#163</a> runtime: record thread priorities (scePthreadGetprio, scePthreadSetprio)</li>
           
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/131">#131</a> runtime: implement scePthreadRwlock init, destroy, locks and unlock</li>
-          
-          <li>and 5 more</li>
+          <li>and 6 more</li>
         </ul>
       </aside>
       
@@ -1298,6 +1298,11 @@ call is registered only to name itself and stop, because its answer is not estab
 <td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_time_of_day.c"><code>runtime/syslib/kernel_time_of_day.c</code></a></td>
 </tr>
 <tr>
+<td><code>sceKernelClose</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/files.c"><code>runtime/syslib/files.c</code></a></td>
+</tr>
+<tr>
 <td><code>sceKernelCreateSema</code></td>
 <td><span class="wk-badge wk-badge--implemented">implemented</span></td>
 <td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_sema.c"><code>runtime/syslib/kernel_sema.c</code></a></td>
@@ -1306,6 +1311,11 @@ call is registered only to name itself and stop, because its answer is not estab
 <td><code>sceKernelDeleteSema</code></td>
 <td><span class="wk-badge wk-badge--implemented">implemented</span></td>
 <td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_sema.c"><code>runtime/syslib/kernel_sema.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceKernelFstat</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/files.c"><code>runtime/syslib/files.c</code></a></td>
 </tr>
 <tr>
 <td><code>sceKernelGetDirectMemorySize</code></td>
@@ -1328,6 +1338,11 @@ call is registered only to name itself and stop, because its answer is not estab
 <td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_time_of_day.c"><code>runtime/syslib/kernel_time_of_day.c</code></a></td>
 </tr>
 <tr>
+<td><code>sceKernelLseek</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/files.c"><code>runtime/syslib/files.c</code></a></td>
+</tr>
+<tr>
 <td><code>sceKernelMapDirectMemory</code></td>
 <td><span class="wk-badge wk-badge--implemented">implemented</span></td>
 <td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_memory.c"><code>runtime/syslib/kernel_memory.c</code></a></td>
@@ -1338,9 +1353,24 @@ call is registered only to name itself and stop, because its answer is not estab
 <td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_memory.c"><code>runtime/syslib/kernel_memory.c</code></a></td>
 </tr>
 <tr>
+<td><code>sceKernelOpen</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/files.c"><code>runtime/syslib/files.c</code></a></td>
+</tr>
+<tr>
 <td><code>sceKernelPollSema</code></td>
 <td><span class="wk-badge wk-badge--implemented">implemented</span></td>
 <td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_sema.c"><code>runtime/syslib/kernel_sema.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceKernelPread</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/files.c"><code>runtime/syslib/files.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceKernelRead</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/files.c"><code>runtime/syslib/files.c</code></a></td>
 </tr>
 <tr>
 <td><code>sceKernelReleaseDirectMemory</code></td>
@@ -1351,6 +1381,11 @@ call is registered only to name itself and stop, because its answer is not estab
 <td><code>sceKernelSignalSema</code></td>
 <td><span class="wk-badge wk-badge--implemented">implemented</span></td>
 <td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_sema.c"><code>runtime/syslib/kernel_sema.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceKernelStat</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/files.c"><code>runtime/syslib/files.c</code></a></td>
 </tr>
 <tr>
 <td><code>sceKernelUsleep</code></td>
