@@ -457,7 +457,7 @@
           
           <li><a href="#audio-job-manager-start-up-sceajminitialize-sceajmmoduleregister-issue-37" class="wk-toc-link">Audio job manager start-up (sceAjmInitialize, sceAjmModuleRegister, issue #37)</a></li>
           
-          <li><a href="#audio-output-start-up-sceaudiooutinit-sceaudiooutopen-sceaudiooutsetvolume-issue-37" class="wk-toc-link">Audio output start-up (sceAudioOutInit, sceAudioOutOpen, sceAudioOutSetVolume, issue #37)</a></li>
+          <li><a href="#audio-output-sceaudiooutinit-sceaudiooutopen-sceaudiooutsetvolume-sceaudiooutoutput-issue-37" class="wk-toc-link">Audio output (sceAudioOutInit, sceAudioOutOpen, sceAudioOutSetVolume, sceAudioOutOutput, issue #37)</a></li>
           
           <li><a href="#attribute-priority-and-cpu-mask-scepthreadattrsetschedparam-scepthreadattrsetaffinity-issue-34" class="wk-toc-link">Attribute priority and CPU mask (scePthreadAttrSetschedparam, scePthreadAttrSetaffinity, issue #34)</a></li>
           
@@ -1169,7 +1169,7 @@ belongs to the batch and instance calls, which stop by name until they are imple
 - a nonzero third argument;
 - a context the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> did not hand out;
 - registering a module twice.</p>
-<h2 id="audio-output-start-up-sceaudiooutinit-sceaudiooutopen-sceaudiooutsetvolume-issue-37">Audio output start-up (<code>sceAudioOutInit</code>, <code>sceAudioOutOpen</code>, <code>sceAudioOutSetVolume</code>, issue #37)</h2>
+<h2 id="audio-output-sceaudiooutinit-sceaudiooutopen-sceaudiooutsetvolume-sceaudiooutoutput-issue-37">Audio output (<code>sceAudioOutInit</code>, <code>sceAudioOutOpen</code>, <code>sceAudioOutSetVolume</code>, <code>sceAudioOutOutput</code>, issue #37)</h2>
 <p>The OpenOrbis homebrew SDK's <code>AudioOut.h</code> declares <code>int32_t sceAudioOutInit(void)</code> and
 <code>int32_t sceAudioOutOpen(user, port type, index, length, sample rate, param)</code>. Its <code>_types</code>
 headers give:
@@ -1198,6 +1198,17 @@ The executable's only call (<code>0x0111b6d6</code>) passes its new port, flag <
 - a flag naming a channel the port does not have;
 - a missing array;
 - a volume outside 0–32768.</p>
+<p><code>int32_t sceAudioOutOutput(handle, const void *samples)</code>, as the SDK declares it, hands a port
+sound. The executable's audio thread (<code>0x0111b93c</code>) hands its port one block at a time (<code>length</code>
+samples for every channel). It advances its ring buffer when the result is not negative, and loops
+with no wait of its own. So the call itself paces the thread: it returns once the port has room for
+the next block.</p>
+<p><strong>What the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> does.</strong> It plays nothing yet.
+- Each port takes one block per <code>length / rate</code> seconds (256 samples at 48000 Hz: 5.33 ms).
+- A call waits until the block before it would have finished playing, then answers 0 (the caller
+  only checks the sign).
+- A port that falls behind starts again from now.</p>
+<p><strong>What stops by name:</strong> a missing block, and a handle the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> did not hand out.</p>
 <h2 id="attribute-priority-and-cpu-mask-scepthreadattrsetschedparam-scepthreadattrsetaffinity-issue-34">Attribute priority and CPU mask (<code>scePthreadAttrSetschedparam</code>, <code>scePthreadAttrSetaffinity</code>, issue #34)</h2>
 <p><code>scePthreadAttrSetschedparam(attr, const struct sched_param *param)</code> sets the priority
 (<code>sched_param</code>'s one int) of a thread created with the attribute. OpenOrbis' <code>libkernel.h</code> gives

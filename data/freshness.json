@@ -127,6 +127,11 @@
  "runtime-syscalls.md": {
   "behind": [
    {
+    "commit": "1fa55af42fda",
+    "pr": 169,
+    "title": "runtime: pace audio output in real time (sceAudioOutOutput)"
+   },
+   {
     "commit": "d27ee8568c09",
     "pr": 168,
     "title": "runtime: record a thread attribute's priority and CPU mask"
@@ -191,6 +196,11 @@
  },
  "runtime.md": {
   "behind": [
+   {
+    "commit": "1fa55af42fda",
+    "pr": 169,
+    "title": "runtime: pace audio output in real time (sceAudioOutOutput)"
+   },
    {
     "commit": "d27ee8568c09",
     "pr": 168,

@@ -437,11 +437,13 @@
       
       
       <aside class="wk-freshness" role="note">
-        <p><b>Not yet updated for 12 merged changes.</b>
+        <p><b>Not yet updated for 13 merged changes.</b>
         This page was last checked against Paleblood
         <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/7dcea0e47419e52dccf484925746a80820245520"><code>7dcea0e</code></a>;
         these pull requests changed what it describes since:</p>
         <ul>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/169">#169</a> runtime: pace audio output in real time (sceAudioOutOutput)</li>
           
           <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/168">#168</a> runtime: record a thread attribute's priority and CPU mask</li>
           
@@ -457,9 +459,7 @@
           
           <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/131">#131</a> runtime: implement scePthreadRwlock init, destroy, locks and unlock</li>
           
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/162">#162</a> runtime: release every level of a recursive mutex in a condition wait</li>
-          
-          <li>and 4 more</li>
+          <li>and 5 more</li>
         </ul>
       </aside>
       
@@ -1615,6 +1615,11 @@ call is registered only to name itself and stop, because its answer is not estab
 </tr>
 <tr>
 <td><code>sceAudioOutOpen</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/audio_out.c"><code>runtime/syslib/audio_out.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceAudioOutOutput</code></td>
 <td><span class="wk-badge wk-badge--implemented">implemented</span></td>
 <td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/audio_out.c"><code>runtime/syslib/audio_out.c</code></a></td>
 </tr>
