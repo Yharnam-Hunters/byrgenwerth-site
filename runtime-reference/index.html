@@ -455,6 +455,8 @@
           
           <li><a href="#process-time-scekernelgetprocesstime-issue-34" class="wk-toc-link">Process time (sceKernelGetProcessTime, issue #34)</a></li>
           
+          <li><a href="#audio-job-manager-start-up-sceajminitialize-sceajmmoduleregister-issue-37" class="wk-toc-link">Audio job manager start-up (sceAjmInitialize, sceAjmModuleRegister, issue #37)</a></li>
+          
           <li><a href="#implementation-rule" class="wk-toc-link">Implementation rule</a></li>
           
           <li><a href="#references" class="wk-toc-link">References</a></li>
@@ -1148,6 +1150,21 @@ it, is the time since the process started.</p>
 - at <code>0x0252607e</code>, through a division by the double 1000000.0.</p>
 <p>It also seeds a random generator with it (<code>0x00835dba</code>).</p>
 <p><strong>What the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> does.</strong> It measures from its own start, on the host's monotonic clock.</p>
+<h2 id="audio-job-manager-start-up-sceajminitialize-sceajmmoduleregister-issue-37">Audio job manager start-up (<code>sceAjmInitialize</code>, <code>sceAjmModuleRegister</code>, issue #37)</h2>
+<p>The audio job manager (libSceAjm) decodes compressed audio in batches of jobs. The OpenOrbis
+homebrew SDK's <code>Ajm.h</code> names these two calls without signatures, so their shapes come from the
+executable's only calls:
+- <strong><code>0x01118a65</code>:</strong> runs while its context variable still holds -1, and passes 0 and the
+  variable's address. A nonzero result is failure.
+- <strong><code>0x01118a81</code>:</strong> then passes that context, 1 and 0, and again treats nonzero as failure.</p>
+<p><strong>What the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> does.</strong> It hands out a context id and records the registered module. Decoding
+belongs to the batch and instance calls, which stop by name until they are implemented.</p>
+<p><strong>What stops by name:</strong>
+- a nonzero first argument to initialize;
+- a module other than the observed 1 (which codec it names is not public);
+- a nonzero third argument;
+- a context the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> did not hand out;
+- registering a module twice.</p>
 <h2 id="implementation-rule">Implementation rule</h2>
 <p>Implement the established contract and test the <code>RT_SYSLIB</code> entry through its library and symbol name. Keep target-specific values separate from host values. When an argument, ID, return value, or error case is unknown, fail loudly with the call name and leave the question open; never choose a value to make <code>tools/boot.py</code> advance.</p>
 <h2 id="references">References</h2>

@@ -127,6 +127,11 @@
  "runtime-syscalls.md": {
   "behind": [
    {
+    "commit": "56a28206e9ce",
+    "pr": 166,
+    "title": "runtime: start the audio job manager (sceAjmInitialize, sceAjmModuleRegister)"
+   },
+   {
     "commit": "31541c6e568e",
     "pr": 165,
     "title": "runtime: process time and sceKernelClockGettime"
@@ -176,6 +181,11 @@
  },
  "runtime.md": {
   "behind": [
+   {
+    "commit": "56a28206e9ce",
+    "pr": 166,
+    "title": "runtime: start the audio job manager (sceAjmInitialize, sceAjmModuleRegister)"
+   },
    {
     "commit": "31541c6e568e",
     "pr": 165,
