@@ -406,7 +406,7 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 28, 2026 05:15:03 UTC">October 28, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 30, 2026 11:07:43 UTC">October 30, 2026</span></p>
       
       <h1 id="input">Input</h1>
 <p class="wk-lede">The input system handles the controller pads. This page covers the once-a-frame step of FD4PadManager, the manager that keeps a map of pad entries.</p>
@@ -419,7 +419,7 @@
 <dt>Verified</dt>
 <dd>The step marks two pad entries and, when its owner is ready, advances the owner by a frame-time step.</dd>
 <dt>Open</dt>
-<dd>What the two entries and the owner are; pad polling, mapping, dead zones and input buffering.</dd>
+<dd>What the two entries and the owner are; where the pad is polled; mapping, dead zones and input buffering.</dd>
 </dl>
 </div>
 <h2 id="summary">Summary</h2>
@@ -433,6 +433,76 @@
 </ol>
 <p>While the hunter stands in Iosefka's Clinic the advance branch stays idle.</p>
 <p>Scope still to map: pad polling, mapping, dead zones, input buffering.</p>
+<h3 id="what-the-game-asks-the-system-for">What the game asks the system for</h3>
+<p>The executable's imports show which input libraries it uses, and which calls from each:</p>
+<div class="wk-table is-stack"><table class="wk-stack">
+<thead>
+<tr>
+<th>Library</th>
+<th>Calls the game imports</th>
+<th>What that tells us</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td data-label="Library"><code>libScePad</code></td>
+<td data-label="Calls the game imports"><code>scePadInit</code>, <code>scePadOpen</code>, <code>scePadClose</code>, <code>scePadReadState</code>, <code>scePadGetControllerInformation</code>, <code>scePadSetVibration</code>, <code>scePadResetOrientation</code>, <code>scePadSetAngularVelocityDeadbandState</code>, <code>scePadSetTiltCorrectionState</code></td>
+<td data-label="What that tells us">The game reads the pad's latest state once per poll (<code>scePadReadState</code>), not the buffered history (<code>scePadRead</code> is not imported). It drives vibration and sets up the motion sensor.</td>
+</tr>
+<tr>
+<td data-label="Library"><code>libSceMouse</code></td>
+<td data-label="Calls the game imports"><code>sceMouseInit</code>, <code>sceMouseOpen</code>, <code>sceMouseClose</code>, <code>sceMouseRead</code></td>
+<td data-label="What that tells us">A mouse path exists, set up by three small functions around <code>0x02a8c000</code>.</td>
+</tr>
+<tr>
+<td data-label="Library"><code>libSceUserService</code></td>
+<td data-label="Calls the game imports"><code>sceUserServiceInitialize</code>, <code>sceUserServiceGetInitialUser</code>, <code>sceUserServiceGetLoginUserIdList</code>, <code>sceUserServiceGetUserName</code>, <code>sceUserServiceGetEvent</code>, <code>sceUserServiceTerminate</code></td>
+<td data-label="What that tells us">Pads and the mouse are opened for a user, starting with the user who launched the game.</td>
+</tr>
+<tr>
+<td data-label="Library"><code>libSceImeDialog</code></td>
+<td data-label="Calls the game imports"><code>sceImeDialogInit</code>, <code>sceImeDialogGetStatus</code>, <code>sceImeDialogGetResult</code>, <code>sceImeDialogAbort</code>, <code>sceImeDialogTerm</code></td>
+<td data-label="What that tells us">Typed text (the character name, for example) goes through the system keyboard dialog; there is no keyboard library.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Functions already found, still unnamed (open to claim):</p>
+<div class="wk-table"><table>
+<thead>
+<tr>
+<th>Address</th>
+<th>Size</th>
+<th>Library calls</th>
+<th>Likely role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>0x02a9c790</code></td>
+<td>84</td>
+<td><code>scePadSetVibration</code></td>
+<td>sets a pad's vibration</td>
+</tr>
+<tr>
+<td><code>0x02a8bf30</code></td>
+<td>108</td>
+<td><code>sceMouseOpen</code>, <code>sceMouseClose</code>, <code>sceUserServiceGetInitialUser</code></td>
+<td>mouse open or reopen</td>
+</tr>
+<tr>
+<td><code>0x02a8c210</code></td>
+<td>164</td>
+<td><code>sceMouseInit</code>, <code>sceSysmoduleLoadModule</code>; calls <code>0x02a8c420</code>, <code>0x02a8d2b0</code></td>
+<td>mouse setup: loads the module, initialises, opens</td>
+</tr>
+<tr>
+<td><code>0x02a8c420</code></td>
+<td>108</td>
+<td><code>sceMouseOpen</code>, <code>sceMouseClose</code>, <code>sceUserServiceGetInitialUser</code></td>
+<td>mouse open or reopen (a twin of <code>0x02a8bf30</code>)</td>
+</tr>
+</tbody>
+</table></div>
 <h2 id="key-functions">Key functions</h2>
 <div class="wk-table is-stack"><table class="wk-stack">
 <thead>
@@ -520,7 +590,11 @@ change it:</p>
 <h2 id="open-questions">Open questions</h2>
 <ul>
 <li>What the two pad map entries keyed by globals are, and what the owner the step advances is.</li>
-<li>Pad polling, mapping, dead zones and input buffering have not been studied yet.</li>
+<li>Where <code>scePadReadState</code> is called, and what the game keeps of each state (the start of pad polling).</li>
+<li>Pad mapping, dead zones and input buffering have not been studied yet. Dead zones are not set
+  through the library (only the motion sensor's deadband is), so the sticks' dead zones are the
+  game's own code.</li>
+<li>Whether the mouse path is used by anything in the shipped game.</li>
 </ul>
       
       </div>
