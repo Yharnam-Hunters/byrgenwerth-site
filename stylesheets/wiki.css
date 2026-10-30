@@ -472,6 +472,12 @@ button { font: inherit; color: inherit; }
 .wk-article-body { font-size: 1.04rem; line-height: 1.72; }
 .wk-article-body > * + * { margin-top: 1em; }
 .wk-article-body > .wk-page-meta + h1 { margin-top: 0; }
+/* A hand-written page that the code repo has moved past (hooks/freshness.py) */
+.wk-freshness { border: 1px solid var(--wk-line-strong); border-left: 3px solid var(--wk-gold); background: var(--wk-gold-soft); border-radius: 6px; padding: 10px 14px; margin: 0 0 18px; font-size: .84rem; color: var(--wk-text-muted); }
+.wk-freshness p { margin: 0 0 6px; }
+.wk-freshness b { color: var(--wk-heading); }
+.wk-freshness ul { margin: 0; padding-left: 1.2em; }
+.wk-freshness li { margin: 2px 0; }
 .wk-article-body > :is(div:not([class]), article) > * + *,
 .wk-devlog-section > * + *, .wk-timeline-card > * + * { margin-top: 1em; }
 .wk-devlog-section > .wk-milestone + .wk-milestone { margin-top: 10px; }
