@@ -127,6 +127,11 @@
  "runtime-syscalls.md": {
   "behind": [
    {
+    "commit": "d27ee8568c09",
+    "pr": 168,
+    "title": "runtime: record a thread attribute's priority and CPU mask"
+   },
+   {
     "commit": "557362cbce53",
     "pr": 167,
     "title": "runtime: start audio output (sceAudioOutInit, sceAudioOutOpen, sceAudioOutSetVolume)"
@@ -186,6 +191,11 @@
  },
  "runtime.md": {
   "behind": [
+   {
+    "commit": "d27ee8568c09",
+    "pr": 168,
+    "title": "runtime: record a thread attribute's priority and CPU mask"
+   },
    {
     "commit": "557362cbce53",
     "pr": 167,

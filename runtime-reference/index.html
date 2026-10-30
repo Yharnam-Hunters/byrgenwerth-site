@@ -459,6 +459,8 @@
           
           <li><a href="#audio-output-start-up-sceaudiooutinit-sceaudiooutopen-sceaudiooutsetvolume-issue-37" class="wk-toc-link">Audio output start-up (sceAudioOutInit, sceAudioOutOpen, sceAudioOutSetVolume, issue #37)</a></li>
           
+          <li><a href="#attribute-priority-and-cpu-mask-scepthreadattrsetschedparam-scepthreadattrsetaffinity-issue-34" class="wk-toc-link">Attribute priority and CPU mask (scePthreadAttrSetschedparam, scePthreadAttrSetaffinity, issue #34)</a></li>
+          
           <li><a href="#implementation-rule" class="wk-toc-link">Implementation rule</a></li>
           
           <li><a href="#references" class="wk-toc-link">References</a></li>
@@ -1196,6 +1198,21 @@ The executable's only call (<code>0x0111b6d6</code>) passes its new port, flag <
 - a flag naming a channel the port does not have;
 - a missing array;
 - a volume outside 0–32768.</p>
+<h2 id="attribute-priority-and-cpu-mask-scepthreadattrsetschedparam-scepthreadattrsetaffinity-issue-34">Attribute priority and CPU mask (<code>scePthreadAttrSetschedparam</code>, <code>scePthreadAttrSetaffinity</code>, issue #34)</h2>
+<p><code>scePthreadAttrSetschedparam(attr, const struct sched_param *param)</code> sets the priority
+(<code>sched_param</code>'s one int) of a thread created with the attribute. OpenOrbis' <code>libkernel.h</code> gives
+the shape; libthr's <code>_pthread_attr_setschedparam</code> gives the semantics.</p>
+<p><strong>What the executable does.</strong> Its thread wrapper (<code>0x0111aafd</code>) sets it without explicit-scheduling
+inheritance. So under libthr's default (<code>PTHREAD_INHERIT_SCHED</code>), the new thread still starts at
+its creator's priority. The wrapper then sets the priority itself with <code>scePthreadSetprio</code>
+(<code>0x0111ab46</code>).</p>
+<p><strong>What the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> does.</strong> It records the priority on the attribute. A variable holding no
+attribute is <code>EINVAL</code> (libthr).</p>
+<p><strong>What stops by name:</strong> a missing param, and a priority outside 256–767.</p>
+<p><code>scePthreadAttrSetaffinity(attr, uint64_t mask)</code> is the wrapper's next call (<code>0x0111ab0e</code>), with
+the CPU mask its caller chose. As for <code>scePthreadSetaffinity</code>, the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> records the mask (the
+created thread takes it) and the host schedules. An empty mask stops by name, and a variable
+holding no attribute is <code>EINVAL</code>.</p>
 <h2 id="implementation-rule">Implementation rule</h2>
 <p>Implement the established contract and test the <code>RT_SYSLIB</code> entry through its library and symbol name. Keep target-specific values separate from host values. When an argument, ID, return value, or error case is unknown, fail loudly with the call name and leave the question open; never choose a value to make <code>tools/boot.py</code> advance.</p>
 <h2 id="references">References</h2>
