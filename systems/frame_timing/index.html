@@ -368,7 +368,7 @@
       <span class="wk-stat-track" role="img" aria-label="0.033 percent of target code bytes verified">
         <span class="wk-stat-fill" style="width:0.033%"></span>
       </span>
-      <span class="wk-progress-foot">0.033% of code bytes verified · 32 replaced</span>
+      <span class="wk-progress-foot">0.033% of code bytes verified · 37 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -644,6 +644,41 @@ piece of the game's own per-frame work, the next layer to map.</p>
 <td data-label="Name"><code>frame_timing_task_workers_step_014400a0</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--verified"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></span></td>
 <td data-label="Notes">task manager workers: three rounds over the worker queues +0x58, +0x68, +0x60</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x01eb5390</code></td>
+<td style="text-align: right;" data-label="Size">182</td>
+<td data-label="Name"><code>frame_timing_dungeon_gate_step_init_for_channel_load</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SprjDungeonGateIns::STEP_Init_forChannelLoad: when the gate state is idle in ChannelLoad, request 2 and advance it one fixed step (1/30 s; 1/60 s in the 60 FPS patches)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x01eb5490</code></td>
+<td style="text-align: right;" data-label="Size">246</td>
+<td data-label="Name"><code>frame_timing_dungeon_gate_step_mode_switch</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SprjDungeonGateIns::STEP_ModeSwitch: advance the gate state one fixed step while busy, then go to the first step of its mode</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x01eb9020</code></td>
+<td style="text-align: right;" data-label="Size">303</td>
+<td data-label="Name"><code>frame_timing_dungeon_gate_on_event_0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SprjDungeonGateIns handler of event 0: request 1, then request 2, each advancing the gate state one fixed step</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x01ebb090</code></td>
+<td style="text-align: right;" data-label="Size">184</td>
+<td data-label="Name"><code>frame_timing_dungeon_gate_on_event_1000</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SprjDungeonGateIns handler of event 1000: when idle in states 2..5, request 7 and advance the gate state one fixed step</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x01ebf060</code></td>
+<td style="text-align: right;" data-label="Size">176</td>
+<td data-label="Name"><code>frame_timing_dungeon_gate_on_event_3000</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SprjDungeonGateIns handler of event 3000: when idle, request 10 and advance the gate state one fixed step</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x01f6a9f0</code></td>
