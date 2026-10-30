@@ -437,11 +437,13 @@
       
       
       <aside class="wk-freshness" role="note">
-        <p><b>Not yet updated for 10 merged changes.</b>
+        <p><b>Not yet updated for 11 merged changes.</b>
         This page was last checked against Paleblood
         <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/7dcea0e47419e52dccf484925746a80820245520"><code>7dcea0e</code></a>;
         these pull requests changed what it describes since:</p>
         <ul>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/167">#167</a> runtime: start audio output (sceAudioOutInit, sceAudioOutOpen, sceAudioOutSetVolume)</li>
           
           <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/166">#166</a> runtime: start the audio job manager (sceAjmInitialize, sceAjmModuleRegister)</li>
           
@@ -457,9 +459,7 @@
           
           <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/161">#161</a> runtime: keep guest signal masks (_sigprocmask)</li>
           
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/160">#160</a> runtime: HTTP waiting handles and request headers offline (sceHttpCreateEpoll, sceHttpAddRequestHeader)</li>
-          
-          <li>and 2 more</li>
+          <li>and 3 more</li>
         </ul>
       </aside>
       
@@ -1585,6 +1585,33 @@ call is registered only to name itself and stop, because its answer is not estab
 <td><code>sceAppContentInitialize</code></td>
 <td><span class="wk-badge wk-badge--implemented">implemented</span></td>
 <td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/app_content.c"><code>runtime/syslib/app_content.c</code></a></td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="libsceaudioout"><code>libSceAudioOut</code></h4>
+<div class="wk-table"><table>
+<thead>
+<tr>
+<th>Call</th>
+<th>Status</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>sceAudioOutInit</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/audio_out.c"><code>runtime/syslib/audio_out.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceAudioOutOpen</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/audio_out.c"><code>runtime/syslib/audio_out.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceAudioOutSetVolume</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/audio_out.c"><code>runtime/syslib/audio_out.c</code></a></td>
 </tr>
 </tbody>
 </table></div>

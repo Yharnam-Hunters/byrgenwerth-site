@@ -457,6 +457,8 @@
           
           <li><a href="#audio-job-manager-start-up-sceajminitialize-sceajmmoduleregister-issue-37" class="wk-toc-link">Audio job manager start-up (sceAjmInitialize, sceAjmModuleRegister, issue #37)</a></li>
           
+          <li><a href="#audio-output-start-up-sceaudiooutinit-sceaudiooutopen-sceaudiooutsetvolume-issue-37" class="wk-toc-link">Audio output start-up (sceAudioOutInit, sceAudioOutOpen, sceAudioOutSetVolume, issue #37)</a></li>
+          
           <li><a href="#implementation-rule" class="wk-toc-link">Implementation rule</a></li>
           
           <li><a href="#references" class="wk-toc-link">References</a></li>
@@ -1165,6 +1167,35 @@ belongs to the batch and instance calls, which stop by name until they are imple
 - a nonzero third argument;
 - a context the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> did not hand out;
 - registering a module twice.</p>
+<h2 id="audio-output-start-up-sceaudiooutinit-sceaudiooutopen-sceaudiooutsetvolume-issue-37">Audio output start-up (<code>sceAudioOutInit</code>, <code>sceAudioOutOpen</code>, <code>sceAudioOutSetVolume</code>, issue #37)</h2>
+<p>The OpenOrbis homebrew SDK's <code>AudioOut.h</code> declares <code>int32_t sceAudioOutInit(void)</code> and
+<code>int32_t sceAudioOutOpen(user, port type, index, length, sample rate, param)</code>. Its <code>_types</code>
+headers give:
+- port type 0 (main);
+- format 4 (float stereo);
+- the error codes <code>0x8026000E</code> (already initialized) and <code>0x8026000F</code> (not initialized).</p>
+<p><strong>What the executable does:</strong>
+- Its only init call (<code>0x0111b665</code>) accepts success or exactly <code>0x8026000E</code>.
+- Its only open (<code>0x0111b69d</code>) passes user <code>0xff</code> (the system user in the SDK's user types), the
+  main port, index 0, 256 samples, 48000 Hz and a format. It keeps a non-negative result as the
+  port handle.
+- The format is the executable's own evidence. Its output callback (<code>0x0111b600</code>) accepts 2 or 8
+  channels and passes <code>4 | (channels == 8)</code>. So 4 is float stereo (as in the SDK) and 5 is float
+  with eight channels. The boot opens eight channels.
+- A second open (<code>0x0111b6fc</code>) passes port type 1 with the same settings, and does not check the
+  result. The <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> name of type 1 is not public; the sibling Vita SDK calls it BGM.</p>
+<p><strong>What the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> does.</strong> It records each open port and hands out handles from 1. Sound output
+belongs to the output calls, which stop by name until they are implemented.</p>
+<p><strong>What stops by name:</strong> any open other than the observed ones, and running out of handles.</p>
+<p><code>int32_t sceAudioOutSetVolume(handle, flag, int32_t *volume)</code>, as the SDK declares it, comes next.
+The executable's only call (<code>0x0111b6d6</code>) passes its new port, flag <code>0xff</code> and eight volumes of
+32768, and treats nonzero as failure. Flag bit n selects channel n, whose volume is <code>volume[n]</code>.</p>
+<p><strong>What the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> does.</strong> It records the volumes.</p>
+<p><strong>What stops by name:</strong>
+- a handle it did not hand out;
+- a flag naming a channel the port does not have;
+- a missing array;
+- a volume outside 0–32768.</p>
 <h2 id="implementation-rule">Implementation rule</h2>
 <p>Implement the established contract and test the <code>RT_SYSLIB</code> entry through its library and symbol name. Keep target-specific values separate from host values. When an argument, ID, return value, or error case is unknown, fail loudly with the call name and leave the question open; never choose a value to make <code>tools/boot.py</code> advance.</p>
 <h2 id="references">References</h2>

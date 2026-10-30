@@ -127,6 +127,11 @@
  "runtime-syscalls.md": {
   "behind": [
    {
+    "commit": "557362cbce53",
+    "pr": 167,
+    "title": "runtime: start audio output (sceAudioOutInit, sceAudioOutOpen, sceAudioOutSetVolume)"
+   },
+   {
     "commit": "56a28206e9ce",
     "pr": 166,
     "title": "runtime: start the audio job manager (sceAjmInitialize, sceAjmModuleRegister)"
@@ -181,6 +186,11 @@
  },
  "runtime.md": {
   "behind": [
+   {
+    "commit": "557362cbce53",
+    "pr": 167,
+    "title": "runtime: start audio output (sceAudioOutInit, sceAudioOutOpen, sceAudioOutSetVolume)"
+   },
    {
     "commit": "56a28206e9ce",
     "pr": 166,
