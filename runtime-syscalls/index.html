@@ -405,6 +405,14 @@
           
           <li><a href="#system-modules-libscesysmodule" class="wk-toc-link">System modules (libSceSysmodule)</a></li>
           
+          <li><a href="#creating-threads-and-waiting" class="wk-toc-link">Creating threads and waiting</a></li>
+          
+          <li><a href="#memory-direct-and-flexible" class="wk-toc-link">Memory: direct and flexible</a></li>
+          
+          <li><a href="#console-services-at-start-up" class="wk-toc-link">Console services at start-up</a></li>
+          
+          <li><a href="#every-call-the-runtime-answers" class="wk-toc-link">Every call the runtime answers</a></li>
+          
           <li><a href="#the-current-startup-stop" class="wk-toc-link">The current startup stop</a></li>
           
           <li><a href="#implementation-and-tests" class="wk-toc-link">Implementation and tests</a></li>
@@ -420,7 +428,7 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 28, 2026 05:15:03 UTC">October 28, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 30, 2026 17:34:01 UTC">October 30, 2026</span></p>
       
       <h1 id="runtime-system-call-notes">Runtime system-call notes</h1>
 <p class="wk-lede">What each runtime system call is for, what it must do, what the game was seen to do with it, and how Paleblood's runtime answers.</p>
@@ -429,7 +437,7 @@
 <p><span class="wk-label">At a glance</span></p>
 <dl>
 <dt>Covers</dt>
-<dd>Calls from <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> issue <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/34">#34</a>, plus the network slice from issue <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/41">#41</a>.</dd>
+<dd>Calls from <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> issue <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/34">#34</a>, the start-up services from <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/36">#36</a> and <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/40">#40</a>, and the network slice from <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/41">#41</a>. A generated list of every registered call is near the end.</dd>
 <dt>Status</dt>
 <dd><strong>implemented</strong>: the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> answers the call. <strong>unresolved</strong>: no established answer, so the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> has no implementation or stops by name. <strong>observed</strong>: seen in a real boot, not yet implemented.</dd>
 <dt>How to read</dt>
@@ -1012,6 +1020,831 @@ game passes is not yet observed.</p>
 <p>Merged <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/83">PR #83</a>, by
 <a href="https://github.com/adurham">@adurham</a>, answers those three calls for the stub modules only.</p>
 </details>
+<h2 id="creating-threads-and-waiting">Creating threads and waiting</h2>
+<div class="wk-table is-stack"><table class="wk-stack">
+<thead>
+<tr>
+<th>Call</th>
+<th>Status</th>
+<th>What the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td data-label="Call"><code>scePthreadCreate</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">Runs the guest's entry on a new host thread with its own stack and thread-local storage.</td>
+</tr>
+<tr>
+<td data-label="Call"><code>scePthreadSetaffinity</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">Records the CPU mask; the host schedules the thread.</td>
+</tr>
+<tr>
+<td data-label="Call"><code>scePthreadAttrSetstacksize</code>, <code>pthread_attr_setstacksize</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">Records the size; below 16 KiB it answers "invalid", as the game expects.</td>
+</tr>
+<tr>
+<td data-label="Call"><code>scePthreadAttrSetschedpolicy</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">Records FIFO, other or round-robin.</td>
+</tr>
+<tr>
+<td data-label="Call"><code>sceKernelCreateSema</code> … <code>sceKernelPollSema</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">Counting semaphores: create, wait, signal, poll, delete.</td>
+</tr>
+<tr>
+<td data-label="Call"><code>pthread_cond_*</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">Condition variables, without timed waits.</td>
+</tr>
+</tbody>
+</table></div>
+<p>A game keeps many threads busy at once: loading, audio, rendering, the game's own logic. These calls
+let the game start those threads and make them wait for one another.</p>
+<p><strong>Starting a thread.</strong> The game describes a thread with an attribute object (stack size, scheduling
+policy, whether anyone will wait for it to finish), then creates it. The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> gives each guest
+thread its own stack and its own copy of the game's thread-local data, then runs the game's entry
+function on a new host thread. The game asks for a 16 KiB stack again whenever a smaller size is
+refused, which is how the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> knows the smallest size it should accept.</p>
+<p><strong>Waiting.</strong> A semaphore holds a count. A thread that needs a unit waits until another thread
+signals one. Condition variables do the same job for the POSIX side of the game's libraries.</p>
+<p><strong>Thread handles fit in 40 bits.</strong> The game's own lock code stores the owner thread's handle in
+only 40 bits, then compares it with the full handle. A handle above 2^40 would never match, and the
+thread would wait forever on a lock it already held. A local boot hung exactly there. The host's
+memory lies above that limit, so the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> now places its thread objects in a range below it.</p>
+<details class="reference">
+<summary>Threads and waiting: PRs, call sites and what stops by name</summary>
+<ul>
+<li>PRs <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/144">#144</a> (semaphores),
+  <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/147">#147</a> (condition variables),
+  <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/148">#148</a> (attribute setters),
+  <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/149">#149</a> (thread creation) and
+  <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/155">#155</a> (handles below 2^40).</li>
+<li>The 16 KiB retry is at <code>0x02a3b383</code>; the 40-bit lock is at <code>0x024368c0</code>.</li>
+<li><strong>Stops by name:</strong> creating a thread without an attribute, a stack size or a detach state; a
+  stack the guest supplies; an empty CPU mask; a semaphore wait with a timeout; a second
+  waiter woken by priority; timed condition waits.</li>
+</ul>
+</details>
+<h2 id="memory-direct-and-flexible">Memory: direct and flexible</h2>
+<div class="wk-table is-stack"><table class="wk-stack">
+<thead>
+<tr>
+<th>Call</th>
+<th>Status</th>
+<th>What the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td data-label="Call"><code>sceKernelGetDirectMemorySize</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">Answers the size of the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>'s own pool (5 GiB).</td>
+</tr>
+<tr>
+<td data-label="Call"><code>sceKernelAllocateDirectMemory</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">Hands out a range of the pool.</td>
+</tr>
+<tr>
+<td data-label="Call"><code>sceKernelMapDirectMemory</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">Maps an allocated range for the CPU; GPU access is accepted.</td>
+</tr>
+<tr>
+<td data-label="Call"><code>sceKernelReleaseDirectMemory</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">Gives a whole, unmapped range back.</td>
+</tr>
+<tr>
+<td data-label="Call"><code>sceKernelMapFlexibleMemory</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">Maps fresh zeroed memory that is not part of the pool.</td>
+</tr>
+</tbody>
+</table></div>
+<p>The <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> has two kinds of memory a game asks for. <strong>Direct memory</strong> is physical memory: the game
+first reserves a range of it, then maps that range into its address space, and two maps of the same
+range see the same bytes. <strong>Flexible memory</strong> is memory the system simply hands over.</p>
+<p>The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> backs direct memory with one shared host memory file, so the "same bytes" rule holds.
+The pool's size is the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>'s choice, not a measured <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> value. The game maps some memory for
+both the CPU and the GPU. The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> has no GPU yet, so it accepts the GPU flags and maps the
+memory for the CPU only. The <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> limits how much flexible memory a game may use; that budget is
+not established, so the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> does not enforce one.</p>
+<details class="reference">
+<summary>Memory: PRs, call sites and what stops by name</summary>
+<ul>
+<li>PRs <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/143">#143</a> (direct memory),
+  <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/154">#154</a> (GPU access) and
+  <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/156">#156</a> (flexible memory).</li>
+<li>The game's maps use protection 3 (CPU read and write) and <code>0x33</code> (CPU and GPU read and
+  write); its only flexible map is at <code>0x02481dbe</code>.</li>
+<li><strong>Stops by name:</strong> map flags and address hints, other protection bits, lengths that are not
+  whole 16 KiB pages, a range that does not fit, and releasing part of a range or a mapped one.</li>
+</ul>
+</details>
+<h2 id="console-services-at-start-up">Console services at start-up</h2>
+<div class="wk-table is-stack"><table class="wk-stack">
+<thead>
+<tr>
+<th>Call</th>
+<th>Status</th>
+<th>What the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td data-label="Call"><code>sceUserServiceInitialize</code>, <code>…GetInitialUser</code>, <code>…GetLoginUserIdList</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">One user, logged in from the start.</td>
+</tr>
+<tr>
+<td data-label="Call"><code>sceCommonDialogInitialize</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">Succeeds once; a repeat answers "already initialized".</td>
+</tr>
+<tr>
+<td data-label="Call"><code>sceSystemServiceParamGetInt</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">Answers the console language you choose (English, United States, by default).</td>
+</tr>
+<tr>
+<td data-label="Call"><code>sceAppContentInitialize</code>, <code>sceAppContentAppParamGetInt</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">Answers the title's own parameters from your copy's <code>param.sfo</code>.</td>
+</tr>
+<tr>
+<td data-label="Call"><code>sceNpSetContentRestriction</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">Records nothing: the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> is offline and has no online content.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Before the title screen the game asks the console a few questions: who is playing, which language
+to use, and what its own package says about itself.</p>
+<ul>
+<li><strong>The user.</strong> The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> models one user, the person running it, logged in from the start.</li>
+<li><strong>The language.</strong> The language is a console setting, so you choose it:
+  <code>tools/boot.py --system-param 1=18</code> picks English (United Kingdom), for example.</li>
+<li><strong>The title's parameters.</strong> These come from your own copy's <code>param.sfo</code>. Paleblood ships none.</li>
+<li><strong>Repeats.</strong> The game initializes some services twice. In each case its second call accepts one
+  exact "already initialized" error, and the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> answers that error.</li>
+</ul>
+<details class="reference">
+<summary>Console services: PRs, call sites and what stops by name</summary>
+<ul>
+<li>PRs <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/146">#146</a> (app content),
+  <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/150">#150</a> (user service),
+  <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/151">#151</a> (common dialog),
+  <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/152">#152</a> (system language) and
+  <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/153">#153</a> (content restriction).</li>
+<li>The "already initialized" answers are <code>0x80960003</code> (user service, accepted at <code>0x010ba1ac</code>)
+  and <code>0x80b80002</code> (common dialog, accepted at <code>0x02023fbb</code>). All nine language reads ask for
+  setting 1.</li>
+<li><strong>Stops by name:</strong> a service call before initialize, a setting nobody gave, a title parameter
+  your copy does not declare, and missing arguments.</li>
+</ul>
+</details>
+<h2 id="every-call-the-runtime-answers">Every call the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> answers</h2>
+<p>This list is generated from the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>'s registry in Paleblood <code>main</code> each time the wiki syncs,
+so it is complete even when the explanations above have not caught up. "Stops by name" means the
+call is registered only to name itself and stop, because its answer is not established.</p>
+<!-- Generated by tools/sync_progress.py from the runtime registry in Paleblood main. -->
+
+<h4 id="libkernel"><code>libkernel</code></h4>
+<div class="wk-table"><table>
+<thead>
+<tr>
+<th>Call</th>
+<th>Status</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>__stack_chk_fail</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel.c"><code>runtime/syslib/kernel.c</code></a></td>
+</tr>
+<tr>
+<td><code>_sceKernelRtldSetApplicationHeapAPI</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel.c"><code>runtime/syslib/kernel.c</code></a></td>
+</tr>
+<tr>
+<td><code>getpagesize</code></td>
+<td>stops by name</td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel.c"><code>runtime/syslib/kernel.c</code></a></td>
+</tr>
+<tr>
+<td><code>gettimeofday</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_time_of_day.c"><code>runtime/syslib/kernel_time_of_day.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceKernelAllocateDirectMemory</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_memory.c"><code>runtime/syslib/kernel_memory.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceKernelCreateSema</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_sema.c"><code>runtime/syslib/kernel_sema.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceKernelDeleteSema</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_sema.c"><code>runtime/syslib/kernel_sema.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceKernelGetDirectMemorySize</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_memory.c"><code>runtime/syslib/kernel_memory.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceKernelGetProcParam</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel.c"><code>runtime/syslib/kernel.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceKernelGettimeofday</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_time_of_day.c"><code>runtime/syslib/kernel_time_of_day.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceKernelMapDirectMemory</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_memory.c"><code>runtime/syslib/kernel_memory.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceKernelMapFlexibleMemory</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_memory.c"><code>runtime/syslib/kernel_memory.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceKernelPollSema</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_sema.c"><code>runtime/syslib/kernel_sema.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceKernelReleaseDirectMemory</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_memory.c"><code>runtime/syslib/kernel_memory.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceKernelSignalSema</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_sema.c"><code>runtime/syslib/kernel_sema.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceKernelUsleep</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel.c"><code>runtime/syslib/kernel.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceKernelWaitSema</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_sema.c"><code>runtime/syslib/kernel_sema.c</code></a></td>
+</tr>
+<tr>
+<td><code>scePthreadAttrDestroy</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_thread.c"><code>runtime/syslib/kernel_thread.c</code></a></td>
+</tr>
+<tr>
+<td><code>scePthreadAttrGet</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_thread.c"><code>runtime/syslib/kernel_thread.c</code></a></td>
+</tr>
+<tr>
+<td><code>scePthreadAttrInit</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_thread.c"><code>runtime/syslib/kernel_thread.c</code></a></td>
+</tr>
+<tr>
+<td><code>scePthreadAttrSetdetachstate</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_thread.c"><code>runtime/syslib/kernel_thread.c</code></a></td>
+</tr>
+<tr>
+<td><code>scePthreadAttrSetschedpolicy</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_thread.c"><code>runtime/syslib/kernel_thread.c</code></a></td>
+</tr>
+<tr>
+<td><code>scePthreadAttrSetstacksize</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_thread.c"><code>runtime/syslib/kernel_thread.c</code></a></td>
+</tr>
+<tr>
+<td><code>scePthreadCondBroadcast</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_mutex.c"><code>runtime/syslib/kernel_mutex.c</code></a></td>
+</tr>
+<tr>
+<td><code>scePthreadCondDestroy</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_mutex.c"><code>runtime/syslib/kernel_mutex.c</code></a></td>
+</tr>
+<tr>
+<td><code>scePthreadCondInit</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_mutex.c"><code>runtime/syslib/kernel_mutex.c</code></a></td>
+</tr>
+<tr>
+<td><code>scePthreadCondSignal</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_mutex.c"><code>runtime/syslib/kernel_mutex.c</code></a></td>
+</tr>
+<tr>
+<td><code>scePthreadCondTimedwait</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_mutex.c"><code>runtime/syslib/kernel_mutex.c</code></a></td>
+</tr>
+<tr>
+<td><code>scePthreadCondWait</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_mutex.c"><code>runtime/syslib/kernel_mutex.c</code></a></td>
+</tr>
+<tr>
+<td><code>scePthreadCreate</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_thread.c"><code>runtime/syslib/kernel_thread.c</code></a></td>
+</tr>
+<tr>
+<td><code>scePthreadEqual</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_thread.c"><code>runtime/syslib/kernel_thread.c</code></a></td>
+</tr>
+<tr>
+<td><code>scePthreadMutexattrDestroy</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_mutex.c"><code>runtime/syslib/kernel_mutex.c</code></a></td>
+</tr>
+<tr>
+<td><code>scePthreadMutexattrInit</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_mutex.c"><code>runtime/syslib/kernel_mutex.c</code></a></td>
+</tr>
+<tr>
+<td><code>scePthreadMutexattrSetprotocol</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_mutex.c"><code>runtime/syslib/kernel_mutex.c</code></a></td>
+</tr>
+<tr>
+<td><code>scePthreadMutexattrSettype</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_mutex.c"><code>runtime/syslib/kernel_mutex.c</code></a></td>
+</tr>
+<tr>
+<td><code>scePthreadMutexDestroy</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_mutex.c"><code>runtime/syslib/kernel_mutex.c</code></a></td>
+</tr>
+<tr>
+<td><code>scePthreadMutexInit</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_mutex.c"><code>runtime/syslib/kernel_mutex.c</code></a></td>
+</tr>
+<tr>
+<td><code>scePthreadMutexLock</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_mutex.c"><code>runtime/syslib/kernel_mutex.c</code></a></td>
+</tr>
+<tr>
+<td><code>scePthreadMutexTrylock</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_mutex.c"><code>runtime/syslib/kernel_mutex.c</code></a></td>
+</tr>
+<tr>
+<td><code>scePthreadMutexUnlock</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_mutex.c"><code>runtime/syslib/kernel_mutex.c</code></a></td>
+</tr>
+<tr>
+<td><code>scePthreadSelf</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_thread.c"><code>runtime/syslib/kernel_thread.c</code></a></td>
+</tr>
+<tr>
+<td><code>scePthreadSetaffinity</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_thread.c"><code>runtime/syslib/kernel_thread.c</code></a></td>
+</tr>
+<tr>
+<td><code>scePthreadYield</code></td>
+<td>stops by name</td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_thread.c"><code>runtime/syslib/kernel_thread.c</code></a></td>
+</tr>
+<tr>
+<td><code>sched_yield</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_thread.c"><code>runtime/syslib/kernel_thread.c</code></a></td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="libsceappcontent"><code>libSceAppContent</code></h4>
+<div class="wk-table"><table>
+<thead>
+<tr>
+<th>Call</th>
+<th>Status</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>sceAppContentAppParamGetInt</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/app_content.c"><code>runtime/syslib/app_content.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceAppContentInitialize</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/app_content.c"><code>runtime/syslib/app_content.c</code></a></td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="libscecommondialog"><code>libSceCommonDialog</code></h4>
+<div class="wk-table"><table>
+<thead>
+<tr>
+<th>Call</th>
+<th>Status</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>sceCommonDialogInitialize</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/common_dialog.c"><code>runtime/syslib/common_dialog.c</code></a></td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="libscehttp"><code>libSceHttp</code></h4>
+<div class="wk-table"><table>
+<thead>
+<tr>
+<th>Call</th>
+<th>Status</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>sceHttpInit</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/network.c"><code>runtime/syslib/network.c</code></a></td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="libscelibcinternal"><code>libSceLibcInternal</code></h4>
+<div class="wk-table"><table>
+<thead>
+<tr>
+<th>Call</th>
+<th>Status</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>memcpy</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel.c"><code>runtime/syslib/kernel.c</code></a></td>
+</tr>
+<tr>
+<td><code>memset</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel.c"><code>runtime/syslib/kernel.c</code></a></td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="libscenet"><code>libSceNet</code></h4>
+<div class="wk-table"><table>
+<thead>
+<tr>
+<th>Call</th>
+<th>Status</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>sceNetHtonl</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/network.c"><code>runtime/syslib/network.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceNetHtons</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/network.c"><code>runtime/syslib/network.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceNetInetPton</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/network.c"><code>runtime/syslib/network.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceNetInit</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/network.c"><code>runtime/syslib/network.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceNetNtohl</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/network.c"><code>runtime/syslib/network.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceNetNtohs</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/network.c"><code>runtime/syslib/network.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceNetPoolCreate</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/network.c"><code>runtime/syslib/network.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceNetTerm</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/network.c"><code>runtime/syslib/network.c</code></a></td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="libscenetctl"><code>libSceNetCtl</code></h4>
+<div class="wk-table"><table>
+<thead>
+<tr>
+<th>Call</th>
+<th>Status</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>sceNetCtlCheckCallback</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/netctl.c"><code>runtime/syslib/netctl.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceNetCtlGetInfo</code></td>
+<td>stops by name</td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/netctl.c"><code>runtime/syslib/netctl.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceNetCtlGetNatInfo</code></td>
+<td>stops by name</td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/netctl.c"><code>runtime/syslib/netctl.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceNetCtlGetState</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/netctl.c"><code>runtime/syslib/netctl.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceNetCtlRegisterCallback</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/netctl.c"><code>runtime/syslib/netctl.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceNetCtlUnregisterCallback</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/netctl.c"><code>runtime/syslib/netctl.c</code></a></td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="libscenpmanager"><code>libSceNpManager</code></h4>
+<div class="wk-table"><table>
+<thead>
+<tr>
+<th>Call</th>
+<th>Status</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>sceNpSetContentRestriction</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/np_manager.c"><code>runtime/syslib/np_manager.c</code></a></td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="libsceposix"><code>libScePosix</code></h4>
+<div class="wk-table"><table>
+<thead>
+<tr>
+<th>Call</th>
+<th>Status</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>getpagesize</code></td>
+<td>stops by name</td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel.c"><code>runtime/syslib/kernel.c</code></a></td>
+</tr>
+<tr>
+<td><code>gettimeofday</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_time_of_day.c"><code>runtime/syslib/kernel_time_of_day.c</code></a></td>
+</tr>
+<tr>
+<td><code>pthread_attr_destroy</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_thread.c"><code>runtime/syslib/kernel_thread.c</code></a></td>
+</tr>
+<tr>
+<td><code>pthread_attr_init</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_thread.c"><code>runtime/syslib/kernel_thread.c</code></a></td>
+</tr>
+<tr>
+<td><code>pthread_attr_setdetachstate</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_thread.c"><code>runtime/syslib/kernel_thread.c</code></a></td>
+</tr>
+<tr>
+<td><code>pthread_attr_setstacksize</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_thread.c"><code>runtime/syslib/kernel_thread.c</code></a></td>
+</tr>
+<tr>
+<td><code>pthread_cond_broadcast</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_mutex.c"><code>runtime/syslib/kernel_mutex.c</code></a></td>
+</tr>
+<tr>
+<td><code>pthread_cond_destroy</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_mutex.c"><code>runtime/syslib/kernel_mutex.c</code></a></td>
+</tr>
+<tr>
+<td><code>pthread_cond_init</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_mutex.c"><code>runtime/syslib/kernel_mutex.c</code></a></td>
+</tr>
+<tr>
+<td><code>pthread_cond_signal</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_mutex.c"><code>runtime/syslib/kernel_mutex.c</code></a></td>
+</tr>
+<tr>
+<td><code>pthread_cond_wait</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_mutex.c"><code>runtime/syslib/kernel_mutex.c</code></a></td>
+</tr>
+<tr>
+<td><code>pthread_mutex_destroy</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_mutex.c"><code>runtime/syslib/kernel_mutex.c</code></a></td>
+</tr>
+<tr>
+<td><code>pthread_mutex_init</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_mutex.c"><code>runtime/syslib/kernel_mutex.c</code></a></td>
+</tr>
+<tr>
+<td><code>pthread_mutex_lock</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_mutex.c"><code>runtime/syslib/kernel_mutex.c</code></a></td>
+</tr>
+<tr>
+<td><code>pthread_mutex_trylock</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_mutex.c"><code>runtime/syslib/kernel_mutex.c</code></a></td>
+</tr>
+<tr>
+<td><code>pthread_mutex_unlock</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_mutex.c"><code>runtime/syslib/kernel_mutex.c</code></a></td>
+</tr>
+<tr>
+<td><code>pthread_mutexattr_destroy</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_mutex.c"><code>runtime/syslib/kernel_mutex.c</code></a></td>
+</tr>
+<tr>
+<td><code>pthread_mutexattr_init</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_mutex.c"><code>runtime/syslib/kernel_mutex.c</code></a></td>
+</tr>
+<tr>
+<td><code>pthread_mutexattr_settype</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_mutex.c"><code>runtime/syslib/kernel_mutex.c</code></a></td>
+</tr>
+<tr>
+<td><code>pthread_self</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_thread.c"><code>runtime/syslib/kernel_thread.c</code></a></td>
+</tr>
+<tr>
+<td><code>usleep</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel.c"><code>runtime/syslib/kernel.c</code></a></td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="libscessl"><code>libSceSsl</code></h4>
+<div class="wk-table"><table>
+<thead>
+<tr>
+<th>Call</th>
+<th>Status</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>sceSslInit</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/network.c"><code>runtime/syslib/network.c</code></a></td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="libscesysmodule"><code>libSceSysmodule</code></h4>
+<div class="wk-table"><table>
+<thead>
+<tr>
+<th>Call</th>
+<th>Status</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>sceSysmoduleIsLoaded</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_sysmodule.c"><code>runtime/syslib/kernel_sysmodule.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceSysmoduleLoadModule</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_sysmodule.c"><code>runtime/syslib/kernel_sysmodule.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceSysmoduleUnloadModule</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_sysmodule.c"><code>runtime/syslib/kernel_sysmodule.c</code></a></td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="libscesystemservice"><code>libSceSystemService</code></h4>
+<div class="wk-table"><table>
+<thead>
+<tr>
+<th>Call</th>
+<th>Status</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>sceSystemServiceParamGetInt</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/system_service.c"><code>runtime/syslib/system_service.c</code></a></td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="libsceuserservice"><code>libSceUserService</code></h4>
+<div class="wk-table"><table>
+<thead>
+<tr>
+<th>Call</th>
+<th>Status</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>sceUserServiceGetInitialUser</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/user_service.c"><code>runtime/syslib/user_service.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceUserServiceGetLoginUserIdList</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/user_service.c"><code>runtime/syslib/user_service.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceUserServiceInitialize</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/user_service.c"><code>runtime/syslib/user_service.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceUserServiceTerminate</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/user_service.c"><code>runtime/syslib/user_service.c</code></a></td>
+</tr>
+</tbody>
+</table></div>
 <h2 id="the-current-startup-stop">The current startup stop</h2>
 <div class="wk-table is-stack"><table class="wk-stack">
 <thead>
@@ -1042,8 +1875,10 @@ observations of <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running O
 <p><strong>Why the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> does not answer yet.</strong> Returning success with a guessed mask would change the CPU
 count the C library stores without implementing the query. So the import stays unbound until the
 main thread's real mask, the exact output width and the error contract are established.
-<a href="https://github.com/Yharnam-Hunters/Paleblood/issues/34">Issue #34</a> tracks it, and nobody has
-claimed it yet.</p>
+<a href="https://github.com/Yharnam-Hunters/Paleblood/issues/34">Issue #34</a> tracks it. BluePinetree has
+<a href="https://github.com/Yharnam-Hunters/Paleblood/issues/34#issuecomment-6382426142">claimed</a> the work:
+a way for the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> to replace a function inside a bundled module such as <code>libc.elf</code>, so this
+probe can be answered there.</p>
 <details class="reference">
 <summary>scePthreadAttrGetaffinity: declaration source</summary>
 <p>OpenOrbis <a href="https://github.com/OpenOrbis/OpenOrbis-PS4-Toolchain/blob/0a1aaf9dd4a92695538bdeb09fb056d06dd11725/include/orbis/libkernel.h#L463"><code>libkernel.h</code></a>
