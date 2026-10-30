@@ -406,36 +406,8 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 28, 2026 05:15:03 UTC">October 28, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 30, 2026 21:37:00 UTC">October 30, 2026</span></p>
       
-      
-      
-      <aside class="wk-freshness" role="note">
-        <p><b>Not yet updated for 9 merged changes.</b>
-        This page was last checked against Paleblood
-        <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/251d4266b0a89a3bf7c705d1eca1ffb2a41fae9b"><code>251d426</code></a>;
-        these pull requests changed what it describes since:</p>
-        <ul>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/141">#141</a> frame_timing: replace four state methods that find the Chalice Dungeon gate</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/138">#138</a> frame_timing: replace five SprjDungeonGateIns methods that step its state</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/104">#104</a> frame_timing: replace the millisecond sleep wrapper</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/92">#92</a> docs: record post-module boot and affinity evidence</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/91">#91</a> docs: refresh runtime coverage from genuine boot</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/65">#65</a> tools: add evidence-aware function catalog</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/64">#64</a> event: implement event flag writes with original-code differential</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/63">#63</a> runtime: implement observed IPv4 text conversion</li>
-          
-          <li>and 1 more</li>
-        </ul>
-      </aside>
       
       <h1 class="wk-visually-hidden" id="byrgenwerth">Byrgenwerth</h1>
 <div class="wk-hero">
@@ -508,14 +480,17 @@ program, at any frame rate and resolution.</p>
 <ul>
 <li><strong>Decompilation:</strong> functions rewritten as readable C++ and proved against the original in the
   verification <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr>, on inputs recorded earlier and on generated <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr>.</li>
-<li><strong>Runtime:</strong> our own <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> (done), generic input <abbr title="Inputs recorded while the game ran, replayed by the harness.">capture</abbr> (foundation in place; integration
-  incomplete), kernel, threads and memory, files, input, audio, video out, and the graphics,
-  rebuilt at the engine's own level rather than by emulating the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr>'s GPU (<a href="runtime/">Runtime</a>).</li>
+<li><strong>Runtime:</strong> our own <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> (done), input <abbr title="Inputs recorded while the game ran, replayed by the harness.">capture</abbr> (a game run can now record a function's
+  inputs by tracing the original), kernel, threads and memory, files, input, audio, video out,
+  and the graphics, rebuilt at the engine's own level rather than by emulating the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr>'s GPU
+  (<a href="runtime/">Runtime</a>).</li>
 </ul>
 <p>The game does not run on Paleblood until the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> is far enough along that road. Today the
 <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr> maps the executable and bundled modules, then stops during bundled <code>libc</code> startup at an
 unresolved system import, before the first boot milestone; full game runs still use an external
-host scaffold while the project-owned <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> is completed.</p>
+host scaffold while the project-owned <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> is completed. Past that stop, the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> already
+answers the calls the game makes to start its threads, sound and file reading; the
+<a href="runtime/">Runtime</a> page shows how far a boot gets.</p>
 </details>
 <details class="details">
 <summary>How a function becomes <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></summary>

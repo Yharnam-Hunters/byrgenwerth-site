@@ -393,7 +393,7 @@
           
           <li><a href="#what-works-in-palebloods-runtime" class="wk-toc-link">What works in Paleblood's runtime</a></li>
           
-          <li><a href="#runtime-services-added-since-the-saved-run" class="wk-toc-link">Runtime services added since the saved run</a></li>
+          <li><a href="#how-far-a-boot-gets" class="wk-toc-link">How far a boot gets</a></li>
           
           <li><a href="#capture-and-replay" class="wk-toc-link">Capture and replay</a></li>
           
@@ -414,36 +414,8 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 28, 2026 05:15:03 UTC">October 28, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 30, 2026 21:37:00 UTC">October 30, 2026</span></p>
       
-      
-      
-      <aside class="wk-freshness" role="note">
-        <p><b>Not yet updated for 44 merged changes.</b>
-        This page was last checked against Paleblood
-        <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/251d4266b0a89a3bf7c705d1eca1ffb2a41fae9b"><code>251d426</code></a>;
-        these pull requests changed what it describes since:</p>
-        <ul>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/170">#170</a> runtime: serve /app0 from your copy, and open and read its files</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/169">#169</a> runtime: pace audio output in real time (sceAudioOutOutput)</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/168">#168</a> runtime: record a thread attribute's priority and CPU mask</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/167">#167</a> runtime: start audio output (sceAudioOutInit, sceAudioOutOpen, sceAudioOutSetVolume)</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/166">#166</a> runtime: start the audio job manager (sceAjmInitialize, sceAjmModuleRegister)</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/165">#165</a> runtime: process time and sceKernelClockGettime</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/164">#164</a> runtime: answer clock_gettime with FreeBSD's clocks</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/163">#163</a> runtime: record thread priorities (scePthreadGetprio, scePthreadSetprio)</li>
-          
-          <li>and 36 more</li>
-        </ul>
-      </aside>
       
       <h1 id="runtime">Runtime</h1>
 <p class="wk-lede">Paleblood is building a runtime of its own. A runtime is the software that loads a program and provides the system services it expects.</p>
@@ -472,24 +444,13 @@ has not <abbr title="A function with a C++ replacement registered in the hook ta
 <p><strong><abbr title="Executable and Linkable Format, the standard executable file format on Linux and FreeBSD.">ELF</abbr> loading and boot diagnostics.</strong> <code>runtime/loader.c</code> maps the executable and bundled modules,
 applies relocations, and binds known imports. <code>runtime/boot.c</code> and <code>tools/boot.py</code> run the entry
 point and record how far it gets.</p>
-<p><strong>Selected system calls.</strong> The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> supplies:</p>
-<ul>
-<li>a small set of kernel/thread calls;</li>
-<li>four <code>libSceNet</code> byte-order conversions;</li>
-<li>an observed IPv4 text-to-binary conversion: <code>sceNetInetPton</code> implements the observed AF_INET path only;</li>
-<li>four constrained offline <code>libSceNetCtl</code> behaviors: <code>sceNetCtlGetState</code>, <code>sceNetCtlCheckCallback</code>,
-  <code>sceNetCtlRegisterCallback</code>, and <code>sceNetCtlUnregisterCallback</code>.</li>
-</ul>
-<p>Together these are 9 of 175 imports in the network and online-services issue group. The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>
-does not implement sockets, resolvers, HTTP, or online services. See
-<a href="../runtime-syscalls/"><abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> system-call notes</a> and <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/41">issue #41</a>
-for the group checklist.</p>
-<details class="caveat">
-<summary>Network calls that still fail loudly</summary>
-<p>For <code>sceNetInetPton</code>, other families and null-pointer error behavior remain fail-loud. The other
-imported NetCtl calls, <code>sceNetCtlGetInfo</code> and <code>sceNetCtlGetNatInfo</code>, remain fail-loud diagnostics
-because the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> information layouts and offline values are not established.</p>
-</details>
+<p><strong>System calls.</strong> The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> answers more than a hundred of the system calls the game imports:
+threads, locks and semaphores, memory, clocks, the console's start-up services, the network and
+HTTP libraries' offline start-up, sound output, and reading the game's own files. The
+<a href="../runtime-syscalls/"><abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> system-call notes</a> explain each group, and end with a list of every
+call the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> answers, generated from the code on every sync.</p>
+<p>Where the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr>'s behaviour is not established, the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> does not guess: it stops and names the
+call. It plays no sound and draws nothing yet, and it never contacts a network.</p>
 <p><strong>Function replacements and <abbr title="14-byte jumps written over the start of original functions, sending their callers to the replacements.">hooks</abbr>.</strong> The project's plug-in receives the guest image and a
 <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr>-install callback, then registers its function replacements. Paleblood now also provides a small
 implementation of the version-1 <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> callback:</p>
@@ -525,97 +486,21 @@ is not connected to the full game-run scaffold, and the test does not run the ga
 <p>Generated by <code>tools/sync_progress.py</code> from the code repo. Do not edit.</p>
 <p>The table above is generated from the saved Paleblood boot record. Its date identifies the last
 recorded run; changing <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> code does not refresh the result by itself.</p>
-<h2 id="runtime-services-added-since-the-saved-run">Runtime services added since the saved run</h2>
-<p>None of these has been through a boot run yet. Details per call are in the
-<a href="../runtime-syscalls/"><abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> system-call notes</a> and on <a href="../systems/kernel/">Kernel</a>.</p>
-<div class="wk-table is-stack"><table class="wk-stack">
-<thead>
-<tr>
-<th>Call</th>
-<th>Added by</th>
-<th>Status</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td data-label="Call">Guest-thread handle comparison</td>
-<td data-label="Added by"><a href="https://github.com/EzequielRindello">@EzequielRindello</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/62">PR #62</a></td>
-<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
-</tr>
-<tr>
-<td data-label="Call">Host-thread yield through <code>sched_yield</code></td>
-<td data-label="Added by"><a href="https://github.com/EzequielRindello">@EzequielRindello</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/72">PR #72</a></td>
-<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
-</tr>
-<tr>
-<td data-label="Call"><code>scePthreadYield</code> (<abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> return signature unknown)</td>
-<td data-label="Added by"></td>
-<td data-label="Status"><span class="wk-badge wk-badge--unresolved">unresolved</span></td>
-</tr>
-<tr>
-<td data-label="Call">Thread-attribute detach-state setters, with SCE and POSIX error conventions</td>
-<td data-label="Added by"><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/81">PR #81</a></td>
-<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
-</tr>
-<tr>
-<td data-label="Call">Reading the system-supplied detach-state default</td>
-<td data-label="Added by"><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/81">PR #81</a></td>
-<td data-label="Status"><span class="wk-badge wk-badge--unresolved">unresolved</span></td>
-</tr>
-<tr>
-<td data-label="Call">Imported <code>memcpy</code> and <code>memset</code>, through the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> symbol registry</td>
-<td data-label="Added by"><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/82">PR #82</a></td>
-<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
-</tr>
-<tr>
-<td data-label="Call"><code>sceKernelUsleep</code> and <code>usleep</code> (sleep the host thread)</td>
-<td data-label="Added by"><a href="https://github.com/EzequielRindello">@EzequielRindello</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/94">PR #94</a></td>
-<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
-</tr>
-<tr>
-<td data-label="Call"><code>usleep</code> of a second or more; any SCE error for <code>sceKernelUsleep</code></td>
-<td data-label="Added by"><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/94">PR #94</a></td>
-<td data-label="Status"><span class="wk-badge wk-badge--unresolved">unresolved</span></td>
-</tr>
-<tr>
-<td data-label="Call"><code>pthread_self</code>, <code>pthread_attr_init</code>, <code>pthread_attr_destroy</code> under POSIX names, alongside the SCE names</td>
-<td data-label="Added by"><a href="https://github.com/EzequielRindello">@EzequielRindello</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/95">PR #95</a></td>
-<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
-</tr>
-<tr>
-<td data-label="Call"><code>__stack_chk_fail</code>: ends the program by name when the stack protector calls it</td>
-<td data-label="Added by"><a href="https://github.com/EzequielRindello">@EzequielRindello</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/97">PR #97</a></td>
-<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
-</tr>
-</tbody>
-</table></div>
-<p>Unresolved calls stop by name when called, because their <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> answer is not established.</p>
-<details class="caveat">
-<summary>What these merges do and do not show</summary>
-<p>After that saved run, contributor <a href="https://github.com/EzequielRindello">@EzequielRindello</a> added
-guest-thread handle comparison in <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/62">PR #62</a>
-and host-thread yielding through <code>sched_yield</code> in <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/72">PR #72</a>.
-Their registry tests check the implemented contracts; they do not demonstrate that a new startup
-path ran. The similarly named <code>scePthreadYield</code> remains an unresolved diagnostic because its
-<abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr>-visible return signature is not established. See <a href="../systems/kernel/">Kernel</a> for the evidence
-and limitations.</p>
-<p>Merged <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/82">PR #82</a> supplies imported
-<code>memcpy</code> and <code>memset</code> through the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> symbol registry. <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/81">PR #81</a>
-adds explicit thread-attribute detach-state setters with SCE and POSIX error conventions;
-reading a system-supplied default still fails loudly because its <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> value is unknown.
-Their focused registry tests are synthetic evidence. Neither merge establishes a new boot
-result or changes <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> game-function counts.</p>
-<p>In the week of 26 October, <a href="https://github.com/EzequielRindello">@EzequielRindello</a> added three
-more <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> services. <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/94">PR #94</a> sleeps the
-host thread for <code>sceKernelUsleep</code> and <code>usleep</code>. <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/95">PR #95</a>
-registers <code>pthread_self</code>, <code>pthread_attr_init</code> and <code>pthread_attr_destroy</code> under their POSIX names,
-alongside the SCE names. <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/97">PR #97</a> ends the
-program by name when the game's stack protector calls <code>__stack_chk_fail</code>, which is that call's
-whole contract. Cases with no established <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> answer still stop by name: <code>usleep</code> of a second or
-more, and any SCE error for <code>sceKernelUsleep</code>. None of these touches the current stop at
-<code>scePthreadAttrGetaffinity</code>, and the saved boot has not been rerun since they merged. See the
-<a href="../runtime-syscalls/"><abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> system-call notes</a> for the evidence behind each.</p>
-</details>
+<h2 id="how-far-a-boot-gets">How far a boot gets</h2>
+<p>The table above comes from the last boot recorded on merged <code>main</code>. That boot still stops at
+<code>scePthreadAttrGetaffinity</code>, inside the game's bundled C library (see below).</p>
+<p>To see what lies beyond that stop, the maintainer also runs <strong>local discovery boots</strong> that stand in
+for the two missing pieces (the affinity query and the reader-writer locks) without committing
+them. Such a run is not a merged-<code>main</code> result, but it shows which call comes next. On 30 October
+2026 a local discovery boot:</p>
+<ul>
+<li>started the game's threads, its HTTP client (offline) and its sound system;</li>
+<li>found and read its first data file, <code>sprj_mixer.fev</code>, from the person's own copy;</li>
+<li>stopped at the first graphics-driver call whose answer is not established
+  (<code>sceGnmValidateCommandBuffers</code>).</li>
+</ul>
+<p>Each call it passed through was then implemented and merged with its own evidence; the
+<a href="../runtime-syscalls/"><abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> system-call notes</a> list them.</p>
 <h2 id="capture-and-replay">Capture and replay</h2>
 <p>Paleblood has a local <abbr title="Inputs recorded while the game ran, replayed by the harness.">capture</abbr> writer and replay verifier.</p>
 <ul>
@@ -668,9 +553,11 @@ explains what is observed and which stages still require original-game evidence 
 <p>Compared with the 247/686 trace from PR #63, <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> changes merged since then, including module
 loading at run time (PR #83), raised the supplied-import count, but startup did not advance. The
 generated status above is synchronized from that run.</p>
-<p><strong>Why it is still the blocker.</strong> Issue #34 tracks claims call by call; no contributor has claimed
-<code>scePthreadAttrGetaffinity</code>, and its main-thread affinity behavior is not yet established, so the
-<abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> leaves it unimplemented.</p>
+<p><strong>Why it is still the blocker.</strong> The call comes from the game's bundled C library, not from the
+executable, and its answer for the main thread is not established. BluePinetree has
+<a href="https://github.com/Yharnam-Hunters/Paleblood/issues/34#issuecomment-6382426142">claimed</a> the work
+that lets the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> replace a function inside a bundled module, so this query can be answered
+there. Until that lands, merged <code>main</code> stops here.</p>
 <details class="reference">
 <summary>Boot history fields (PR #51)</summary>
 <p><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/51">PR #51</a> extended new <code>symbols/boot_history.csv</code> rows with the run outcome, execution phase, unresolved-import return site, and guest-fault location, signal, and address. A changed failure location is recorded even when import counts and the blocking symbol stay the same. Existing rows remain readable.</p>
@@ -816,17 +703,24 @@ Paleblood's function table; see the <a href="../progress/">progress dashboard</a
 <p>Generated by <code>tools/sync_progress.py</code> from the code repo. Do not edit.</p>
 <h2 id="roadmap">Roadmap</h2>
 <ol class="wk-steps">
-<li><strong>Loader and boot <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr>:</strong> project-owned and independently tested. The latest saved run of merged main <code>68d5f93</code> reaches the <code>loaded</code> milestone (0/8), before the executable's entry has completed.</li>
-<li><strong>Kernel, threads, and memory:</strong> the present boot blocker. Issue #34 is contributor-claimed; preserve that ownership and run the <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr> after the relevant change merges.</li>
+<li><strong>Loader and boot <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr>:</strong> project-owned and independently tested.</li>
+<li><strong>Kernel, threads, and memory:</strong> most of what start-up needs is in place. Merged <code>main</code> still stops at <code>scePthreadAttrGetaffinity</code> until BluePinetree's module replacement lands.</li>
+<li><strong>Files, audio, network start-up:</strong> begun. The game reads its own files read-only, its audio thread runs in real time without sound, and its HTTP client starts offline.</li>
+<li><strong><abbr title="The PS4's low-level graphics API.">GNM</abbr> and shaders:</strong> begun at the first call. The graphics layer is rebuilt at the engine's interface, not by emulating the GPU, and the goal is the first rendered frame.</li>
 <li><strong>Capture integration:</strong> add a return-aware, ABI-described observation boundary before connecting recordings to production <abbr title="14-byte jumps written over the start of original functions, sending their callers to the replacements.">hooks</abbr>. Synthetic tests are not a substitute for real <abbr title="Inputs recorded while the game ran, replayed by the harness.">captures</abbr>.</li>
-<li><strong>Files, input, audio, and video output:</strong> implement and measure each milestone as the boot <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr> reaches it.</li>
-<li><strong><abbr title="The PS4's low-level graphics API.">GNM</abbr> and shaders:</strong> rebuild the game's graphics layer at its engine interface, then prove the first rendered frame.</li>
 </ol>
-<p>System-library work is tracked separately from boot milestones. The network issue group has nine
-implemented imports: four byte-order conversions, the AF_INET path of <code>sceNetInetPton</code>, and four
-offline NetCtl behaviors. <code>GetInfo</code> and <code>GetNatInfo</code> remain callable unresolved diagnostics, as do
-sockets, resolvers, epoll, HTTP, and online services. The generated checklist reports 9/175
-network-group imports implemented. See Paleblood's <a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/NEXT.md"><abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> queue</a>
+<p>System-library work is tracked separately from boot milestones, in one issue per group: kernel
+(<a href="https://github.com/Yharnam-Hunters/Paleblood/issues/34">#34</a>), files
+(<a href="https://github.com/Yharnam-Hunters/Paleblood/issues/35">#35</a>), input and users
+(<a href="https://github.com/Yharnam-Hunters/Paleblood/issues/36">#36</a>), audio
+(<a href="https://github.com/Yharnam-Hunters/Paleblood/issues/37">#37</a>), video out
+(<a href="https://github.com/Yharnam-Hunters/Paleblood/issues/38">#38</a>), <abbr title="The PS4's low-level graphics API.">GNM</abbr>
+(<a href="https://github.com/Yharnam-Hunters/Paleblood/issues/39">#39</a>), system services
+(<a href="https://github.com/Yharnam-Hunters/Paleblood/issues/40">#40</a>) and network
+(<a href="https://github.com/Yharnam-Hunters/Paleblood/issues/41">#41</a>). The network group now covers the
+byte-order and IPv4 helpers, offline network control, and the offline start-up of the network,
+SSL and HTTP libraries; sockets, resolvers and anything that would send data still stop by name.
+See Paleblood's <a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/NEXT.md"><abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> queue</a>
 and <a href="https://github.com/Yharnam-Hunters/Paleblood/issues?q=is%3Aissue+is%3Aopen+label%3Aruntime"><abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> issues</a>.</p>
 <details class="reference">
 <summary>Network-group pull requests</summary>

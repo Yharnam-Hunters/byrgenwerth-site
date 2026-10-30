@@ -415,6 +415,10 @@
           
           <li><a href="#console-services-at-start-up" class="wk-toc-link">Console services at start-up</a></li>
           
+          <li><a href="#sound" class="wk-toc-link">Sound</a></li>
+          
+          <li><a href="#reading-the-games-files" class="wk-toc-link">Reading the game's files</a></li>
+          
           <li><a href="#every-call-the-runtime-answers" class="wk-toc-link">Every call the runtime answers</a></li>
           
           <li><a href="#the-current-startup-stop" class="wk-toc-link">The current startup stop</a></li>
@@ -432,36 +436,8 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 30, 2026 17:34:01 UTC">October 30, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 30, 2026 21:37:00 UTC">October 30, 2026</span></p>
       
-      
-      
-      <aside class="wk-freshness" role="note">
-        <p><b>Not yet updated for 14 merged changes.</b>
-        This page was last checked against Paleblood
-        <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/7dcea0e47419e52dccf484925746a80820245520"><code>7dcea0e</code></a>;
-        these pull requests changed what it describes since:</p>
-        <ul>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/170">#170</a> runtime: serve /app0 from your copy, and open and read its files</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/169">#169</a> runtime: pace audio output in real time (sceAudioOutOutput)</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/168">#168</a> runtime: record a thread attribute's priority and CPU mask</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/167">#167</a> runtime: start audio output (sceAudioOutInit, sceAudioOutOpen, sceAudioOutSetVolume)</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/166">#166</a> runtime: start the audio job manager (sceAjmInitialize, sceAjmModuleRegister)</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/165">#165</a> runtime: process time and sceKernelClockGettime</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/164">#164</a> runtime: answer clock_gettime with FreeBSD's clocks</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/163">#163</a> runtime: record thread priorities (scePthreadGetprio, scePthreadSetprio)</li>
-          
-          <li>and 6 more</li>
-        </ul>
-      </aside>
       
       <h1 id="runtime-system-call-notes">Runtime system-call notes</h1>
 <p class="wk-lede">What each runtime system call is for, what it must do, what the game was seen to do with it, and how Paleblood's runtime answers.</p>
@@ -470,7 +446,7 @@
 <p><span class="wk-label">At a glance</span></p>
 <dl>
 <dt>Covers</dt>
-<dd>Calls from <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> issue <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/34">#34</a>, the start-up services from <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/36">#36</a> and <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/40">#40</a>, and the network slice from <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/41">#41</a>. A generated list of every registered call is near the end.</dd>
+<dd>Calls from <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> issue <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/34">#34</a>, the files from <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/35">#35</a>, the start-up services from <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/36">#36</a> and <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/40">#40</a>, sound from <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/37">#37</a>, and the network slice from <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/41">#41</a>. A generated list of every registered call is near the end.</dd>
 <dt>Status</dt>
 <dd><strong>implemented</strong>: the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> answers the call. <strong>unresolved</strong>: no established answer, so the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> has no implementation or stops by name. <strong>observed</strong>: seen in a real boot, not yet implemented.</dd>
 <dt>How to read</dt>
@@ -486,7 +462,7 @@
 <li><strong>Two error conventions.</strong> Many calls exist under an SCE name (<code>scePthread…</code>) and a POSIX name (<code>pthread_…</code>). As with the mutex functions (<code>runtime/syslib/kernel_mutex.c</code>), the SCE name returns <code>0x80020000</code> plus the error number, and the POSIX name returns the number itself.</li>
 </ul>
 <h2 id="time-and-process">Time and process</h2>
-<div class="wk-table"><table>
+<div class="wk-table is-stack"><table class="wk-stack">
 <thead>
 <tr>
 <th>Call</th>
@@ -496,24 +472,29 @@
 </thead>
 <tbody>
 <tr>
-<td><code>getpagesize</code></td>
-<td><span class="wk-badge wk-badge--unresolved">unresolved</span></td>
-<td>Stops by name; the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> page size is not established.</td>
+<td data-label="Call"><code>getpagesize</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--unresolved">unresolved</span></td>
+<td data-label="What the runtime does">Stops by name; the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> page size is not established.</td>
 </tr>
 <tr>
-<td><code>getpid</code></td>
-<td><span class="wk-badge wk-badge--unresolved">unresolved</span></td>
-<td>Not implemented yet; the guest-visible ID is unknown.</td>
+<td data-label="Call"><code>getpid</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--unresolved">unresolved</span></td>
+<td data-label="What the runtime does">Not implemented yet; the guest-visible ID is unknown.</td>
 </tr>
 <tr>
-<td><code>clock_gettime</code></td>
-<td><span class="wk-badge wk-badge--unresolved">unresolved</span></td>
-<td>Not implemented yet; accepted clock IDs are unknown.</td>
+<td data-label="Call"><code>clock_gettime</code>, <code>sceKernelClockGettime</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">FreeBSD's clocks 0 (wall clock), 4 (monotonic) and 13 (wall-clock seconds) from the host's clocks; other clocks stop or answer <code>EINVAL</code>.</td>
 </tr>
 <tr>
-<td><code>gettimeofday</code></td>
-<td><span class="wk-badge wk-badge--unresolved">unresolved</span></td>
-<td>Not implemented yet; target layout and errors are unknown.</td>
+<td data-label="Call"><code>sceKernelGetProcessTime</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">Microseconds since the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> started.</td>
+</tr>
+<tr>
+<td data-label="Call"><code>gettimeofday</code>, <code>sceKernelGettimeofday</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">The host's wall clock; a timezone argument stops by name.</td>
 </tr>
 </tbody>
 </table></div>
@@ -534,10 +515,15 @@
 These imports tell us which names are needed, not every argument or how the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> behaves.</p>
 <ul>
 <li>The <a href="../how-the-frame-limiter-works/">frame limiter</a> reads the time with <code>gettimeofday</code> and passes null for the timezone argument.</li>
-<li>A separate <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> game helper calls <code>sceKernelClockGettime</code> with clock ID <code>4</code>, identified as <code>CLOCK_MONOTONIC</code>. That confirms the ID for the SCE entry point only. It does not show which IDs the game passes to the imported <code>clock_gettime</code> wrapper, or whether <code>4</code> is accepted there.</li>
+<li>A separate <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> game helper calls <code>sceKernelClockGettime</code> with clock ID <code>4</code>, identified as <code>CLOCK_MONOTONIC</code>.</li>
+<li>The bundled C library's <code>time()</code> calls <code>clock_gettime</code> with clock ID <code>13</code> and keeps only the seconds. That is FreeBSD's <code>CLOCK_SECOND</code>, whose answer is the wall clock in whole seconds.</li>
 </ul>
-<p>Clock ID numbers are implementation-defined. Linux and FreeBSD each have their own sets, and their
-numbers are not evidence for the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr>.</p>
+<p>Clock ID numbers are implementation-defined. The <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr>'s kernel descends from FreeBSD, and both
+observed IDs fit FreeBSD's numbering, so the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> answers FreeBSD's realtime (0), monotonic (4)
+and second (13) clocks from your computer's clocks
+(<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/164">#164</a>,
+<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/165">#165</a>). Any other ID stops by name, or
+answers <code>EINVAL</code> under the SCE name.</p>
 <h3 id="working-out-the-page-size">Working out the page size</h3>
 <p>The page size is a good example of how far file evidence goes, and where it stops.
 <code>getpagesize</code> is the only page-size query the game has: nothing imports <code>sysconf</code>.</p>
@@ -577,21 +563,19 @@ evidence.</p>
 <td data-label="Call"><code>clock_gettime(clock_id, tp)</code></td>
 <td data-label="Arguments and representation"><code>clock_id</code> selects a clock. <code>tp</code> points to a <code>struct timespec</code>; POSIX represents it as seconds (<code>tv_sec</code>) and nanoseconds (<code>tv_nsec</code>), normalized so <code>tv_nsec</code> is from 0 through 999,999,999.</td>
 <td data-label="Publicly documented result and errors">POSIX returns 0 on success and -1 with <code>errno</code> on failure; an unsupported clock ID is <code>EINVAL</code>. Linux and BSD manuals document pointer errors, but exact error mapping is platform-specific.</td>
-<td data-label="Still unknown for the PS4 target">The target structure layout, IDs accepted by the imported wrapper, and its pointer/error behavior. ID 4 is confirmed only for <code>sceKernelClockGettime</code>.</td>
+<td data-label="Still unknown for the PS4 target">Implemented for IDs 0, 4 and 13 (FreeBSD's numbering; the game uses 4 and 13). Other IDs and pointer errors stop by name under the POSIX name, because <code>errno</code> is not modelled.</td>
 </tr>
 <tr>
 <td data-label="Call"><code>gettimeofday(tv, tz)</code></td>
 <td data-label="Arguments and representation"><code>tv</code> points to a <code>struct timeval</code>: seconds since the Epoch and microseconds (<code>tv_usec</code> from 0 through 999,999). The game passes null for <code>tz</code>.</td>
 <td data-label="Publicly documented result and errors">This is wall time and may jump; it is not a monotonic elapsed-time clock. Older POSIX specified 0 on success but left errors undefined. Linux reports <code>-1</code>/<code>EFAULT</code> for inaccessible pointers and ignores <code>tz</code>. POSIX.1-2024 removed the interface.</td>
-<td data-label="Still unknown for the PS4 target">The target structure layout, bad-pointer behavior, non-null timezone behavior, and error mapping. The known game call passes null for <code>tz</code>.</td>
+<td data-label="Still unknown for the PS4 target">Implemented from the host's wall clock with FreeBSD's amd64 <code>struct timeval</code> (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/145">#145</a>). A non-null timezone stops by name.</td>
 </tr>
 </tbody>
 </table></div>
-<p>The numeric clock IDs in POSIX are implementation-defined. Linux also has IDs such as
-<code>CLOCK_MONOTONIC_RAW</code> and <code>CLOCK_BOOTTIME</code>; FreeBSD has its own clock set, including
-<code>CLOCK_UPTIME</code> variants. Those names and numbers are not evidence for <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> behavior. No inspected
-source confirms that the game's imported <code>clock_gettime</code> receives <code>CLOCK_REALTIME</code>,
-<code>CLOCK_MONOTONIC_RAW</code>, <code>CLOCK_BOOTTIME</code>, or any ID besides the separate SCE call's value 4.</p>
+<p>The numeric clock IDs in POSIX are implementation-defined. The game's two observed IDs, 4
+(<code>sceKernelClockGettime</code>) and 13 (<code>clock_gettime</code>, from the C library's <code>time()</code>), match
+FreeBSD's <code>CLOCK_MONOTONIC</code> and <code>CLOCK_SECOND</code>; Linux's numbers are not used.</p>
 </details>
 <details class="evidence">
 <summary>getpagesize: PR, call-site addresses and what would settle it</summary>
@@ -916,6 +900,16 @@ past the requested region, and coverage classification. These tests do not estab
 <td data-label="Status"><span class="wk-badge wk-badge--unresolved">unresolved</span></td>
 <td data-label="What the runtime does">Stop by name; layouts and offline values are unknown.</td>
 </tr>
+<tr>
+<td data-label="Call"><code>sceNetInit</code>, <code>sceNetTerm</code>, <code>sceNetPoolCreate</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">Start the network library offline; a repeat start answers "already initialized".</td>
+</tr>
+<tr>
+<td data-label="Call"><code>sceSslInit</code>, <code>sceHttpInit</code>, <code>sceHttpCreateTemplate</code>, <code>sceHttpSetNonblock</code>, <code>sceHttpCreateEpoll</code>, <code>sceHttpAddRequestHeader</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">Set up the game's HTTP client offline: each step is only an ID; nothing is ever sent.</td>
+</tr>
 </tbody>
 </table></div>
 <p>These are deliberately limited offline paths, not network connectivity or PSN support.</p>
@@ -1015,6 +1009,15 @@ that inspection has SHA-256 <code>ca8813862d7b1345a6791b7d88cc1d383ede2a6bbc944f
 </tbody>
 </table></div>
 </details>
+<p><strong>The game's HTTP client.</strong> Early in start-up the game builds an HTTP client for its online
+features: it starts the network library, makes a memory pool, an SSL context, an HTTP context, a
+request template with its user agent, and a waiting handle, then adds a request header. The
+<abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> is offline, so each of those is only an ID the game passes back; any call that would
+actually send something stops by name. PRs
+<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/157">#157</a>,
+<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/158">#158</a>,
+<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/159">#159</a> and
+<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/160">#160</a>.</p>
 <h2 id="system-modules-libscesysmodule">System modules (<code>libSceSysmodule</code>)</h2>
 <div class="wk-table is-stack"><table class="wk-stack">
 <thead>
@@ -1091,7 +1094,22 @@ game passes is not yet observed.</p>
 <tr>
 <td data-label="Call"><code>pthread_cond_*</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
-<td data-label="What the runtime does">Condition variables, without timed waits.</td>
+<td data-label="What the runtime does">Condition variables, without timed waits; a recursive mutex is released completely for the wait.</td>
+</tr>
+<tr>
+<td data-label="Call"><code>scePthreadGetprio</code>, <code>scePthreadSetprio</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">Records each thread's priority; the main thread starts at 700.</td>
+</tr>
+<tr>
+<td data-label="Call"><code>scePthreadAttrSetschedparam</code>, <code>scePthreadAttrSetaffinity</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">Record a priority and CPU mask on the attribute.</td>
+</tr>
+<tr>
+<td data-label="Call"><code>_sigprocmask</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">Keeps each thread's blocked-signal set; no signal reaches the game yet.</td>
 </tr>
 </tbody>
 </table></div>
@@ -1108,6 +1126,13 @@ signals one. Condition variables do the same job for the POSIX side of the game'
 only 40 bits, then compares it with the full handle. A handle above 2^40 would never match, and the
 thread would wait forever on a lock it already held. A local boot hung exactly there. The host's
 memory lies above that limit, so the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> now places its thread objects in a range below it.</p>
+<p><strong>Priorities.</strong> Every thread has a priority from 256 (most urgent) to 767. The game never declares
+its main thread's priority, so it starts at the console's default, 700; new threads inherit their
+creator's, and the game then sets each one explicitly. The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> records them; your computer's
+own scheduler decides which thread runs.</p>
+<p><strong>Signal masks.</strong> The C library saves and restores each thread's set of blocked signals whenever
+the game uses <code>setjmp</code> and <code>longjmp</code>. No signal is delivered to the game yet, so the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> keeps
+the set for each thread and gives it back unchanged.</p>
 <details class="reference">
 <summary>Threads and waiting: PRs, call sites and what stops by name</summary>
 <ul>
@@ -1115,7 +1140,11 @@ memory lies above that limit, so the <abbr title="What the game's code runs on: 
   <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/147">#147</a> (condition variables),
   <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/148">#148</a> (attribute setters),
   <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/149">#149</a> (thread creation) and
-  <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/155">#155</a> (handles below 2^40).</li>
+  <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/155">#155</a> (handles below 2^40),
+  <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/161">#161</a> (signal masks),
+  <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/162">#162</a> (recursive condition waits),
+  <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/163">#163</a> and
+  <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/168">#168</a> (priorities and attributes).</li>
 <li>The 16 KiB retry is at <code>0x02a3b383</code>; the 40-bit lock is at <code>0x024368c0</code>.</li>
 <li><strong>Stops by name:</strong> creating a thread without an attribute, a stack size or a detach state; a
   stack the guest supplies; an empty CPU mask; a semaphore wait with a timeout; a second
@@ -1239,6 +1268,86 @@ to use, and what its own package says about itself.</p>
   setting 1.</li>
 <li><strong>Stops by name:</strong> a service call before initialize, a setting nobody gave, a title parameter
   your copy does not declare, and missing arguments.</li>
+</ul>
+</details>
+<h2 id="sound">Sound</h2>
+<div class="wk-table is-stack"><table class="wk-stack">
+<thead>
+<tr>
+<th>Call</th>
+<th>Status</th>
+<th>What the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td data-label="Call"><code>sceAjmInitialize</code>, <code>sceAjmModuleRegister</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">Start the audio decoder with the one module the game registers.</td>
+</tr>
+<tr>
+<td data-label="Call"><code>sceAudioOutInit</code>, <code>sceAudioOutOpen</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">Open the game's two output ports: 256 float samples at 48 kHz, eight channels.</td>
+</tr>
+<tr>
+<td data-label="Call"><code>sceAudioOutSetVolume</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">Records each channel's volume.</td>
+</tr>
+<tr>
+<td data-label="Call"><code>sceAudioOutOutput</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">Takes one block every 5.33 ms, as a real port would; nothing is played yet.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Bloodborne mixes its sound in eight channels (7.1) and hands the console one block of 256 samples
+at a time, 48,000 samples a second. Its audio thread has no timer of its own: handing over a block
+blocks until the console has room for the next, so the output call is what keeps the game's audio
+in time. The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> takes one block every 5.33 ms, exactly as fast as real playback, but does not
+play the samples on your computer yet.</p>
+<details class="reference">
+<summary>Sound: PRs and call sites</summary>
+<ul>
+<li>PRs <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/166">#166</a> (audio decoder start-up),
+  <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/167">#167</a> (output ports and volume) and
+  <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/169">#169</a> (real-time pacing).</li>
+<li>The output format is the game's own evidence: its callback at <code>0x0111b600</code> asks for format
+  <code>4 | (channels == 8)</code>, so 5 is float with eight channels.</li>
+</ul>
+</details>
+<h2 id="reading-the-games-files">Reading the game's files</h2>
+<div class="wk-table is-stack"><table class="wk-stack">
+<thead>
+<tr>
+<th>Call</th>
+<th>Status</th>
+<th>What the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td data-label="Call"><code>sceKernelStat</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">Describes a file of your copy, without write permission.</td>
+</tr>
+<tr>
+<td data-label="Call"><code>sceKernelOpen</code>, <code>sceKernelRead</code>, <code>sceKernelPread</code>, <code>sceKernelLseek</code>, <code>sceKernelFstat</code>, <code>sceKernelClose</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">Read your copy's files; any attempt to write is refused as on a read-only disc.</td>
+</tr>
+</tbody>
+</table></div>
+<p>On the console, a game sees its own package as a read-only folder called <code>/app0</code>. The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>
+serves <code>/app0</code> from your own copy of the game (<code>tools/boot.py --app0</code>), and never writes to it.
+The first file Bloodborne looks for and reads is <code>sprj_mixer.fev</code>, its sound mixer description.</p>
+<details class="reference">
+<summary>Files: PRs and what stops by name</summary>
+<ul>
+<li>PR <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/170">#170</a>.</li>
+<li>Stops by name: any folder other than <code>/app0</code>, a <code>..</code> in a path, and host errors other than a
+  missing file or folder.</li>
 </ul>
 </details>
 <h2 id="every-call-the-runtime-answers">Every call the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> answers</h2>
