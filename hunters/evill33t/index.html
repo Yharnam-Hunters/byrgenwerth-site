@@ -1,0 +1,525 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  
+  <meta name="description" content="Notes of Paleblood, a decompilation of Bloodborne (PS4, CUSA03173 v1.09) with its own runtime, one verified function at a time, and an open place to learn how a console game works and how it is reverse engineered">
+  <link rel="canonical" href="https://yharnam-hunters.github.io/byrgenwerth-site/hunters/evill33t/">
+  
+  
+  <title>evill33t — Byrgenwerth</title>
+  
+  <script>
+  /* Before first paint: the stored theme, and a flag that JavaScript (wiki.js) will run. */
+  (function () { var d = document.documentElement, t = 'dark';
+    try { t = localStorage.getItem('wk-theme') || 'dark'; } catch (e) {}
+    d.setAttribute('data-theme', t); d.classList.add('wk-js'); }());
+  </script>
+  
+  <link rel="stylesheet" href="../../stylesheets/wiki.css?v=14101bbbf0"><link rel="stylesheet" href="../../stylesheets/hunters.css?v=e4f3c59dfb">
+  
+  
+</head>
+<body>
+
+<!-- ── Header: wordmark, section tabs (wide screens), search, theme ── -->
+
+
+<header class="wk-header" id="wk-header">
+  <button class="wk-nav-toggle" id="wk-nav-toggle" aria-label="Open navigation" aria-expanded="false" aria-controls="wk-nav">☰</button>
+  <a class="wk-wordmark" href="/byrgenwerth-site/">Byrgenwerth<small>notes of Paleblood, rebuilding Bloodborne one verified function at a time</small></a>
+
+  <!-- Section tabs (wide screens; the drawer lists the same sections on small ones) -->
+  <nav class="wk-tabs" aria-label="Sections">
+    
+    <a class="wk-tab" href="../..">The Hunt</a>
+    
+    <a class="wk-tab" href="../../great-ones/">Encyclopedia</a>
+    
+    <a class="wk-tab" href="../../systems/">Systems</a>
+    
+    <a class="wk-tab" href="../../ARCHITECTURE/">How It Works</a>
+    
+    <a class="wk-tab" href="../../CONTRIBUTING/">For Hunters</a>
+    
+  </nav>
+
+  <div class="wk-header-right">
+    
+    <div class="wk-searchbox">
+      <input class="wk-search-input" id="wk-q" type="search"
+             placeholder="Search  [/]" autocomplete="off" aria-label="Search">
+      <div class="wk-search-results" id="wk-results" hidden role="listbox"></div>
+    </div>
+    <button class="wk-toggle" id="wk-toggle" title="Toggle theme" aria-label="Toggle dark/light">☀</button>
+  </div>
+</header>
+
+<!-- ── Layout ──────────────────────────────────────────────── -->
+<div class="wk-layout">
+
+  <div class="wk-nav-backdrop" id="wk-nav-backdrop" hidden></div>
+
+  <!-- Left sidebar -->
+  <nav class="wk-nav" id="wk-nav" aria-label="Site navigation">
+    <!-- Menu artwork: credited on the Credits page; provenance and rights notes in the private media review -->
+    <figure class="wk-portal-icon">
+      <a href="/byrgenwerth-site/" aria-label="Byrgenwerth home">
+        <img src="../../assets/media/bloodborne-menu-art.png" width="256" height="256" alt="A lone Bloodborne hunter stands in a rain-darkened Yharnam street beneath the game's gothic architecture.">
+      </a>
+    </figure>
+
+    
+    <section class="wk-nav-section">
+      
+      
+      
+      
+      
+      
+      <p class="wk-nav-heading">The Hunt</p>
+      
+      <ul class="wk-nav-list">
+        
+        
+        <li><a class="wk-nav-link" href="../..">Home</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../devlog/">Devlog</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../progress/">Progress</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../">The Hunters</a></li>
+        
+        
+      </ul>
+    
+      
+    </section>
+    
+    <section class="wk-nav-section">
+      
+      
+      
+      
+      
+      
+      <p class="wk-nav-heading">Encyclopedia</p>
+      
+      <ul class="wk-nav-list">
+        
+        
+        <li class="wk-nav-group">
+      
+      
+      
+        
+        
+      
+      
+      <a class="wk-nav-subheading" href="../../great-ones/">The Great Ones</a>
+      
+      <ul class="wk-nav-list">
+        
+        
+        <li><a class="wk-nav-link" href="../../great-ones/boss-directory/">Boss Directory</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../great-ones/ai-and-phases/">Boss AI & Phases</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../great-ones/mechanics/">Boss Mechanics</a></li>
+        
+        
+      </ul>
+    </li>
+        
+        
+        
+        <li class="wk-nav-group">
+      
+      
+      
+        
+        
+      
+      
+      <a class="wk-nav-subheading" href="../../beasts-of-yharnam/">Beasts of Yharnam</a>
+      
+      <ul class="wk-nav-list">
+        
+        
+        <li><a class="wk-nav-link" href="../../beasts-of-yharnam/enemy-directory/">Enemy Directory</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../beasts-of-yharnam/ai-and-behavior/">Enemy AI & Behavior</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../beasts-of-yharnam/npcs-and-hunters/">NPCs & Hunters</a></li>
+        
+        
+      </ul>
+    </li>
+        
+        
+        
+        <li class="wk-nav-group">
+      
+      
+      
+        
+        
+      
+      
+      <a class="wk-nav-subheading" href="../../workshop/">The Hunter's Workshop</a>
+      
+      <ul class="wk-nav-list">
+        
+        
+        <li><a class="wk-nav-link" href="../../workshop/combat-damage/">Combat & Damage</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../workshop/weapons-transformations/">Weapons & Transformations</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../workshop/movement-stamina/">Movement & Stamina</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../workshop/hitboxes-collision/">Hitboxes & Collision</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../workshop/stats-progression/">Stats & Progression</a></li>
+        
+        
+      </ul>
+    </li>
+        
+        
+      </ul>
+    
+      
+    </section>
+    
+    <section class="wk-nav-section">
+      
+      
+      
+      
+      
+      
+      <p class="wk-nav-heading">Systems</p>
+      
+      <ul class="wk-nav-list">
+        
+        
+        <li><a class="wk-nav-link" href="../../systems/">Overview</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../systems/frame_timing/">Frame timing</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../systems/kernel/">Kernel</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../systems/event/">Event</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../systems/camera/">Camera</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../systems/input/">Input</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../systems/character/">Character</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../systems/ai/">AI</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../systems/physics/">Physics</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../systems/render/">Render</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../systems/loading/">Loading</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../systems/audio/">Audio</a></li>
+        
+        
+      </ul>
+    
+      
+    </section>
+    
+    <section class="wk-nav-section">
+      
+      
+      
+      
+      
+      
+      <p class="wk-nav-heading">How It Works</p>
+      
+      <ul class="wk-nav-list">
+        
+        
+        <li><a class="wk-nav-link" href="../../ARCHITECTURE/">Architecture</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../runtime/">Runtime</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../runtime-syscalls/">Runtime system calls</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../runtime-reference/">Runtime call reference</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../how-the-frame-limiter-works/">The Frame Limiter</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../ADDRESS_MAP/">Address Map</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../target/">Target</a></li>
+        
+        
+      </ul>
+    
+      
+    </section>
+    
+    <section class="wk-nav-section">
+      
+      
+      
+      
+      
+      
+      <p class="wk-nav-heading">For Hunters</p>
+      
+      <ul class="wk-nav-list">
+        
+        
+        <li><a class="wk-nav-link" href="../../CONTRIBUTING/">Contributing</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../QUIRKS/">Ghidra & PS4 Quirks</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../glossary/">Glossary</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../CI_SETUP/">CI Setup</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../credits/">Credits</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../MEDIA_POLICY/">Evidence & Media Review</a></li>
+        
+        
+      </ul>
+    
+      
+    </section>
+    
+
+    <!-- Progress card: every value from docs/data/progress.json (hooks/progress_extra.py) -->
+    
+    
+    <a class="wk-progress-card" href="../../progress/">
+      <span class="wk-progress-label">Verified functions</span>
+      <span class="wk-progress-value">21 <small>of 157,757</small></span>
+      <span class="wk-stat-track" role="img" aria-label="0.033 percent of target code bytes verified">
+        <span class="wk-stat-fill" style="width:0.033%"></span>
+      </span>
+      <span class="wk-progress-foot">0.033% of code bytes verified · 43 replaced</span>
+      <span class="wk-progress-more">Full progress →</span>
+    </a>
+    
+  </nav>
+
+  <!-- Main content -->
+  <main class="wk-main">
+    <div class="wk-article">
+
+      
+      
+      
+      
+      
+      <nav class="wk-toc" id="wk-toc" aria-label="On this page">
+        <div class="wk-toc-header"><b>On this page</b></div>
+        <ol class="wk-toc-list" id="wk-toc-list">
+          
+          <li><a href="#completed-hunts" class="wk-toc-link">Completed Hunts</a></li>
+          
+          <li><a href="#hunts-in-progress" class="wk-toc-link">Hunts in Progress</a></li>
+          
+          <li><a href="#research-and-discoveries" class="wk-toc-link">Research and Discoveries</a></li>
+          
+          <li><a href="#fellow-hunters" class="wk-toc-link">Fellow Hunters</a></li>
+          
+          <li><a href="#contribution-timeline" class="wk-toc-link">Contribution Timeline</a></li>
+          
+          <li><a href="#related-devlogs" class="wk-toc-link">Related Devlogs</a></li>
+          
+        </ol>
+      </nav>
+      
+      
+      
+
+      <div class="wk-article-body">
+      
+      
+      
+      <h1 id="evill33t">evill33t</h1>
+<div class="hunter-profile-header"><span class="hunter-avatar" aria-hidden="true"><svg viewBox="0 0 80 80" focusable="false"><circle cx="40" cy="27" r="14"/><path d="M12 76c0-34 56-34 56 0z"/></svg><img src="https://avatars.githubusercontent.com/u/770530?v=4" alt="" loading="lazy" width="80" height="80" referrerpolicy="no-referrer"></span><div><p>decompilation, documentation, project contributions, runtime, tooling</p><p><a href="https://github.com/evill33t">@evill33t on GitHub</a></p></div></div>
+
+<h2 id="completed-hunts">Completed Hunts</h2>
+<ol class="hunter-history">
+<li><time>2026-10-28</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/121">docs: correct scalar square roots and ordered FPS patch analysis</a><span class="hunter-meta"> · merged · documentation</span></li>
+<li><time>2026-10-28</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/99">tools: add resumable private REA function analysis</a><span class="hunter-meta"> · merged · decompilation, tooling</span></li>
+<li><time>2026-10-28</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/104">frame_timing: replace the millisecond sleep wrapper</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-10-28</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/101">tools: validate raw SSE fixture input bytes</a><span class="hunter-meta"> · merged · tooling</span></li>
+<li><time>2026-10-28</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/98">tools: prepare extracted backups without copying assets</a><span class="hunter-meta"> · merged · tooling</span></li>
+<li><time>2026-10-28</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/102">tools: skip byte scans of unchanged harness snapshots</a><span class="hunter-meta"> · merged · tooling</span></li>
+</ol>
+
+<h2 id="hunts-in-progress">Hunts in Progress</h2>
+<ol class="hunter-history">
+<li><time>2026-10-26</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/125">engine: replace the low-byte ASCII mapper</a><span class="hunter-meta"> · open · project contributions</span></li>
+<li><time>2026-10-26</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/124">engine: replace cache storage allocation and release</a><span class="hunter-meta"> · open · project contributions</span></li>
+<li><time>2026-10-26</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/123">engine: replace guarded wide-string initialization and destruction</a><span class="hunter-meta"> · open · project contributions</span></li>
+<li><time>2026-10-26</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/122">kernel: replace the file wrapper cluster</a><span class="hunter-meta"> · open · runtime</span></li>
+<li><time>2026-10-26</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/120">engine: replace signed ASCII-folded comparison</a><span class="hunter-meta"> · open · project contributions</span></li>
+<li><time>2026-10-26</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/119">engine: replace in-place ASCII case conversion</a><span class="hunter-meta"> · open · project contributions</span></li>
+<li><time>2026-10-26</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/118">engine: replace forward byte append helpers</a><span class="hunter-meta"> · open · project contributions</span></li>
+<li><time>2026-10-26</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/117">engine: replace the modulo-32 byte length scan</a><span class="hunter-meta"> · open · project contributions</span></li>
+<li><time>2026-10-26</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/116">engine: replace forward byte copy helpers</a><span class="hunter-meta"> · open · project contributions</span></li>
+<li><time>2026-10-26</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/115">engine: replace the ordered word product stores</a><span class="hunter-meta"> · open · project contributions</span></li>
+<li><time>2026-10-26</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/114">kernel: replace nullable word output helpers</a><span class="hunter-meta"> · open · runtime</span></li>
+<li><time>2026-10-26</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/113">engine: replace the stderr string writer</a><span class="hunter-meta"> · open · project contributions</span></li>
+<li><time>2026-10-26</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/112">camera: replace the follow-camera update function</a><span class="hunter-meta"> · open · decompilation</span></li>
+<li><time>2026-10-26</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/111">kernel: replace the audio semaphore wrapper lifecycle</a><span class="hunter-meta"> · open · runtime</span></li>
+<li><time>2026-10-26</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/110">engine: replace handle-table entry resolution</a><span class="hunter-meta"> · open · project contributions</span></li>
+<li><time>2026-10-26</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/109">camera: replace follow-camera pitch and yaw getters</a><span class="hunter-meta"> · open · project contributions</span></li>
+<li><time>2026-10-26</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/108">kernel: replace the recursive mutex wrapper lifecycle</a><span class="hunter-meta"> · open · runtime</span></li>
+<li><time>2026-10-26</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/107">engine: replace signed byte string comparisons</a><span class="hunter-meta"> · open · project contributions</span></li>
+<li><time>2026-10-26</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/106">audio: replace the FMOD thread affinity lookup</a><span class="hunter-meta"> · open · project contributions</span></li>
+<li><time>2026-10-26</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/105">kernel: replace the current-thread handle wrapper</a><span class="hunter-meta"> · open · runtime</span></li>
+<li><time>2026-10-26</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/103">frame_timing: replace the monotonic microsecond clock</a><span class="hunter-meta"> · open · project contributions</span></li>
+<li><time>2026-10-26</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/100">tools: bound overflow arguments in scripted callbacks</a><span class="hunter-meta"> · open · tooling</span></li>
+</ol>
+
+<h2 id="research-and-discoveries">Research and Discoveries</h2>
+<p class="hunter-meta">No qualifying public records in this category.</p>
+
+<h2 id="fellow-hunters">Fellow Hunters</h2>
+<p class="hunter-meta">No qualifying public records in this category.</p>
+
+<h2 id="contribution-timeline">Contribution Timeline</h2>
+<ol class="hunter-history">
+<li><time>2026-10-28</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/121">docs: correct scalar square roots and ordered FPS patch analysis</a><span class="hunter-meta"> · merged · documentation</span></li>
+<li><time>2026-10-28</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/99">tools: add resumable private REA function analysis</a><span class="hunter-meta"> · merged · decompilation, tooling</span></li>
+<li><time>2026-10-28</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/104">frame_timing: replace the millisecond sleep wrapper</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-10-28</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/101">tools: validate raw SSE fixture input bytes</a><span class="hunter-meta"> · merged · tooling</span></li>
+<li><time>2026-10-28</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/98">tools: prepare extracted backups without copying assets</a><span class="hunter-meta"> · merged · tooling</span></li>
+<li><time>2026-10-28</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/102">tools: skip byte scans of unchanged harness snapshots</a><span class="hunter-meta"> · merged · tooling</span></li>
+<li><time>2026-10-26</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/96">Codex/complete decompilation</a><span class="hunter-meta"> · closed · decompilation</span></li>
+<li><time>2026-10-26</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/125">engine: replace the low-byte ASCII mapper</a><span class="hunter-meta"> · open · project contributions</span></li>
+<li><time>2026-10-26</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/124">engine: replace cache storage allocation and release</a><span class="hunter-meta"> · open · project contributions</span></li>
+<li><time>2026-10-26</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/123">engine: replace guarded wide-string initialization and destruction</a><span class="hunter-meta"> · open · project contributions</span></li>
+<li><time>2026-10-26</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/122">kernel: replace the file wrapper cluster</a><span class="hunter-meta"> · open · runtime</span></li>
+<li><time>2026-10-26</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/120">engine: replace signed ASCII-folded comparison</a><span class="hunter-meta"> · open · project contributions</span></li>
+<li><time>2026-10-26</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/119">engine: replace in-place ASCII case conversion</a><span class="hunter-meta"> · open · project contributions</span></li>
+<li><time>2026-10-26</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/118">engine: replace forward byte append helpers</a><span class="hunter-meta"> · open · project contributions</span></li>
+<li><time>2026-10-26</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/117">engine: replace the modulo-32 byte length scan</a><span class="hunter-meta"> · open · project contributions</span></li>
+<li><time>2026-10-26</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/116">engine: replace forward byte copy helpers</a><span class="hunter-meta"> · open · project contributions</span></li>
+<li><time>2026-10-26</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/115">engine: replace the ordered word product stores</a><span class="hunter-meta"> · open · project contributions</span></li>
+<li><time>2026-10-26</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/114">kernel: replace nullable word output helpers</a><span class="hunter-meta"> · open · runtime</span></li>
+<li><time>2026-10-26</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/113">engine: replace the stderr string writer</a><span class="hunter-meta"> · open · project contributions</span></li>
+<li><time>2026-10-26</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/112">camera: replace the follow-camera update function</a><span class="hunter-meta"> · open · decompilation</span></li>
+<li><time>2026-10-26</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/111">kernel: replace the audio semaphore wrapper lifecycle</a><span class="hunter-meta"> · open · runtime</span></li>
+<li><time>2026-10-26</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/110">engine: replace handle-table entry resolution</a><span class="hunter-meta"> · open · project contributions</span></li>
+<li><time>2026-10-26</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/109">camera: replace follow-camera pitch and yaw getters</a><span class="hunter-meta"> · open · project contributions</span></li>
+<li><time>2026-10-26</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/108">kernel: replace the recursive mutex wrapper lifecycle</a><span class="hunter-meta"> · open · runtime</span></li>
+<li><time>2026-10-26</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/107">engine: replace signed byte string comparisons</a><span class="hunter-meta"> · open · project contributions</span></li>
+<li><time>2026-10-26</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/106">audio: replace the FMOD thread affinity lookup</a><span class="hunter-meta"> · open · project contributions</span></li>
+<li><time>2026-10-26</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/105">kernel: replace the current-thread handle wrapper</a><span class="hunter-meta"> · open · runtime</span></li>
+<li><time>2026-10-26</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/103">frame_timing: replace the monotonic microsecond clock</a><span class="hunter-meta"> · open · project contributions</span></li>
+<li><time>2026-10-26</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/100">tools: bound overflow arguments in scripted callbacks</a><span class="hunter-meta"> · open · tooling</span></li>
+</ol>
+
+<h2 id="related-devlogs">Related Devlogs</h2>
+<ul><li><a href="/byrgenwerth-site/devlog/2026/10/26/week-of-26-october-2026-40-merged-pull-requests/">Week of 26 October 2026: 40 merged pull requests</a></li></ul>
+
+<p><a href="/byrgenwerth-site/hunters/">← All Hunters</a></p>
+      
+      </div>
+
+    </div>
+    <footer class="wk-footer">
+      <p class="wk-footer-motto">Fear the old blood</p>
+      <p>Made by people who love Bloodborne, so that it can be studied, preserved and played
+      natively, one verified function at a time.</p>
+      <p>A fan project. Not affiliated with or endorsed by Sony Interactive Entertainment or
+      FromSoftware. No game files are shared here: bring your own copy.</p>
+    </footer>
+  </main>
+
+</div>
+
+
+<!-- Back to top -->
+<button class="wk-top" id="wk-top" title="Back to top" aria-label="Scroll to top">↑</button>
+
+
+<script>
+/* Page settings for wiki.js. The drawer query matches the drawer breakpoint in wiki.css. */
+window.WK = {base: "../..", searchIndex: "../../search/search_index.json",
+             drawerQuery: window.matchMedia('(max-width: 900px)')};
+</script>
+<script src="../../javascripts/wiki.js?v=48af91151e" defer></script><script src="../../javascripts/hunters.js?v=28a0e867eb" defer></script><script src="../../search/main.js" defer></script>
+</body>
+</html>
