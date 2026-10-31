@@ -8,11 +8,23 @@
   "reviewed": "cbeec5cec86d340bacdb7224752caa5797ee9fc5"
  },
  "how-the-frame-limiter-works.md": {
-  "behind": [],
+  "behind": [
+   {
+    "commit": "b452121b7881",
+    "pr": 182,
+    "title": "frame_timing: replace a gate state method that leaves its modes around an owner check (0x01ec3ef0)"
+   }
+  ],
   "reviewed": "cbeec5cec86d340bacdb7224752caa5797ee9fc5"
  },
  "index.md": {
-  "behind": [],
+  "behind": [
+   {
+    "commit": "b452121b7881",
+    "pr": 182,
+    "title": "frame_timing: replace a gate state method that leaves its modes around an owner check (0x01ec3ef0)"
+   }
+  ],
   "reviewed": "cbeec5cec86d340bacdb7224752caa5797ee9fc5"
  },
  "runtime-syscalls.md": {
@@ -44,7 +56,13 @@
   "reviewed": "cbeec5cec86d340bacdb7224752caa5797ee9fc5"
  },
  "systems/frame_timing.md": {
-  "behind": [],
+  "behind": [
+   {
+    "commit": "b452121b7881",
+    "pr": 182,
+    "title": "frame_timing: replace a gate state method that leaves its modes around an owner check (0x01ec3ef0)"
+   }
+  ],
   "reviewed": "cbeec5cec86d340bacdb7224752caa5797ee9fc5"
  },
  "systems/input.md": {

@@ -1,18 +1,18 @@
 {
   "edge_verified": {
-    "bytes": 17632,
+    "bytes": 18427,
     "bytes_pct": 0.04,
-    "functions": 41,
+    "functions": 42,
     "functions_pct": 0.03
   },
   "inputs": {
-    "functions_sha256": "bb3f3d9466e1a58b48ace531209983ff8ebd6ec9cd3d7ee125146a4d528169af",
+    "functions_sha256": "496faf7a7c6dd3afda82a32e07a4eb6b40b72105ecc1d60d24427146a4cf2c20",
     "ghidra_functions_sha256": "fc7e244dc9f211963118a9ab97716de03e0f342421c63cafc9a8ae747abb8ebd"
   },
   "replaced": {
-    "bytes": 17632,
+    "bytes": 18427,
     "bytes_pct": 0.04,
-    "functions": 41,
+    "functions": 42,
     "functions_pct": 0.03
   },
   "runtime": {
@@ -355,7 +355,7 @@
       "bytes": 656173,
       "end": "0x01f56f18",
       "functions": 3295,
-      "replaced_bytes": 1694,
+      "replaced_bytes": 2489,
       "start": "0x01ea7f85",
       "verified_bytes": 0
     },
@@ -575,10 +575,10 @@
       "verified": 1
     },
     "frame_timing": {
-      "edge_verified": 31,
-      "replaced": 31,
-      "replaced_bytes": 7726,
-      "tracked": 32,
+      "edge_verified": 32,
+      "replaced": 32,
+      "replaced_bytes": 8521,
+      "tracked": 33,
       "verified": 12
     },
     "input": {
@@ -615,8 +615,8 @@
     "functions": 157757
   },
   "tracked": {
-    "bytes": 17699,
-    "functions": 42
+    "bytes": 18494,
+    "functions": 43
   },
   "verified": {
     "bytes": 14010,

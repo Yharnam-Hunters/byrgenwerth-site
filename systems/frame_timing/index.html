@@ -372,7 +372,7 @@
       <span class="wk-stat-track" role="img" aria-label="0.033 percent of target code bytes verified">
         <span class="wk-stat-fill" style="width:0.033%"></span>
       </span>
-      <span class="wk-progress-foot">0.033% of code bytes verified · 41 replaced</span>
+      <span class="wk-progress-foot">0.033% of code bytes verified · 42 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -414,6 +414,20 @@
       
       <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 30, 2026 21:37:00 UTC">October 30, 2026</span></p>
       
+      
+      
+      <aside class="wk-freshness" role="note">
+        <p><b>Not yet updated for 1 merged change.</b>
+        This page was last checked against Paleblood
+        <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/cbeec5cec86d340bacdb7224752caa5797ee9fc5"><code>cbeec5c</code></a>;
+        these pull requests changed what it describes since:</p>
+        <ul>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/182">#182</a> frame_timing: replace a gate state method that leaves its modes around an owner check (0x01ec3ef0)</li>
+          
+          
+        </ul>
+      </aside>
       
       <h1 id="frame-timing">Frame timing</h1>
 <p class="wk-lede">How the game paces its frames: a frame step that runs once a frame, a frame limiter that waits out each frame's budget, and a task manager that runs the frame's work.</p>
@@ -718,6 +732,13 @@ piece of the game's own per-frame work, the next layer to map.</p>
 <td data-label="Name"><code>frame_timing_dungeon_gate_on_event_3000</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">SprjDungeonGateIns handler of event 3000: when idle, request 10 and advance the gate state one fixed step</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x01ec3ef0</code></td>
+<td style="text-align: right;" data-label="Size">795</td>
+<td data-label="Name"><code>frame_timing_leave_modes_around_owner_check_01ec3ef0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">state method on the Chalice Dungeon gate: leaves ritual/dungeon modes (request 7), the error mode (request 10); true when check 0x01ea5280 says yes in server dungeon mode</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x01f03210</code></td>
