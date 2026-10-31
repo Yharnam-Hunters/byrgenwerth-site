@@ -372,7 +372,7 @@
       <span class="wk-stat-track" role="img" aria-label="0.033 percent of target code bytes verified">
         <span class="wk-stat-fill" style="width:0.033%"></span>
       </span>
-      <span class="wk-progress-foot">0.033% of code bytes verified · 42 replaced</span>
+      <span class="wk-progress-foot">0.033% of code bytes verified · 43 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -412,7 +412,7 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 31, 2026 08:03:32 UTC">October 31, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 31, 2026 09:23:40 UTC">October 31, 2026</span></p>
       
       
       <h1 id="frame-timing">Frame timing</h1>
@@ -564,6 +564,13 @@ edits, and what each belongs to, is part of running the game faster than 30 FPS.
   a ritual or dungeon mode (request 7) and out of the error mode (request 10), around a check on
   the gate that reads the online manager, and reports when the check passes in the online dungeon
   mode. What its caller does with that answer is not known: the caller ignores it.</li>
+<li><strong>The check itself.</strong> It passes only when the gate is idle in mode 1 (no Holy Chalice), four
+  bytes of the online manager (<code>FrpgNetMan</code>) allow it (one set, three clear; what they mean is not
+  known), and the id it is given is set. It then looks up an object for that id and keeps it as
+  the gate's handle, a reference-counted pointer: the engine counts how many holders an object has
+  and destroys it when the last one lets go, so swapping the handle drops the old object's count
+  and takes one on the new. Finally, if the gate is still idle, it gives the gate request 6 and
+  reports success. That the id names an online session is a guess.</li>
 </ul>
 <p>The millisecond sleep wrapper (<code>0x0111a880</code>), which is not on the limiter's path, is <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> too.
 It converts the engine's millisecond delay to the kernel's microseconds. It multiplies in 32 bits,
@@ -580,6 +587,9 @@ as the original does, so very large delays wrap, and it always reports success.<
   gate through <code>SprjHolygrail</code> (<code>0x0200f970</code>, <code>0x020118f0</code>, <code>0x01f03210</code>, <code>0x01f03680</code>).</li>
 <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/182">#182</a>: the method that leaves the
   gate's modes around the check <code>0x01ea5280</code> (<code>0x01ec3ef0</code>, eleven 60 FPS++ edits).</li>
+<li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/186">#186</a>: the check itself
+  (<code>0x01ea5280</code>, one 60 FPS++ edit), using the engine's shared reference counting from
+  <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/185">#185</a>.</li>
 <li>Status: <strong><abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr></strong>, not <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>. Each was compared with the original function on authored
   <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr>, stock and with the 60 FPS++ edits, and wrong variants were rejected. None was
   checked on frames recorded from a real game run.</li>
@@ -689,6 +699,13 @@ piece of the game's own per-frame work, the next layer to map.</p>
 <td data-label="Name"><code>frame_timing_task_workers_step_014400a0</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--verified"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></span></td>
 <td data-label="Notes">task manager workers: three rounds over the worker queues +0x58, +0x68, +0x60</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x01ea5280</code></td>
+<td style="text-align: right;" data-label="Size">553</td>
+<td data-label="Name"><code>frame_timing_gate_owner_check</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">owner check of the Chalice Dungeon gate state: idle in mode 1, FrpgNetMan flags and an id allow it; keeps the object for the id as its handle, then request 6</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x01eb5390</code></td>
