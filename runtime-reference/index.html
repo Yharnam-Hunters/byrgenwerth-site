@@ -467,6 +467,10 @@
           
           <li><a href="#gnm-the-tessellation-factor-ring-scegnmgetthetessellationfactorringbufferbaseaddress-issue-39" class="wk-toc-link">GNM: the tessellation factor ring (sceGnmGetTheTessellationFactorRingBufferBaseAddress, issue #39)</a></li>
           
+          <li><a href="#virtual-memory-queries-scekernelvirtualquery-issue-34" class="wk-toc-link">Virtual memory queries (sceKernelVirtualQuery, issue #34)</a></li>
+          
+          <li><a href="#gnm-compute-queues-scegnmmapcomputequeue-issue-39" class="wk-toc-link">GNM: compute queues (sceGnmMapComputeQueue, issue #39)</a></li>
+          
           <li><a href="#implementation-rule" class="wk-toc-link">Implementation rule</a></li>
           
           <li><a href="#references" class="wk-toc-link">References</a></li>
@@ -1302,6 +1306,69 @@ to the GPU calls.</p>
 <p>For this, <code>sceKernelMapDirectMemory</code> now takes an address hint as FreeBSD's <code>mmap</code> does without
 <code>MAP_FIXED</code>: the map goes there when the range is free. A hint in use (where the system then maps
 is not established) and one off the alignment stop by name.</p>
+<h2 id="virtual-memory-queries-scekernelvirtualquery-issue-34">Virtual memory queries (<code>sceKernelVirtualQuery</code>, issue #34)</h2>
+<p><code>sceKernelVirtualQuery(address, flags, info *, size)</code>, as the OpenOrbis homebrew SDK's <code>libkernel.h</code>
+and <code>_types/kernel.h</code> (<code>OrbisKernelVirtualQueryInfo</code>) declare it, describes the mapping that holds
+an address. The answer is a 0x48-byte structure:</p>
+<div class="wk-table"><table>
+<thead>
+<tr>
+<th>Offset</th>
+<th>Field</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>0x00</code>, <code>0x08</code></td>
+<td>start and end</td>
+</tr>
+<tr>
+<td><code>0x10</code></td>
+<td>the direct memory offset</td>
+</tr>
+<tr>
+<td><code>0x18</code></td>
+<td>protection</td>
+</tr>
+<tr>
+<td><code>0x1c</code></td>
+<td>memory type</td>
+</tr>
+<tr>
+<td><code>0x20</code></td>
+<td>flag bits: flexible 1, direct 2, stack 4, pooled 8, committed <code>0x10</code></td>
+</tr>
+<tr>
+<td><code>0x24</code></td>
+<td>a 32-byte name</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>What the executable does.</strong> Every call passes flags 0 and size 0x48, and reads the start, the
+offset or the direct bit:
+- <code>0x02d0328c</code> works out an address's place in direct memory as <code>offset + (address - start)</code>;
+- <code>0x02ad3f5e</code>, <code>0x02ad4066</code> and <code>0x02ad423e</code> release the direct memory at the offset.</p>
+<p><strong>What the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> does.</strong> It answers from its record of direct and flexible mappings: start,
+offset, protection as asked for, memory type, flexible or direct, committed, and no name. No call
+reads the end, and whether it is inclusive is not established; the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> writes the address just
+past the mapping.</p>
+<p><strong>What stops by name:</strong>
+- flags other than 0;
+- a size other than 0x48;
+- an address outside those mappings (other memory is not tracked yet);
+- a missing structure.</p>
+<h2 id="gnm-compute-queues-scegnmmapcomputequeue-issue-39"><abbr title="The PS4's low-level graphics API.">GNM</abbr>: compute queues (<code>sceGnmMapComputeQueue</code>, issue #39)</h2>
+<p>OpenOrbis' <code>GnmDriver.h</code> only names this call, so its shape comes from the engine's wrapper
+(<code>0x01489a80</code>, called from its compute queue setup at <code>0x0148c7b0</code>).</p>
+<p><strong>What the engine does:</strong>
+- The wrapper passes the pipe and queue from the queue object, the ring buffer, its size in dwords,
+  and the address of the GPU's read pointer.
+- A negative result is failure. Otherwise the wrapper keeps the result as the queue's id, and sets
+  the read pointer to 0.
+- The setup then reports success only when that id is not 0.</p>
+<p><strong>What the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> does.</strong> It does not run the GPU, so the ring is never read. It records each
+queue for the engine-level graphics layer, and answers ids from 1.</p>
+<p><strong>What stops by name:</strong> mapping the same pipe and queue twice, and a missing ring or read pointer.</p>
 <h2 id="implementation-rule">Implementation rule</h2>
 <p>Implement the established contract and test the <code>RT_SYSLIB</code> entry through its library and symbol name. Keep target-specific values separate from host values. When an argument, ID, return value, or error case is unknown, fail loudly with the call name and leave the question open; never choose a value to make <code>tools/boot.py</code> advance.</p>
 <h2 id="references">References</h2>

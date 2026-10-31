@@ -414,7 +414,7 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 30, 2026 21:37:00 UTC">October 30, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 31, 2026 06:54:21 UTC">October 31, 2026</span></p>
       
       
       <h1 id="runtime">Runtime</h1>
@@ -706,7 +706,7 @@ Paleblood's function table; see the <a href="../progress/">progress dashboard</a
 <li><strong>Loader and boot <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr>:</strong> project-owned and independently tested.</li>
 <li><strong>Kernel, threads, and memory:</strong> most of what start-up needs is in place. Merged <code>main</code> still stops at <code>scePthreadAttrGetaffinity</code> until BluePinetree's module replacement lands.</li>
 <li><strong>Files, audio, network start-up:</strong> begun. The game reads its own files read-only, its audio thread runs in real time without sound, and its HTTP client starts offline.</li>
-<li><strong><abbr title="The PS4's low-level graphics API.">GNM</abbr> and shaders:</strong> begun at the first call. The graphics layer is rebuilt at the engine's interface, not by emulating the GPU, and the goal is the first rendered frame.</li>
+<li><strong><abbr title="The PS4's low-level graphics API.">GNM</abbr> and shaders:</strong> begun. The game builds its GPU commands itself and only submits them, so the graphics are rebuilt in the engine's own renderer (its <code>GX</code> framework), not by emulating the GPU; the goal is the first rendered frame. Mapping that renderer is the next step.</li>
 <li><strong>Capture integration:</strong> add a return-aware, ABI-described observation boundary before connecting recordings to production <abbr title="14-byte jumps written over the start of original functions, sending their callers to the replacements.">hooks</abbr>. Synthetic tests are not a substitute for real <abbr title="Inputs recorded while the game ran, replayed by the harness.">captures</abbr>.</li>
 </ol>
 <p>System-library work is tracked separately from boot milestones, in one issue per group: kernel
