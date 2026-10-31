@@ -16,34 +16,12 @@
   "reviewed": "cbeec5cec86d340bacdb7224752caa5797ee9fc5"
  },
  "runtime-syscalls.md": {
-  "behind": [
-   {
-    "commit": "059d0a3793a1",
-    "pr": 180,
-    "title": "runtime: video out ports, buffers and hsync flips (libSceVideoOut)"
-   },
-   {
-    "commit": "3a271a98ff7a",
-    "pr": 179,
-    "title": "runtime: kernel event queues (sceKernelCreateEqueue, WaitEqueue, DeleteEqueue)"
-   }
-  ],
-  "reviewed": "da21ed56d9293bcc6eb9a67774f7dbbb0e1b927c"
+  "behind": [],
+  "reviewed": "8c24acf5b6936825da21f39f2d8a29a8dab756d1"
  },
  "runtime.md": {
-  "behind": [
-   {
-    "commit": "059d0a3793a1",
-    "pr": 180,
-    "title": "runtime: video out ports, buffers and hsync flips (libSceVideoOut)"
-   },
-   {
-    "commit": "3a271a98ff7a",
-    "pr": 179,
-    "title": "runtime: kernel event queues (sceKernelCreateEqueue, WaitEqueue, DeleteEqueue)"
-   }
-  ],
-  "reviewed": "da21ed56d9293bcc6eb9a67774f7dbbb0e1b927c"
+  "behind": [],
+  "reviewed": "8c24acf5b6936825da21f39f2d8a29a8dab756d1"
  },
  "systems/ai.md": {
   "behind": [],

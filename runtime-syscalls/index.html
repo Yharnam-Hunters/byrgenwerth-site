@@ -419,6 +419,8 @@
           
           <li><a href="#reading-the-games-files" class="wk-toc-link">Reading the game's files</a></li>
           
+          <li><a href="#showing-frames-video-out" class="wk-toc-link">Showing frames: video out</a></li>
+          
           <li><a href="#graphics-the-first-calls" class="wk-toc-link">Graphics: the first calls</a></li>
           
           <li><a href="#every-call-the-runtime-answers" class="wk-toc-link">Every call the runtime answers</a></li>
@@ -438,24 +440,8 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 31, 2026 06:54:21 UTC">October 31, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 31, 2026 07:34:21 UTC">October 31, 2026</span></p>
       
-      
-      
-      <aside class="wk-freshness" role="note">
-        <p><b>Not yet updated for 2 merged changes.</b>
-        This page was last checked against Paleblood
-        <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/da21ed56d9293bcc6eb9a67774f7dbbb0e1b927c"><code>da21ed5</code></a>;
-        these pull requests changed what it describes since:</p>
-        <ul>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/180">#180</a> runtime: video out ports, buffers and hsync flips (libSceVideoOut)</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/179">#179</a> runtime: kernel event queues (sceKernelCreateEqueue, WaitEqueue, DeleteEqueue)</li>
-          
-          
-        </ul>
-      </aside>
       
       <h1 id="runtime-system-call-notes">Runtime system-call notes</h1>
 <p class="wk-lede">What each runtime system call is for, what it must do, what the game was seen to do with it, and how Paleblood's runtime answers.</p>
@@ -1129,6 +1115,11 @@ game passes is not yet observed.</p>
 <td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
 <td data-label="What the runtime does">Keeps each thread's blocked-signal set; no signal reaches the game yet.</td>
 </tr>
+<tr>
+<td data-label="Call"><code>sceKernelCreateEqueue</code>, <code>sceKernelWaitEqueue</code>, <code>sceKernelDeleteEqueue</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">Event queues: a thread waits until the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> raises an event, such as a finished frame flip.</td>
+</tr>
 </tbody>
 </table></div>
 <p>A game keeps many threads busy at once: loading, audio, rendering, the game's own logic. These calls
@@ -1162,7 +1153,8 @@ the set for each thread and gives it back unchanged.</p>
   <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/161">#161</a> (signal masks),
   <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/162">#162</a> (recursive condition waits),
   <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/163">#163</a> and
-  <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/168">#168</a> (priorities and attributes).</li>
+  <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/168">#168</a> (priorities and attributes) and
+  <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/179">#179</a> (event queues).</li>
 <li>The 16 KiB retry is at <code>0x02a3b383</code>; the 40-bit lock is at <code>0x024368c0</code>.</li>
 <li><strong>Stops by name:</strong> creating a thread without an attribute, a stack size or a detach state; a
   stack the guest supplies; an empty CPU mask; a semaphore wait with a timeout; a second
@@ -1389,6 +1381,53 @@ The first file Bloodborne looks for and reads is <code>sprj_mixer.fev</code>, it
 <li>PR <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/170">#170</a>.</li>
 <li>Stops by name: any folder other than <code>/app0</code>, a <code>..</code> in a path, and host errors other than a
   missing file or folder.</li>
+</ul>
+</details>
+<h2 id="showing-frames-video-out">Showing frames: video out</h2>
+<div class="wk-table is-stack"><table class="wk-stack">
+<thead>
+<tr>
+<th>Call</th>
+<th>Status</th>
+<th>What the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td data-label="Call"><code>sceVideoOutOpen</code>, <code>sceVideoOutClose</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">Opens the game's video output.</td>
+</tr>
+<tr>
+<td data-label="Call"><code>sceVideoOutSetFlipRate</code>, <code>sceVideoOutAddFlipEvent</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">Records the rate, and which event queue hears about each flip.</td>
+</tr>
+<tr>
+<td data-label="Call"><code>sceVideoOutSetBufferAttribute</code>, <code>sceVideoOutRegisterBuffers</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">Describes and keeps the game's frame buffers (1920 × 1080).</td>
+</tr>
+<tr>
+<td data-label="Call"><code>sceVideoOutSubmitFlip</code>, <code>sceVideoOutGetFlipStatus</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">Flips to the next buffer at once and tells the waiting game it is done.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Each frame the game asks video out to show one of its frame buffers, then waits on an event
+queue until the console reports that the flip happened, or reads the flip status until it
+catches up. The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> keeps the buffers and answers every flip straight away, so the game's
+frame loop can run. It does not show the buffers on your screen yet: the game draws into them with
+the GPU, which comes with the graphics work below.</p>
+<details class="reference">
+<summary>Video out: PRs and call sites</summary>
+<ul>
+<li>PR <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/180">#180</a>, built on the event queues of
+  <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/179">#179</a>; claimed on
+  <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/38">#38</a>.</li>
+<li>The two setups are at <code>0x015e488e</code> and <code>0x02ad61d4</code>; the flip loops at <code>0x015e419a</code> and
+  <code>0x02ad6ee9</code>. Both flips the game submits use mode 2 (hsync); a vsync flip stops by name.</li>
 </ul>
 </details>
 <h2 id="graphics-the-first-calls">Graphics: the first calls</h2>
