@@ -16,11 +16,43 @@
   "reviewed": "cbeec5cec86d340bacdb7224752caa5797ee9fc5"
  },
  "runtime-syscalls.md": {
-  "behind": [],
+  "behind": [
+   {
+    "commit": "2113d60f08b5",
+    "pr": 176,
+    "title": "runtime: the tessellation factor ring and direct maps at a hinted address"
+   },
+   {
+    "commit": "35c1d27d6eb5",
+    "pr": 175,
+    "title": "runtime: answer memory protection queries (sceKernelQueryMemoryProtection)"
+   },
+   {
+    "commit": "f9e5ccff1fc3",
+    "pr": 174,
+    "title": "runtime: report audio port state (sceAudioOutGetPortState)"
+   }
+  ],
   "reviewed": "cbeec5cec86d340bacdb7224752caa5797ee9fc5"
  },
  "runtime.md": {
-  "behind": [],
+  "behind": [
+   {
+    "commit": "2113d60f08b5",
+    "pr": 176,
+    "title": "runtime: the tessellation factor ring and direct maps at a hinted address"
+   },
+   {
+    "commit": "35c1d27d6eb5",
+    "pr": 175,
+    "title": "runtime: answer memory protection queries (sceKernelQueryMemoryProtection)"
+   },
+   {
+    "commit": "f9e5ccff1fc3",
+    "pr": 174,
+    "title": "runtime: report audio port state (sceAudioOutGetPortState)"
+   }
+  ],
   "reviewed": "cbeec5cec86d340bacdb7224752caa5797ee9fc5"
  },
  "systems/ai.md": {

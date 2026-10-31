@@ -463,6 +463,10 @@
           
           <li><a href="#the-titles-files-app0-scekernelstat-opening-and-reading-issue-35" class="wk-toc-link">The title's files: /app0, sceKernelStat, opening and reading (issue #35)</a></li>
           
+          <li><a href="#memory-protection-queries-scekernelquerymemoryprotection-issue-34" class="wk-toc-link">Memory protection queries (sceKernelQueryMemoryProtection, issue #34)</a></li>
+          
+          <li><a href="#gnm-the-tessellation-factor-ring-scegnmgetthetessellationfactorringbufferbaseaddress-issue-39" class="wk-toc-link">GNM: the tessellation factor ring (sceGnmGetTheTessellationFactorRingBufferBaseAddress, issue #39)</a></li>
+          
           <li><a href="#implementation-rule" class="wk-toc-link">Implementation rule</a></li>
           
           <li><a href="#references" class="wk-toc-link">References</a></li>
@@ -1211,6 +1215,14 @@ the next block.</p>
   only checks the sign).
 - A port that falls behind starts again from now.</p>
 <p><strong>What stops by name:</strong> a missing block, and a handle the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> did not hand out.</p>
+<p><code>int32_t sceAudioOutGetPortState(handle, void *state)</code>, as the SDK declares it, reports a port's
+state. Its <code>_types/audio_out.h</code> gives the layout (32 bytes): a 16-bit output, an 8-bit channel
+count, a volume and a 64-bit flag. The executable's only call (<code>0x0111bb41</code>) asks about its second
+port, and reads only output, testing it for 0.</p>
+<p><strong>What the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> does.</strong> It plays nothing on the host, so no port is output anywhere. It answers
+output 0, and 0 in the fields whose encoding is not established. This must change when the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>
+plays sound.</p>
+<p><strong>What stops by name:</strong> an unknown handle, and a missing state.</p>
 <h2 id="attribute-priority-and-cpu-mask-scepthreadattrsetschedparam-scepthreadattrsetaffinity-issue-34">Attribute priority and CPU mask (<code>scePthreadAttrSetschedparam</code>, <code>scePthreadAttrSetaffinity</code>, issue #34)</h2>
 <p><code>scePthreadAttrSetschedparam(attr, const struct sched_param *param)</code> sets the priority
 (<code>sched_param</code>'s one int) of a thread created with the attribute. OpenOrbis' <code>libkernel.h</code> gives
@@ -1264,6 +1276,32 @@ flags 0 (<code>O_RDONLY</code>) and mode 0555.</p>
   descriptor (the title only passes it back). One the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> did not hand out is <code>EBADF</code>.
 - <strong>Seeking.</strong> A whence other than 0, 1 or 2 (<code>SEEK_SET</code>, <code>SEEK_CUR</code>, <code>SEEK_END</code>, the same on
   FreeBSD and Linux), and a seek before the start, are <code>EINVAL</code>.</p>
+<h2 id="memory-protection-queries-scekernelquerymemoryprotection-issue-34">Memory protection queries (<code>sceKernelQueryMemoryProtection</code>, issue #34)</h2>
+<p><code>sceKernelQueryMemoryProtection(void *address, void **start, void **end, int32_t *protection)</code>, as
+the OpenOrbis homebrew SDK's <code>libkernel.h</code> declares it, gives the protection of the mapping that
+holds an address.</p>
+<p><strong>What the executable does.</strong> Its helpers (<code>0x02abad98</code>, <code>0x02abadf8</code>) pass no start or end. They
+test the protection's CPU read bit (1) and GPU read bit (<code>0x10</code>), on memory the game mapped itself.</p>
+<p><strong>What the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> does.</strong> It records every direct and flexible mapping with the protection the
+guest asked for, GPU bits included, and answers that.</p>
+<p><strong>What stops by name:</strong>
+- a start or end (whether end is inclusive is not established);
+- an address outside those mappings (other memory is not tracked yet);
+- a missing variable.</p>
+<h2 id="gnm-the-tessellation-factor-ring-scegnmgetthetessellationfactorringbufferbaseaddress-issue-39"><abbr title="The PS4's low-level graphics API.">GNM</abbr>: the tessellation factor ring (<code>sceGnmGetTheTessellationFactorRingBufferBaseAddress</code>, issue #39)</h2>
+<p>Graphics are rebuilt at the engine level (issue #39), so the <abbr title="The PS4's low-level graphics API.">GNM</abbr> calls answer what the engine
+expects back; the GPU is not emulated.</p>
+<p>The OpenOrbis homebrew SDK's <code>GnmDriver.h</code> only names this call. The executable's only call
+(<code>0x02ad3fb4</code>) takes a 64-bit address and maps 128 KiB of direct memory there, for the GPU's
+tessellation factors: <code>sceKernelMapDirectMemory</code> with that address as a hint, protection <code>0x33</code>,
+alignment <code>0x10000</code>.</p>
+<p><strong>What the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> does.</strong> The <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> answers a fixed address of its own. The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> answers one it
+reserves for this, <code>0xfe00000000</code>: below 2^40, and clear of the executable, modules and thread
+objects. It is the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>'s choice, not the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr>'s value: the engine only maps it and hands it back
+to the GPU calls.</p>
+<p>For this, <code>sceKernelMapDirectMemory</code> now takes an address hint as FreeBSD's <code>mmap</code> does without
+<code>MAP_FIXED</code>: the map goes there when the range is free. A hint in use (where the system then maps
+is not established) and one off the alignment stop by name.</p>
 <h2 id="implementation-rule">Implementation rule</h2>
 <p>Implement the established contract and test the <code>RT_SYSLIB</code> entry through its library and symbol name. Keep target-specific values separate from host values. When an argument, ID, return value, or error case is unknown, fail loudly with the call name and leave the question open; never choose a value to make <code>tools/boot.py</code> advance.</p>
 <h2 id="references">References</h2>
