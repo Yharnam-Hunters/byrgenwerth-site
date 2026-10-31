@@ -372,7 +372,7 @@
       <span class="wk-stat-track" role="img" aria-label="0.033 percent of target code bytes verified">
         <span class="wk-stat-fill" style="width:0.033%"></span>
       </span>
-      <span class="wk-progress-foot">0.033% of code bytes verified · 49 replaced</span>
+      <span class="wk-progress-foot">0.033% of code bytes verified · 51 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -410,7 +410,7 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 28, 2026 05:15:03 UTC">October 28, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 31, 2026 13:01:26 UTC">October 31, 2026</span></p>
       
       
       <h1 id="event">Event</h1>
@@ -471,6 +471,11 @@ function first works out which group holds the flag, then which bit in that grou
    neighbors.</li>
 </ol>
 <p>A missing group, unsupported storage kind, or null storage pointer leaves memory unchanged.</p>
+<p><strong>Reading a flag</strong> follows the same path. Since <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/199">#199</a>
+the store's layout and lookup are shared code, also used to read flags: an ID that is negative as a
+signed 32-bit number, a missing group or missing storage reads as a clear flag. The game itself
+inlines this read where it needs it; one such place is the Chalice Dungeon gate state's level
+creation (see <a href="../frame_timing/">Frame timing</a>).</p>
 <p>This replacement is <strong><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></strong>, not fully <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>: it matches the original on
 constructed <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr>, not on recorded gameplay.</p>
 <details class="evidence">
@@ -479,7 +484,10 @@ constructed <abbr title="Generated inputs for situations a recording does not re
 <a href="https://github.com/Yharnam-Hunters/Paleblood/blob/af97b90bb1e88853adfc04b8da2b3d7506516565/game/event/flag_write.cpp">source and layout</a>
 and <a href="https://github.com/Yharnam-Hunters/Paleblood/blob/af97b90bb1e88853adfc04b8da2b3d7506516565/symbols/verification.csv">verification record</a>
 report matching original-instruction results on 14 constructed edge fixtures. Those cover tree
-search paths, byte boundaries, set/clear operations, missing groups, and storage selection.</p>
+search paths, byte boundaries, set/clear operations, missing groups, and storage selection.
+Since <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/199">#199</a> the write uses the shared
+store code and was recorded again on 15 fixtures, one more with a group size that is not a
+power of two.</p>
 </details>
 <details class="caveat">
 <summary>What the fixtures do not establish</summary>
