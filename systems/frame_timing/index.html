@@ -372,7 +372,7 @@
       <span class="wk-stat-track" role="img" aria-label="0.033 percent of target code bytes verified">
         <span class="wk-stat-fill" style="width:0.033%"></span>
       </span>
-      <span class="wk-progress-foot">0.033% of code bytes verified · 46 replaced</span>
+      <span class="wk-progress-foot">0.033% of code bytes verified · 49 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -412,7 +412,7 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 31, 2026 11:37:26 UTC">October 31, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 31, 2026 12:04:12 UTC">October 31, 2026</span></p>
       
       
       <h1 id="frame-timing">Frame timing</h1>
@@ -584,6 +584,11 @@ edits, and what each belongs to, is part of running the game faster than 30 FPS.
   it), built on one of the engine's memory heaps. With no active slot it does nothing; otherwise
   it hands the handle and the list on (<code>0x01e9cd20</code>, not yet analyzed), gives request 8, and then
   frees the list's memory.</li>
+<li><strong>Passing the handle on.</strong> A readiness check lets the gate go on when it is idle in a ritual or
+  dungeon mode and the online manager allows it; in the server modes the handled object must also
+  have one word at zero. Two methods that differ only in a "kind" number (1 or 2) run that check,
+  clear two words of the handled object, hand the handle on with the kind (to one routine in the
+  local modes, another in the server modes, neither analyzed yet), and give request 9.</li>
 </ul>
 <p>The millisecond sleep wrapper (<code>0x0111a880</code>), which is not on the limiter's path, is <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> too.
 It converts the engine's millisecond delay to the kernel's microseconds. It multiplies in 32 bits,
@@ -610,6 +615,9 @@ as the original does, so very large delays wrap, and it always reports success.<
   (<code>0x01ea5670</code>, one 60 FPS++ edit).</li>
 <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/194">#194</a>: the ritual slot reset
   (<code>0x01ea5850</code>, one 60 FPS++ edit).</li>
+<li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/196">#196</a>: the readiness check
+  (<code>0x01ea5c90</code>) and the two pass-on methods (<code>0x01ea5e20</code>, <code>0x01ea6080</code>; one 60 FPS++ edit
+  each).</li>
 <li>Status: <strong><abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr></strong>, not <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>. Each was compared with the original function on authored
   <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr>, stock and with the 60 FPS++ edits, and wrong variants were rejected. None was
   checked on frames recorded from a real game run.</li>
@@ -747,6 +755,27 @@ piece of the game's own per-frame work, the next layer to map.</p>
 <td data-label="Name"><code>frame_timing_gate_ritual_slot_reset</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">ritual slot reset of the Chalice Dungeon gate state: as 0x01ea5670, but lists the active slots on the container heap and passes them on with the handle</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x01ea5c90</code></td>
+<td style="text-align: right;" data-label="Size">354</td>
+<td data-label="Name"><code>frame_timing_gate_ritual_or_dungeon_ready</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">readiness check of the Chalice Dungeon gate state: idle in a local ritual/dungeon mode with FrpgNetMan's bytes allowing it, or a server one also needing a handle whose +0x50 is zero</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x01ea5e20</code></td>
+<td style="text-align: right;" data-label="Size">546</td>
+<td data-label="Name"><code>frame_timing_gate_pass_on_kind_1</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">when ready (0x01ea5c90): clears the handle's +0x11c and +0x120, passes it on for the mode with kind 1 if its +0x50 is zero, then request 9</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x01ea6080</code></td>
+<td style="text-align: right;" data-label="Size">546</td>
+<td data-label="Name"><code>frame_timing_gate_pass_on_kind_2</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">as 0x01ea5e20 with kind 2</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x01eb5390</code></td>
