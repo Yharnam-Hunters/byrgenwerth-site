@@ -372,7 +372,7 @@
       <span class="wk-stat-track" role="img" aria-label="0.033 percent of target code bytes verified">
         <span class="wk-stat-fill" style="width:0.033%"></span>
       </span>
-      <span class="wk-progress-foot">0.033% of code bytes verified · 43 replaced</span>
+      <span class="wk-progress-foot">0.033% of code bytes verified · 44 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -583,7 +583,9 @@ non-returning, so the bytes after a call to it are not disassembled unless somet
 The game's code does continue there (a jump to the return, or to another report), which matters
 when a replacement is tested with that function stubbed. If a draft's disassembly has a gap after
 such a call, disassemble the bytes directly (objdump on the <abbr title="Executable and Linkable Format, the standard executable file format on Linux and FreeBSD.">ELF</abbr>) before writing the replacement.
-Example: <code>kernel_condition_wait</code> (<code>0x02483e80</code>) returns -3 after the EINVAL report.</p>
+Example: <code>kernel_condition_wait</code> (<code>0x02483e80</code>) returns -3 after the EINVAL report.
+Since #189, <code>tools/draft.sh</code> marks each such span with <code>; GAP:</code> and decodes it. Example:
+<code>0x01ea4a10</code> (#188) re-reads an entry at <code>0x01ea4b17</code> after the report and goes on to keep it.</p>
 <h2 id="replay-overlapping-community-patch-writes-in-order">Replay overlapping community patch writes in order</h2>
 <p>The <a href="https://github.com/shadps4-emu/ps4_cheats/blob/e34463942099072e5d8f5e2bcb3d7d927683b349/PATCHES/Bloodborne.xml">community XML at commit e344639</a>
 contains overlapping <code>Uncap FPS++</code> writes inside <code>0x02713870</code>. A five-byte call write at

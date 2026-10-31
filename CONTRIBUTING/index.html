@@ -372,7 +372,7 @@
       <span class="wk-stat-track" role="img" aria-label="0.033 percent of target code bytes verified">
         <span class="wk-stat-fill" style="width:0.033%"></span>
       </span>
-      <span class="wk-progress-foot">0.033% of code bytes verified · 43 replaced</span>
+      <span class="wk-progress-foot">0.033% of code bytes verified · 44 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -408,7 +408,7 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 30, 2026 21:37:00 UTC">October 30, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 31, 2026 10:45:03 UTC">October 31, 2026</span></p>
       
       
       <h1 id="contributing">Contributing</h1>
@@ -479,7 +479,7 @@ Questions: <a href="https://github.com/Yharnam-Hunters/Paleblood/discussions">Di
 <summary>Each step in full</summary>
 <ol>
 <li>Fork <a href="https://github.com/Yharnam-Hunters/Paleblood">Paleblood</a> on GitHub and run <code>tools/install_hooks.sh</code> in your clone.</li>
-<li>For decompilation, follow ONBOARDING.md from your own dump to <abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr>. For <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> work, read the syscall notes and claim one function or related group in its system issue (#34–#41); use a branch named <code>runtime/&lt;function&gt;</code>.</li>
+<li>For decompilation, follow ONBOARDING.md from your own dump to <abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr>. A draft from <code>tools/draft.sh</code> is a starting point; it marks with <code>; GAP:</code> and decodes the code <abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr> leaves out after a call it wrongly treats as not returning (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/189">#189</a>). For <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> work, read the syscall notes and claim one function or related group in its system issue (#34–#41); use a branch named <code>runtime/&lt;function&gt;</code>.</li>
 <li>Keep one function or tightly related group per PR. Add <code>RT_SYSLIB</code> unit cases and include evidence, confirmed behavior, unresolved questions, and test results in the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> report.</li>
 <li>Runtime-only PRs run the compiler matrix, RT_SYSLIB tests, and repository policy checks without requiring a dump, <abbr title="Inputs recorded while the game ran, replayed by the harness.">captures</abbr>, or function-level <code>verify.py</code>. CI also builds and tests each pull request merged with every other open one (the <code>combined</code> job, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/136">#136</a>), so two changes that break only together are caught before either merges. After merge, a maintainer runs <code>tools/boot.py</code> locally and posts the result on the PR.</li>
 <li>However you work, the workflow is the same; <code>tools/handoff.py</code> writes a shareable handoff of where a piece of work stands, so someone else can pick it up (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/93">#93</a>).</li>
