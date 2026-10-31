@@ -18,6 +18,11 @@
  "runtime-syscalls.md": {
   "behind": [
    {
+    "commit": "059d0a3793a1",
+    "pr": 180,
+    "title": "runtime: video out ports, buffers and hsync flips (libSceVideoOut)"
+   },
+   {
     "commit": "3a271a98ff7a",
     "pr": 179,
     "title": "runtime: kernel event queues (sceKernelCreateEqueue, WaitEqueue, DeleteEqueue)"
@@ -27,6 +32,11 @@
  },
  "runtime.md": {
   "behind": [
+   {
+    "commit": "059d0a3793a1",
+    "pr": 180,
+    "title": "runtime: video out ports, buffers and hsync flips (libSceVideoOut)"
+   },
    {
     "commit": "3a271a98ff7a",
     "pr": 179,
