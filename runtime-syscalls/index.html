@@ -441,6 +441,20 @@
       <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 31, 2026 06:54:21 UTC">October 31, 2026</span></p>
       
       
+      
+      <aside class="wk-freshness" role="note">
+        <p><b>Not yet updated for 1 merged change.</b>
+        This page was last checked against Paleblood
+        <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/da21ed56d9293bcc6eb9a67774f7dbbb0e1b927c"><code>da21ed5</code></a>;
+        these pull requests changed what it describes since:</p>
+        <ul>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/179">#179</a> runtime: kernel event queues (sceKernelCreateEqueue, WaitEqueue, DeleteEqueue)</li>
+          
+          
+        </ul>
+      </aside>
+      
       <h1 id="runtime-system-call-notes">Runtime system-call notes</h1>
 <p class="wk-lede">What each runtime system call is for, what it must do, what the game was seen to do with it, and how Paleblood's runtime answers.</p>
 
@@ -1491,9 +1505,19 @@ call is registered only to name itself and stop, because its answer is not estab
 <td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/files.c"><code>runtime/syslib/files.c</code></a></td>
 </tr>
 <tr>
+<td><code>sceKernelCreateEqueue</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_equeue.c"><code>runtime/syslib/kernel_equeue.c</code></a></td>
+</tr>
+<tr>
 <td><code>sceKernelCreateSema</code></td>
 <td><span class="wk-badge wk-badge--implemented">implemented</span></td>
 <td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_sema.c"><code>runtime/syslib/kernel_sema.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceKernelDeleteEqueue</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_equeue.c"><code>runtime/syslib/kernel_equeue.c</code></a></td>
 </tr>
 <tr>
 <td><code>sceKernelDeleteSema</code></td>
@@ -1589,6 +1613,11 @@ call is registered only to name itself and stop, because its answer is not estab
 <td><code>sceKernelVirtualQuery</code></td>
 <td><span class="wk-badge wk-badge--implemented">implemented</span></td>
 <td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_memory.c"><code>runtime/syslib/kernel_memory.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceKernelWaitEqueue</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_equeue.c"><code>runtime/syslib/kernel_equeue.c</code></a></td>
 </tr>
 <tr>
 <td><code>sceKernelWaitSema</code></td>

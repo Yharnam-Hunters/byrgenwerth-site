@@ -16,11 +16,23 @@
   "reviewed": "cbeec5cec86d340bacdb7224752caa5797ee9fc5"
  },
  "runtime-syscalls.md": {
-  "behind": [],
+  "behind": [
+   {
+    "commit": "3a271a98ff7a",
+    "pr": 179,
+    "title": "runtime: kernel event queues (sceKernelCreateEqueue, WaitEqueue, DeleteEqueue)"
+   }
+  ],
   "reviewed": "da21ed56d9293bcc6eb9a67774f7dbbb0e1b927c"
  },
  "runtime.md": {
-  "behind": [],
+  "behind": [
+   {
+    "commit": "3a271a98ff7a",
+    "pr": 179,
+    "title": "runtime: kernel event queues (sceKernelCreateEqueue, WaitEqueue, DeleteEqueue)"
+   }
+  ],
   "reviewed": "da21ed56d9293bcc6eb9a67774f7dbbb0e1b927c"
  },
  "systems/ai.md": {

@@ -471,6 +471,8 @@
           
           <li><a href="#gnm-compute-queues-scegnmmapcomputequeue-issue-39" class="wk-toc-link">GNM: compute queues (sceGnmMapComputeQueue, issue #39)</a></li>
           
+          <li><a href="#kernel-event-queues-scekernelcreateequeue-scekernelwaitequeue-scekerneldeleteequeue-issue-34" class="wk-toc-link">Kernel event queues (sceKernelCreateEqueue, sceKernelWaitEqueue, sceKernelDeleteEqueue, issue #34)</a></li>
+          
           <li><a href="#implementation-rule" class="wk-toc-link">Implementation rule</a></li>
           
           <li><a href="#references" class="wk-toc-link">References</a></li>
@@ -1369,6 +1371,26 @@ past the mapping.</p>
 <p><strong>What the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> does.</strong> It does not run the GPU, so the ring is never read. It records each
 queue for the engine-level graphics layer, and answers ids from 1.</p>
 <p><strong>What stops by name:</strong> mapping the same pipe and queue twice, and a missing ring or read pointer.</p>
+<h2 id="kernel-event-queues-scekernelcreateequeue-scekernelwaitequeue-scekerneldeleteequeue-issue-34">Kernel event queues (<code>sceKernelCreateEqueue</code>, <code>sceKernelWaitEqueue</code>, <code>sceKernelDeleteEqueue</code>, issue #34)</h2>
+<p>The <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> kernel is FreeBSD's, whose kqueue delivers <code>struct kevent</code>: ident (64-bit), filter (16-bit),
+flags (16-bit), fflags (32-bit), data (64-bit) and udata (a pointer), 32 bytes on amd64. The OpenOrbis
+homebrew SDK's <code>libkernel.h</code> declares create and delete; its <code>_types/kernel.h</code> lists the filters
+(display -13, graphics core -14, ...).</p>
+<p><strong>What the executable does.</strong> Right after asking video out for a flip, it waits with room for one
+event, a variable for how many came back, and no timeout (<code>0x015e41b6</code>, <code>0x02ad6f26</code>). So the wait
+blocks until the flip is done.</p>
+<p><strong>What the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> does:</strong>
+- The queue is a list of registrations, added and triggered by the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>'s own event sources
+  (<code>runtime/include/runtime/equeue.h</code>; video out is the first).
+- A wait returns the triggered events, oldest first, and clears them, so each is reported once per
+  trigger.
+- An event's flags and fflags are 0: what the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> sets there is not established, and no caller reads
+  them.</p>
+<p><strong>What stops by name:</strong>
+- a timeout (no call passes one);
+- deleting a queue a thread is waiting on;
+- an event array or count that does not fit;
+- the error values.</p>
 <h2 id="implementation-rule">Implementation rule</h2>
 <p>Implement the established contract and test the <code>RT_SYSLIB</code> entry through its library and symbol name. Keep target-specific values separate from host values. When an argument, ID, return value, or error case is unknown, fail loudly with the call name and leave the question open; never choose a value to make <code>tools/boot.py</code> advance.</p>
 <h2 id="references">References</h2>
