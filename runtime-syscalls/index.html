@@ -419,6 +419,8 @@
           
           <li><a href="#reading-the-games-files" class="wk-toc-link">Reading the game's files</a></li>
           
+          <li><a href="#graphics-the-first-calls" class="wk-toc-link">Graphics: the first calls</a></li>
+          
           <li><a href="#every-call-the-runtime-answers" class="wk-toc-link">Every call the runtime answers</a></li>
           
           <li><a href="#the-current-startup-stop" class="wk-toc-link">The current startup stop</a></li>
@@ -436,26 +438,8 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 30, 2026 21:37:00 UTC">October 30, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 31, 2026 01:30:11 UTC">October 31, 2026</span></p>
       
-      
-      
-      <aside class="wk-freshness" role="note">
-        <p><b>Not yet updated for 3 merged changes.</b>
-        This page was last checked against Paleblood
-        <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/cbeec5cec86d340bacdb7224752caa5797ee9fc5"><code>cbeec5c</code></a>;
-        these pull requests changed what it describes since:</p>
-        <ul>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/176">#176</a> runtime: the tessellation factor ring and direct maps at a hinted address</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/175">#175</a> runtime: answer memory protection queries (sceKernelQueryMemoryProtection)</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/174">#174</a> runtime: report audio port state (sceAudioOutGetPortState)</li>
-          
-          
-        </ul>
-      </aside>
       
       <h1 id="runtime-system-call-notes">Runtime system-call notes</h1>
 <p class="wk-lede">What each runtime system call is for, what it must do, what the game was seen to do with it, and how Paleblood's runtime answers.</p>
@@ -1204,6 +1188,11 @@ the set for each thread and gives it back unchanged.</p>
 <td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
 <td data-label="What the runtime does">Maps fresh zeroed memory that is not part of the pool.</td>
 </tr>
+<tr>
+<td data-label="Call"><code>sceKernelQueryMemoryProtection</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">Answers the protection the game asked for when it mapped the memory, GPU bits included.</td>
+</tr>
 </tbody>
 </table></div>
 <p>The <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> has two kinds of memory a game asks for. <strong>Direct memory</strong> is physical memory: the game
@@ -1214,12 +1203,18 @@ The pool's size is the <abbr title="What the game's code runs on: Paleblood's ow
 both the CPU and the GPU. The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> has no GPU yet, so it accepts the GPU flags and maps the
 memory for the CPU only. The <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> limits how much flexible memory a game may use; that budget is
 not established, so the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> does not enforce one.</p>
+<p><strong>Asking about memory.</strong> The game sometimes asks whether a piece of memory it mapped can be read
+by the CPU or by the GPU. The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> remembers every mapping with the access the game asked for,
+including GPU access it cannot provide yet, and answers from that. A direct map can also be asked
+for at a particular address, and goes exactly there when that range is free.</p>
 <details class="reference">
 <summary>Memory: PRs, call sites and what stops by name</summary>
 <ul>
 <li>PRs <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/143">#143</a> (direct memory),
   <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/154">#154</a> (GPU access) and
-  <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/156">#156</a> (flexible memory).</li>
+  <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/156">#156</a> (flexible memory),
+  <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/175">#175</a> (protection queries) and
+  <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/176">#176</a> (maps at a requested address).</li>
 <li>The game's maps use protection 3 (CPU read and write) and <code>0x33</code> (CPU and GPU read and
   write); its only flexible map is at <code>0x02481dbe</code>.</li>
 <li><strong>Stops by name:</strong> map flags and address hints, other protection bits, lengths that are not
@@ -1318,6 +1313,11 @@ to use, and what its own package says about itself.</p>
 <td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
 <td data-label="What the runtime does">Takes one block every 5.33 ms, as a real port would; nothing is played yet.</td>
 </tr>
+<tr>
+<td data-label="Call"><code>sceAudioOutGetPortState</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">Reports that no port is heard anywhere, which is true until the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> plays sound.</td>
+</tr>
 </tbody>
 </table></div>
 <p>Bloodborne mixes its sound in eight channels (7.1) and hands the console one block of 256 samples
@@ -1330,7 +1330,8 @@ play the samples on your computer yet.</p>
 <ul>
 <li>PRs <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/166">#166</a> (audio decoder start-up),
   <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/167">#167</a> (output ports and volume) and
-  <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/169">#169</a> (real-time pacing).</li>
+  <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/169">#169</a> (real-time pacing) and
+  <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/174">#174</a> (port state).</li>
 <li>The output format is the game's own evidence: its callback at <code>0x0111b600</code> asks for format
   <code>4 | (channels == 8)</code>, so 5 is float with eight channels.</li>
 </ul>
@@ -1366,6 +1367,47 @@ The first file Bloodborne looks for and reads is <code>sprj_mixer.fev</code>, it
 <li>PR <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/170">#170</a>.</li>
 <li>Stops by name: any folder other than <code>/app0</code>, a <code>..</code> in a path, and host errors other than a
   missing file or folder.</li>
+</ul>
+</details>
+<h2 id="graphics-the-first-calls">Graphics: the first calls</h2>
+<div class="wk-table is-stack"><table class="wk-stack">
+<thead>
+<tr>
+<th>Call</th>
+<th>Status</th>
+<th>What the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td data-label="Call"><code>sceGnmGetTheTessellationFactorRingBufferBaseAddress</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">Answers an address the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> reserves; the game maps its tessellation memory there.</td>
+</tr>
+<tr>
+<td data-label="Call"><code>sceGnmValidateCommandBuffers</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--observed">observed</span></td>
+<td data-label="What the runtime does">Not implemented: the answer the game checks for has no public meaning yet.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Paleblood does not emulate the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr>'s graphics chip. It will rebuild the graphics at the level of
+the game engine's own drawing interface, so the graphics-driver calls only need to answer what the
+engine expects back. The first one asks where the GPU keeps its tessellation factors (the data it
+uses to split surfaces into finer triangles); the engine then maps memory at that address. The <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr>
+answers a fixed address of its own; the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> answers one it reserves, because nothing but the
+engine's own graphics code ever uses it.</p>
+<p>The next call validates a command buffer, and the engine treats one particular error code as "this
+console cannot validate". That code is named only by GPU emulators, which the clean-room rules do
+not accept as a source for behaviour, so the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> stops there until a public source settles it.</p>
+<details class="reference">
+<summary>Graphics: PRs and call sites</summary>
+<ul>
+<li>PR <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/176">#176</a>; claimed on
+  <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/39">#39</a>.</li>
+<li>The tessellation ring is mapped at <code>0x02ad3fda</code> with protection <code>0x33</code> (CPU and GPU read and
+  write). The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>'s address is <code>0xfe00000000</code>.</li>
+<li>The validation check is at <code>0x02abb950</code>: the engine compares the result with <code>0x80d13fff</code>.</li>
 </ul>
 </details>
 <h2 id="every-call-the-runtime-answers">Every call the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> answers</h2>
