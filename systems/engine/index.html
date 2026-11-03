@@ -1,0 +1,501 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  
+  <meta name="description" content="Notes of Paleblood, a decompilation of Bloodborne (PS4, CUSA03173 v1.09) with its own runtime, one verified function at a time, and an open place to learn how a console game works and how it is reverse engineered">
+  <link rel="canonical" href="https://yharnam-hunters.github.io/byrgenwerth-site/systems/engine/">
+  
+  
+  <title>Engine — Byrgenwerth</title>
+  
+  <script>
+  /* Before first paint: the stored theme, and a flag that JavaScript (wiki.js) will run. */
+  (function () { var d = document.documentElement, t = 'dark';
+    try { t = localStorage.getItem('wk-theme') || 'dark'; } catch (e) {}
+    d.setAttribute('data-theme', t); d.classList.add('wk-js'); }());
+  </script>
+  
+  <link rel="stylesheet" href="../../stylesheets/wiki.css?v=14101bbbf0"><link rel="stylesheet" href="../../stylesheets/hunters.css?v=e4f3c59dfb">
+  
+  
+</head>
+<body>
+
+<!-- ── Header: wordmark, section tabs (wide screens), search, theme ── -->
+
+
+<header class="wk-header" id="wk-header">
+  <button class="wk-nav-toggle" id="wk-nav-toggle" aria-label="Open navigation" aria-expanded="false" aria-controls="wk-nav">☰</button>
+  <a class="wk-wordmark" href="/byrgenwerth-site/">Byrgenwerth<small>notes of Paleblood, rebuilding Bloodborne one verified function at a time</small></a>
+
+  <!-- Section tabs (wide screens; the drawer lists the same sections on small ones) -->
+  <nav class="wk-tabs" aria-label="Sections">
+    
+    <a class="wk-tab" href="../..">The Hunt</a>
+    
+    <a class="wk-tab" href="../../great-ones/">Encyclopedia</a>
+    
+    <a class="wk-tab is-active" href="../" aria-current="true">Systems</a>
+    
+    <a class="wk-tab" href="../../ARCHITECTURE/">How It Works</a>
+    
+    <a class="wk-tab" href="../../CONTRIBUTING/">For Hunters</a>
+    
+  </nav>
+
+  <div class="wk-header-right">
+    
+    <div class="wk-searchbox">
+      <input class="wk-search-input" id="wk-q" type="search"
+             placeholder="Search  [/]" autocomplete="off" aria-label="Search">
+      <div class="wk-search-results" id="wk-results" hidden role="listbox"></div>
+    </div>
+    <button class="wk-toggle" id="wk-toggle" title="Toggle theme" aria-label="Toggle dark/light">☀</button>
+  </div>
+</header>
+
+<!-- ── Layout ──────────────────────────────────────────────── -->
+<div class="wk-layout">
+
+  <div class="wk-nav-backdrop" id="wk-nav-backdrop" hidden></div>
+
+  <!-- Left sidebar -->
+  <nav class="wk-nav has-current" id="wk-nav" aria-label="Site navigation">
+    <!-- Menu artwork: credited on the Credits page; provenance and rights notes in the private media review -->
+    <figure class="wk-portal-icon">
+      <a href="/byrgenwerth-site/" aria-label="Byrgenwerth home">
+        <img src="../../assets/media/bloodborne-menu-art.png" width="256" height="256" alt="A lone Bloodborne hunter stands in a rain-darkened Yharnam street beneath the game's gothic architecture.">
+      </a>
+    </figure>
+
+    
+    <section class="wk-nav-section">
+      
+      
+      
+      
+      
+      
+      <p class="wk-nav-heading">The Hunt</p>
+      
+      <ul class="wk-nav-list">
+        
+        
+        <li><a class="wk-nav-link" href="../..">Home</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../devlog/">Devlog</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../progress/">Progress</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../hunters/">The Hunters</a></li>
+        
+        
+      </ul>
+    
+      
+    </section>
+    
+    <section class="wk-nav-section">
+      
+      
+      
+      
+      
+      
+      <p class="wk-nav-heading">Encyclopedia</p>
+      
+      <ul class="wk-nav-list">
+        
+        
+        <li class="wk-nav-group">
+      
+      
+      
+        
+        
+      
+      
+      <a class="wk-nav-subheading" href="../../great-ones/">The Great Ones</a>
+      
+      <ul class="wk-nav-list">
+        
+        
+        <li><a class="wk-nav-link" href="../../great-ones/boss-directory/">Boss Directory</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../great-ones/ai-and-phases/">Boss AI & Phases</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../great-ones/mechanics/">Boss Mechanics</a></li>
+        
+        
+      </ul>
+    </li>
+        
+        
+        
+        <li class="wk-nav-group">
+      
+      
+      
+        
+        
+      
+      
+      <a class="wk-nav-subheading" href="../../beasts-of-yharnam/">Beasts of Yharnam</a>
+      
+      <ul class="wk-nav-list">
+        
+        
+        <li><a class="wk-nav-link" href="../../beasts-of-yharnam/enemy-directory/">Enemy Directory</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../beasts-of-yharnam/ai-and-behavior/">Enemy AI & Behavior</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../beasts-of-yharnam/npcs-and-hunters/">NPCs & Hunters</a></li>
+        
+        
+      </ul>
+    </li>
+        
+        
+        
+        <li class="wk-nav-group">
+      
+      
+      
+        
+        
+      
+      
+      <a class="wk-nav-subheading" href="../../workshop/">The Hunter's Workshop</a>
+      
+      <ul class="wk-nav-list">
+        
+        
+        <li><a class="wk-nav-link" href="../../workshop/combat-damage/">Combat & Damage</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../workshop/weapons-transformations/">Weapons & Transformations</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../workshop/movement-stamina/">Movement & Stamina</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../workshop/hitboxes-collision/">Hitboxes & Collision</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../workshop/stats-progression/">Stats & Progression</a></li>
+        
+        
+      </ul>
+    </li>
+        
+        
+      </ul>
+    
+      
+    </section>
+    
+    <section class="wk-nav-section is-current">
+      
+      
+      
+      
+      
+      
+      <p class="wk-nav-heading">Systems</p>
+      
+      <ul class="wk-nav-list">
+        
+        
+        <li><a class="wk-nav-link" href="../">Overview</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../frame_timing/">Frame timing</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../kernel/">Kernel</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link is-active" href="./" aria-current="page">Engine</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../event/">Event</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../camera/">Camera</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../input/">Input</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../character/">Character</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../ai/">AI</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../physics/">Physics</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../render/">Render</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../loading/">Loading</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../audio/">Audio</a></li>
+        
+        
+      </ul>
+    
+      
+    </section>
+    
+    <section class="wk-nav-section">
+      
+      
+      
+      
+      
+      
+      <p class="wk-nav-heading">How It Works</p>
+      
+      <ul class="wk-nav-list">
+        
+        
+        <li><a class="wk-nav-link" href="../../ARCHITECTURE/">Architecture</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../runtime/">Runtime</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../runtime-syscalls/">Runtime system calls</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../runtime-reference/">Runtime call reference</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../how-the-frame-limiter-works/">The Frame Limiter</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../ADDRESS_MAP/">Address Map</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../target/">Target</a></li>
+        
+        
+      </ul>
+    
+      
+    </section>
+    
+    <section class="wk-nav-section">
+      
+      
+      
+      
+      
+      
+      <p class="wk-nav-heading">For Hunters</p>
+      
+      <ul class="wk-nav-list">
+        
+        
+        <li><a class="wk-nav-link" href="../../CONTRIBUTING/">Contributing</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../QUIRKS/">Ghidra & PS4 Quirks</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../glossary/">Glossary</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../CI_SETUP/">CI Setup</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../credits/">Credits</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../MEDIA_POLICY/">Evidence & Media Review</a></li>
+        
+        
+      </ul>
+    
+      
+    </section>
+    
+
+    <!-- Progress card: every value from docs/data/progress.json (hooks/progress_extra.py) -->
+    
+    
+    <a class="wk-progress-card" href="../../progress/">
+      <span class="wk-progress-label">Verified functions</span>
+      <span class="wk-progress-value">21 <small>of 157,757</small></span>
+      <span class="wk-stat-track" role="img" aria-label="0.033 percent of target code bytes verified">
+        <span class="wk-stat-fill" style="width:0.033%"></span>
+      </span>
+      <span class="wk-progress-foot">0.033% of code bytes verified · 53 replaced</span>
+      <span class="wk-progress-more">Full progress →</span>
+    </a>
+    
+  </nav>
+
+  <!-- Main content -->
+  <main class="wk-main">
+    <div class="wk-article">
+
+      
+      
+      
+      
+      
+      <nav class="wk-toc" id="wk-toc" aria-label="On this page">
+        <div class="wk-toc-header"><b>On this page</b></div>
+        <ol class="wk-toc-list" id="wk-toc-list">
+          
+          <li><a href="#summary" class="wk-toc-link">Summary</a></li>
+          
+          <li><a href="#key-functions" class="wk-toc-link">Key functions</a></li>
+          
+        </ol>
+      </nav>
+      
+      
+      
+
+      <div class="wk-article-body">
+      
+      
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 3, 2026 16:59:11 UTC">November 3, 2026</span></p>
+      
+      
+      <h1 id="engine">Engine</h1>
+<p class="wk-lede">The engine's shared plumbing that every system leans on: its fatal error report, its check for missing singletons, its reference-counted objects, and small helpers such as writing a line to the standard error stream.</p>
+
+<div class="wk-glance">
+<p><span class="wk-label">At a glance</span></p>
+<dl>
+<dt>Scope</dt>
+<dd>Engine-wide helpers in Paleblood's <code>game/engine/</code>: the fatal error report and singleton check, reference counting, and <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> engine utility functions.</dd>
+<dt>Verified</dt>
+<dd><code>engine_write_stderr</code> (<code>0x0111a740</code>) is <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr> against constructed cases.</dd>
+<dt>Open</dt>
+<dd>Who calls the stderr writer during play, and with what text.</dd>
+</dl>
+</div>
+<h2 id="summary">Summary</h2>
+<h3 id="what-every-system-shares">What every system shares</h3>
+<p>Most <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> functions lean on a few engine-wide pieces:</p>
+<ul>
+<li><strong>The fatal error report</strong> (<code>0x024b55b0</code>) takes a source file, a line and a message. In the
+  shipped game it logs and <em>returns</em>, so the code after it keeps running; <abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr> wrongly treats it
+  as never returning (see <a href="../../QUIRKS/"><abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr> &amp; <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> Quirks</a>).</li>
+<li><strong>The singleton check.</strong> Many systems are singletons (<code>FrpgNetMan</code>, <code>SprjEventFlagMan</code>, ...).
+  Code that needs one reports it by name through the fatal error report when it is missing, then
+  reads it again and uses whatever is there.</li>
+<li><strong>Reference-counted objects</strong> (<code>DLReferenceCountObject</code>). An object counts its holders; dropping
+  the last reference destroys it through its first virtual function, and dropping one more than
+  it has is reported as an invalid unref. The render frame update and the Chalice Dungeon gate's
+  handle share this code (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/185">#185</a>).</li>
+</ul>
+<h3 id="writing-to-standard-error">Writing to standard error</h3>
+<p><code>engine_write_stderr</code> (<code>0x0111a740</code>) writes a text to the standard error stream: it reads the C
+library's <code>stderr</code> once, passes the text to <code>fputs</code>, ignores the result, and returns 0.</p>
+<details class="evidence">
+<summary>How the stderr writer was <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></summary>
+<p>By <a href="https://github.com/evill33t">@evill33t</a> in #113, brought up to date with <code>main</code> and merged
+in <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/205">#205</a>. Its 28 constructed <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr>
+pass against the original on current <code>main</code>, and an independent review approved it; no frame-rate
+patch edits it. It has not been checked on frames recorded from a real game run.</p>
+</details>
+<h2 id="key-functions">Key functions</h2>
+<div class="wk-table is-stack"><table class="wk-stack">
+<thead>
+<tr>
+<th>Address</th>
+<th style="text-align: right;">Size</th>
+<th>Name</th>
+<th>Status</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td data-label="Address"><code>0x0111a740</code></td>
+<td style="text-align: right;" data-label="Size">20</td>
+<td data-label="Name"><code>engine_write_stderr</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Forward the string and imported _Stderr object address to fputs; ignore its return and return zero; synthetic wire <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr> only</td>
+</tr>
+</tbody>
+</table></div>
+      
+      </div>
+
+    </div>
+    <footer class="wk-footer">
+      <p class="wk-footer-motto">Fear the old blood</p>
+      <p>Made by people who love Bloodborne, so that it can be studied, preserved and played
+      natively, one verified function at a time.</p>
+      <p>A fan project. Not affiliated with or endorsed by Sony Interactive Entertainment or
+      FromSoftware. No game files are shared here: bring your own copy.</p>
+    </footer>
+  </main>
+
+</div>
+
+
+<!-- Back to top -->
+<button class="wk-top" id="wk-top" title="Back to top" aria-label="Scroll to top">↑</button>
+
+
+<script>
+/* Page settings for wiki.js. The drawer query matches the drawer breakpoint in wiki.css. */
+window.WK = {base: "../..", searchIndex: "../../search/search_index.json",
+             drawerQuery: window.matchMedia('(max-width: 900px)')};
+</script>
+<script src="../../javascripts/wiki.js?v=48af91151e" defer></script><script src="../../javascripts/hunters.js?v=28a0e867eb" defer></script><script src="../../search/main.js" defer></script>
+</body>
+</html>
