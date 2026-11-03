@@ -376,7 +376,7 @@
       <span class="wk-stat-track" role="img" aria-label="0.033 percent of target code bytes verified">
         <span class="wk-stat-fill" style="width:0.033%"></span>
       </span>
-      <span class="wk-progress-foot">0.033% of code bytes verified · 53 replaced</span>
+      <span class="wk-progress-foot">0.033% of code bytes verified · 65 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -408,7 +408,7 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 3, 2026 16:59:11 UTC">November 3, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 3, 2026 18:17:46 UTC">November 3, 2026</span></p>
       
       
       <h1 id="engine">Engine</h1>
@@ -420,7 +420,7 @@
 <dt>Scope</dt>
 <dd>Engine-wide helpers in Paleblood's <code>game/engine/</code>: the fatal error report and singleton check, reference counting, and <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> engine utility functions.</dd>
 <dt>Verified</dt>
-<dd><code>engine_write_stderr</code> (<code>0x0111a740</code>) is <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr> against constructed cases.</dd>
+<dd><code>engine_write_stderr</code>, two string comparisons and a handle-table lookup are <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr> against constructed cases.</dd>
 <dt>Open</dt>
 <dd>Who calls the stderr writer during play, and with what text.</dd>
 </dl>
@@ -450,6 +450,24 @@ in <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/205">#205</a>. Its
 pass against the original on current <code>main</code>, and an independent review approved it; no frame-rate
 patch edits it. It has not been checked on frames recorded from a real game run.</p>
 </details>
+<h3 id="comparing-strings">Comparing strings</h3>
+<p>Two byte-string comparisons compare signed bytes and return the difference at the first mismatch:
+<code>engine_compare_signed_strings</code> (<code>0x011c4970</code>) runs to the end of the strings, and
+<code>engine_compare_signed_prefix</code> (<code>0x011c4990</code>) stops after a length, still comparing the first byte
+when the length is zero or negative. All their callers are in FMOD's code (see <a href="../audio/">Audio</a>).</p>
+<h3 id="looking-up-a-table-entry-by-handle">Looking up a table entry by handle</h3>
+<p><code>engine_entry_manager_resolve</code> (<code>0x01314320</code>) turns a handle into an entry: it checks that the
+table is enabled, rejects the all-ones handle, uses the handle's low 32 bits as an index checked
+against the table's capacity, and rejects an empty entry. Its callers are a family of functions
+at <code>0x02717f30</code>-<code>0x02718c80</code> and <code>0x0210f5a0</code>; what the table holds is not known yet.</p>
+<details class="evidence">
+<summary>How these were <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></summary>
+<p>By <a href="https://github.com/evill33t">@evill33t</a>: the comparisons in #107, merged in
+<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/274">#274</a> (18 and 24 cases), and the lookup
+in #110, merged in <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/276">#276</a> (25 cases).
+Each was brought up to date with <code>main</code>, its constructed <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr> pass against the original
+on current <code>main</code>, and an independent review approved it.</p>
+</details>
 <h2 id="key-functions">Key functions</h2>
 <div class="wk-table is-stack"><table class="wk-stack">
 <thead>
@@ -468,6 +486,27 @@ patch edits it. It has not been checked on frames recorded from a real game run.
 <td data-label="Name"><code>engine_write_stderr</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">Forward the string and imported _Stderr object address to fputs; ignore its return and return zero; synthetic wire <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr> only</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x011c4970</code></td>
+<td style="text-align: right;" data-label="Size">29</td>
+<td data-label="Name"><code>engine_compare_signed_strings</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Compare zero-terminated strings by signed bytes and return their first differing byte subtraction</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x011c4990</code></td>
+<td style="text-align: right;" data-label="Size">47</td>
+<td data-label="Name"><code>engine_compare_signed_prefix</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Compare signed bytes up to a signed 32-bit bound; always compare the first byte even for zero or negative lengths</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x01314320</code></td>
+<td style="text-align: right;" data-label="Size">54</td>
+<td data-label="Name"><code>engine_entry_manager_resolve</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Resolve an enabled low32 handle index with unsigned bounds; reject full-width handle and entry sentinels; return opaque table pointers unchanged</td>
 </tr>
 </tbody>
 </table></div>
