@@ -29,7 +29,12 @@
     "milestone": "video out",
     "milestone_index": 6,
     "milestones": 8,
-    "outcome": "runtime stop"
+    "outcome": "runtime stop",
+    "runtime_stop": {
+      "function": "sceKernelOpen",
+      "reason": "a path outside /app0: other mounts are not implemented"
+    },
+    "stopped_by_hook": null
   },
   "schema": 1,
   "slices": [

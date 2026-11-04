@@ -444,24 +444,8 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 4, 2026 14:32:32 UTC">November 4, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 4, 2026 15:36:34 UTC">November 4, 2026</span></p>
       
-      
-      
-      <aside class="wk-freshness" role="note">
-        <p><b>Not yet updated for 2 merged changes.</b>
-        This page was last checked against Paleblood
-        <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/4244fbe3ce095f161abcb9518b35371fa4af23b9"><code>4244fbe</code></a>;
-        these pull requests changed what it describes since:</p>
-        <ul>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/303">#303</a> network: sceHttpWaitRequest answers no events offline</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/302">#302</a> gnm: the compute doorbell completes submitted work at once (temporary stand-in)</li>
-          
-          
-        </ul>
-      </aside>
       
       <h1 id="runtime-system-call-notes">Runtime system-call notes</h1>
 <p class="wk-lede">What each runtime system call is for, what it must do, what the game was seen to do with it, and how Paleblood's runtime answers.</p>
@@ -934,6 +918,11 @@ past the requested region, and coverage classification. These tests do not estab
 <td data-label="Call"><code>sceSslInit</code>, <code>sceHttpInit</code>, <code>sceHttpCreateTemplate</code>, <code>sceHttpSetNonblock</code>, <code>sceHttpCreateEpoll</code>, <code>sceHttpAddRequestHeader</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
 <td data-label="What the runtime does">Set up the game's HTTP client offline: each step is only an ID; nothing is ever sent.</td>
+</tr>
+<tr>
+<td data-label="Call"><code>sceHttpWaitRequest</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">The game's network worker polls for finished requests; offline none was ever sent, so it answers "no events" (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/303">#303</a>).</td>
 </tr>
 </tbody>
 </table></div>
@@ -1506,6 +1495,11 @@ the GPU, which comes with the graphics work below.</p>
 <td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
 <td data-label="What the runtime does">Records a GPU compute queue and gives it an ID; the GPU itself is not run.</td>
 </tr>
+<tr>
+<td data-label="Call"><code>sceGnmDingDong</code></td>
+<td data-label="Status">implemented (temporary stand-in)</td>
+<td data-label="What the runtime does">Completes submitted compute work at once (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/302">#302</a>): no shaders run, but each job's "work done" value is written and the queue is freed.</td>
+</tr>
 </tbody>
 </table></div>
 <p>Paleblood does not emulate the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr>'s graphics chip. It will rebuild the graphics at the level of
@@ -1515,8 +1509,15 @@ uses to split surfaces into finer triangles); the engine then maps memory at tha
 answers a fixed address of its own; the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> answers one it reserves, because nothing but the
 engine's own graphics code ever uses it.</p>
 <p>The next call validates a command buffer, and the engine treats one particular error code as "this
-console cannot validate". That code is named only by GPU emulators, which the clean-room rules do
-not accept as a source for behaviour, so the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> stops there until a public source settles it.</p>
+console cannot validate". Paleblood has no validation layer, so it gives that answer (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/297">#297</a>).</p>
+<p><strong>The temporary GPU stand-in.</strong> The game hands work to the GPU through compute queues: it writes a
+pointer to each finished command buffer into a ring, then rings a "doorbell" (<code>sceGnmDingDong</code>).
+Each command buffer the game sent during start-up holds the same few steps: set shader registers,
+run a compute shader, then write a "work done" value to memory, which the CPU waits for. Until the
+engine's own renderer replaces this layer, the doorbell completes the work at once (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/302">#302</a>): it
+follows each buffer, skips the shader steps (nothing is drawn or computed), writes the "work done"
+value and moves the queue's read position on. Any other kind of step stops by name. This keeps
+start-up moving; it does not make anything appear on screen.</p>
 <p><strong>Where the engine meets the GPU.</strong> Every one of the game's 50 graphics-driver imports is
 reached through one thin engine wrapper, with one or two callers each, and none of them draws
 anything. Bloodborne builds its GPU command buffers itself, with the graphics library compiled into
@@ -1533,6 +1534,9 @@ it, in the engine's own renderer (its <code>GX</code> graphics framework). The f
 <li>The tessellation ring is mapped at <code>0x02ad3fda</code> with protection <code>0x33</code> (CPU and GPU read and
   write). The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>'s address is <code>0xfe00000000</code>.</li>
 <li>The validation check is at <code>0x02abb950</code>: the engine compares the result with <code>0x80d13fff</code>.</li>
+<li>The compute submit is at <code>0x0148c830</code> and its ring-packet writer at <code>0x0148b330</code>; the stand-in
+  handles the packet kinds a boot found there: NOP, SET_SH_REG, DISPATCH_DIRECT and RELEASE_MEM
+  (AMD's public <abbr title="The command packet format the PS4's GPU reads.">PM4</abbr> format).</li>
 </ul>
 </details>
 <h2 id="every-call-the-runtime-answers">Every call the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> answers</h2>
@@ -2527,8 +2531,8 @@ call is registered only to name itself and stop, because its answer is not estab
 </tr>
 </tbody>
 </table></div>
-<p>A thread's CPU affinity mask says which CPU cores it may run on, one bit per core. The latest
-genuine boot stops when the bundled <code>libc.elf</code> asks for the main thread's mask.</p>
+<p>A thread's CPU affinity mask says which CPU cores it may run on, one bit per core. The boot of
+19 October stopped when the bundled <code>libc.elf</code> asked for the main thread's mask.</p>
 <p><strong>What the caller does.</strong> It is understood from the hash-pinned module:</p>
 <ol class="wk-steps">
 <li><strong>Copy the attributes.</strong> It copies the current thread's attributes.</li>
