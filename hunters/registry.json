@@ -2532,11 +2532,11 @@
       ],
       "date": "2026-10-14T00:37:44Z",
       "id": "Yharnam-Hunters/Paleblood:accepted:6158227592",
-      "kind": "claim",
+      "kind": "closed",
       "references": [
         "https://github.com/Yharnam-Hunters/Paleblood/issues/34#issuecomment-6158227592"
       ],
-      "title": "Accepted work claim: scePthreadYield",
+      "title": "Historical claim (no longer active): Accepted work claim: scePthreadYield",
       "url": "https://github.com/Yharnam-Hunters/Paleblood/issues/34#issuecomment-6158227592"
     },
     {
@@ -2730,11 +2730,11 @@
       ],
       "date": "2026-10-15T08:30:05Z",
       "id": "Yharnam-Hunters/Paleblood:accepted:6187883148",
-      "kind": "claim",
+      "kind": "closed",
       "references": [
         "https://github.com/Yharnam-Hunters/Paleblood/issues/34#issuecomment-6187883148"
       ],
-      "title": "Accepted work claim: pthread_attr_setdetachstate",
+      "title": "Historical claim (no longer active): Accepted work claim: pthread_attr_setdetachstate",
       "url": "https://github.com/Yharnam-Hunters/Paleblood/issues/34#issuecomment-6187883148"
     },
     {
@@ -10480,6 +10480,42 @@
       ],
       "title": "Technical discussion: runtime: prepare owned module TLS before guest startup",
       "url": "https://github.com/Yharnam-Hunters/Paleblood/pull/227#issuecomment-6621474498"
+    },
+    {
+      "actors": [
+        24420588
+      ],
+      "categories": [
+        "documentation"
+      ],
+      "date": "2026-11-04T03:45:58Z",
+      "id": "Yharnam-Hunters/Paleblood:pr:5148443028",
+      "kind": "merged",
+      "references": [
+        "https://github.com/Yharnam-Hunters/Paleblood/commit/26e5b5f3af5716931158cb3a3a2dae3719c8fd49",
+        "https://github.com/Yharnam-Hunters/Paleblood/commit/fadacc8e94c289a0365db212601b8398c6b067e9",
+        "https://github.com/Yharnam-Hunters/Paleblood/pull/289"
+      ],
+      "title": "docs: system pages for the work merged on 4 November",
+      "url": "https://github.com/Yharnam-Hunters/Paleblood/pull/289"
+    },
+    {
+      "actors": [
+        24420588
+      ],
+      "categories": [
+        "documentation"
+      ],
+      "date": "2026-11-04T03:53:26Z",
+      "id": "Yharnam-Hunters/Paleblood:pr:5148510677",
+      "kind": "merged",
+      "references": [
+        "https://github.com/Yharnam-Hunters/Paleblood/commit/95214bddb6b37825d0a4d57c87e4efcd544bc7a4",
+        "https://github.com/Yharnam-Hunters/Paleblood/commit/9b8814f22fdf9ef89e89f2e875252f4e3b67497a",
+        "https://github.com/Yharnam-Hunters/Paleblood/pull/290"
+      ],
+      "title": "docs: render: no hand-written byte count",
+      "url": "https://github.com/Yharnam-Hunters/Paleblood/pull/290"
     }
   ],
   "schema": 1
