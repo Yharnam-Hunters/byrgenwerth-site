@@ -16,24 +16,25 @@
     "functions_pct": 0.06
   },
   "runtime": {
-    "fault": null,
+    "fault": {
+      "address": "0x6566910010",
+      "at": "eboot+0x217a380",
+      "signal": 11
+    },
     "first_unimplemented": null,
     "imports_bundled": 219,
-    "imports_covered": 346,
-    "imports_implemented": 127,
-    "imports_pct": 50.44,
-    "imports_remaining": 340,
+    "imports_covered": 347,
+    "imports_implemented": 128,
+    "imports_pct": 50.58,
+    "imports_remaining": 339,
     "imports_total": 686,
     "imports_unbound": 336,
-    "imports_unresolved": 4,
+    "imports_unresolved": 3,
     "milestone": "video out",
     "milestone_index": 6,
     "milestones": 8,
-    "outcome": "runtime stop",
-    "runtime_stop": {
-      "function": "sceKernelOpen",
-      "reason": "a path outside /app0: other mounts are not implemented"
-    },
+    "outcome": "fault",
+    "runtime_stop": null,
     "stopped_by_hook": null
   },
   "schema": 1,
