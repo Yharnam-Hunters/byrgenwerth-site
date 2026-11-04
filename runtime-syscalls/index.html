@@ -444,22 +444,8 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 4, 2026 17:05:09 UTC">November 4, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 4, 2026 19:16:29 UTC">November 4, 2026</span></p>
       
-      
-      
-      <aside class="wk-freshness" role="note">
-        <p><b>Not yet updated for 1 merged change.</b>
-        This page was last checked against Paleblood
-        <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/92a2a3ee1c25eca19fcb50fbe606d93954c27328"><code>92a2a3e</code></a>;
-        these pull requests changed what it describes since:</p>
-        <ul>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/310">#310</a> runtime: the boot reaches first flip (8 of 8)</li>
-          
-          
-        </ul>
-      </aside>
       
       <h1 id="runtime-system-call-notes">Runtime system-call notes</h1>
 <p class="wk-lede">What each runtime system call is for, what it must do, what the game was seen to do with it, and how Paleblood's runtime answers.</p>
@@ -1102,7 +1088,12 @@ game passes is not yet observed.</p>
 <tr>
 <td data-label="Call"><code>scePthreadSetaffinity</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
-<td data-label="What the runtime does">Records the CPU mask; the host schedules the thread.</td>
+<td data-label="What the runtime does">Records the CPU mask; the host schedules the thread. No thread answers "no such thread", which the game's job system ignores for its empty worker slots (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/310">#310</a>).</td>
+</tr>
+<tr>
+<td data-label="Call"><code>pthread_create_name_np</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">The POSIX name for the same thread creation (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/310">#310</a>).</td>
 </tr>
 <tr>
 <td data-label="Call"><code>scePthreadAttrSetstacksize</code>, <code>pthread_attr_setstacksize</code></td>
@@ -1454,7 +1445,7 @@ so every boot starts alike and nothing the game writes outlives the run.</p>
 <tr>
 <td data-label="Call"><code>sceVideoOutSubmitFlip</code>, <code>sceVideoOutGetFlipStatus</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
-<td data-label="What the runtime does">Flips to the next buffer at once and tells the waiting game it is done.</td>
+<td data-label="What the runtime does">Flips to the next buffer (an hsync flip at once, a vsync flip at the next 60 Hz tick) and tells the waiting game it is done; before the first flip the status is all zero.</td>
 </tr>
 </tbody>
 </table></div>
@@ -1470,7 +1461,8 @@ the GPU, which comes with the graphics work below.</p>
   <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/179">#179</a>; claimed on
   <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/38">#38</a>.</li>
 <li>The two setups are at <code>0x015e488e</code> and <code>0x02ad61d4</code>; the flip loops at <code>0x015e419a</code> and
-  <code>0x02ad6ee9</code>. Both flips the game submits use mode 2 (hsync); a vsync flip stops by name.</li>
+  <code>0x02ad6ee9</code>. The game's frame loop flips with vsync (mode 1) through
+  <code>sceGnmSubmitAndFlipCommandBuffers</code> (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/310">#310</a>); the other flips use mode 2 (hsync).</li>
 </ul>
 </details>
 <h2 id="graphics-the-first-calls">Graphics: the first calls</h2>
@@ -1507,6 +1499,16 @@ the GPU, which comes with the graphics work below.</p>
 <td data-label="Call"><code>sceGnmIsUserPaEnabled</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
 <td data-label="What the runtime does">Answers "off" (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/299">#299</a>): Paleblood has no GPU performance-analysis mode.</td>
+</tr>
+<tr>
+<td data-label="Call"><code>sceGnmSet{Es,Gs,Hs,Ls,Ps,Vs}Shader</code>, <code>sceGnmUpdate{Gs,Hs,Ps,Vs}Shader</code>, the marker calls, <code>sceGnmInsertWaitFlipDone</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">Fill the space the game reserved with one no-op packet (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/310">#310</a>).</td>
+</tr>
+<tr>
+<td data-label="Call"><code>sceGnmSubmitCommandBuffers</code>, <code>sceGnmSubmitAndFlipCommandBuffers</code>, <code>sceGnmSubmitDone</code></td>
+<td data-label="Status">implemented (temporary stand-in)</td>
+<td data-label="What the runtime does">Complete a frame's GPU work at once: "work done" values are written, waits are checked, draws are skipped; then the frame is flipped (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/310">#310</a>).</td>
 </tr>
 <tr>
 <td data-label="Call"><code>sceGnmMapComputeQueue</code></td>
