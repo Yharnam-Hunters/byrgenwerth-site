@@ -1,19 +1,19 @@
 {
   "edge_verified": {
-    "bytes": 28118,
+    "bytes": 28280,
     "bytes_pct": 0.07,
-    "functions": 85,
-    "functions_pct": 0.05
+    "functions": 87,
+    "functions_pct": 0.06
   },
   "inputs": {
-    "functions_sha256": "2864f8a48ec4efe6e9b161dd412ae186436e3c9aa841f8a02f7232cf2c4d53fe",
+    "functions_sha256": "cff3a3ec0be299809c6fff5d904dca307c47813b6d4d29af5dd469746db27162",
     "ghidra_functions_sha256": "fc7e244dc9f211963118a9ab97716de03e0f342421c63cafc9a8ae747abb8ebd"
   },
   "replaced": {
-    "bytes": 28118,
+    "bytes": 28280,
     "bytes_pct": 0.07,
-    "functions": 85,
-    "functions_pct": 0.05
+    "functions": 87,
+    "functions_pct": 0.06
   },
   "runtime": {
     "fault": null,
@@ -195,7 +195,7 @@
       "bytes": 680961,
       "end": "0x011ab79c",
       "functions": 2503,
-      "replaced_bytes": 1249,
+      "replaced_bytes": 1380,
       "start": "0x010fc809",
       "verified_bytes": 131
     },
@@ -491,7 +491,7 @@
       "bytes": 657317,
       "end": "0x02af57db",
       "functions": 3151,
-      "replaced_bytes": 1761,
+      "replaced_bytes": 1792,
       "start": "0x02a46848",
       "verified_bytes": 0
     },
@@ -596,10 +596,10 @@
       "verified": 1
     },
     "frame_timing": {
-      "edge_verified": 41,
-      "replaced": 41,
-      "replaced_bytes": 14263,
-      "tracked": 42,
+      "edge_verified": 42,
+      "replaced": 42,
+      "replaced_bytes": 14394,
+      "tracked": 43,
       "verified": 12
     },
     "input": {
@@ -624,10 +624,10 @@
       "verified": 1
     },
     "render": {
-      "edge_verified": 9,
-      "replaced": 9,
-      "replaced_bytes": 3868,
-      "tracked": 9,
+      "edge_verified": 10,
+      "replaced": 10,
+      "replaced_bytes": 3899,
+      "tracked": 10,
       "verified": 3
     }
   },
@@ -636,8 +636,8 @@
     "functions": 157757
   },
   "tracked": {
-    "bytes": 28293,
-    "functions": 87
+    "bytes": 28455,
+    "functions": 89
   },
   "verified": {
     "bytes": 14010,

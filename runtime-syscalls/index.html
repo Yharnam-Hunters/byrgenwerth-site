@@ -376,7 +376,7 @@
       <span class="wk-stat-track" role="img" aria-label="0.033 percent of target code bytes verified">
         <span class="wk-stat-fill" style="width:0.033%"></span>
       </span>
-      <span class="wk-progress-foot">0.033% of code bytes verified · 85 replaced</span>
+      <span class="wk-progress-foot">0.033% of code bytes verified · 87 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -444,7 +444,7 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 4, 2026 03:56:56 UTC">November 4, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 4, 2026 12:18:00 UTC">November 4, 2026</span></p>
       
       
       <h1 id="runtime-system-call-notes">Runtime system-call notes</h1>
@@ -631,6 +631,7 @@ for that thread, so these calls work by comparing or returning those pointers.</
 <ul>
 <li><strong><code>scePthreadEqual</code></strong> asks whether two handles name the same thread. The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> compares the opaque object pointers used as guest thread handles: zero means different, nonzero means equal. The exact nonzero value the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> returns, and its behavior for a null handle, are not established.</li>
 <li><strong><code>sched_yield</code></strong> lets other threads run. The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> yields the calling host thread and returns zero, following the POSIX/FreeBSD contract. A host failure stops by name. The unit test checks the result; it cannot prove that the host scheduler ran another thread.</li>
+<li><strong>On macOS</strong> the registry is gathered the same way, from a section of the Mach-O binary instead of the <abbr title="Executable and Linkable Format, the standard executable file format on Linux and FreeBSD.">ELF</abbr> one (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/216">#216</a>); Linux is unchanged.</li>
 <li><strong><code>scePthreadYield</code></strong> sounds like the same thing, but it stays unresolved. FreeBSD's analogue returns <code>void</code>, while Linux's returns <code>int</code>, and nothing settles which one the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> uses. It is registered with <code>RT_SYSLIB_UNRESOLVED</code> and stops by name; registry presence is not implementation evidence.</li>
 <li><strong><code>pthread_self</code></strong> (<code>libScePosix</code>) returns the calling thread's own handle. It answers exactly what <code>scePthreadSelf</code> answers. With no guest thread registered on the host thread, it stops by the name the guest used. POSIX defines no error return.</li>
 </ul>
