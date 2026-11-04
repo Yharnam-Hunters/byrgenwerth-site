@@ -11307,6 +11307,40 @@
       ],
       "title": "docs: clarify runtime evidence and loader contracts",
       "url": "https://github.com/Yharnam-Hunters/Paleblood/pull/305"
+    },
+    {
+      "actors": [
+        770530
+      ],
+      "categories": [
+        "tooling"
+      ],
+      "date": "2026-11-04T16:30:42Z",
+      "id": "Yharnam-Hunters/Paleblood:pr:5157831280",
+      "kind": "open",
+      "references": [
+        "https://github.com/Yharnam-Hunters/Paleblood/commit/bac3ac6742b8af7dae11c5aeea2e4440afe4fb31",
+        "https://github.com/Yharnam-Hunters/Paleblood/pull/306"
+      ],
+      "title": "harness: remove redundant RAX setup and check entry flags",
+      "url": "https://github.com/Yharnam-Hunters/Paleblood/pull/306"
+    },
+    {
+      "actors": [
+        770530
+      ],
+      "categories": [
+        "project contributions"
+      ],
+      "date": "2026-11-04T16:30:48Z",
+      "id": "Yharnam-Hunters/Paleblood:pr:5157832666",
+      "kind": "open",
+      "references": [
+        "https://github.com/Yharnam-Hunters/Paleblood/commit/76b0a198450bc099d0a8c228082f1acb54b0076d",
+        "https://github.com/Yharnam-Hunters/Paleblood/pull/307"
+      ],
+      "title": "test: remove duplicate loader path setup",
+      "url": "https://github.com/Yharnam-Hunters/Paleblood/pull/307"
     }
   ],
   "schema": 1
