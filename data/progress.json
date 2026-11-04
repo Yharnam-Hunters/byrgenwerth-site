@@ -17,25 +17,19 @@
   },
   "runtime": {
     "fault": null,
-    "first_unimplemented": {
-      "caller": "eboot",
-      "library": "libSceGnmDriver",
-      "nid": "bX5IbRvECXk",
-      "returns_to": "eboot+0x108c98c",
-      "symbol": "sceGnmDingDong"
-    },
+    "first_unimplemented": null,
     "imports_bundled": 219,
-    "imports_covered": 344,
-    "imports_implemented": 125,
-    "imports_pct": 50.15,
-    "imports_remaining": 342,
+    "imports_covered": 346,
+    "imports_implemented": 127,
+    "imports_pct": 50.44,
+    "imports_remaining": 340,
     "imports_total": 686,
-    "imports_unbound": 338,
+    "imports_unbound": 336,
     "imports_unresolved": 4,
     "milestone": "video out",
     "milestone_index": 6,
     "milestones": 8,
-    "outcome": "unimplemented"
+    "outcome": "runtime stop"
   },
   "schema": 1,
   "slices": [
