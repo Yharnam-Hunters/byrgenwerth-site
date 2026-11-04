@@ -11289,6 +11289,24 @@
       ],
       "title": "boot: record a runtime stop as the outcome; boot after #302 and #303",
       "url": "https://github.com/Yharnam-Hunters/Paleblood/pull/304"
+    },
+    {
+      "actors": [
+        770530
+      ],
+      "categories": [
+        "documentation",
+        "runtime"
+      ],
+      "date": "2026-11-04T16:26:15Z",
+      "id": "Yharnam-Hunters/Paleblood:pr:5157768333",
+      "kind": "open",
+      "references": [
+        "https://github.com/Yharnam-Hunters/Paleblood/commit/11401da6cad2863948765af37be6d6c5754c8d1e",
+        "https://github.com/Yharnam-Hunters/Paleblood/pull/305"
+      ],
+      "title": "docs: clarify runtime evidence and loader contracts",
+      "url": "https://github.com/Yharnam-Hunters/Paleblood/pull/305"
     }
   ],
   "schema": 1
