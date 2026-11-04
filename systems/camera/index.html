@@ -376,7 +376,7 @@
       <span class="wk-stat-track" role="img" aria-label="0.033 percent of target code bytes verified">
         <span class="wk-stat-fill" style="width:0.033%"></span>
       </span>
-      <span class="wk-progress-foot">0.033% of code bytes verified · 65 replaced</span>
+      <span class="wk-progress-foot">0.033% of code bytes verified · 85 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -414,11 +414,11 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 28, 2026 05:15:03 UTC">October 28, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 4, 2026 03:56:56 UTC">November 4, 2026</span></p>
       
       
       <h1 id="camera">Camera</h1>
-<p class="wk-lede">The camera system covers the camera update, targeting, collision with the world and field of view. It has not been studied yet.</p>
+<p class="wk-lede">The camera system covers the camera update, targeting, collision with the world and field of view. The first two follow-camera functions are mapped.</p>
 
 <div class="wk-glance">
 <p><span class="wk-label">At a glance</span></p>
@@ -426,15 +426,58 @@
 <dt>Scope</dt>
 <dd>Camera update, targeting, collision with the world, field of view.</dd>
 <dt>Verified</dt>
-<dd>Nothing yet.</dd>
+<dd><code>camera_follow_pitch</code> and <code>camera_follow_yaw</code> are <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr> against constructed cases.</dd>
 <dt>Open</dt>
-<dd>Everything.</dd>
+<dd>The camera update itself, targeting, collision and field of view.</dd>
 </dl>
 </div>
 <h2 id="summary">Summary</h2>
-<p>Not documented yet. Scope: camera update, targeting, collision with the world, field of view.</p>
+<h3 id="which-way-the-follow-camera-looks">Which way the follow camera looks</h3>
+<p>The follow camera keeps its orientation as a direction it is looking along. Two small functions
+turn that into angles:</p>
+<ul>
+<li><code>camera_follow_pitch</code> (<code>0x0183fad0</code>) gives the up-down angle, from the direction's height
+  against its length across the ground (an <code>atan2</code>), negated;</li>
+<li><code>camera_follow_yaw</code> (<code>0x0183fb20</code>) gives the left-right angle, from the direction's two ground
+  components.</li>
+</ul>
+<p>When the direction has no length to measure (both components zero), each falls back to the angle
+it stored last time instead of computing a meaningless one.</p>
+<details class="evidence">
+<summary>How these were <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></summary>
+<p>By <a href="https://github.com/evill33t">@evill33t</a> in #109, merged in <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/280">#280</a>: 32 and
+30 constructed <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr> pass against the original on current <code>main</code>, including
+not-a-number directions, and an independent review approved it. No frame-rate patch edits
+either function.</p>
+</details>
 <h2 id="key-functions">Key functions</h2>
-<p>No functions tracked yet.</p>
+<div class="wk-table is-stack"><table class="wk-stack">
+<thead>
+<tr>
+<th>Address</th>
+<th style="text-align: right;">Size</th>
+<th>Name</th>
+<th>Status</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td data-label="Address"><code>0x0183fad0</code></td>
+<td style="text-align: right;" data-label="Size">79</td>
+<td data-label="Name"><code>camera_follow_pitch</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Pitch from the forward basis; preserve scalar square underflow and zero fallback; call atan2 and XOR the returned sign bits</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0183fb20</code></td>
+<td style="text-align: right;" data-label="Size">43</td>
+<td data-label="Name"><code>camera_follow_yaw</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Yaw from the forward X/Z direction; exact signed-zero fallback preserves stored angle; unordered components reach atan2 unchanged</td>
+</tr>
+</tbody>
+</table></div>
 <h2 id="structs-and-globals">Structs and globals</h2>
 <p>None documented yet. Record each as: name, address, size, layout, who reads and writes it.</p>
 <h2 id="patch-points">Patch points</h2>

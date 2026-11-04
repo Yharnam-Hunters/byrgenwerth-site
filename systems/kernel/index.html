@@ -376,7 +376,7 @@
       <span class="wk-stat-track" role="img" aria-label="0.033 percent of target code bytes verified">
         <span class="wk-stat-fill" style="width:0.033%"></span>
       </span>
-      <span class="wk-progress-foot">0.033% of code bytes verified · 65 replaced</span>
+      <span class="wk-progress-foot">0.033% of code bytes verified · 85 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -414,7 +414,7 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 3, 2026 18:17:46 UTC">November 3, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 4, 2026 03:56:56 UTC">November 4, 2026</span></p>
       
       
       <h1 id="kernel">Kernel</h1>
@@ -443,6 +443,12 @@ through its pointer argument and returns 0. It is reached only through a functio
 <a href="https://github.com/evill33t">@evill33t</a> in #105, merged in
 <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/203">#203</a>: its 7 constructed <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr> pass
 against the original on current <code>main</code>, and an independent review approved it.</p>
+<h3 id="reading-files">Reading files</h3>
+<p>Four small wrappers handle the engine's file access (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/283">#283</a>, by <a href="https://github.com/evill33t">@evill33t</a>):
+<code>kernel_file_open</code> (<code>0x0111a620</code>) opens a file read-only and reports its size (from the system's
+file-status record) and its descriptor; <code>kernel_file_close</code>, <code>kernel_file_read_count</code> and
+<code>kernel_file_seek_absolute</code> (<code>0x0111a6b0</code>, <code>0x0111a6e0</code>, <code>0x0111a720</code>) close, read and seek. Each
+was checked on constructed <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr> against the original and approved by an independent review.</p>
 <h3 id="fmods-semaphores-and-recursive-mutexes">FMOD's semaphores and recursive mutexes</h3>
 <p>FMOD (the sound engine; see <a href="../audio/">Audio</a>) wraps the kernel's semaphores and mutexes in small
 functions of its own, and these are the first of them mapped:</p>
@@ -546,6 +552,34 @@ infer that it is implemented from its registry entry.</p>
 </tr>
 </thead>
 <tbody>
+<tr>
+<td data-label="Address"><code>0x0111a620</code></td>
+<td style="text-align: right;" data-label="Size">129</td>
+<td data-label="Name"><code>kernel_file_open</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Open read-only and query FreeBSD amd64 stat; publish low32 file size before int64 descriptor; compiler stack guard omitted</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0111a6b0</code></td>
+<td style="text-align: right;" data-label="Size">23</td>
+<td data-label="Name"><code>kernel_file_close</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Forward the full opaque descriptor; translate nonzero low32 close status to 19; synthetic wire <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr> only</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0111a6e0</code></td>
+<td style="text-align: right;" data-label="Size">60</td>
+<td data-label="Name"><code>kernel_file_read_count</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Publish uint32 transferred bytes after kernel buffer writes; full64 received count controls errors and short reads</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0111a720</code></td>
+<td style="text-align: right;" data-label="Size">22</td>
+<td data-label="Name"><code>kernel_file_seek_absolute</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Forward the full opaque descriptor and zero-extended unsigned32 absolute offset; full64 seek result sign maps to 0 or 19; synthetic wire <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr> only</td>
+</tr>
 <tr>
 <td data-label="Address"><code>0x0111a8a0</code></td>
 <td style="text-align: right;" data-label="Size">26</td>

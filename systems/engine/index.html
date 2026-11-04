@@ -376,7 +376,7 @@
       <span class="wk-stat-track" role="img" aria-label="0.033 percent of target code bytes verified">
         <span class="wk-stat-fill" style="width:0.033%"></span>
       </span>
-      <span class="wk-progress-foot">0.033% of code bytes verified · 65 replaced</span>
+      <span class="wk-progress-foot">0.033% of code bytes verified · 85 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -408,7 +408,7 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 3, 2026 18:17:46 UTC">November 3, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 4, 2026 03:56:56 UTC">November 4, 2026</span></p>
       
       
       <h1 id="engine">Engine</h1>
@@ -420,7 +420,7 @@
 <dt>Scope</dt>
 <dd>Engine-wide helpers in Paleblood's <code>game/engine/</code>: the fatal error report and singleton check, reference counting, and <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> engine utility functions.</dd>
 <dt>Verified</dt>
-<dd><code>engine_write_stderr</code>, two string comparisons and a handle-table lookup are <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr> against constructed cases.</dd>
+<dd><code>engine_write_stderr</code>, the string helpers, wide-string set-up, owner storage and a handle-table lookup are <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr> against constructed cases.</dd>
 <dt>Open</dt>
 <dd>Who calls the stderr writer during play, and with what text.</dd>
 </dl>
@@ -455,6 +455,23 @@ patch edits it. It has not been checked on frames recorded from a real game run.
 <code>engine_compare_signed_strings</code> (<code>0x011c4970</code>) runs to the end of the strings, and
 <code>engine_compare_signed_prefix</code> (<code>0x011c4990</code>) stops after a length, still comparing the first byte
 when the length is zero or negative. All their callers are in FMOD's code (see <a href="../audio/">Audio</a>).</p>
+<h3 id="more-string-helpers">More string helpers</h3>
+<p>Since 4 November the engine's small C-string helpers are mapped too, by <a href="https://github.com/evill33t">@evill33t</a>:
+<code>engine_string_length</code> (<code>0x011c47f0</code>, a <code>strlen</code> whose result is cut to 32 bits,
+<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/288">#288</a>), <code>engine_ascii_to_upper_in_place</code> and <code>engine_ascii_to_lower_in_place</code>
+(<code>0x011c4910</code>, <code>0x011c4940</code>: change letters in place and return the string, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/281">#281</a>), and
+<code>engine_compare_ascii_ignoring_case</code> (<code>0x011c49c0</code>, compares two strings ignoring letter case,
+<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/282">#282</a>).</p>
+<h3 id="wide-strings-and-owned-storage">Wide strings and owned storage</h3>
+<ul>
+<li><code>engine_wide_string_destroy</code> (<code>0x02a44140</code>) releases a wide (16-bit character) string, and
+  <code>engine_initialize_static_wide_string_0217ffb0</code> sets up one static wide string the first time it
+  is needed, guarded so it happens once (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/284">#284</a>).</li>
+<li><code>engine_release_owner_storage</code> and <code>engine_resize_owner_storage</code> (<code>0x0132c590</code>, <code>0x0132c6c0</code>)
+  free an object's storage block through its allocator, or replace it with a new 16-byte-aligned
+  block of the requested size (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/285">#285</a>). What kind of object owns the block is not known yet;
+  its only known caller is <code>0x02713870</code>.</li>
+</ul>
 <h3 id="looking-up-a-table-entry-by-handle">Looking up a table entry by handle</h3>
 <p><code>engine_entry_manager_resolve</code> (<code>0x01314320</code>) turns a handle into an entry: it checks that the
 table is enabled, rejects the all-ones handle, uses the handle's low 32 bits as an index checked
@@ -488,6 +505,27 @@ on current <code>main</code>, and an independent review approved it.</p>
 <td data-label="Notes">Forward the string and imported _Stderr object address to fputs; ignore its return and return zero; synthetic wire <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr> only</td>
 </tr>
 <tr>
+<td data-label="Address"><code>0x011c47f0</code></td>
+<td style="text-align: right;" data-label="Size">29</td>
+<td data-label="Name"><code>engine_string_length</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Engine strlen; scan to the first NUL and return the low 32 length bits zero-extended into RAX; other incoming GP registers are ignored</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x011c4910</code></td>
+<td style="text-align: right;" data-label="Size">44</td>
+<td data-label="Name"><code>engine_ascii_to_upper_in_place</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Convert ASCII a-z to A-Z in place through NUL; retain all other bytes and return original pointer; caller 0x01127ca0</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x011c4940</code></td>
+<td style="text-align: right;" data-label="Size">44</td>
+<td data-label="Name"><code>engine_ascii_to_lower_in_place</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Convert ASCII A-Z to a-z in place through NUL; retain all other bytes and return original pointer; caller 0x01127ca0</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x011c4970</code></td>
 <td style="text-align: right;" data-label="Size">29</td>
 <td data-label="Name"><code>engine_compare_signed_strings</code></td>
@@ -502,11 +540,46 @@ on current <code>main</code>, and an independent review approved it.</p>
 <td data-label="Notes">Compare signed bytes up to a signed 32-bit bound; always compare the first byte even for zero or negative lengths</td>
 </tr>
 <tr>
+<td data-label="Address"><code>0x011c49c0</code></td>
+<td style="text-align: right;" data-label="Size">56</td>
+<td data-label="Name"><code>engine_compare_ascii_ignoring_case</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Case-insensitive string comparison folds ASCII uppercase bytes then returns signed-byte difference as int32; bounded aliases covered</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x01314320</code></td>
 <td style="text-align: right;" data-label="Size">54</td>
 <td data-label="Name"><code>engine_entry_manager_resolve</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">Resolve an enabled low32 handle index with unsigned bounds; reject full-width handle and entry sentinels; return opaque table pointers unchanged</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0132c590</code></td>
+<td style="text-align: right;" data-label="Size">49</td>
+<td data-label="Name"><code>engine_release_owner_storage</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Free nonnull owner storage through its allocator before clearing the field; wider role unknown; caller 0x02713870</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0132c6c0</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_resize_owner_storage</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Free old owner storage before clearing; reload allocator after callback and allocate requested low32 byte count aligned to 16; caller 0x02713870</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0217ffb0</code></td>
+<td style="text-align: right;" data-label="Size">205</td>
+<td data-label="Name"><code>engine_initialize_static_wide_string_0217ffb0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Guarded static empty wide string; byte-only entry test; captured allocator; exact partial stores; destructor registration before full guard publication</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02a44140</code></td>
+<td style="text-align: right;" data-label="Size">59</td>
+<td data-label="Name"><code>engine_wide_string_destroy</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">WideString destructor; unsigned capacity &gt;=8 frees even null; ignores owns; callback before capacity and size reset and two-byte terminator</td>
 </tr>
 </tbody>
 </table></div>

@@ -376,7 +376,7 @@
       <span class="wk-stat-track" role="img" aria-label="0.033 percent of target code bytes verified">
         <span class="wk-stat-fill" style="width:0.033%"></span>
       </span>
-      <span class="wk-progress-foot">0.033% of code bytes verified · 65 replaced</span>
+      <span class="wk-progress-foot">0.033% of code bytes verified · 85 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -444,22 +444,8 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 3, 2026 18:17:46 UTC">November 3, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 4, 2026 03:56:56 UTC">November 4, 2026</span></p>
       
-      
-      
-      <aside class="wk-freshness" role="note">
-        <p><b>Not yet updated for 1 merged change.</b>
-        This page was last checked against Paleblood
-        <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/b4ae70c52069f90e9f6c19354475acf20b6724bd"><code>b4ae70c</code></a>;
-        these pull requests changed what it describes since:</p>
-        <ul>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/215">#215</a> runtime: read compiled SDK from owned process metadata</li>
-          
-          
-        </ul>
-      </aside>
       
       <h1 id="runtime-system-call-notes">Runtime system-call notes</h1>
 <p class="wk-lede">What each runtime system call is for, what it must do, what the game was seen to do with it, and how Paleblood's runtime answers.</p>
@@ -1119,6 +1105,16 @@ game passes is not yet observed.</p>
 <td data-label="What the runtime does">Condition variables, without timed waits; a recursive mutex is released completely for the wait.</td>
 </tr>
 <tr>
+<td data-label="Call"><code>pthread_mutex_lock</code>, <code>pthread_mutex_unlock</code> (<code>libkernel</code>)</td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">Since <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/224">#224</a> (by evill33t): the same POSIX (error-number) answers as the <code>libScePosix</code> names, which the system library also exports from <code>libkernel</code>.</td>
+</tr>
+<tr>
+<td data-label="Call"><code>sceKernelGetCompiledSdkVersion</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">Since <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/215">#215</a> (by evill33t): the SDK version the executable was built with, read from its own process parameters (<code>PT_SCE_PROCPARAM</code>); an inconsistent record stops by name.</td>
+</tr>
+<tr>
 <td data-label="Call">Mutex ownership</td>
 <td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
 <td data-label="What the runtime does">Since <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/241">#241</a> (by EzequielRindello): unlocking, or waiting on a condition with, a mutex the caller does not own answers <code>EPERM</code> for every type; an adaptive mutex locked again by its owner answers <code>EDEADLK</code>; a normal one stops by name (FreeBSD libthr would wait forever).</td>
@@ -1552,6 +1548,16 @@ call is registered only to name itself and stop, because its answer is not estab
 <td><code>gettimeofday</code></td>
 <td><span class="wk-badge wk-badge--implemented">implemented</span></td>
 <td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_time_of_day.c"><code>runtime/syslib/kernel_time_of_day.c</code></a></td>
+</tr>
+<tr>
+<td><code>pthread_mutex_lock</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_mutex.c"><code>runtime/syslib/kernel_mutex.c</code></a></td>
+</tr>
+<tr>
+<td><code>pthread_mutex_unlock</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_mutex.c"><code>runtime/syslib/kernel_mutex.c</code></a></td>
 </tr>
 <tr>
 <td><code>sceKernelAllocateDirectMemory</code></td>

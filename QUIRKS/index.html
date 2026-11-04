@@ -376,7 +376,7 @@
       <span class="wk-stat-track" role="img" aria-label="0.033 percent of target code bytes verified">
         <span class="wk-stat-fill" style="width:0.033%"></span>
       </span>
-      <span class="wk-progress-foot">0.033% of code bytes verified · 65 replaced</span>
+      <span class="wk-progress-foot">0.033% of code bytes verified · 85 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -554,8 +554,21 @@ SelfUtil build produced the <abbr title="Executable and Linkable Format, the sta
 <li>The CPU is an AMD Jaguar: SSE up to 4.2, AVX and F16C, BMI1. No AVX2, BMI2 or
   FMA3 (<em>unconfirmed</em>). <abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr>'s decompiler does not model every instruction;
   an <code>unaff_*</code> or <code>CONCAT</code> expression is a sign to read the disassembly.</li>
-<li>Float comparisons that look odd (<code>ucomiss</code> plus parity checks) encode NaN
-  handling that the replacement has to keep.</li>
+<li>
+<p>Float comparisons that look odd (<code>ucomiss</code> plus parity checks) encode NaN
+  handling that the replacement has to keep.</p>
+</li>
+<li>
+<p>A scalar SSE intrinsic is not by itself an operand-order constraint. In the follow-camera
+  pitch getter, optimized Clang swapped the horizontal add operands and widened two scalar
+  squares to a packed multiply. GCC preserved the order in the tested build. The dedicated
+  <code>engine::horizontal_length</code> helper constrains the four scalar instructions and uses distinct
+  read/write registers. Distinct-NaN-payload fixtures check the argument passed to <code>atan2f</code>,
+  and independent native x86 review catches a swapped horizontal-add variant.
+  The earlier QEMU VM did not distinguish that mutant: its survival is a limitation of that
+  VM run, rather than a gap in these fixtures. Check the optimized instruction order in both
+  compiler builds as well as running the cases.</p>
+</li>
 </ul>
 <h2 id="imports-and-system-calls">Imports and system calls</h2>
 <ul>
