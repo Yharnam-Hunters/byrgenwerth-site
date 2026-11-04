@@ -18,6 +18,11 @@
  "runtime-syscalls.md": {
   "behind": [
    {
+    "commit": "a0329979a3bc",
+    "pr": 303,
+    "title": "network: sceHttpWaitRequest answers no events offline"
+   },
+   {
     "commit": "030243d3e22b",
     "pr": 302,
     "title": "gnm: the compute doorbell completes submitted work at once (temporary stand-in)"
@@ -27,6 +32,11 @@
  },
  "runtime.md": {
   "behind": [
+   {
+    "commit": "a0329979a3bc",
+    "pr": 303,
+    "title": "network: sceHttpWaitRequest answers no events offline"
+   },
    {
     "commit": "030243d3e22b",
     "pr": 302,
