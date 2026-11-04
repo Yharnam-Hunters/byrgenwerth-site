@@ -16,24 +16,26 @@
     "functions_pct": 0.06
   },
   "runtime": {
-    "fault": {
-      "address": "0x6566910010",
-      "at": "eboot+0x217a380",
-      "signal": 11
+    "fault": null,
+    "first_unimplemented": {
+      "caller": "eboot",
+      "library": "libScePlayGo",
+      "nid": "ts6GlZOKRrE",
+      "returns_to": "eboot+0x1fdd67f",
+      "symbol": "scePlayGoInitialize"
     },
-    "first_unimplemented": null,
     "imports_bundled": 219,
-    "imports_covered": 347,
-    "imports_implemented": 128,
-    "imports_pct": 50.58,
-    "imports_remaining": 339,
+    "imports_covered": 368,
+    "imports_implemented": 149,
+    "imports_pct": 53.64,
+    "imports_remaining": 318,
     "imports_total": 686,
-    "imports_unbound": 336,
+    "imports_unbound": 315,
     "imports_unresolved": 3,
-    "milestone": "video out",
-    "milestone_index": 6,
+    "milestone": "first flip",
+    "milestone_index": 8,
     "milestones": 8,
-    "outcome": "fault",
+    "outcome": "unimplemented",
     "runtime_stop": null,
     "stopped_by_hook": null
   },

@@ -413,6 +413,20 @@
       <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 4, 2026 17:05:09 UTC">November 4, 2026</span></p>
       
       
+      
+      <aside class="wk-freshness" role="note">
+        <p><b>Not yet updated for 1 merged change.</b>
+        This page was last checked against Paleblood
+        <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/92a2a3ee1c25eca19fcb50fbe606d93954c27328"><code>92a2a3e</code></a>;
+        these pull requests changed what it describes since:</p>
+        <ul>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/310">#310</a> runtime: the boot reaches first flip (8 of 8)</li>
+          
+          
+        </ul>
+      </aside>
+      
       <h1 class="wk-visually-hidden" id="byrgenwerth">Byrgenwerth</h1>
 <div class="wk-hero">
   <div class="wk-hero-text">
@@ -429,23 +443,23 @@ readable C++ that does exactly what the original did, and builds a <abbr title="
 code to run on.</p>
 <div class="wk-glance">
 <p><span class="wk-label">Where the hunt stands</span></p>
-<p>The game doesn't run on Paleblood yet: 21 of 157,757 functions are <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> (0.01%). On <a href="runtime/">our own <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr></a> the executable's boot gets as far as fault at <code>eboot+0x217a380</code>, with 347 of 686 system imports provided.</p>
+<p>The game doesn't run on Paleblood yet: 21 of 157,757 functions are <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> (0.01%). On <a href="runtime/">our own <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr></a> the executable's boot gets as far as <code>scePlayGoInitialize</code> (libScePlayGo), with 368 of 686 system imports provided.</p>
 </div>
 <div class="wk-stat-ring">
-  <svg viewBox="0 0 150 150" role="img" aria-label="347 of 686 system imports provided">
+  <svg viewBox="0 0 150 150" role="img" aria-label="368 of 686 system imports provided">
     <defs><linearGradient id="wk-ring-grad" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" class="wk-ring-stop-a"></stop><stop offset="1" class="wk-ring-stop-b"></stop>
     </linearGradient></defs>
     <circle class="wk-stat-ring-track" cx="75" cy="75" r="62"></circle>
-    <circle class="wk-stat-ring-arc" cx="75" cy="75" r="62" stroke-dasharray="389.56 389.56" style="stroke-dashoffset:192.51"></circle>
-    <text class="wk-stat-ring-val" x="75" y="80">51%</text>
+    <circle class="wk-stat-ring-arc" cx="75" cy="75" r="62" stroke-dasharray="389.56 389.56" style="stroke-dashoffset:180.58"></circle>
+    <text class="wk-stat-ring-val" x="75" y="80">54%</text>
     <text class="wk-stat-ring-sub" x="75" y="98">of imports</text>
   </svg>
   <div class="wk-stat-ring-text">
     <p class="wk-label">System imports provided</p>
-    <p><strong>347 of 686</strong> imports the boot needs are provided.</p>
-    <p>219 come from the game's own modules and 128 from the runtime.</p>
-    <p>Boot milestone: <strong>video out</strong> (6 of 8).</p>
+    <p><strong>368 of 686</strong> imports the boot needs are provided.</p>
+    <p>219 come from the game's own modules and 149 from the runtime.</p>
+    <p>Boot milestone: <strong>first flip</strong> (8 of 8).</p>
   </div>
 </div>
 

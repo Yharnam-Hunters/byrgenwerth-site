@@ -447,6 +447,20 @@
       <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 4, 2026 17:05:09 UTC">November 4, 2026</span></p>
       
       
+      
+      <aside class="wk-freshness" role="note">
+        <p><b>Not yet updated for 1 merged change.</b>
+        This page was last checked against Paleblood
+        <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/92a2a3ee1c25eca19fcb50fbe606d93954c27328"><code>92a2a3e</code></a>;
+        these pull requests changed what it describes since:</p>
+        <ul>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/310">#310</a> runtime: the boot reaches first flip (8 of 8)</li>
+          
+          
+        </ul>
+      </aside>
+      
       <h1 id="runtime-system-call-notes">Runtime system-call notes</h1>
 <p class="wk-lede">What each runtime system call is for, what it must do, what the game was seen to do with it, and how Paleblood's runtime answers.</p>
 
@@ -1705,6 +1719,11 @@ call is registered only to name itself and stop, because its answer is not estab
 <td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/files.c"><code>runtime/syslib/files.c</code></a></td>
 </tr>
 <tr>
+<td><code>sceKernelReadTsc</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_time_of_day.c"><code>runtime/syslib/kernel_time_of_day.c</code></a></td>
+</tr>
+<tr>
 <td><code>sceKernelReleaseDirectMemory</code></td>
 <td><span class="wk-badge wk-badge--implemented">implemented</span></td>
 <td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_memory.c"><code>runtime/syslib/kernel_memory.c</code></a></td>
@@ -2060,6 +2079,36 @@ call is registered only to name itself and stop, because its answer is not estab
 <td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/gnm.c"><code>runtime/syslib/gnm.c</code></a></td>
 </tr>
 <tr>
+<td><code>sceGnmInsertPopMarker</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/gnm.c"><code>runtime/syslib/gnm.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceGnmInsertPushColorMarker</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/gnm.c"><code>runtime/syslib/gnm.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceGnmInsertPushMarker</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/gnm.c"><code>runtime/syslib/gnm.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceGnmInsertSetColorMarker</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/gnm.c"><code>runtime/syslib/gnm.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceGnmInsertSetMarker</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/gnm.c"><code>runtime/syslib/gnm.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceGnmInsertWaitFlipDone</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/gnm.c"><code>runtime/syslib/gnm.c</code></a></td>
+</tr>
+<tr>
 <td><code>sceGnmIsUserPaEnabled</code></td>
 <td><span class="wk-badge wk-badge--implemented">implemented</span></td>
 <td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/gnm.c"><code>runtime/syslib/gnm.c</code></a></td>
@@ -2071,6 +2120,71 @@ call is registered only to name itself and stop, because its answer is not estab
 </tr>
 <tr>
 <td><code>sceGnmSetCsShader</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/gnm.c"><code>runtime/syslib/gnm.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceGnmSetEsShader</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/gnm.c"><code>runtime/syslib/gnm.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceGnmSetGsShader</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/gnm.c"><code>runtime/syslib/gnm.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceGnmSetHsShader</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/gnm.c"><code>runtime/syslib/gnm.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceGnmSetLsShader</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/gnm.c"><code>runtime/syslib/gnm.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceGnmSetPsShader</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/gnm.c"><code>runtime/syslib/gnm.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceGnmSetVsShader</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/gnm.c"><code>runtime/syslib/gnm.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceGnmSubmitAndFlipCommandBuffers</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/gnm.c"><code>runtime/syslib/gnm.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceGnmSubmitCommandBuffers</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/gnm.c"><code>runtime/syslib/gnm.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceGnmSubmitDone</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/gnm.c"><code>runtime/syslib/gnm.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceGnmUpdateGsShader</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/gnm.c"><code>runtime/syslib/gnm.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceGnmUpdateHsShader</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/gnm.c"><code>runtime/syslib/gnm.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceGnmUpdatePsShader</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/gnm.c"><code>runtime/syslib/gnm.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceGnmUpdateVsShader</code></td>
 <td><span class="wk-badge wk-badge--implemented">implemented</span></td>
 <td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/gnm.c"><code>runtime/syslib/gnm.c</code></a></td>
 </tr>
@@ -2320,6 +2434,11 @@ call is registered only to name itself and stop, because its answer is not estab
 <td><code>pthread_cond_wait</code></td>
 <td><span class="wk-badge wk-badge--implemented">implemented</span></td>
 <td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_mutex.c"><code>runtime/syslib/kernel_mutex.c</code></a></td>
+</tr>
+<tr>
+<td><code>pthread_create_name_np</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_thread.c"><code>runtime/syslib/kernel_thread.c</code></a></td>
 </tr>
 <tr>
 <td><code>pthread_mutex_destroy</code></td>

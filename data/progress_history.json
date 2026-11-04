@@ -79,16 +79,16 @@
  },
  {
   "date": "2026-10-26",
-  "commit": "92a2a3e",
+  "commit": "db80949",
   "verified_bytes": 14010,
   "verified_functions": 21,
   "replaced_bytes": 28280,
   "replaced_functions": 87,
-  "imports_covered": 347,
+  "imports_covered": 368,
   "imports_bundled": 219,
-  "imports_implemented": 128,
+  "imports_implemented": 149,
   "imports_total": 686,
-  "boot_milestone": "video out",
-  "boot_milestone_index": 6
+  "boot_milestone": "first flip",
+  "boot_milestone_index": 8
  }
 ]
