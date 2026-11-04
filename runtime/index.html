@@ -418,22 +418,8 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 4, 2026 15:36:34 UTC">November 4, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 4, 2026 17:05:09 UTC">November 4, 2026</span></p>
       
-      
-      
-      <aside class="wk-freshness" role="note">
-        <p><b>Not yet updated for 1 merged change.</b>
-        This page was last checked against Paleblood
-        <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/d00cf07c9068f7a8fda80432741e5ceff96a85e3"><code>d00cf07</code></a>;
-        these pull requests changed what it describes since:</p>
-        <ul>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/308">#308</a> files: a writable /data scratch mount; scePthreadYield answers 0; record the boot</li>
-          
-          
-        </ul>
-      </aside>
       
       <h1 id="runtime">Runtime</h1>
 <p class="wk-lede">Paleblood is building a runtime of its own. A runtime is the software that loads a program and provides the system services it expects.</p>
@@ -444,7 +430,7 @@
 <dt>Works</dt>
 <dd>An <abbr title="Executable and Linkable Format, the standard executable file format on Linux and FreeBSD.">ELF</abbr> <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> and boot <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr> load the executable and bundled modules, bind imports and run the entry point.</dd>
 <dt>Stops at</dt>
-<dd>Where the boot stops: since 4 November 2026, <code>sceKernelOpen</code> of a scratch file the engine keeps under <code>/data</code>, a location the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> does not provide yet.</dd>
+<dd>Where the boot stops: since 4 November 2026, a crash inside the game (<code>eboot+0x217a380</code>) while it clears a GPU buffer at an address Paleblood has not mapped.</dd>
 <dt>Full game</dt>
 <dd>Still runs on a third-party host scaffold; the project-owned <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> has not <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> it.</dd>
 <dt>Evidence</dt>
@@ -519,8 +505,8 @@ recorded run; changing <abbr title="What the game's code runs on: Paleblood's ow
 (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/304">#304</a>). It reaches the <strong>video out</strong> milestone, 6 of 8: the game's threads, its files,
 input and its sound system start, and it opens its display. Its first GPU work now goes through a
 temporary stand-in (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/302">#302</a>), its network worker polls offline (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/303">#303</a>), and it calls 135 imports.
-It stops in <code>sceKernelOpen</code>, which the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> implements, when the engine creates a scratch cache
-file under <code>/data</code>: the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> serves only the game's own install folder, <code>/app0</code>, so far.</p>
+Its scratch files now go to a writable <code>/data</code> folder (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/308">#308</a>), and it calls 143 imports. It
+ends in a crash inside the game's own code, at <code>eboot+0x217a380</code>.</p>
 <p>The boot before it (19 October) stopped much earlier, at <code>scePthreadAttrGetaffinity</code> inside the
 game's bundled C library. <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/207">#207</a> <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> the C library's probe that made that call, so the
 call is no longer made (<a href="../runtime-syscalls/">Runtime syscalls</a>), and the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> work merged since
@@ -555,13 +541,13 @@ candidate workflow. Unsupported instructions and skipped host-call bodies reject
 synthetic automation tests establish tool behavior only. The <a href="../ARCHITECTURE/#verification">Architecture verification guide</a>
 explains what is observed and which stages still require original-game evidence and human review.</p>
 <h2 id="boot-history-and-the-current-blocker">Boot history and the current blocker</h2>
-<p>The latest genuine boot trace was recorded with merged Paleblood main in <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/304">#304</a>
+<p>The latest genuine boot trace was recorded with merged Paleblood main in <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/308">#308</a>
 (4 November 2026).</p>
 <div class="wk-table"><table>
 <thead>
 <tr>
 <th></th>
-<th>Latest trace (4 November, #304)</th>
+<th>Latest trace (4 November, #308)</th>
 <th>Earlier on 4 November (#300)</th>
 <th>19 October (#92)</th>
 </tr>
@@ -569,19 +555,19 @@ explains what is observed and which stages still require original-game evidence 
 <tbody>
 <tr>
 <td>Imports resolved</td>
-<td>346/686: 219 bundled, 127 implemented by the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr></td>
+<td>347/686: 219 bundled, 128 implemented by the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr></td>
 <td>344/686 (125 <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>)</td>
 <td>252/686 (33 <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>)</td>
 </tr>
 <tr>
 <td>Import calls reached</td>
-<td>135</td>
+<td>143</td>
 <td>133</td>
 <td>seven</td>
 </tr>
 <tr>
 <td>Stopped at</td>
-<td><code>sceKernelOpen</code> of <code>/data/cache.bin</code> (stops by name)</td>
+<td>a crash at <code>eboot+0x217a380</code> (clearing a GPU buffer)</td>
 <td><code>sceGnmDingDong</code> (compute-queue doorbell)</td>
 <td><code>scePthreadAttrGetaffinity</code> in <code>libc.elf</code></td>
 </tr>
@@ -604,10 +590,14 @@ draws nothing: it only writes each job's "work done" value, which is what the CP
 frees the queue. This was a maintainer decision of 4 November 2026, so that start-up can continue
 while the engine's own renderer (its <code>GX</code> framework) is rebuilt to replace it (issue #39). See
 <a href="../runtime-syscalls/#graphics-the-first-calls">Runtime syscalls</a>.</p>
-<p><strong>What blocks it now.</strong> The engine maps its <code>temp:</code> drive to <code>/data</code> and creates a fresh scratch
-cache there, <code>temp:/cache.bin</code>, ignoring whether that works. The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> serves only <code>/app0</code>, the
-game's own install folder, so it stops by name. Whether <code>/data</code> becomes a writable scratch folder
-or an error the cache code tolerates is the next decision.</p>
+<p><strong>Scratch files.</strong> The engine maps its <code>temp:</code> and <code>title:</code> drives to <code>/data</code> and creates a fresh
+cache file there at start-up. The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> now serves <code>/data</code> as a writable folder of its own
+choosing (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/308">#308</a>): each boot gets a new, empty one, so runs start alike.</p>
+<p><strong>What blocks it now.</strong> The game crashes in its own code (the function at <code>0x0257a210</code>) while
+clearing a GPU buffer. It works out the buffer's address from a GPU resource description, where
+addresses are stored in coarse aligned units, and that address is not memory Paleblood has mapped.
+The address differs from run to run. Finding where that description is filled in is the next
+step.</p>
 <details class="reference">
 <summary>Boot history fields (PR #51)</summary>
 <p><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/51">PR #51</a> extended new <code>symbols/boot_history.csv</code> rows with the run outcome, execution phase, unresolved-import return site, and guest-fault location, signal, and address. A changed failure location is recorded even when import counts and the blocking symbol stay the same. Existing rows remain readable.</p>
@@ -762,7 +752,7 @@ Paleblood's function table; see the <a href="../progress/">progress dashboard</a
 <h2 id="roadmap">Roadmap</h2>
 <ol class="wk-steps">
 <li><strong>Loader and boot <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr>:</strong> project-owned and independently tested.</li>
-<li><strong>Kernel, threads, and memory:</strong> what start-up needs is in place: merged <code>main</code> boots to the video out milestone (6 of 8), passes its first GPU work through a temporary stand-in, and stops at its first scratch file outside <code>/app0</code>.</li>
+<li><strong>Kernel, threads, and memory:</strong> what start-up needs is in place: merged <code>main</code> boots to the video out milestone (6 of 8), passes its first GPU work through a temporary stand-in, writes its scratch files, and stops at a crash while clearing a GPU buffer.</li>
 <li><strong>Files, audio, network start-up:</strong> begun. The game reads its own files read-only, its audio thread runs in real time without sound, and its HTTP client starts offline.</li>
 <li><strong><abbr title="The PS4's low-level graphics API.">GNM</abbr> and shaders:</strong> begun. The game builds its GPU commands itself and only submits them, so the graphics are rebuilt in the engine's own renderer (its <code>GX</code> framework), not by emulating the GPU; the goal is the first rendered frame. Mapping that renderer is the next step.</li>
 <li><strong>Capture integration:</strong> add a return-aware, ABI-described observation boundary before connecting recordings to production <abbr title="14-byte jumps written over the start of original functions, sending their callers to the replacements.">hooks</abbr>. Synthetic tests are not a substitute for real <abbr title="Inputs recorded while the game ran, replayed by the harness.">captures</abbr>.</li>

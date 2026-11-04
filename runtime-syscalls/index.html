@@ -444,22 +444,8 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 4, 2026 15:36:34 UTC">November 4, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 4, 2026 17:05:09 UTC">November 4, 2026</span></p>
       
-      
-      
-      <aside class="wk-freshness" role="note">
-        <p><b>Not yet updated for 1 merged change.</b>
-        This page was last checked against Paleblood
-        <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/d00cf07c9068f7a8fda80432741e5ceff96a85e3"><code>d00cf07</code></a>;
-        these pull requests changed what it describes since:</p>
-        <ul>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/308">#308</a> files: a writable /data scratch mount; scePthreadYield answers 0; record the boot</li>
-          
-          
-        </ul>
-      </aside>
       
       <h1 id="runtime-system-call-notes">Runtime system-call notes</h1>
 <p class="wk-lede">What each runtime system call is for, what it must do, what the game was seen to do with it, and how Paleblood's runtime answers.</p>
@@ -630,8 +616,8 @@ is not established.</p>
 </tr>
 <tr>
 <td><code>scePthreadYield</code></td>
-<td><span class="wk-badge wk-badge--unresolved">unresolved</span></td>
-<td>Stops by name; the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> return signature is unknown.</td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td>Yields the host thread and returns zero (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/308">#308</a>).</td>
 </tr>
 <tr>
 <td><code>pthread_self</code></td>
@@ -646,7 +632,7 @@ for that thread, so these calls work by comparing or returning those pointers.</
 <li><strong><code>scePthreadEqual</code></strong> asks whether two handles name the same thread. The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> compares the opaque object pointers used as guest thread handles: zero means different, nonzero means equal. The exact nonzero value the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> returns, and its behavior for a null handle, are not established.</li>
 <li><strong><code>sched_yield</code></strong> lets other threads run. The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> yields the calling host thread and returns zero, following the POSIX/FreeBSD contract. A host failure stops by name. The unit test checks the result; it cannot prove that the host scheduler ran another thread.</li>
 <li><strong>On macOS</strong> the registry is gathered the same way, from a section of the Mach-O binary instead of the <abbr title="Executable and Linkable Format, the standard executable file format on Linux and FreeBSD.">ELF</abbr> one (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/216">#216</a>); Linux is unchanged.</li>
-<li><strong><code>scePthreadYield</code></strong> sounds like the same thing, but it stays unresolved. FreeBSD's analogue returns <code>void</code>, while Linux's returns <code>int</code>, and nothing settles which one the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> uses. It is registered with <code>RT_SYSLIB_UNRESOLVED</code> and stops by name; registry presence is not implementation evidence.</li>
+<li><strong><code>scePthreadYield</code></strong> does the same (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/308">#308</a>). Its <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> signature is not published (FreeBSD's analogue returns nothing, Linux's returns an int), but answering zero is right either way: a caller of a function that returns nothing never reads the result, and zero is the int version's success. Every one of the game's 26 direct calls ignores the result.</li>
 <li><strong><code>pthread_self</code></strong> (<code>libScePosix</code>) returns the calling thread's own handle. It answers exactly what <code>scePthreadSelf</code> answers. With no guest thread registered on the host thread, it stops by the name the guest used. POSIX defines no error return.</li>
 </ul>
 <p>These are <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> services, not new decompiled game functions, and the saved boot has not been
@@ -678,8 +664,8 @@ rerun to demonstrate their startup effect.</p>
 </tr>
 <tr>
 <td data-label="Call"><code>scePthreadYield</code></td>
-<td data-label="Runtime behavior">Registered with <code>RT_SYSLIB_UNRESOLVED</code> and stops by name.</td>
-<td data-label="Evidence limit">The <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr>-visible return signature is unknown: FreeBSD's analogue returns <code>void</code>, while Linux's returns <code>int</code>. Registry presence is not implementation evidence.</td>
+<td data-label="Runtime behavior">Yields the calling host thread and returns zero (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/308">#308</a>).</td>
+<td data-label="Evidence limit">The <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr>-visible signature is unpublished; zero is right whether it returns nothing or an int, and all 26 direct call sites in the executable ignore the result. The test checks the result only.</td>
 </tr>
 <tr>
 <td data-label="Call"><code>pthread_self(void)</code> (<code>libScePosix</code>)</td>
@@ -1402,18 +1388,22 @@ play the samples on your computer yet.</p>
 <tr>
 <td data-label="Call"><code>sceKernelStat</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
-<td data-label="What the runtime does">Describes a file of your copy, without write permission.</td>
+<td data-label="What the runtime does">Describes a file of your copy (without write permission) or of the scratch folder.</td>
 </tr>
 <tr>
 <td data-label="Call"><code>sceKernelOpen</code>, <code>sceKernelRead</code>, <code>sceKernelPread</code>, <code>sceKernelLseek</code>, <code>sceKernelFstat</code>, <code>sceKernelClose</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
-<td data-label="What the runtime does">Read your copy's files; any attempt to write is refused as on a read-only disc.</td>
+<td data-label="What the runtime does">Read your copy's files, where any attempt to write is refused as on a read-only disc; open, create and truncate files in the scratch folder <code>/data</code> (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/308">#308</a>).</td>
 </tr>
 </tbody>
 </table></div>
 <p>On the console, a game sees its own package as a read-only folder called <code>/app0</code>. The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>
 serves <code>/app0</code> from your own copy of the game (<code>tools/boot.py --app0</code>), and never writes to it.
 The first file Bloodborne looks for and reads is <code>sprj_mixer.fev</code>, its sound mixer description.</p>
+<p>The game also keeps scratch files under <code>/data</code>: its engine maps the <code>temp:</code> and <code>title:</code> drives
+there and creates a fresh <code>cache.bin</code> at start-up. The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> serves <code>/data</code> from a writable
+folder of its own choosing (<code>pbboot --data</code>); <code>tools/boot.py</code> gives each run a new, empty one,
+so every boot starts alike and nothing the game writes outlives the run.</p>
 <details class="reference">
 <summary>Files: PRs and what stops by name</summary>
 <ul>

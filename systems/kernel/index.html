@@ -414,7 +414,7 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 4, 2026 03:56:56 UTC">November 4, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 4, 2026 17:05:09 UTC">November 4, 2026</span></p>
       
       
       <h1 id="kernel">Kernel</h1>
@@ -533,12 +533,12 @@ actually ran.</p>
 <p>These are <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> services checked by synthetic registry tests, not decompiled game
 functions.</p>
 </details>
-<details class="caveat">
-<summary>scePthreadYield is not implemented</summary>
-<p>The similarly named <code>scePthreadYield</code> remains registered as an unresolved, fail-loud
-diagnostic. FreeBSD's <code>pthread_yield</code> returns <code>void</code>, Linux's analogue returns <code>int</code>, and no
-<abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> declaration or inspected guest call site settles the guest-visible signature. Do not
-infer that it is implemented from its registry entry.</p>
+<details class="note">
+<summary>scePthreadYield answers zero</summary>
+<p>The similarly named <code>scePthreadYield</code> yields the same way and answers zero (Paleblood #308).
+Its <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> signature is unpublished: FreeBSD's <code>pthread_yield</code> returns <code>void</code>, Linux's analogue
+returns <code>int</code>. Zero is right under either, and all 26 direct call sites in the executable
+ignore the result.</p>
 </details>
 <h2 id="key-functions">Key functions</h2>
 <div class="wk-table is-stack"><table class="wk-stack">
