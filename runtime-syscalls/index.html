@@ -447,6 +447,20 @@
       <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 3, 2026 18:17:46 UTC">November 3, 2026</span></p>
       
       
+      
+      <aside class="wk-freshness" role="note">
+        <p><b>Not yet updated for 1 merged change.</b>
+        This page was last checked against Paleblood
+        <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/b4ae70c52069f90e9f6c19354475acf20b6724bd"><code>b4ae70c</code></a>;
+        these pull requests changed what it describes since:</p>
+        <ul>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/215">#215</a> runtime: read compiled SDK from owned process metadata</li>
+          
+          
+        </ul>
+      </aside>
+      
       <h1 id="runtime-system-call-notes">Runtime system-call notes</h1>
 <p class="wk-lede">What each runtime system call is for, what it must do, what the game was seen to do with it, and how Paleblood's runtime answers.</p>
 
@@ -1578,6 +1592,11 @@ call is registered only to name itself and stop, because its answer is not estab
 <td><code>sceKernelFstat</code></td>
 <td><span class="wk-badge wk-badge--implemented">implemented</span></td>
 <td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/files.c"><code>runtime/syslib/files.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceKernelGetCompiledSdkVersion</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_sdk.c"><code>runtime/syslib/kernel_sdk.c</code></a></td>
 </tr>
 <tr>
 <td><code>sceKernelGetDirectMemorySize</code></td>
