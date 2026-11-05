@@ -925,8 +925,16 @@ use is the startup heap, at <code>0x02481a80</code>:</p>
 <li><strong>Allocation.</strong> It takes the lowest start at or above the search start that fits before the
   search end.</li>
 <li><strong>GPU access.</strong> The executable maps with protection 3 and <code>0x33</code>, CPU and GPU read/write
-  (<code>0x10</code> and <code>0x20</code> in the public SDK list). The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> has no GPU yet, so the host mapping
-  takes the CPU bits.</li>
+  (<code>0x10</code> and <code>0x20</code> in the public SDK list). The host mapping takes the CPU bits.</li>
+<li><strong>Where a map goes.</strong> Without an address hint, the system chooses:</li>
+<li><strong>A GPU-visible map</strong> goes at a fixed base (<code>0x2000000000</code>) plus its offset in the pool. Every
+    such address is then a fixed distance from the same byte of the pool, which is how the
+    renderer's GPU will reach guest memory: it gets the whole pool as one buffer
+    (<code>runtime/gpu_memory.h</code>, <code>docs/RENDERER.md</code>).</li>
+<li><strong>Other maps</strong> go anywhere free in the map window above that region.</li>
+<li><strong>A second GPU-visible map of a range</strong> would need the same place, so it stops by name. A
+    boot doesn't make one: every range it maps, it maps once.</li>
+<li><strong>With a hint,</strong> a map goes where the hint says (below).</li>
 <li><strong>What stops by name.</strong> Every case whose <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> answer is not established stops with the function's
   name:</li>
 <li>lengths, starts or alignments that are not multiples of 16 KiB (the granularity the
