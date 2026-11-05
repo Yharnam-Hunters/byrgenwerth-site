@@ -448,7 +448,7 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 4, 2026 19:16:29 UTC">November 4, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 5, 2026 01:43:39 UTC">November 5, 2026</span></p>
       
       
       <h1 id="runtime-system-call-notes">Runtime system-call notes</h1>
@@ -507,6 +507,11 @@
 <td data-label="Call"><code>gettimeofday</code>, <code>sceKernelGettimeofday</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
 <td data-label="What the runtime does">The host's wall clock; a timezone argument stops by name.</td>
+</tr>
+<tr>
+<td data-label="Call"><code>time</code> (<code>libSceLibcInternal</code>)</td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">Seconds since the Epoch, from the same clock as <code>clock_gettime(13)</code>, also stored through a non-null pointer, as FreeBSD's <code>time.c</code> does (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/296">#296</a>, by <a href="https://github.com/EzequielRindello">@EzequielRindello</a>). The game's file module is its only caller.</td>
 </tr>
 </tbody>
 </table></div>
@@ -599,7 +604,7 @@ is not established.</p>
 <p><strong>What would settle it:</strong> one <code>getpagesize()</code> result observed on a console.</p>
 </details>
 <h2 id="threads-and-yielding">Threads and yielding</h2>
-<div class="wk-table"><table>
+<div class="wk-table is-stack"><table class="wk-stack">
 <thead>
 <tr>
 <th>Call</th>
@@ -609,24 +614,29 @@ is not established.</p>
 </thead>
 <tbody>
 <tr>
-<td><code>scePthreadEqual</code></td>
-<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
-<td>Compares guest thread handles; zero means different.</td>
+<td data-label="Call"><code>scePthreadEqual</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">Compares guest thread handles; zero means different.</td>
 </tr>
 <tr>
-<td><code>sched_yield</code></td>
-<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
-<td>Yields the host thread and returns zero.</td>
+<td data-label="Call"><code>sched_yield</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">Yields the host thread and returns zero.</td>
 </tr>
 <tr>
-<td><code>scePthreadYield</code></td>
-<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
-<td>Yields the host thread and returns zero (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/308">#308</a>).</td>
+<td data-label="Call"><code>scePthreadYield</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">Yields the host thread and returns zero (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/308">#308</a>).</td>
 </tr>
 <tr>
-<td><code>pthread_self</code></td>
-<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
-<td>Answers what <code>scePthreadSelf</code> answers.</td>
+<td data-label="Call"><code>pthread_self</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">Answers what <code>scePthreadSelf</code> answers.</td>
+</tr>
+<tr>
+<td data-label="Call"><code>scePthreadKeyCreate</code>, <code>scePthreadKeyDelete</code>, <code>scePthreadGetspecific</code>, <code>scePthreadSetspecific</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">Per-thread values, following FreeBSD libthr's <code>thr_spec.c</code>. At thread exit each destructor runs, for up to four rounds; past the POSIX minimums (128 keys, 4 rounds) it stops by name (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/298">#298</a>, by <a href="https://github.com/EzequielRindello">@EzequielRindello</a>).</td>
 </tr>
 </tbody>
 </table></div>
@@ -1456,8 +1466,10 @@ so every boot starts alike and nothing the game writes outlives the run.</p>
 <p>Each frame the game asks video out to show one of its frame buffers, then waits on an event
 queue until the console reports that the flip happened, or reads the flip status until it
 catches up. The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> keeps the buffers and answers every flip straight away, so the game's
-frame loop can run. It does not show the buffers on your screen yet: the game draws into them with
-the GPU, which comes with the graphics work below.</p>
+frame loop can run. Each buffer also has a frame on your side, which the flip shows: in a window
+with <code>--display window</code> (SDL3 and Vulkan), or written to image files with <code>--display-capture DIR</code>
+(<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/313">#313</a>). Those frames are black for now, because the game draws with the GPU, and drawing
+comes with <a href="../runtime/#the-renderer">the renderer</a>.</p>
 <details class="reference">
 <summary>Video out: PRs and call sites</summary>
 <ul>
@@ -1850,6 +1862,21 @@ call is registered only to name itself and stop, because its answer is not estab
 <td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_thread.c"><code>runtime/syslib/kernel_thread.c</code></a></td>
 </tr>
 <tr>
+<td><code>scePthreadGetspecific</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_key.c"><code>runtime/syslib/kernel_key.c</code></a></td>
+</tr>
+<tr>
+<td><code>scePthreadKeyCreate</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_key.c"><code>runtime/syslib/kernel_key.c</code></a></td>
+</tr>
+<tr>
+<td><code>scePthreadKeyDelete</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_key.c"><code>runtime/syslib/kernel_key.c</code></a></td>
+</tr>
+<tr>
 <td><code>scePthreadMutexattrDestroy</code></td>
 <td><span class="wk-badge wk-badge--implemented">implemented</span></td>
 <td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_mutex.c"><code>runtime/syslib/kernel_mutex.c</code></a></td>
@@ -1943,6 +1970,11 @@ call is registered only to name itself and stop, because its answer is not estab
 <td><code>scePthreadSetprio</code></td>
 <td><span class="wk-badge wk-badge--implemented">implemented</span></td>
 <td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_thread.c"><code>runtime/syslib/kernel_thread.c</code></a></td>
+</tr>
+<tr>
+<td><code>scePthreadSetspecific</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_key.c"><code>runtime/syslib/kernel_key.c</code></a></td>
 </tr>
 <tr>
 <td><code>scePthreadYield</code></td>
@@ -2262,6 +2294,11 @@ call is registered only to name itself and stop, because its answer is not estab
 <td><code>memset</code></td>
 <td><span class="wk-badge wk-badge--implemented">implemented</span></td>
 <td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel.c"><code>runtime/syslib/kernel.c</code></a></td>
+</tr>
+<tr>
+<td><code>time</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_time_of_day.c"><code>runtime/syslib/kernel_time_of_day.c</code></a></td>
 </tr>
 </tbody>
 </table></div>

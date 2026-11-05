@@ -412,7 +412,7 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 5, 2026 00:25:31 UTC">November 5, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 5, 2026 01:43:39 UTC">November 5, 2026</span></p>
       
       
       <h1 id="milestones">Milestones</h1>
@@ -490,9 +490,10 @@ does not move a point by itself; only a new genuine boot does.</p>
 
 <h2 id="what-the-screen-shows">What the screen shows</h2>
 <p>Reaching <em>first flip</em> means the game finished a frame and asked the screen to show it. The
-frame is still black: until the renderer is built, the game's drawing work goes through a
-temporary stand-in that completes it without drawing (see <a href="../runtime/">Runtime</a>). The renderer
-plan, in four phases, is in Paleblood's <code>docs/RENDERER.md</code>.</p>
+frame is still black. Paleblood can show the frames now, in a window or as captured images (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/313">#313</a>),
+but until the renderer is built the game's drawing work goes through a temporary stand-in that
+completes it without drawing. The renderer's four phases are on the <a href="../runtime/#the-renderer">Runtime</a>
+page.</p>
 <p>When the renderer draws its first pictures, frames from those runs will appear here. Each image
 is reviewed on its own before it is published, as the <a href="../MEDIA_POLICY/">media review</a> requires:
 its source, what it shows, how much of it is needed, and the maintainer's approval. Nothing

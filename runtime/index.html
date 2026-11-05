@@ -407,6 +407,8 @@
           
           <li><a href="#boot-history-and-the-current-blocker" class="wk-toc-link">Boot history and the current blocker</a></li>
           
+          <li><a href="#the-renderer" class="wk-toc-link">The renderer</a></li>
+          
           <li><a href="#decompilation-progress" class="wk-toc-link">Decompilation progress</a></li>
           
           <li><a href="#roadmap" class="wk-toc-link">Roadmap</a></li>
@@ -422,7 +424,7 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 4, 2026 19:16:29 UTC">November 4, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 5, 2026 01:43:39 UTC">November 5, 2026</span></p>
       
       
       <h1 id="runtime">Runtime</h1>
@@ -610,6 +612,23 @@ waits already hold, and skips the rest, then flips at the next 60 Hz tick (<a hr
 services: trophies, PlayGo (installation progress), friends, messages and dialogs. Their modules
 now load (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/310">#310</a>); each of their functions needs an offline answer, starting with
 <code>scePlayGoInitialize</code>. A visible picture needs the engine-level renderer (issue #39).</p>
+<h2 id="the-renderer">The renderer</h2>
+<p>Bloodborne draws through its own engine renderer (the <code>GX</code> framework) and Sony's GPU helper
+library compiled into the game. Its shaders ship as compiled AMD GPU code. On 4 November 2026 the
+maintainer chose how Paleblood draws them:
+- <strong>Draws:</strong> the game's own drawing functions are hooked like the rest of the decompilation, and
+  send their work to Vulkan on Linux and Metal on macOS.
+- <strong>Shaders:</strong> each one is translated from AMD's code to Vulkan's or Metal's shader language when
+  it loads, on your machine. The translator is written from AMD's public instruction-set manuals,
+  not from any emulator. Nothing translated is published.
+- <strong>Ruled out:</strong> replaying the finished GPU commands, which would be GPU emulation.</p>
+<p>The work comes in four phases (Paleblood's <code>docs/RENDERER.md</code>):</p>
+<ol class="wk-steps">
+<li><strong>Display</strong> (done, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/313">#313</a>): every frame buffer the game registers gets a frame of its own, and each flip shows it, in a window (SDL3 and Vulkan) or captured to image files for tests. The frames are black: nothing draws into them yet.</li>
+<li><strong>Shader translator</strong> (begun, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/316">#316</a>): a decoder for GFX7, the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> GPU's instruction set, names every instruction. Its opcode table is generated from AMD's manual and LLVM's AMDGPU assembler, which must agree. A census of your own copy's shaders shows the game uses only 175 distinct instructions, and the decoder knows all of them. Next: emitting Vulkan shaders for them, the most frequent first.</li>
+<li><strong>Engine draw <abbr title="14-byte jumps written over the start of original functions, sending their callers to the replacements.">hooks</abbr>:</strong> route the game's render targets, clears, shader binding, textures and draws to the renderer, starting with the title screen's 2D passes.</li>
+<li><strong>Textures and 3D:</strong> the game's texture formats and tiling, meshes, materials and post-processing.</li>
+</ol>
 <details class="reference">
 <summary>Boot history fields (PR #51)</summary>
 <p><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/51">PR #51</a> extended new <code>symbols/boot_history.csv</code> rows with the run outcome, execution phase, unresolved-import return site, and guest-fault location, signal, and address. A changed failure location is recorded even when import counts and the blocking symbol stay the same. Existing rows remain readable.</p>
@@ -764,9 +783,9 @@ Paleblood's function table; see the <a href="../progress/">progress dashboard</a
 <h2 id="roadmap">Roadmap</h2>
 <ol class="wk-steps">
 <li><strong>Loader and boot <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr>:</strong> project-owned and independently tested.</li>
-<li><strong>Kernel, threads, and memory:</strong> what start-up needs is in place: merged <code>main</code> boots to the video out milestone (6 of 8), passes its GPU work through a temporary stand-in, and reaches its first flip (8 of 8); it stops at the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> install service.</li>
+<li><strong>Kernel, threads, and memory:</strong> what start-up needs is in place: merged <code>main</code> boots through all eight milestones to its first flip, passing its GPU work through a temporary stand-in; it stops at the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> install service.</li>
 <li><strong>Files, audio, network start-up:</strong> begun. The game reads its own files read-only, its audio thread runs in real time without sound, and its HTTP client starts offline.</li>
-<li><strong><abbr title="The PS4's low-level graphics API.">GNM</abbr> and shaders:</strong> begun. The game builds its GPU commands itself and only submits them, so the graphics are rebuilt in the engine's own renderer (its <code>GX</code> framework), not by emulating the GPU; the goal is the first rendered frame. Mapping that renderer is the next step.</li>
+<li><strong><abbr title="The PS4's low-level graphics API.">GNM</abbr> and shaders:</strong> begun. The renderer <abbr title="14-byte jumps written over the start of original functions, sending their callers to the replacements.">hooks</abbr> the game's own drawing layer and translates its shaders, rather than emulating the GPU (see <a href="#the-renderer">The renderer</a> below). The display window is in place, and the shader decoder knows every instruction the game uses; the goal is the first rendered frame.</li>
 <li><strong>Capture integration:</strong> add a return-aware, ABI-described observation boundary before connecting recordings to production <abbr title="14-byte jumps written over the start of original functions, sending their callers to the replacements.">hooks</abbr>. Synthetic tests are not a substitute for real <abbr title="Inputs recorded while the game ran, replayed by the harness.">captures</abbr>.</li>
 </ol>
 <p>System-library work is tracked separately from boot milestones, in one issue per group: kernel
