@@ -1,19 +1,19 @@
 {
   "edge_verified": {
-    "bytes": 28280,
+    "bytes": 31708,
     "bytes_pct": 0.07,
-    "functions": 87,
-    "functions_pct": 0.06
+    "functions": 117,
+    "functions_pct": 0.07
   },
   "inputs": {
-    "functions_sha256": "cff3a3ec0be299809c6fff5d904dca307c47813b6d4d29af5dd469746db27162",
+    "functions_sha256": "fba2f684d5366e1071cd52bfc906417aabb3220871f7ae3e7883603d0293e7aa",
     "ghidra_functions_sha256": "fc7e244dc9f211963118a9ab97716de03e0f342421c63cafc9a8ae747abb8ebd"
   },
   "replaced": {
-    "bytes": 28280,
+    "bytes": 31708,
     "bytes_pct": 0.07,
-    "functions": 87,
-    "functions_pct": 0.06
+    "functions": 117,
+    "functions_pct": 0.07
   },
   "runtime": {
     "fault": null,
@@ -197,7 +197,7 @@
       "bytes": 680961,
       "end": "0x011ab79c",
       "functions": 2503,
-      "replaced_bytes": 1380,
+      "replaced_bytes": 1431,
       "start": "0x010fc809",
       "verified_bytes": 131
     },
@@ -205,7 +205,7 @@
       "bytes": 677827,
       "end": "0x0125a72f",
       "functions": 2746,
-      "replaced_bytes": 249,
+      "replaced_bytes": 321,
       "start": "0x011ab79c",
       "verified_bytes": 0
     },
@@ -237,7 +237,7 @@
       "bytes": 681944,
       "end": "0x0151657b",
       "functions": 2543,
-      "replaced_bytes": 254,
+      "replaced_bytes": 3439,
       "start": "0x014675e8",
       "verified_bytes": 0
     },
@@ -493,7 +493,7 @@
       "bytes": 657317,
       "end": "0x02af57db",
       "functions": 3151,
-      "replaced_bytes": 1792,
+      "replaced_bytes": 1912,
       "start": "0x02a46848",
       "verified_bytes": 0
     },
@@ -563,10 +563,10 @@
       "verified": 1
     },
     "audio": {
-      "edge_verified": 1,
-      "replaced": 1,
-      "replaced_bytes": 290,
-      "tracked": 1,
+      "edge_verified": 5,
+      "replaced": 5,
+      "replaced_bytes": 413,
+      "tracked": 5,
       "verified": 0
     },
     "camera": {
@@ -626,10 +626,10 @@
       "verified": 1
     },
     "render": {
-      "edge_verified": 10,
-      "replaced": 10,
-      "replaced_bytes": 3899,
-      "tracked": 10,
+      "edge_verified": 36,
+      "replaced": 36,
+      "replaced_bytes": 7204,
+      "tracked": 36,
       "verified": 3
     }
   },
@@ -638,8 +638,8 @@
     "functions": 157757
   },
   "tracked": {
-    "bytes": 28455,
-    "functions": 89
+    "bytes": 31883,
+    "functions": 119
   },
   "verified": {
     "bytes": 14010,

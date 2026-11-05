@@ -380,7 +380,7 @@
       <span class="wk-stat-track" role="img" aria-label="0.033 percent of target code bytes verified">
         <span class="wk-stat-fill" style="width:0.033%"></span>
       </span>
-      <span class="wk-progress-foot">0.033% of code bytes verified · 87 replaced</span>
+      <span class="wk-progress-foot">0.033% of code bytes verified · 117 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -418,7 +418,7 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 3, 2026 18:17:46 UTC">November 3, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 5, 2026 05:35:28 UTC">November 5, 2026</span></p>
       
       
       <h1 id="audio">Audio</h1>
@@ -430,7 +430,7 @@
 <dt>Scope</dt>
 <dd>Sound playback, mixing, music.</dd>
 <dt>Verified</dt>
-<dd><code>audio_fmod_thread_affinity_lookup</code> (<code>0x0111a8c0</code>) is <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr> against constructed cases.</dd>
+<dd>Three FMOD functions are <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr> against constructed cases: the thread affinity lookup (<code>0x0111a8c0</code>) and two output callbacks (<code>0x0111b060</code>, <code>0x0111b0b0</code>).</dd>
 <dt>Open</dt>
 <dd>Playback, mixing and music themselves.</dd>
 </dl>
@@ -452,6 +452,22 @@ neighbouring helpers in the same address range (string comparisons, the recursiv
 semaphore wrappers) are FMOD's too; they are described on the <a href="../engine/">Engine</a> and
 <a href="../kernel/">Kernel</a> pages.</p>
 </details>
+<h3 id="fmods-output-device">FMOD's output device</h3>
+<p>FMOD learns about the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr>'s audio output through a table of callbacks the game installs (at
+<code>0x0111aed0</code>). Two of them are mapped and <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr>:</p>
+<ul>
+<li><code>audio_fmod_output_driver_count</code> (<code>0x0111b060</code>) reports one output driver.</li>
+<li><code>audio_fmod_output_defaults</code> (<code>0x0111b0b0</code>) fills in the output's defaults, each only when FMOD
+  asked for it: a setting word, then what looks like a 48 kHz sample rate and FMOD's 5.1 speaker
+  mode. Those two meanings are hypotheses from the values, not yet confirmed from FMOD's use of
+  them.</li>
+</ul>
+<details class="evidence">
+<summary>How the callbacks were <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></summary>
+<p>By <a href="https://github.com/evill33t">@evill33t</a> in <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/114">#114</a>: both match the original on
+constructed <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr> (every combination of present and missing outputs), and an independent
+review approved it. They are <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr>, not yet <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> against recorded game runs.</p>
+</details>
 <h2 id="key-functions">Key functions</h2>
 <div class="wk-table is-stack"><table class="wk-stack">
 <thead>
@@ -470,6 +486,34 @@ semaphore wrappers) are FMOD's too; they are described on the <a href="../engine
 <td data-label="Name"><code>audio_fmod_thread_affinity_lookup</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">FMOD thread-name affinity masks; eight 64-bit slots; nonblocking uses a 23-byte prefix; unknown names leave output untouched</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0111b060</code></td>
+<td style="text-align: right;" data-label="Size">14</td>
+<td data-label="Name"><code>audio_fmod_output_driver_count</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">FMOD <abbr title="The PS4's operating system, derived from FreeBSD.">Orbis</abbr> AudioOut descriptor callback installed by 0x0111aed0; optional output receives one driver; return zero</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0111b0b0</code></td>
+<td style="text-align: right;" data-label="Size">37</td>
+<td data-label="Name"><code>audio_fmod_output_defaults</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">FMOD output descriptor callback writes 132 then 48000 then 6 to optional outputs; sample-rate and speaker-mode meanings remain hypotheses</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x011c4810</code></td>
+<td style="text-align: right;" data-label="Size">34</td>
+<td data-label="Name"><code>audio_fmod_string_copy</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">NUL-terminated string copy used by FMOD callers; includes terminator and returns destination; finite aliases covered</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x011c4840</code></td>
+<td style="text-align: right;" data-label="Size">38</td>
+<td data-label="Name"><code>audio_fmod_string_copy_counted</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">FMOD bounded string copy uses low32 count; stops at NUL or count without padding; zero count accesses neither pointer</td>
 </tr>
 </tbody>
 </table></div>
