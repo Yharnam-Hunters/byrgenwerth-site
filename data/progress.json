@@ -1,19 +1,19 @@
 {
   "edge_verified": {
-    "bytes": 31708,
-    "bytes_pct": 0.07,
-    "functions": 117,
-    "functions_pct": 0.07
+    "bytes": 32208,
+    "bytes_pct": 0.08,
+    "functions": 121,
+    "functions_pct": 0.08
   },
   "inputs": {
-    "functions_sha256": "fba2f684d5366e1071cd52bfc906417aabb3220871f7ae3e7883603d0293e7aa",
+    "functions_sha256": "48e85e93958dac9fd92666e893951436349df332e31cff126d0c6c41f8c3bd99",
     "ghidra_functions_sha256": "fc7e244dc9f211963118a9ab97716de03e0f342421c63cafc9a8ae747abb8ebd"
   },
   "replaced": {
-    "bytes": 31708,
-    "bytes_pct": 0.07,
-    "functions": 117,
-    "functions_pct": 0.07
+    "bytes": 32208,
+    "bytes_pct": 0.08,
+    "functions": 121,
+    "functions_pct": 0.08
   },
   "runtime": {
     "fault": null,
@@ -25,12 +25,12 @@
       "symbol": "scePlayGoInitialize"
     },
     "imports_bundled": 219,
-    "imports_covered": 368,
-    "imports_implemented": 149,
-    "imports_pct": 53.64,
-    "imports_remaining": 318,
+    "imports_covered": 369,
+    "imports_implemented": 150,
+    "imports_pct": 53.79,
+    "imports_remaining": 317,
     "imports_total": 686,
-    "imports_unbound": 315,
+    "imports_unbound": 314,
     "imports_unresolved": 3,
     "milestone": "first flip",
     "milestone_index": 8,
@@ -205,7 +205,7 @@
       "bytes": 677827,
       "end": "0x0125a72f",
       "functions": 2746,
-      "replaced_bytes": 321,
+      "replaced_bytes": 447,
       "start": "0x011ab79c",
       "verified_bytes": 0
     },
@@ -493,7 +493,7 @@
       "bytes": 657317,
       "end": "0x02af57db",
       "functions": 3151,
-      "replaced_bytes": 1912,
+      "replaced_bytes": 2286,
       "start": "0x02a46848",
       "verified_bytes": 0
     },
@@ -584,10 +584,10 @@
       "verified": 1
     },
     "engine": {
-      "edge_verified": 12,
-      "replaced": 12,
-      "replaced_bytes": 717,
-      "tracked": 12,
+      "edge_verified": 15,
+      "replaced": 15,
+      "replaced_bytes": 843,
+      "tracked": 15,
       "verified": 0
     },
     "event": {
@@ -626,10 +626,10 @@
       "verified": 1
     },
     "render": {
-      "edge_verified": 36,
-      "replaced": 36,
-      "replaced_bytes": 7204,
-      "tracked": 36,
+      "edge_verified": 37,
+      "replaced": 37,
+      "replaced_bytes": 7578,
+      "tracked": 37,
       "verified": 3
     }
   },
@@ -638,8 +638,8 @@
     "functions": 157757
   },
   "tracked": {
-    "bytes": 31883,
-    "functions": 119
+    "bytes": 32383,
+    "functions": 123
   },
   "verified": {
     "bytes": 14010,

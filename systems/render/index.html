@@ -380,7 +380,7 @@
       <span class="wk-stat-track" role="img" aria-label="0.033 percent of target code bytes verified">
         <span class="wk-stat-fill" style="width:0.033%"></span>
       </span>
-      <span class="wk-progress-foot">0.033% of code bytes verified · 117 replaced</span>
+      <span class="wk-progress-foot">0.033% of code bytes verified · 121 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -420,6 +420,22 @@
       
       <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 5, 2026 05:35:28 UTC">November 5, 2026</span></p>
       
+      
+      
+      <aside class="wk-freshness" role="note">
+        <p><b>Not yet updated for 2 merged changes.</b>
+        This page was last checked against Paleblood
+        <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/99951e6375b8fa2fa7120d9af3158f42873ce560"><code>99951e6</code></a>;
+        these pull requests changed what it describes since:</p>
+        <ul>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/291">#291</a> render: share packet capacity reservation</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/263">#263</a> render: verify shader preparation</li>
+          
+          
+        </ul>
+      </aside>
       
       <h1 id="render">Render</h1>
 <p class="wk-lede">The render system draws each frame and presents it to the screen. This page covers three mapped pieces: the per-frame render update, the pacing of each present, and one helper from the YEBIS post-processing middleware.</p>
@@ -602,14 +618,14 @@ frames. #279, #286 and #287 were brought up to date with <code>main</code> from 
 <td style="text-align: right;" data-label="Size">172</td>
 <td data-label="Name"><code>render_command_emit_counter_operation</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
-<td data-label="Notes">Seven-word counter packet; callback low byte gates writes; label range selects masked encoding Synthetic edges pass; no recordings.</td>
+<td data-label="Notes">Emit the seven-word counter packet; callback admission uses its low byte, and the label range selects the masked encoding.</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x014784a0</code></td>
 <td style="text-align: right;" data-label="Size">82</td>
 <td data-label="Name"><code>render_command_prepare_submission</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
-<td data-label="Notes">Reserve 64 command words; callback low byte gates two marker stores and cursor advance Synthetic edges pass; no recordings.</td>
+<td data-label="Notes">Reserve 64 command words; callback admission uses its low byte before two marker stores and the cursor advance.</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x01485070</code></td>
@@ -757,6 +773,13 @@ frames. #279, #286 and #287 were brought up to date with <code>main</code> from 
 <td data-label="Name"><code>render_present_record_consume</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">Track resource range or emit record commands; preserve cached tokens, index wrap and final state resets. Static reconstruction Synthetic GCC/Clang edges pass; no recordings.</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02ab9850</code></td>
+<td style="text-align: right;" data-label="Size">374</td>
+<td data-label="Name"><code>render_flush_shader_preparation</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Flush the pending barrier/range before the event. Mode 0 keeps the range fields, and a suppressed state returns without touching either group of fields.</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x02abb4f0</code></td>

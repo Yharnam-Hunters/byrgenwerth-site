@@ -380,7 +380,7 @@
       <span class="wk-stat-track" role="img" aria-label="0.033 percent of target code bytes verified">
         <span class="wk-stat-fill" style="width:0.033%"></span>
       </span>
-      <span class="wk-progress-foot">0.033% of code bytes verified · 117 replaced</span>
+      <span class="wk-progress-foot">0.033% of code bytes verified · 121 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -414,6 +414,22 @@
       
       <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 4, 2026 03:56:56 UTC">November 4, 2026</span></p>
       
+      
+      
+      <aside class="wk-freshness" role="note">
+        <p><b>Not yet updated for 2 merged changes.</b>
+        This page was last checked against Paleblood
+        <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/67db79f0ea96a2e9adbabed155cae356c30f7949"><code>67db79f</code></a>;
+        these pull requests changed what it describes since:</p>
+        <ul>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/337">#337</a> engine: replace string append helpers (from #118 by @evill33t)</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/336">#336</a> engine: replace the ordered word product stores (from #115 by @evill33t)</li>
+          
+          
+        </ul>
+      </aside>
       
       <h1 id="engine">Engine</h1>
 <p class="wk-lede">The engine's shared plumbing that every system leans on: its fatal error report, its check for missing singletons, its reference-counted objects, and small helpers such as writing a line to the standard error stream.</p>
@@ -509,11 +525,32 @@ on current <code>main</code>, and an independent review approved it.</p>
 <td data-label="Notes">Forward the string and imported _Stderr object address to fputs; ignore its return and return zero; synthetic wire <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr> only</td>
 </tr>
 <tr>
+<td data-label="Address"><code>0x011c4510</code></td>
+<td style="text-align: right;" data-label="Size">15</td>
+<td data-label="Name"><code>engine_store_word_product</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Store low 32-bit input at owner+0x18 and modulo-32-bit product times four at owner+0x1c; valid unaligned byte view and full zero return; field meanings unknown</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x011c47f0</code></td>
 <td style="text-align: right;" data-label="Size">29</td>
 <td data-label="Name"><code>engine_string_length</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">Engine strlen; scan to the first NUL and return the low 32 length bits zero-extended into RAX; other incoming GP registers are ignored</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x011c4870</code></td>
+<td style="text-align: right;" data-label="Size">51</td>
+<td data-label="Name"><code>engine_string_append</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">NUL-terminated string append returns original destination; includes prefixes beyond four bytes and finite aliases</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x011c48b0</code></td>
+<td style="text-align: right;" data-label="Size">60</td>
+<td data-label="Name"><code>engine_string_append_counted</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Bounded string append uses low32 count; zero count touches neither pointer; appends NUL after count bytes when needed</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x011c4910</code></td>
