@@ -1,0 +1,527 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  
+  <meta name="description" content="Notes of Paleblood, a decompilation of Bloodborne (PS4, CUSA03173 v1.09) with its own runtime, one verified function at a time, and an open place to learn how a console game works and how it is reverse engineered">
+  <link rel="canonical" href="https://yharnam-hunters.github.io/byrgenwerth-site/milestones/">
+  
+  
+  <title>Milestones — Byrgenwerth</title>
+  
+  <script>
+  /* Before first paint: the stored theme, and a flag that JavaScript (wiki.js) will run. */
+  (function () { var d = document.documentElement, t = 'dark';
+    try { t = localStorage.getItem('wk-theme') || 'dark'; } catch (e) {}
+    d.setAttribute('data-theme', t); d.classList.add('wk-js'); }());
+  </script>
+  
+  <link rel="stylesheet" href="../stylesheets/wiki.css?v=14101bbbf0"><link rel="stylesheet" href="../stylesheets/hunters.css?v=e4f3c59dfb">
+  
+  
+</head>
+<body>
+
+<!-- ── Header: wordmark, section tabs (wide screens), search, theme ── -->
+
+
+<header class="wk-header" id="wk-header">
+  <button class="wk-nav-toggle" id="wk-nav-toggle" aria-label="Open navigation" aria-expanded="false" aria-controls="wk-nav">☰</button>
+  <a class="wk-wordmark" href="/byrgenwerth-site/">Byrgenwerth<small>notes of Paleblood, rebuilding Bloodborne one verified function at a time</small></a>
+
+  <!-- Section tabs (wide screens; the drawer lists the same sections on small ones) -->
+  <nav class="wk-tabs" aria-label="Sections">
+    
+    <a class="wk-tab is-active" href=".." aria-current="true">The Hunt</a>
+    
+    <a class="wk-tab" href="../great-ones/">Encyclopedia</a>
+    
+    <a class="wk-tab" href="../systems/">Systems</a>
+    
+    <a class="wk-tab" href="../ARCHITECTURE/">How It Works</a>
+    
+    <a class="wk-tab" href="../CONTRIBUTING/">For Hunters</a>
+    
+  </nav>
+
+  <div class="wk-header-right">
+    
+    <div class="wk-searchbox">
+      <input class="wk-search-input" id="wk-q" type="search"
+             placeholder="Search  [/]" autocomplete="off" aria-label="Search">
+      <div class="wk-search-results" id="wk-results" hidden role="listbox"></div>
+    </div>
+    <button class="wk-toggle" id="wk-toggle" title="Toggle theme" aria-label="Toggle dark/light">☀</button>
+  </div>
+</header>
+
+<!-- ── Layout ──────────────────────────────────────────────── -->
+<div class="wk-layout">
+
+  <div class="wk-nav-backdrop" id="wk-nav-backdrop" hidden></div>
+
+  <!-- Left sidebar -->
+  <nav class="wk-nav has-current" id="wk-nav" aria-label="Site navigation">
+    <!-- Menu artwork: credited on the Credits page; provenance and rights notes in the private media review -->
+    <figure class="wk-portal-icon">
+      <a href="/byrgenwerth-site/" aria-label="Byrgenwerth home">
+        <img src="../assets/media/bloodborne-menu-art.png" width="256" height="256" alt="A lone Bloodborne hunter stands in a rain-darkened Yharnam street beneath the game's gothic architecture.">
+      </a>
+    </figure>
+
+    
+    <section class="wk-nav-section is-current">
+      
+      
+      
+      
+      
+      
+      <p class="wk-nav-heading">The Hunt</p>
+      
+      <ul class="wk-nav-list">
+        
+        
+        <li><a class="wk-nav-link" href="..">Home</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../devlog/">Devlog</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../progress/">Progress</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link is-active" href="./" aria-current="page">Milestones</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../hunters/">The Hunters</a></li>
+        
+        
+      </ul>
+    
+      
+    </section>
+    
+    <section class="wk-nav-section">
+      
+      
+      
+      
+      
+      
+      <p class="wk-nav-heading">Encyclopedia</p>
+      
+      <ul class="wk-nav-list">
+        
+        
+        <li class="wk-nav-group">
+      
+      
+      
+        
+        
+      
+      
+      <a class="wk-nav-subheading" href="../great-ones/">The Great Ones</a>
+      
+      <ul class="wk-nav-list">
+        
+        
+        <li><a class="wk-nav-link" href="../great-ones/boss-directory/">Boss Directory</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../great-ones/ai-and-phases/">Boss AI & Phases</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../great-ones/mechanics/">Boss Mechanics</a></li>
+        
+        
+      </ul>
+    </li>
+        
+        
+        
+        <li class="wk-nav-group">
+      
+      
+      
+        
+        
+      
+      
+      <a class="wk-nav-subheading" href="../beasts-of-yharnam/">Beasts of Yharnam</a>
+      
+      <ul class="wk-nav-list">
+        
+        
+        <li><a class="wk-nav-link" href="../beasts-of-yharnam/enemy-directory/">Enemy Directory</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../beasts-of-yharnam/ai-and-behavior/">Enemy AI & Behavior</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../beasts-of-yharnam/npcs-and-hunters/">NPCs & Hunters</a></li>
+        
+        
+      </ul>
+    </li>
+        
+        
+        
+        <li class="wk-nav-group">
+      
+      
+      
+        
+        
+      
+      
+      <a class="wk-nav-subheading" href="../workshop/">The Hunter's Workshop</a>
+      
+      <ul class="wk-nav-list">
+        
+        
+        <li><a class="wk-nav-link" href="../workshop/combat-damage/">Combat & Damage</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../workshop/weapons-transformations/">Weapons & Transformations</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../workshop/movement-stamina/">Movement & Stamina</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../workshop/hitboxes-collision/">Hitboxes & Collision</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../workshop/stats-progression/">Stats & Progression</a></li>
+        
+        
+      </ul>
+    </li>
+        
+        
+      </ul>
+    
+      
+    </section>
+    
+    <section class="wk-nav-section">
+      
+      
+      
+      
+      
+      
+      <p class="wk-nav-heading">Systems</p>
+      
+      <ul class="wk-nav-list">
+        
+        
+        <li><a class="wk-nav-link" href="../systems/">Overview</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../systems/frame_timing/">Frame timing</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../systems/kernel/">Kernel</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../systems/engine/">Engine</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../systems/event/">Event</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../systems/camera/">Camera</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../systems/input/">Input</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../systems/character/">Character</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../systems/ai/">AI</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../systems/physics/">Physics</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../systems/render/">Render</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../systems/loading/">Loading</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../systems/audio/">Audio</a></li>
+        
+        
+      </ul>
+    
+      
+    </section>
+    
+    <section class="wk-nav-section">
+      
+      
+      
+      
+      
+      
+      <p class="wk-nav-heading">How It Works</p>
+      
+      <ul class="wk-nav-list">
+        
+        
+        <li><a class="wk-nav-link" href="../ARCHITECTURE/">Architecture</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../runtime/">Runtime</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../runtime-syscalls/">Runtime system calls</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../runtime-reference/">Runtime call reference</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../how-the-frame-limiter-works/">The Frame Limiter</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../ADDRESS_MAP/">Address Map</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../target/">Target</a></li>
+        
+        
+      </ul>
+    
+      
+    </section>
+    
+    <section class="wk-nav-section">
+      
+      
+      
+      
+      
+      
+      <p class="wk-nav-heading">For Hunters</p>
+      
+      <ul class="wk-nav-list">
+        
+        
+        <li><a class="wk-nav-link" href="../CONTRIBUTING/">Contributing</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../QUIRKS/">Ghidra & PS4 Quirks</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../glossary/">Glossary</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../CI_SETUP/">CI Setup</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../credits/">Credits</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../MEDIA_POLICY/">Evidence & Media Review</a></li>
+        
+        
+      </ul>
+    
+      
+    </section>
+    
+
+    <!-- Progress card: every value from docs/data/progress.json (hooks/progress_extra.py) -->
+    
+    
+    <a class="wk-progress-card" href="../progress/">
+      <span class="wk-progress-label">Verified functions</span>
+      <span class="wk-progress-value">21 <small>of 157,757</small></span>
+      <span class="wk-stat-track" role="img" aria-label="0.033 percent of target code bytes verified">
+        <span class="wk-stat-fill" style="width:0.033%"></span>
+      </span>
+      <span class="wk-progress-foot">0.033% of code bytes verified · 87 replaced</span>
+      <span class="wk-progress-more">Full progress →</span>
+    </a>
+    
+  </nav>
+
+  <!-- Main content -->
+  <main class="wk-main">
+    <div class="wk-article">
+
+      
+      
+      
+      
+      
+      <nav class="wk-toc" id="wk-toc" aria-label="On this page">
+        <div class="wk-toc-header"><b>On this page</b></div>
+        <ol class="wk-toc-list" id="wk-toc-list">
+          
+          <li><a href="#the-boot-journey" class="wk-toc-link">The boot journey</a></li>
+          
+          <li><a href="#what-the-screen-shows" class="wk-toc-link">What the screen shows</a></li>
+          
+        </ol>
+      </nav>
+      
+      
+      
+
+      <div class="wk-article-body">
+      
+      
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 5, 2026 00:25:31 UTC">November 5, 2026</span></p>
+      
+      
+      <h1 id="milestones">Milestones</h1>
+<p class="wk-lede">The project's milestones in pictures: how far the game gets on Paleblood's own runtime, from the first recorded boot to the latest. Everything on this page is generated from the saved boot records by <code>tools/sync_progress.py</code>; nothing is drawn by hand.</p>
+
+<h2 id="the-boot-journey">The boot journey</h2>
+<p>Each point is one recorded boot of merged <code>main</code>, and its height is the furthest milestone that
+boot reached. A boot is recorded with <code>tools/boot.py</code> after <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> changes merge. Merging code
+does not move a point by itself; only a new genuine boot does.</p>
+<style>
+.wk-milestone-chart { width: 100%; height: auto; margin: 0.5rem 0 1.5rem; }
+.wk-milestone-grid { stroke: var(--md-default-fg-color--lightest); stroke-width: 1; }
+.wk-milestone-axis { fill: var(--md-default-fg-color--light); font-size: 12px; }
+.wk-milestone-line { fill: none; stroke: var(--md-accent-fg-color); stroke-width: 2.5; }
+.wk-milestone-dot { fill: var(--md-accent-fg-color); }
+.wk-milestone-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr)); gap: 0.8rem; }
+.wk-milestone-card { display: flex; gap: 0.8rem; padding: 0.8rem; border-radius: 0.4rem;
+  border: 1px solid var(--md-default-fg-color--lightest); }
+.wk-milestone-card p { margin: 0.3rem 0 0; }
+.wk-milestone-number { flex: none; width: 2rem; height: 2rem; border-radius: 50%; display: flex;
+  align-items: center; justify-content: center; font-weight: 700;
+  border: 2px solid var(--md-accent-fg-color); }
+.wk-milestone-reached .wk-milestone-number { background: var(--md-accent-fg-color);
+  color: var(--md-accent-bg-color); }
+.wk-milestone-ahead { opacity: 0.6; }
+.wk-milestone-when { color: var(--md-default-fg-color--light); font-size: 0.9em; }
+</style>
+<p><svg class="wk-milestone-chart" viewBox="0 0 720 260" role="img" aria-label="How far each recorded boot got, from the first to the latest">
+<line x1="92" y1="220.0" x2="704" y2="220.0" class="wk-milestone-grid"/>
+<text x="84" y="224.0" text-anchor="end" class="wk-milestone-axis">loaded</text>
+<line x1="92" y1="194.2" x2="704" y2="194.2" class="wk-milestone-grid"/>
+<text x="84" y="198.2" text-anchor="end" class="wk-milestone-axis">entry</text>
+<line x1="92" y1="168.5" x2="704" y2="168.5" class="wk-milestone-grid"/>
+<text x="84" y="172.5" text-anchor="end" class="wk-milestone-axis">threads</text>
+<line x1="92" y1="142.8" x2="704" y2="142.8" class="wk-milestone-grid"/>
+<text x="84" y="146.8" text-anchor="end" class="wk-milestone-axis">files</text>
+<line x1="92" y1="117.0" x2="704" y2="117.0" class="wk-milestone-grid"/>
+<text x="84" y="121.0" text-anchor="end" class="wk-milestone-axis">input</text>
+<line x1="92" y1="91.2" x2="704" y2="91.2" class="wk-milestone-grid"/>
+<text x="84" y="95.2" text-anchor="end" class="wk-milestone-axis">audio</text>
+<line x1="92" y1="65.5" x2="704" y2="65.5" class="wk-milestone-grid"/>
+<text x="84" y="69.5" text-anchor="end" class="wk-milestone-axis">video out</text>
+<line x1="92" y1="39.8" x2="704" y2="39.8" class="wk-milestone-grid"/>
+<text x="84" y="43.8" text-anchor="end" class="wk-milestone-axis">gpu</text>
+<line x1="92" y1="14.0" x2="704" y2="14.0" class="wk-milestone-grid"/>
+<text x="84" y="18.0" text-anchor="end" class="wk-milestone-axis">first flip</text>
+<polyline points="92.0,220.0 153.2,220.0 214.4,220.0 275.6,220.0 336.8,220.0 398.0,220.0 459.2,91.2 520.4,65.5 581.6,65.5 642.8,65.5 704.0,14.0" class="wk-milestone-line"/>
+<circle cx="92.0" cy="220.0" r="4" class="wk-milestone-dot"><title>7 October 2026: loaded</title></circle>
+<text x="92.0" y="246" text-anchor="middle" class="wk-milestone-axis">7 October</text>
+<circle cx="153.2" cy="220.0" r="4" class="wk-milestone-dot"><title>11 October 2026: loaded</title></circle>
+<text x="153.2" y="246" text-anchor="middle" class="wk-milestone-axis">11 October</text>
+<circle cx="214.4" cy="220.0" r="4" class="wk-milestone-dot"><title>11 October 2026: loaded</title></circle>
+<circle cx="275.6" cy="220.0" r="4" class="wk-milestone-dot"><title>11 October 2026: loaded</title></circle>
+<circle cx="336.8" cy="220.0" r="4" class="wk-milestone-dot"><title>19 October 2026: loaded</title></circle>
+<text x="336.8" y="246" text-anchor="middle" class="wk-milestone-axis">19 October</text>
+<circle cx="398.0" cy="220.0" r="4" class="wk-milestone-dot"><title>19 October 2026: loaded</title></circle>
+<circle cx="459.2" cy="91.2" r="4" class="wk-milestone-dot"><title>4 November 2026: audio</title></circle>
+<text x="459.2" y="246" text-anchor="middle" class="wk-milestone-axis">4 November</text>
+<circle cx="520.4" cy="65.5" r="4" class="wk-milestone-dot"><title>4 November 2026: video out</title></circle>
+<circle cx="581.6" cy="65.5" r="4" class="wk-milestone-dot"><title>4 November 2026: video out</title></circle>
+<circle cx="642.8" cy="65.5" r="4" class="wk-milestone-dot"><title>4 November 2026: video out</title></circle>
+<circle cx="704.0" cy="14.0" r="4" class="wk-milestone-dot"><title>4 November 2026: first flip</title></circle>
+</svg></p>
+<div class="wk-milestone-cards">
+<div class="wk-milestone-card wk-milestone-reached"><div class="wk-milestone-number">0</div><div><strong>Loaded</strong><p>The game is in memory: its program and libraries are loaded and linked.</p><p class="wk-milestone-when">First reached 7 October 2026, with 19 system calls implemented by the runtime.</p></div></div>
+<div class="wk-milestone-card wk-milestone-reached"><div class="wk-milestone-number">1</div><div><strong>Entry</strong><p>It starts running its own code.</p><p class="wk-milestone-when">First reached 4 November 2026, with 120 system calls implemented by the runtime.</p></div></div>
+<div class="wk-milestone-card wk-milestone-reached"><div class="wk-milestone-number">2</div><div><strong>Threads</strong><p>It starts its worker threads: the game does many things at once.</p><p class="wk-milestone-when">First reached 4 November 2026, with 120 system calls implemented by the runtime.</p></div></div>
+<div class="wk-milestone-card wk-milestone-reached"><div class="wk-milestone-number">3</div><div><strong>Files</strong><p>It reads its own files.</p><p class="wk-milestone-when">First reached 4 November 2026, with 120 system calls implemented by the runtime.</p></div></div>
+<div class="wk-milestone-card wk-milestone-reached"><div class="wk-milestone-number">4</div><div><strong>Input</strong><p>It sets up the controller.</p><p class="wk-milestone-when">First reached 4 November 2026, with 120 system calls implemented by the runtime.</p></div></div>
+<div class="wk-milestone-card wk-milestone-reached"><div class="wk-milestone-number">5</div><div><strong>Audio</strong><p>It starts its sound system.</p><p class="wk-milestone-when">First reached 4 November 2026, with 120 system calls implemented by the runtime.</p></div></div>
+<div class="wk-milestone-card wk-milestone-reached"><div class="wk-milestone-number">6</div><div><strong>Video out</strong><p>It opens its display.</p><p class="wk-milestone-when">First reached 4 November 2026, with 125 system calls implemented by the runtime.</p></div></div>
+<div class="wk-milestone-card wk-milestone-reached"><div class="wk-milestone-number">7</div><div><strong>Gpu</strong><p>It hands its first batch of drawing work to the graphics chip.</p><p class="wk-milestone-when">First reached 4 November 2026, with 149 system calls implemented by the runtime.</p></div></div>
+<div class="wk-milestone-card wk-milestone-reached"><div class="wk-milestone-number">8</div><div><strong>First flip</strong><p>It finishes its first frame and asks the screen to show it.</p><p class="wk-milestone-when">First reached 4 November 2026, with 149 system calls implemented by the runtime.</p></div></div>
+</div>
+
+<h2 id="what-the-screen-shows">What the screen shows</h2>
+<p>Reaching <em>first flip</em> means the game finished a frame and asked the screen to show it. The
+frame is still black: until the renderer is built, the game's drawing work goes through a
+temporary stand-in that completes it without drawing (see <a href="../runtime/">Runtime</a>). The renderer
+plan, in four phases, is in Paleblood's <code>docs/RENDERER.md</code>.</p>
+<p>When the renderer draws its first pictures, frames from those runs will appear here. Each image
+is reviewed on its own before it is published, as the <a href="../MEDIA_POLICY/">media review</a> requires:
+its source, what it shows, how much of it is needed, and the maintainer's approval. Nothing
+from another project, and no extracted game assets, appear on this page.</p>
+      
+      </div>
+
+    </div>
+    <footer class="wk-footer">
+      <p class="wk-footer-motto">Fear the old blood</p>
+      <p>Made by people who love Bloodborne, so that it can be studied, preserved and played
+      natively, one verified function at a time.</p>
+      <p>A fan project. Not affiliated with or endorsed by Sony Interactive Entertainment or
+      FromSoftware. No game files are shared here: bring your own copy.</p>
+    </footer>
+  </main>
+
+</div>
+
+
+<!-- Back to top -->
+<button class="wk-top" id="wk-top" title="Back to top" aria-label="Scroll to top">↑</button>
+
+
+<script>
+/* Page settings for wiki.js. The drawer query matches the drawer breakpoint in wiki.css. */
+window.WK = {base: "..", searchIndex: "../search/search_index.json",
+             drawerQuery: window.matchMedia('(max-width: 900px)')};
+</script>
+<script src="../javascripts/wiki.js?v=48af91151e" defer></script><script src="../javascripts/hunters.js?v=28a0e867eb" defer></script><script src="../search/main.js" defer></script>
+</body>
+</html>
