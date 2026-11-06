@@ -17,7 +17,7 @@
     d.setAttribute('data-theme', t); d.classList.add('wk-js'); }());
   </script>
   
-  <link rel="stylesheet" href="../stylesheets/wiki.css?v=14101bbbf0"><link rel="stylesheet" href="../stylesheets/hunters.css?v=e4f3c59dfb">
+  <link rel="stylesheet" href="../stylesheets/wiki.css?v=527d16639d"><link rel="stylesheet" href="../stylesheets/hunters.css?v=e4f3c59dfb">
   
   
 </head>
@@ -424,8 +424,36 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 6, 2026 07:22:51 UTC">November 6, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 6, 2026 14:54:56 UTC">November 6, 2026</span></p>
       
+      
+      
+      <aside class="wk-freshness" role="note">
+        <p><b>Not yet updated for 24 merged changes.</b>
+        This page was last checked against Paleblood
+        <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/0b27c1a7a29a7e87ec9ab227d3ed8b877b96e460"><code>0b27c1a</code></a>;
+        these pull requests changed what it describes since:</p>
+        <ul>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/406">#406</a> runtime: play the title's sound on the host (--audio host)</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/405">#405</a> runtime: offline trophies, and PlayGo's install speed</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/396">#396</a> runtime: the splash screen and the system status</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/395">#395</a> gnm: skip an indexed draw's packets</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/398">#398</a> runtime: decode ATRAC9 audio with LibAtrac9</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/402">#402</a> runtime: save data, kept in a host folder and mounted as /savedataN</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/401">#401</a> renderer: record the registers the GPU library sets, and the instance count</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/392">#392</a> runtime: the title's add-ons, as the person running it owns them</li>
+          
+          <li>and 16 more</li>
+        </ul>
+      </aside>
       
       <h1 id="runtime">Runtime</h1>
 <p class="wk-lede">Paleblood is building a runtime of its own. A runtime is the software that loads a program and provides the system services it expects.</p>
@@ -436,7 +464,7 @@
 <dt>Works</dt>
 <dd>An <abbr title="Executable and Linkable Format, the standard executable file format on Linux and FreeBSD.">ELF</abbr> <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> and boot <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr> load the executable and bundled modules, bind imports and run the entry point.</dd>
 <dt>Stops at</dt>
-<dd>Where the boot stops: since 4 November 2026, after its first frame and flip, at <code>scePlayGoInitialize</code>, the first of the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> install and online services it sets up.</dd>
+<dd>Nowhere, since 6 November 2026 (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/408">#408</a>): no system call stops the boot, and the game keeps running until the <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr>'s 30-second limit. Its frames are still black.</dd>
 <dt>Full game</dt>
 <dd>Still runs on a third-party host scaffold; the project-owned <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> has not <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> it.</dd>
 <dt>Evidence</dt>
@@ -463,7 +491,8 @@ HTTP libraries' offline start-up, sound output, and reading the game's own files
 <a href="../runtime-syscalls/"><abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> system-call notes</a> explain each group, and end with a list of every
 call the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> answers, generated from the code on every sync.</p>
 <p>Where the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr>'s behaviour is not established, the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> does not guess: it stops and names the
-call. It plays no sound and draws nothing yet, and it never contacts a network.</p>
+call. It never contacts a network. It decodes the game's sound and can play it (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/398">#398</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/406">#406</a>),
+but it draws nothing yet.</p>
 <p><strong>Function replacements and <abbr title="14-byte jumps written over the start of original functions, sending their callers to the replacements.">hooks</abbr>.</strong> The project's plug-in receives the guest image and a
 <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr>-install callback, then registers its function replacements. Paleblood now also provides a small
 implementation of the version-1 <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> callback:</p>
@@ -496,7 +525,7 @@ the originals during a boot. Without the option the boot runs the original code 
 <tbody>
 <tr>
 <td>System imports provided</td>
-<td>371 of 686 (54.08%): 219 by the game's own modules, 152 by the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>; 315 remaining</td>
+<td>437 of 686 (63.70%): 219 by the game's own modules, 218 by the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>; 249 remaining</td>
 </tr>
 <tr>
 <td>Furthest boot milestone</td>
@@ -504,17 +533,38 @@ the originals during a boot. Without the option the boot runs the original code 
 </tr>
 <tr>
 <td>Boot stops at</td>
-<td><code>scePlayGoInitialize</code> (libScePlayGo)</td>
+<td>the run's time limit, still running (no call stopped it)</td>
 </tr>
 </tbody>
 </table></div>
-<p>Last recorded run: 2026-11-05. This is saved evidence, not a live measurement.</p>
+<p>Last recorded run: 2026-11-06. This is saved evidence, not a live measurement.</p>
 <p>Generated by <code>tools/sync_progress.py</code> from the code repo. Do not edit.</p>
 <p>The table above is generated from the saved Paleblood boot record. Its date identifies the last
 recorded run; changing <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> code does not refresh the result by itself.</p>
 <h2 id="how-far-a-boot-gets">How far a boot gets</h2>
-<p>The table above comes from the last boot recorded on merged <code>main</code>, on 4 November 2026
-(<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/304">#304</a>). It reaches the <strong>video out</strong> milestone, 6 of 8: the game's threads, its files,
+<p><strong>6 November 2026: no call stops the boot</strong> (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/408">#408</a>). The boot recorded on merged <code>main</code> calls 243
+imports, 218 of them answered by the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>, and keeps running until the <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr>'s 30-second
+limit. The round of <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> work merged on 5 and 6 November answered every call between the first
+flip and the game's main loop:</p>
+<ul>
+<li>the install service (PlayGo, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/370">#370</a>): every part of the game is installed;</li>
+<li>the user's name and events (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/372">#372</a>), and one controller at rest (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/373">#373</a>);</li>
+<li>the clock and calendar (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/378">#378</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/379">#379</a>);</li>
+<li>the offline PSN calls: the title id, sign-in state, matchmaking start-up, NAT and HTTPS options,
+  network waits (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/380">#380</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/381">#381</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/382">#382</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/385">#385</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/386">#386</a>);</li>
+<li>file details and the error variable (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/376">#376</a>), thread exit (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/389">#389</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/399">#399</a>), add-on content
+  (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/392">#392</a>), the boot splash and system status (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/396">#396</a>);</li>
+<li>save data in a folder you choose (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/402">#402</a>), and trophies, kept offline with your save data (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/405">#405</a>);</li>
+<li>the graphics packets the stand-in skips safely (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/375">#375</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/377">#377</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/395">#395</a>);</li>
+<li><strong>sound</strong> (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/398">#398</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/406">#406</a>). The game's audio is ATRAC9, decoded with LibAtrac9 (MIT, by Alex
+  Barney, included unmodified in Paleblood), and with <code>--audio host</code> it plays through your
+  computer's sound output.</li>
+</ul>
+<p>In the maintainer's local runs with the display on, the game's main loop then runs at its own
+30 frames a second, and its music and sounds start after about 17 seconds. These are observed
+local runs; the saved boot record shows only that nothing stops the run. The frames stay black
+until the game's drawing reaches the renderer (see <a href="#the-renderer">The renderer</a>).</p>
+<p><strong>Earlier, 4 November.</strong> The boot recorded on 4 November 2026 (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/304">#304</a>) reached the <strong>video out</strong> milestone, 6 of 8: the game's threads, its files,
 input and its sound system start, and it opens its display. Its first GPU work now goes through a
 temporary stand-in (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/302">#302</a>), its network worker polls offline (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/303">#303</a>), and it calls 135 imports.
 Its scratch files go to a writable <code>/data</code> folder (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/308">#308</a>). Since <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/310">#310</a> it gets through
@@ -555,13 +605,14 @@ candidate workflow. Unsupported instructions and skipped host-call bodies reject
 synthetic automation tests establish tool behavior only. The <a href="../ARCHITECTURE/#verification">Architecture verification guide</a>
 explains what is observed and which stages still require original-game evidence and human review.</p>
 <h2 id="boot-history-and-the-current-blocker">Boot history and the current blocker</h2>
-<p>The latest genuine boot trace was recorded with merged Paleblood main in <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/310">#310</a>
-(4 November 2026).</p>
+<p>The latest genuine boot trace was recorded with merged Paleblood main in <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/408">#408</a>
+(6 November 2026).</p>
 <div class="wk-table"><table>
 <thead>
 <tr>
 <th></th>
-<th>Latest trace (4 November, #310)</th>
+<th>Latest trace (6 November, #408)</th>
+<th>4 November (#310)</th>
 <th>Earlier on 4 November (#300)</th>
 <th>19 October (#92)</th>
 </tr>
@@ -569,24 +620,28 @@ explains what is observed and which stages still require original-game evidence 
 <tbody>
 <tr>
 <td>Imports resolved</td>
-<td>368/686: 219 bundled, 149 implemented by the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr></td>
+<td>437/686: 219 bundled, 218 implemented by the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr></td>
+<td>368/686 (149 <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>)</td>
 <td>344/686 (125 <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>)</td>
 <td>252/686 (33 <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>)</td>
 </tr>
 <tr>
 <td>Import calls reached</td>
+<td>243</td>
 <td>170</td>
 <td>133</td>
 <td>seven</td>
 </tr>
 <tr>
 <td>Stopped at</td>
+<td>nothing: still running at the 30-second limit</td>
 <td><code>scePlayGoInitialize</code> (install service)</td>
 <td><code>sceGnmDingDong</code> (compute-queue doorbell)</td>
 <td><code>scePthreadAttrGetaffinity</code> in <code>libc.elf</code></td>
 </tr>
 <tr>
 <td>Milestone</td>
+<td><code>first flip</code> (8/8)</td>
 <td><code>first flip</code> (8/8)</td>
 <td><code>video out</code> (6/8)</td>
 <td><code>loaded</code> (0/8)</td>
@@ -614,10 +669,10 @@ chooses an address for below that limit (<a href="https://github.com/Yharnam-Hun
 <p><strong>The first frame.</strong> The game's first frame hands the GPU shader settings, draws, cache steps,
 waits and "work done" markers. The temporary stand-in performs the "work done" writes, checks the
 waits already hold, and skips the rest, then flips at the next 60 Hz tick (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/310">#310</a>). Nothing is drawn.</p>
-<p><strong>What blocks it now.</strong> After its first frame the game sets up the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr>'s install and online
-services: trophies, PlayGo (installation progress), friends, messages and dialogs. Their modules
-now load (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/310">#310</a>); each of their functions needs an offline answer, starting with
-<code>scePlayGoInitialize</code>. A visible picture needs the engine-level renderer (issue #39).</p>
+<p><strong>What blocks it now.</strong> No system call does: since <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/408">#408</a> the boot runs until its time limit.
+What is missing is a picture. The game's drawing work still goes through the temporary stand-in,
+which draws nothing; a visible frame needs the game's drawing functions to report their calls to
+the renderer, and the renderer to handle what they ask for (see below, and issue #39).</p>
 <h2 id="the-renderer">The renderer</h2>
 <p>Bloodborne draws through its own engine renderer (the <code>GX</code> framework) and Sony's GPU helper
 library compiled into the game. Its shaders ship as compiled AMD GPU code. On 4 November 2026 the
@@ -632,7 +687,7 @@ maintainer chose how Paleblood draws them:
 <ol class="wk-steps">
 <li><strong>Display</strong> (done, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/313">#313</a>): every frame buffer the game registers gets a frame of its own, and each flip shows it, in a window (SDL3 and Vulkan) or captured to image files for tests. The frames are black: nothing draws into them yet.</li>
 <li><strong>Shader translator</strong> (begun, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/316">#316</a>): a decoder for GFX7, the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> GPU's instruction set, names every instruction. Its opcode table is generated from AMD's manual and LLVM's AMDGPU assembler, which must agree. A census of your own copy's shaders shows the game uses only 175 distinct instructions, and the decoder knows all of them. The first translation to Vulkan shaders works (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/319">#319</a>): simple compute shaders (arithmetic, compares, conversions, buffer and constant reads and writes) run on a real GPU and give exactly the results AMD's manual defines. Since <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/330">#330</a> it also handles branches, loops and <abbr title="Graphics Core Next, the AMD GPU architecture of the PS4.">GCN</abbr>'s active-lane mask: only the lanes that are switched on write results or touch memory, as on the console. Since <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/332">#332</a> it also reads and writes typed buffers, which nearly half of the game's shaders use. Every typed access in the game uses plain 32-bit floats, so those translate exactly; any other format is refused rather than guessed. Since <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/333">#333</a> it translates vertex and pixel shaders too: their outputs (positions, values passed down to pixels, colours) and the pixel shader's blended inputs. A translated pair already draws a test triangle on the GPU with every pixel checked, and most of the game's vertex shaders now translate completely. A batch of arithmetic instructions followed in <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/334">#334</a> (24-bit multiplies, bit fields, carries, sine and cosine, exponent and logarithm), each checked on the GPU. Since <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/343">#343</a> a vertex shader's extra position outputs work too: in this game they always carry two clip distances, which the GPU uses to cut triangles off at a plane. With them, most of the game's vertex shaders translate completely. The game's own drawing still waits for the engine <abbr title="14-byte jumps written over the start of original functions, sending their callers to the replacements.">hooks</abbr> and texture sampling. Texture sampling comes next. On macOS the same translated shaders become Metal shaders through SPIRV-Cross; since <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/331">#331</a> macOS CI converts every test shader and compiles it with Apple's Metal compiler. evill33t's Metal unit (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/318">#318</a>, from #213) is the start of the Mac display.</li>
-<li><strong>Engine draw <abbr title="14-byte jumps written over the start of original functions, sending their callers to the replacements.">hooks</abbr></strong> (begun, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/335">#335</a>): route the game's render targets, clears, shader binding, textures and draws to the renderer, starting with the title screen's 2D passes. A first map found Sony's GPU helper library, compiled into the game, in one block of about 230 small functions: everything the game asks of the GPU passes through it, and the engine writes no GPU commands of its own. The library's draw functions and about 60 of its state setters are identified, along with the engine code that calls the draws. The game keeps its GPU state only in the commands those setters write, so the <abbr title="14-byte jumps written over the start of original functions, sending their callers to the replacements.">hooks</abbr> will sit on the setters and draws themselves: each setter hands its value to the renderer, and each draw becomes a Vulkan or Metal draw. The library's key functions are identified (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/341">#341</a>): its draw call, <code>setRenderTarget</code>, <code>setViewport</code>, the depth target and the user-data writers. Several are already decompiled in <a href="https://github.com/evill33t">@evill33t</a>'s pull requests, as replacements <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> to write exactly the original commands. The renderer will observe those replacements rather than change them. The shader files in the game's archive turned out to carry each shader's GPU register settings, and those settings were checked against the shaders' own code. They say where a shader's code lives, which inputs it gets, and what its extra outputs carry. On the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> side, the renderer now keeps its own record of these calls for each command buffer (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/342">#342</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/344">#344</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/345">#345</a>): render targets, viewports, shaders, their data and draws, ready to play back when the game submits the buffer. The next piece is the draw executor, which plays those calls back on a PC GPU. Its first step is done (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/346">#346</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/348">#348</a>). Game shaders find memory by the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr>'s addresses, so the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> now keeps the game's GPU-visible memory at fixed places, and the translator adds one fixed offset to every address a shader forms. That lets the whole memory pool be handed to the GPU as a single buffer. A test on an RTX 3070 shows this works, at the cost of holding the 5 GiB pool in RAM while graphics run. Its second step works too (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/368">#368</a>): given a written-down list of drawing calls, the executor runs them on a Vulkan GPU. It translates the shaders the calls name, finds or makes the picture they draw into, and draws. In a test with real <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr>-style shaders, every pixel comes out right. Since <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/369">#369</a> it is wired into the running game: with the display on, the calls run when the game submits its drawing work, and a flip shows what was drawn instead of a black frame. Until the game's drawing functions report their calls, nothing visible changes.</li>
+<li><strong>Engine draw <abbr title="14-byte jumps written over the start of original functions, sending their callers to the replacements.">hooks</abbr></strong> (begun, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/335">#335</a>): route the game's render targets, clears, shader binding, textures and draws to the renderer, starting with the title screen's 2D passes. A first map found Sony's GPU helper library, compiled into the game, in one block of about 230 small functions: everything the game asks of the GPU passes through it, and the engine writes no GPU commands of its own. The library's draw functions and about 60 of its state setters are identified, along with the engine code that calls the draws. The game keeps its GPU state only in the commands those setters write, so the <abbr title="14-byte jumps written over the start of original functions, sending their callers to the replacements.">hooks</abbr> will sit on the setters and draws themselves: each setter hands its value to the renderer, and each draw becomes a Vulkan or Metal draw. The library's key functions are identified (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/341">#341</a>): its draw call, <code>setRenderTarget</code>, <code>setViewport</code>, the depth target and the user-data writers. Several are already decompiled in <a href="https://github.com/evill33t">@evill33t</a>'s pull requests, as replacements <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> to write exactly the original commands. The renderer will observe those replacements rather than change them. The shader files in the game's archive turned out to carry each shader's GPU register settings, and those settings were checked against the shaders' own code. They say where a shader's code lives, which inputs it gets, and what its extra outputs carry. On the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> side, the renderer now keeps its own record of these calls for each command buffer (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/342">#342</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/344">#344</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/345">#345</a>): render targets, viewports, shaders, their data and draws, ready to play back when the game submits the buffer. The next piece is the draw executor, which plays those calls back on a PC GPU. Its first step is done (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/346">#346</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/348">#348</a>). Game shaders find memory by the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr>'s addresses, so the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> now keeps the game's GPU-visible memory at fixed places, and the translator adds one fixed offset to every address a shader forms. That lets the whole memory pool be handed to the GPU as a single buffer. A test on an RTX 3070 shows this works, at the cost of holding the 5 GiB pool in RAM while graphics run. Its second step works too (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/368">#368</a>): given a written-down list of drawing calls, the executor runs them on a Vulkan GPU. It translates the shaders the calls name, finds or makes the picture they draw into, and draws. In a test with real <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr>-style shaders, every pixel comes out right. Since <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/369">#369</a> it is wired into the running game: with the display on, the calls run when the game submits its drawing work, and a flip shows what was drawn instead of a black frame. Until the game's drawing functions report their calls, nothing visible changes. Since <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/401">#401</a> the record also keeps the GPU register values the game sets (blending, depth, primitive type, colour masks and the like), and the executor checks them before it draws: anything it cannot draw faithfully yet stops by name rather than drawing something wrong. The first drawing functions to report are <a href="https://github.com/evill33t">@evill33t</a>'s decompiled state setters, once they merge.</li>
 <li><strong>Textures and 3D:</strong> the game's texture formats and tiling, meshes, materials and post-processing.</li>
 </ol>
 <details class="reference">
@@ -789,8 +844,8 @@ Paleblood's function table; see the <a href="../progress/">progress dashboard</a
 <h2 id="roadmap">Roadmap</h2>
 <ol class="wk-steps">
 <li><strong>Loader and boot <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr>:</strong> project-owned and independently tested.</li>
-<li><strong>Kernel, threads, and memory:</strong> what start-up needs is in place: merged <code>main</code> boots through all eight milestones to its first flip, passing its GPU work through a temporary stand-in; it stops at the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> install service.</li>
-<li><strong>Files, audio, network start-up:</strong> begun. The game reads its own files read-only, its audio thread runs in real time without sound, and its HTTP client starts offline.</li>
+<li><strong>Kernel, threads, and memory:</strong> what start-up needs is in place: merged <code>main</code> boots through all eight milestones and keeps running, passing its GPU work through a temporary stand-in; no system call stops it (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/408">#408</a>).</li>
+<li><strong>Files, audio, network start-up:</strong> the game reads its own files read-only and keeps save data and trophies in a folder you choose; its sound is decoded and can play on your computer; its HTTP client and PSN calls answer offline.</li>
 <li><strong><abbr title="The PS4's low-level graphics API.">GNM</abbr> and shaders:</strong> begun. The renderer <abbr title="14-byte jumps written over the start of original functions, sending their callers to the replacements.">hooks</abbr> the game's own drawing layer and translates its shaders, rather than emulating the GPU (see <a href="#the-renderer">The renderer</a> below). The display window is in place, and the shader decoder knows every instruction the game uses; the goal is the first rendered frame.</li>
 <li><strong>Capture integration:</strong> add a return-aware, ABI-described observation boundary before connecting recordings to production <abbr title="14-byte jumps written over the start of original functions, sending their callers to the replacements.">hooks</abbr>. Synthetic tests are not a substitute for real <abbr title="Inputs recorded while the game ran, replayed by the harness.">captures</abbr>.</li>
 </ol>
@@ -847,6 +902,6 @@ system-library, and graphics dependencies.</p>
 window.WK = {base: "..", searchIndex: "../search/search_index.json",
              drawerQuery: window.matchMedia('(max-width: 900px)')};
 </script>
-<script src="../javascripts/wiki.js?v=48af91151e" defer></script><script src="../javascripts/hunters.js?v=28a0e867eb" defer></script><script src="../search/main.js" defer></script>
+<script src="../javascripts/wiki.js?v=24a562ed8b" defer></script><script src="../javascripts/hunters.js?v=28a0e867eb" defer></script><script src="../search/main.js" defer></script>
 </body>
 </html>

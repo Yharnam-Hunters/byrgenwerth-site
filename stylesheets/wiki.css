@@ -1272,8 +1272,8 @@ a.wk-card:hover .wk-card-go::after { transform: translateX(4px); }
 .wk-js [data-reveal] {
   opacity: 0;
   transform: translateY(14px);
-  transition: opacity var(--wk-dur-slow) var(--wk-ease), transform var(--wk-dur-slow) var(--wk-ease);
-  transition-delay: calc(min(var(--i, 0), 8) * 55ms);
+  transition: opacity var(--wk-dur) var(--wk-ease), transform var(--wk-dur) var(--wk-ease);
+  transition-delay: calc(min(var(--i, 0), 4) * 40ms);
 }
 .wk-js [data-reveal].is-in { opacity: 1; transform: none; }
 .wk-js a.wk-card[data-reveal].is-in:hover { transform: translateY(-3px); transition-delay: 0s; }

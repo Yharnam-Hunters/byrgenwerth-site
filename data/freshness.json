@@ -6,6 +6,31 @@
  "CONTRIBUTING.md": {
   "behind": [
    {
+    "commit": "228e97ff918c",
+    "pr": 408,
+    "title": "Boot record: the game keeps running until the time limit"
+   },
+   {
+    "commit": "7f7c84ee513a",
+    "pr": 407,
+    "title": "Fewer conflicts: merge main into branches, and tests in their own files"
+   },
+   {
+    "commit": "064768fa4793",
+    "pr": 387,
+    "title": "boot: record after #376-#385: first flip, stop at sceNetEpollCreate"
+   },
+   {
+    "commit": "073a66bc7c87",
+    "pr": 374,
+    "title": "boot: record after #372 and #373: first flip, stop at constant command buffers"
+   },
+   {
+    "commit": "799082826bec",
+    "pr": 371,
+    "title": "boot: record after PlayGo (#370): first flip, stop at sceUserServiceGetUserName"
+   },
+   {
     "commit": "d7a7dddd5f93",
     "pr": 366,
     "title": "boot: record the boot after #227, #229, #351 and #353"
@@ -29,6 +54,31 @@
  },
  "index.md": {
   "behind": [
+   {
+    "commit": "228e97ff918c",
+    "pr": 408,
+    "title": "Boot record: the game keeps running until the time limit"
+   },
+   {
+    "commit": "064768fa4793",
+    "pr": 387,
+    "title": "boot: record after #376-#385: first flip, stop at sceNetEpollCreate"
+   },
+   {
+    "commit": "e75acada93bb",
+    "pr": 383,
+    "title": "status card: a picture of where the project stands, in the README"
+   },
+   {
+    "commit": "073a66bc7c87",
+    "pr": 374,
+    "title": "boot: record after #372 and #373: first flip, stop at constant command buffers"
+   },
+   {
+    "commit": "799082826bec",
+    "pr": 371,
+    "title": "boot: record after PlayGo (#370): first flip, stop at sceUserServiceGetUserName"
+   },
    {
     "commit": "d7a7dddd5f93",
     "pr": 366,
@@ -110,6 +160,126 @@
  "runtime-syscalls.md": {
   "behind": [
    {
+    "commit": "b26f41cd82e1",
+    "pr": 410,
+    "title": "docs: name the other ports generically in the runtime notes"
+   },
+   {
+    "commit": "c9077c3a765b",
+    "pr": 406,
+    "title": "runtime: play the title's sound on the host (--audio host)"
+   },
+   {
+    "commit": "9dc9e56b526a",
+    "pr": 405,
+    "title": "runtime: offline trophies, and PlayGo's install speed"
+   },
+   {
+    "commit": "1a42f70ce46d",
+    "pr": 396,
+    "title": "runtime: the splash screen and the system status"
+   },
+   {
+    "commit": "4705c81465fc",
+    "pr": 395,
+    "title": "gnm: skip an indexed draw's packets"
+   },
+   {
+    "commit": "c13fbb19e755",
+    "pr": 398,
+    "title": "runtime: decode ATRAC9 audio with LibAtrac9"
+   },
+   {
+    "commit": "fbfe527de082",
+    "pr": 402,
+    "title": "runtime: save data, kept in a host folder and mounted as /savedataN"
+   },
+   {
+    "commit": "a602ac026cb9",
+    "pr": 392,
+    "title": "runtime: the title's add-ons, as the person running it owns them"
+   },
+   {
+    "commit": "19de7a5ef8ee",
+    "pr": 400,
+    "title": "runtime: let the runtime read the registered PSN callbacks (builds with Clang 23)"
+   },
+   {
+    "commit": "f3b860fa867c",
+    "pr": 399,
+    "title": "runtime: end a thread with the compiler's setjmp, not the C library's longjmp"
+   },
+   {
+    "commit": "39219829ef7f",
+    "pr": 389,
+    "title": "runtime: scePthreadExit ends a thread as a return from its entry would"
+   },
+   {
+    "commit": "ffc12edfd293",
+    "pr": 386,
+    "title": "runtime: the network errno and epoll sets, offline"
+   },
+   {
+    "commit": "bd7d9a8bb9f5",
+    "pr": 385,
+    "title": "runtime: PSN offline: sign-in state, callbacks and matchmaking start-up"
+   },
+   {
+    "commit": "24f482c478fc",
+    "pr": 382,
+    "title": "runtime: sceNpSetNpTitleId keeps the title id"
+   },
+   {
+    "commit": "e2326ff085c1",
+    "pr": 381,
+    "title": "runtime: HTTPS options on HTTP templates"
+   },
+   {
+    "commit": "a7dd92a553bc",
+    "pr": 380,
+    "title": "runtime: sceNetCtlGetNatInfo answers \"not connected\" offline"
+   },
+   {
+    "commit": "32354f357c42",
+    "pr": 379,
+    "title": "runtime: sceRtcGetDayOfWeek, 0 for Sunday"
+   },
+   {
+    "commit": "c532d17250af",
+    "pr": 378,
+    "title": "runtime: the real-time clock's local time and ticks"
+   },
+   {
+    "commit": "11bfb948e881",
+    "pr": 377,
+    "title": "gnm: skip DMA_DATA reads into CP_DMA_READ_TAGS and INDEX_TYPE"
+   },
+   {
+    "commit": "5b9deb60e372",
+    "pr": 376,
+    "title": "runtime: POSIX stat, and the thread's errno through __error"
+   },
+   {
+    "commit": "468f0fb7ced2",
+    "pr": 375,
+    "title": "gnm: constant arrays with empty entries are no constant buffer"
+   },
+   {
+    "commit": "153b6d5d738a",
+    "pr": 373,
+    "title": "runtime: one standard controller, connected and at rest"
+   },
+   {
+    "commit": "d70784767b4a",
+    "pr": 372,
+    "title": "runtime: the user service's user name and its login/logout events"
+   },
+   {
+    "commit": "b6c0e19b51af",
+    "pr": 370,
+    "title": "runtime: PlayGo answers that every chunk of the package is installed"
+   },
+   {
     "commit": "0b27c1a7a29a",
     "pr": 369,
     "title": "renderer: run submitted buffers' recorded calls and show what was drawn at a flip"
@@ -118,7 +288,128 @@
   "reviewed": "2212b93a43eb753c0a277f77421bb98f5e0e4bb5"
  },
  "runtime.md": {
-  "behind": [],
+  "behind": [
+   {
+    "commit": "c9077c3a765b",
+    "pr": 406,
+    "title": "runtime: play the title's sound on the host (--audio host)"
+   },
+   {
+    "commit": "9dc9e56b526a",
+    "pr": 405,
+    "title": "runtime: offline trophies, and PlayGo's install speed"
+   },
+   {
+    "commit": "1a42f70ce46d",
+    "pr": 396,
+    "title": "runtime: the splash screen and the system status"
+   },
+   {
+    "commit": "4705c81465fc",
+    "pr": 395,
+    "title": "gnm: skip an indexed draw's packets"
+   },
+   {
+    "commit": "c13fbb19e755",
+    "pr": 398,
+    "title": "runtime: decode ATRAC9 audio with LibAtrac9"
+   },
+   {
+    "commit": "fbfe527de082",
+    "pr": 402,
+    "title": "runtime: save data, kept in a host folder and mounted as /savedataN"
+   },
+   {
+    "commit": "69f2e1292750",
+    "pr": 401,
+    "title": "renderer: record the registers the GPU library sets, and the instance count"
+   },
+   {
+    "commit": "a602ac026cb9",
+    "pr": 392,
+    "title": "runtime: the title's add-ons, as the person running it owns them"
+   },
+   {
+    "commit": "19de7a5ef8ee",
+    "pr": 400,
+    "title": "runtime: let the runtime read the registered PSN callbacks (builds with Clang 23)"
+   },
+   {
+    "commit": "f3b860fa867c",
+    "pr": 399,
+    "title": "runtime: end a thread with the compiler's setjmp, not the C library's longjmp"
+   },
+   {
+    "commit": "39219829ef7f",
+    "pr": 389,
+    "title": "runtime: scePthreadExit ends a thread as a return from its entry would"
+   },
+   {
+    "commit": "ffc12edfd293",
+    "pr": 386,
+    "title": "runtime: the network errno and epoll sets, offline"
+   },
+   {
+    "commit": "bd7d9a8bb9f5",
+    "pr": 385,
+    "title": "runtime: PSN offline: sign-in state, callbacks and matchmaking start-up"
+   },
+   {
+    "commit": "24f482c478fc",
+    "pr": 382,
+    "title": "runtime: sceNpSetNpTitleId keeps the title id"
+   },
+   {
+    "commit": "e2326ff085c1",
+    "pr": 381,
+    "title": "runtime: HTTPS options on HTTP templates"
+   },
+   {
+    "commit": "a7dd92a553bc",
+    "pr": 380,
+    "title": "runtime: sceNetCtlGetNatInfo answers \"not connected\" offline"
+   },
+   {
+    "commit": "32354f357c42",
+    "pr": 379,
+    "title": "runtime: sceRtcGetDayOfWeek, 0 for Sunday"
+   },
+   {
+    "commit": "c532d17250af",
+    "pr": 378,
+    "title": "runtime: the real-time clock's local time and ticks"
+   },
+   {
+    "commit": "11bfb948e881",
+    "pr": 377,
+    "title": "gnm: skip DMA_DATA reads into CP_DMA_READ_TAGS and INDEX_TYPE"
+   },
+   {
+    "commit": "5b9deb60e372",
+    "pr": 376,
+    "title": "runtime: POSIX stat, and the thread's errno through __error"
+   },
+   {
+    "commit": "468f0fb7ced2",
+    "pr": 375,
+    "title": "gnm: constant arrays with empty entries are no constant buffer"
+   },
+   {
+    "commit": "153b6d5d738a",
+    "pr": 373,
+    "title": "runtime: one standard controller, connected and at rest"
+   },
+   {
+    "commit": "d70784767b4a",
+    "pr": 372,
+    "title": "runtime: the user service's user name and its login/logout events"
+   },
+   {
+    "commit": "b6c0e19b51af",
+    "pr": 370,
+    "title": "runtime: PlayGo answers that every chunk of the package is installed"
+   }
+  ],
   "reviewed": "0b27c1a7a29a7e87ec9ab227d3ed8b877b96e460"
  },
  "systems/ai.md": {

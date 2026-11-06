@@ -285,18 +285,18 @@ function arrive(el) {
   });
   document.querySelectorAll('.wk-stat-ring').forEach(prepareRing);
   if (REDUCED || !('IntersectionObserver' in window)) { items.forEach(arrive); return; }
-  items.forEach(function (el) {
-    var siblings = Array.prototype.filter.call(el.parentElement.children, function (s) { return s.matches(REVEAL); });
-    el.style.setProperty('--i', siblings.indexOf(el));
-    el.setAttribute('data-reveal', '');
-  });
+  items.forEach(function (el) { el.setAttribute('data-reveal', ''); });
+  /* Cards arrive a screen-fifth before they scroll into view, so scrolling never meets an empty
+     cell; only cards that arrive together are staggered, by their order in that batch. */
   var io = new IntersectionObserver(function (entries) {
+    var k = 0;
     entries.forEach(function (e) {
       if (!e.isIntersecting) return;
+      e.target.style.setProperty('--i', k++);
       arrive(e.target);
       io.unobserve(e.target);
     });
-  }, {threshold: 0.12, rootMargin: '0px 0px -6% 0px'});
+  }, {threshold: 0, rootMargin: '0px 0px 20% 0px'});
   items.forEach(function (el) { io.observe(el); });
 }());
 

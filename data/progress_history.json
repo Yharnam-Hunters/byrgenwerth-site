@@ -79,14 +79,14 @@
  },
  {
   "date": "2026-10-26",
-  "commit": "0b27c1a",
+  "commit": "b26f41cd",
   "verified_bytes": 14010,
   "verified_functions": 21,
   "replaced_bytes": 41221,
   "replaced_functions": 149,
-  "imports_covered": 371,
+  "imports_covered": 437,
   "imports_bundled": 219,
-  "imports_implemented": 152,
+  "imports_implemented": 218,
   "imports_total": 686,
   "boot_milestone": "first flip",
   "boot_milestone_index": 8

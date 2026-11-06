@@ -17,7 +17,7 @@
     d.setAttribute('data-theme', t); d.classList.add('wk-js'); }());
   </script>
   
-  <link rel="stylesheet" href="stylesheets/wiki.css?v=14101bbbf0"><link rel="stylesheet" href="stylesheets/hunters.css?v=e4f3c59dfb">
+  <link rel="stylesheet" href="stylesheets/wiki.css?v=527d16639d"><link rel="stylesheet" href="stylesheets/hunters.css?v=e4f3c59dfb">
   
   
 </head>
@@ -419,11 +419,21 @@
       
       
       <aside class="wk-freshness" role="note">
-        <p><b>Not yet updated for 15 merged changes.</b>
+        <p><b>Not yet updated for 20 merged changes.</b>
         This page was last checked against Paleblood
         <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/99951e6375b8fa2fa7120d9af3158f42873ce560"><code>99951e6</code></a>;
         these pull requests changed what it describes since:</p>
         <ul>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/408">#408</a> Boot record: the game keeps running until the time limit</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/387">#387</a> boot: record after #376-#385: first flip, stop at sceNetEpollCreate</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/383">#383</a> status card: a picture of where the project stands, in the README</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/374">#374</a> boot: record after #372 and #373: first flip, stop at constant command buffers</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/371">#371</a> boot: record after PlayGo (#370): first flip, stop at sceUserServiceGetUserName</li>
           
           <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/366">#366</a> boot: record the boot after #227, #229, #351 and #353</li>
           
@@ -431,17 +441,7 @@
           
           <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/364">#364</a> render: verify present parameters (from #232 by @evill33t)</li>
           
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/363">#363</a> render: verify shader upload (from #251 by @evill33t)</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/361">#361</a> render: verify swap chain setup (from #254 by @evill33t)</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/360">#360</a> render: verify command buffer submit (from #256 by @evill33t)</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/359">#359</a> render: verify swap chain cleanup (from #244 by @evill33t)</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/358">#358</a> render: replace record parameters (from #222 by @evill33t)</li>
-          
-          <li>and 7 more</li>
+          <li>and 12 more</li>
         </ul>
       </aside>
       
@@ -461,22 +461,22 @@ readable C++ that does exactly what the original did, and builds a <abbr title="
 code to run on.</p>
 <div class="wk-glance">
 <p><span class="wk-label">Where the hunt stands</span></p>
-<p>The game doesn't run on Paleblood yet: 21 of 157,757 functions are <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> (0.01%). On <a href="runtime/">our own <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr></a> the executable's boot gets as far as <code>scePlayGoInitialize</code> (libScePlayGo), with 371 of 686 system imports provided.</p>
+<p>The game doesn't run on Paleblood yet: 21 of 157,757 functions are <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> (0.01%). On <a href="runtime/">our own <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr></a> the executable's boot gets as far as the run's time limit, still running (no call stopped it), with 437 of 686 system imports provided.</p>
 </div>
 <div class="wk-stat-ring">
-  <svg viewBox="0 0 150 150" role="img" aria-label="371 of 686 system imports provided">
+  <svg viewBox="0 0 150 150" role="img" aria-label="437 of 686 system imports provided">
     <defs><linearGradient id="wk-ring-grad" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" class="wk-ring-stop-a"></stop><stop offset="1" class="wk-ring-stop-b"></stop>
     </linearGradient></defs>
     <circle class="wk-stat-ring-track" cx="75" cy="75" r="62"></circle>
-    <circle class="wk-stat-ring-arc" cx="75" cy="75" r="62" stroke-dasharray="389.56 389.56" style="stroke-dashoffset:178.88"></circle>
-    <text class="wk-stat-ring-val" x="75" y="80">54%</text>
+    <circle class="wk-stat-ring-arc" cx="75" cy="75" r="62" stroke-dasharray="389.56 389.56" style="stroke-dashoffset:141.40"></circle>
+    <text class="wk-stat-ring-val" x="75" y="80">64%</text>
     <text class="wk-stat-ring-sub" x="75" y="98">of imports</text>
   </svg>
   <div class="wk-stat-ring-text">
     <p class="wk-label">System imports provided</p>
-    <p><strong>371 of 686</strong> imports the boot needs are provided.</p>
-    <p>219 come from the game's own modules and 152 from the runtime.</p>
+    <p><strong>437 of 686</strong> imports the boot needs are provided.</p>
+    <p>219 come from the game's own modules and 218 from the runtime.</p>
     <p>Boot milestone: <strong>first flip</strong> (8 of 8).</p>
   </div>
 </div>
@@ -615,6 +615,6 @@ point to game files, pkgs, firmware, keys or decryption tools.</p>
 window.WK = {base: ".", searchIndex: "search/search_index.json",
              drawerQuery: window.matchMedia('(max-width: 900px)')};
 </script>
-<script src="javascripts/wiki.js?v=48af91151e" defer></script><script src="javascripts/hunters.js?v=28a0e867eb" defer></script><script src="search/main.js" defer></script>
+<script src="javascripts/wiki.js?v=24a562ed8b" defer></script><script src="javascripts/hunters.js?v=28a0e867eb" defer></script><script src="search/main.js" defer></script>
 </body>
 </html>
