@@ -416,36 +416,8 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 31, 2026 10:45:03 UTC">October 31, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 6, 2026 21:52:44 UTC">November 6, 2026</span></p>
       
-      
-      
-      <aside class="wk-freshness" role="note">
-        <p><b>Not yet updated for 11 merged changes.</b>
-        This page was last checked against Paleblood
-        <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/c7070a10cb21cf43e77b010ed23040febb0e03e3"><code>c7070a1</code></a>;
-        these pull requests changed what it describes since:</p>
-        <ul>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/430">#430</a> tools: test/syslib/ files count as runtime tests</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/429">#429</a> Boot record: 234 imports answered by the runtime</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/417">#417</a> tools: session_report --verify takes a verify.py run's output</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/408">#408</a> Boot record: the game keeps running until the time limit</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/407">#407</a> Fewer conflicts: merge main into branches, and tests in their own files</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/387">#387</a> boot: record after #376-#385: first flip, stop at sceNetEpollCreate</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/374">#374</a> boot: record after #372 and #373: first flip, stop at constant command buffers</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/371">#371</a> boot: record after PlayGo (#370): first flip, stop at sceUserServiceGetUserName</li>
-          
-          <li>and 3 more</li>
-        </ul>
-      </aside>
       
       <h1 id="contributing">Contributing</h1>
 <p class="wk-epigraph">Tonight, Gehrman joins the hunt.<cite>Gehrman, the First Hunter</cite></p>
@@ -500,7 +472,7 @@ Questions: <a href="https://github.com/Yharnam-Hunters/Paleblood/discussions">Di
 <li><strong>Name functions</strong> — the good first issues: small functions with a clear purpose, identified from their callers and the library calls they make, named in the shared function table.</li>
 <li><strong>Document a system</strong> — a page here per system: summary, key functions, structures, patch points, open questions.</li>
 <li><strong>Replace functions</strong> — readable C++ replacements, <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> against the original with the <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr> and reviewed independently.</li>
-<li><strong>Build the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr></strong> — claim a call or tightly related group in its system issue (<a href="https://github.com/Yharnam-Hunters/Paleblood/issues?q=is%3Aissue+is%3Aopen+label%3Aruntime">#34–#41</a>), then use a <code>runtime/&lt;function&gt;</code> branch to implement it in <code>RT_SYSLIB</code> with unit tests. Runtime-only work is clean-room, needs no game dump or <abbr title="Inputs recorded while the game ran, replayed by the harness.">captures</abbr>, and receives maintainer boot verification after merge; see the <a href="../runtime-syscalls/"><abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> syscall notes</a> and full workflow in Paleblood's contribution guide.</li>
+<li><strong>Build the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr></strong> — claim a call or tightly related group in its system issue (<a href="https://github.com/Yharnam-Hunters/Paleblood/issues?q=is%3Aissue+is%3Aopen+label%3Aruntime">#34–#41</a>), then use a <code>runtime/&lt;function&gt;</code> branch to implement it in <code>runtime/syslib/&lt;group&gt;.c</code>, registered with <code>RT_SYSLIB</code>. Its tests go in a file of their own, <code>test/syslib/&lt;group&gt;.c</code>, as <code>SYSLIB_TEST(name) { ... }</code> blocks, so parallel pull requests do not edit the same lines (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/407">#407</a>); the PR checks count those files as <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> tests (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/430">#430</a>). Runtime-only work is clean-room, needs no game dump or <abbr title="Inputs recorded while the game ran, replayed by the harness.">captures</abbr>, and receives maintainer boot verification after merge. Independent reverse engineering may include the system libraries of your own console's firmware: name each by its SHA-256 in the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> report, take only facts from it, write your own code, and never copy, attach or link the files (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/356">#356</a>). See the <a href="../runtime-syscalls/"><abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> syscall notes</a> and the full workflow in Paleblood's contribution guide.</li>
 <li><strong>Tooling</strong> — the <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr>, the <abbr title="Inputs recorded while the game ran, replayed by the harness.">capture</abbr> library, the <abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr> scripts.</li>
 </ul>
 </details>
@@ -508,7 +480,7 @@ Questions: <a href="https://github.com/Yharnam-Hunters/Paleblood/discussions">Di
 <ol class="wk-steps">
 <li><strong>Fork.</strong> Fork <a href="https://github.com/Yharnam-Hunters/Paleblood">Paleblood</a> and run <code>tools/install_hooks.sh</code> in your clone.</li>
 <li><strong>Set up.</strong> Decompilation: follow ONBOARDING.md. Runtime: claim a function in its system issue (#34–#41) on a <code>runtime/&lt;function&gt;</code> branch.</li>
-<li><strong>Keep it small.</strong> One function or tightly related group per PR, with <code>RT_SYSLIB</code> unit cases and a <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> report.</li>
+<li><strong>Keep it small.</strong> One function or tightly related group per PR, with its tests in <code>test/syslib/&lt;group&gt;.c</code> and a <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> report.</li>
 <li><strong>Merge.</strong> CI runs without a dump. After merge, a maintainer boot-tests it and posts the result.</li>
 </ol>
 <details class="details">
@@ -516,7 +488,8 @@ Questions: <a href="https://github.com/Yharnam-Hunters/Paleblood/discussions">Di
 <ol>
 <li>Fork <a href="https://github.com/Yharnam-Hunters/Paleblood">Paleblood</a> on GitHub and run <code>tools/install_hooks.sh</code> in your clone.</li>
 <li>For decompilation, follow ONBOARDING.md from your own dump to <abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr>. A draft from <code>tools/draft.sh</code> is a starting point; it marks with <code>; GAP:</code> and decodes the code <abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr> leaves out after a call it wrongly treats as not returning (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/189">#189</a>). For <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> work, read the syscall notes and claim one function or related group in its system issue (#34–#41); use a branch named <code>runtime/&lt;function&gt;</code>.</li>
-<li>Keep one function or tightly related group per PR. Add <code>RT_SYSLIB</code> unit cases and include evidence, confirmed behavior, unresolved questions, and test results in the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> report.</li>
+<li>Keep one function or tightly related group per PR. Put its <code>RT_SYSLIB</code> tests in their own file, <code>test/syslib/&lt;group&gt;.c</code> (<code>test/syslib/np_trophy.c</code> is an example; cases already in <code>test/test_syslib.c</code> may be updated there), and include evidence, confirmed behavior, unresolved questions, and test results in the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> report. For a decompilation PR, <code>tools/session_report.py --verify</code> takes the output folder of a <code>tools/verify.py run</code> (or the <code>summary.json</code> it writes there) and adds its results to the session report (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/417">#417</a>).</li>
+<li>To bring your branch up to date, merge <code>origin/main</code> into it; the push gate checks only the commits main does not have yet (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/407">#407</a>).</li>
 <li>Runtime-only PRs run the compiler matrix, RT_SYSLIB tests, and repository policy checks without requiring a dump, <abbr title="Inputs recorded while the game ran, replayed by the harness.">captures</abbr>, or function-level <code>verify.py</code>. CI also builds and tests each pull request merged with every other open one (the <code>combined</code> job, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/136">#136</a>), so two changes that break only together are caught before either merges. After merge, a maintainer runs <code>tools/boot.py</code> locally and posts the result on the PR.</li>
 <li>However you work, the workflow is the same; <code>tools/handoff.py</code> writes a shareable handoff of where a piece of work stands, so someone else can pick it up (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/93">#93</a>).</li>
 </ol>
@@ -543,7 +516,7 @@ wherever they are posted, and may lead to a ban.</p>
 <summary>The ground rules in full</summary>
 <ul>
 <li><strong>No game files.</strong> Ever. No executables, assets, decompiler output or extracted data in commits, issues, pull requests or Discussions.</li>
-<li><strong>Keep game media out of Paleblood's code repository</strong> and its issues, pull requests, and Discussions. The documentation site follows a separate, asset-by-asset review process for technical and critical context; attribution or educational purpose alone does not establish permission. See <a href="../MEDIA_POLICY/">Evidence &amp; Media Review</a>.</li>
+<li><strong>Keep game media out of Paleblood's code repository</strong> and its issues, pull requests, and Discussions. The <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> and CI refuse image and video files (by extension and by contents). The only images allowed there are under <code>docs/assets/</code> and listed in <code>docs/assets/ALLOWLIST</code> with the command that produced them, and they are our own work: recordings of our tools' output, and frames drawn by Paleblood's own renderer, at full resolution, added by the maintainer with attribution (such as the README's title screen, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/445">#445</a>). Contributors do not add game frames themselves; propose one in an issue instead. The documentation site follows a separate, asset-by-asset review process for technical and critical context; attribution or educational purpose alone does not establish permission. See <a href="../MEDIA_POLICY/">Evidence &amp; Media Review</a>.</li>
 <li><strong>Verified and readable.</strong> A replacement that "looks right" is not done until the <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr> finds no difference on recorded and <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr>, deliberately wrong versions fail, it reads well (the code repository's STYLE.md), and an independent reviewer has approved it.</li>
 <li>The local promotion tool reruns the recorded and edge suites before changing a function to <code>verified</code>; its comparison output is temporary and kept away from the <abbr title="Inputs recorded while the game ran, replayed by the harness.">capture</abbr> library. Case data stays on the contributor's machine.</li>
 <li><strong>Say how you know.</strong> When you name a function, say how you inferred what it does: its callers, its library calls, the memory it touches. A name says what is known and no more.</li>

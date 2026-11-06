@@ -412,26 +412,8 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 4, 2026 03:56:56 UTC">November 4, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 6, 2026 21:52:44 UTC">November 6, 2026</span></p>
       
-      
-      
-      <aside class="wk-freshness" role="note">
-        <p><b>Not yet updated for 3 merged changes.</b>
-        This page was last checked against Paleblood
-        <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/67db79f0ea96a2e9adbabed155cae356c30f7949"><code>67db79f</code></a>;
-        these pull requests changed what it describes since:</p>
-        <ul>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/125">#125</a> engine: replace ASCII lowercase byte mapping</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/337">#337</a> engine: replace string append helpers (from #118 by @evill33t)</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/336">#336</a> engine: replace the ordered word product stores (from #115 by @evill33t)</li>
-          
-          
-        </ul>
-      </aside>
       
       <h1 id="engine">Engine</h1>
 <p class="wk-lede">The engine's shared plumbing that every system leans on: its fatal error report, its check for missing singletons, its reference-counted objects, and small helpers such as writing a line to the standard error stream.</p>
@@ -442,7 +424,7 @@
 <dt>Scope</dt>
 <dd>Engine-wide helpers in Paleblood's <code>game/engine/</code>: the fatal error report and singleton check, reference counting, and <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> engine utility functions.</dd>
 <dt>Verified</dt>
-<dd><code>engine_write_stderr</code>, the string helpers, wide-string set-up, owner storage and a handle-table lookup are <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr> against constructed cases.</dd>
+<dd><code>engine_write_stderr</code>, the string helpers (comparisons, appends, case changes), wide-string set-up, owner storage, a word-and-product store and a handle-table lookup are <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr> against constructed cases.</dd>
 <dt>Open</dt>
 <dd>Who calls the stderr writer during play, and with what text.</dd>
 </dl>
@@ -484,6 +466,17 @@ when the length is zero or negative. All their callers are in FMOD's code (see <
 (<code>0x011c4910</code>, <code>0x011c4940</code>: change letters in place and return the string, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/281">#281</a>), and
 <code>engine_compare_ascii_ignoring_case</code> (<code>0x011c49c0</code>, compares two strings ignoring letter case,
 <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/282">#282</a>).</p>
+<p>Three more followed on 5 and 6 November, also by <a href="https://github.com/evill33t">@evill33t</a>:</p>
+<ul>
+<li><code>engine_string_append</code> (<code>0x011c4870</code>) appends one zero-terminated string to another, a <code>strcat</code>
+  that returns the destination (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/337">#337</a>, from #118);</li>
+<li><code>engine_string_append_counted</code> (<code>0x011c48b0</code>) appends at most a given number of bytes, counting
+  only the low 32 bits of the count, and ends the result with a zero; a count of zero touches
+  neither string (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/337">#337</a>);</li>
+<li><code>engine_ascii_to_lower</code> (<code>0x011c48f0</code>) lowercases a single character: it changes <code>A</code>-<code>Z</code> to
+  <code>a</code>-<code>z</code>, leaves every other byte as it is, and returns the byte as a signed 32-bit value
+  (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/125">#125</a>).</li>
+</ul>
 <h3 id="wide-strings-and-owned-storage">Wide strings and owned storage</h3>
 <ul>
 <li><code>engine_wide_string_destroy</code> (<code>0x02a44140</code>) releases a wide (16-bit character) string, and
@@ -494,6 +487,11 @@ when the length is zero or negative. All their callers are in FMOD's code (see <
   block of the requested size (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/285">#285</a>). What kind of object owns the block is not known yet;
   its only known caller is <code>0x02713870</code>.</li>
 </ul>
+<h3 id="storing-a-word-and-a-product">Storing a word and a product</h3>
+<p><code>engine_store_word_product</code> (<code>0x011c4510</code>) stores two 32-bit fields of an object: one input as it
+is at offset <code>0x18</code>, and the product of two other inputs times four at offset <code>0x1c</code>, then
+returns 0 (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/336">#336</a>, from #115 by <a href="https://github.com/evill33t">@evill33t</a>). What the two fields mean is not known yet;
+it is called from <code>0x01111bb0</code> and through slot 1 of the function table at <code>0x0500ae48</code>.</p>
 <h3 id="looking-up-a-table-entry-by-handle">Looking up a table entry by handle</h3>
 <p><code>engine_entry_manager_resolve</code> (<code>0x01314320</code>) turns a handle into an entry: it checks that the
 table is enabled, rejects the all-ones handle, uses the handle's low 32 bits as an index checked
@@ -505,7 +503,10 @@ at <code>0x02717f30</code>-<code>0x02718c80</code> and <code>0x0210f5a0</code>; 
 <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/274">#274</a> (18 and 24 cases), and the lookup
 in #110, merged in <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/276">#276</a> (25 cases).
 Each was brought up to date with <code>main</code>, its constructed <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr> pass against the original
-on current <code>main</code>, and an independent review approved it.</p>
+on current <code>main</code>, and an independent review approved it. The appends (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/337">#337</a>, 32 and
+48 cases), the word-and-product store (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/336">#336</a>, 32 cases) and the single-character
+lowercase (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/125">#125</a>, 291 generated cases) are <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr>: their constructed
+cases pass against the original. None was checked on recorded game runs.</p>
 </details>
 <h2 id="key-functions">Key functions</h2>
 <div class="wk-table is-stack"><table class="wk-stack">

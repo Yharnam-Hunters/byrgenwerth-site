@@ -423,7 +423,17 @@
           
           <li><a href="#console-services-at-start-up" class="wk-toc-link">Console services at start-up</a></li>
           
+          <li><a href="#the-controller" class="wk-toc-link">The controller</a></li>
+          
+          <li><a href="#the-clock-and-the-calendar" class="wk-toc-link">The clock and the calendar</a></li>
+          
+          <li><a href="#save-data-and-trophies" class="wk-toc-link">Save data and trophies</a></li>
+          
+          <li><a href="#psn-offline" class="wk-toc-link">PSN, offline</a></li>
+          
           <li><a href="#sound" class="wk-toc-link">Sound</a></li>
+          
+          <li><a href="#movies" class="wk-toc-link">Movies</a></li>
           
           <li><a href="#reading-the-games-files" class="wk-toc-link">Reading the game's files</a></li>
           
@@ -448,36 +458,8 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 6, 2026 06:15:18 UTC">November 6, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 6, 2026 21:52:44 UTC">November 6, 2026</span></p>
       
-      
-      
-      <aside class="wk-freshness" role="note">
-        <p><b>Not yet updated for 33 merged changes.</b>
-        This page was last checked against Paleblood
-        <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/2212b93a43eb753c0a277f77421bb98f5e0e4bb5"><code>2212b93</code></a>;
-        these pull requests changed what it describes since:</p>
-        <ul>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/431">#431</a> runtime: host controller input for libScePad (--input none|host)</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/426">#426</a> runtime: semaphores with priority order wake the best-priority waiter</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/423">#423</a> runtime: sceKernelMapDirectMemory accepts no-overwrite (0x80)</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/422">#422</a> runtime: sceKernelQueryMemoryProtection answers start and end</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/420">#420</a> runtime: the movie player's sound port (1024 samples, formats 0 to 5)</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/419">#419</a> runtime: the movie player (libSceAvPlayer), decoding with FFmpeg</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/418">#418</a> renderer: run compute dispatches</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/412">#412</a> renderer: record the shaders the game binds (sceGnmSetVsShader, sceGnmSetPsShader)</li>
-          
-          <li>and 25 more</li>
-        </ul>
-      </aside>
       
       <h1 id="runtime-system-call-notes">Runtime system-call notes</h1>
 <p class="wk-lede">What each runtime system call is for, what it must do, what the game was seen to do with it, and how Paleblood's runtime answers.</p>
@@ -486,7 +468,7 @@
 <p><span class="wk-label">At a glance</span></p>
 <dl>
 <dt>Covers</dt>
-<dd>Calls from <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> issue <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/34">#34</a>, the files from <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/35">#35</a>, the start-up services from <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/36">#36</a> and <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/40">#40</a>, sound from <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/37">#37</a>, and the network slice from <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/41">#41</a>. A generated list of every registered call is near the end.</dd>
+<dd>Calls from <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> issue <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/34">#34</a>, the files from <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/35">#35</a>, the start-up services from <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/36">#36</a> and <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/40">#40</a>, sound and movies from <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/37">#37</a>, the controller, the clock, save data, trophies and the offline PSN calls, and the network slice from <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/41">#41</a>. A generated list of every registered call is near the end; the <a href="../runtime-reference/"><abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> call reference</a> has the full notes and sources for each call.</dd>
 <dt>Status</dt>
 <dd><strong>implemented</strong>: the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> answers the call. <strong>unresolved</strong>: no established answer, so the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> has no implementation or stops by name. <strong>observed</strong>: seen in a real boot, not yet implemented.</dd>
 <dt>How to read</dt>
@@ -677,8 +659,8 @@ for that thread, so these calls work by comparing or returning those pointers.</
 <li><strong><code>scePthreadYield</code></strong> does the same (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/308">#308</a>). Its <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> signature is not published (FreeBSD's analogue returns nothing, Linux's returns an int), but answering zero is right either way: a caller of a function that returns nothing never reads the result, and zero is the int version's success. Every one of the game's 26 direct calls ignores the result.</li>
 <li><strong><code>pthread_self</code></strong> (<code>libScePosix</code>) returns the calling thread's own handle. It answers exactly what <code>scePthreadSelf</code> answers. With no guest thread registered on the host thread, it stops by the name the guest used. POSIX defines no error return.</li>
 </ul>
-<p>These are <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> services, not new decompiled game functions, and the saved boot has not been
-rerun to demonstrate their startup effect.</p>
+<p>These are <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> services, not new decompiled game functions. The boots recorded on merged
+<code>main</code> since then pass through them.</p>
 <details class="reference">
 <summary>Threads and yielding: PRs, credits and test limits</summary>
 <p>Merged <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/62">PR #62</a> and
@@ -969,9 +951,14 @@ past the requested region, and coverage classification. These tests do not estab
 <td data-label="What the runtime does">Removes a registration by its ID.</td>
 </tr>
 <tr>
-<td data-label="Call"><code>sceNetCtlGetInfo</code>, <code>sceNetCtlGetNatInfo</code></td>
+<td data-label="Call"><code>sceNetCtlGetNatInfo</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">Answers "not connected" and writes nothing, so the game falls back to its own NAT type (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/380">#380</a>).</td>
+</tr>
+<tr>
+<td data-label="Call"><code>sceNetCtlGetInfo</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--unresolved">unresolved</span></td>
-<td data-label="What the runtime does">Stop by name; layouts and offline values are unknown.</td>
+<td data-label="What the runtime does">Stops by name; the layout and offline value are unknown.</td>
 </tr>
 <tr>
 <td data-label="Call"><code>sceNetInit</code>, <code>sceNetTerm</code>, <code>sceNetPoolCreate</code></td>
@@ -987,6 +974,16 @@ past the requested region, and coverage classification. These tests do not estab
 <td data-label="Call"><code>sceHttpWaitRequest</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
 <td data-label="What the runtime does">The game's network worker polls for finished requests; offline none was ever sent, so it answers "no events" (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/303">#303</a>).</td>
+</tr>
+<tr>
+<td data-label="Call"><code>sceHttpsEnableOption</code>, <code>sceHttpsDisableOption</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">Set and clear a template's HTTPS options and keep them for a request that is never sent (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/381">#381</a>).</td>
+</tr>
+<tr>
+<td data-label="Call"><code>sceNetErrnoLoc</code>, <code>sceNetEpollCreate</code>, <code>…Wait</code>, <code>…Abort</code>, <code>…Destroy</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">The network library's own error variable, and waiting sets on which no socket ever becomes ready: a wait ends only by its timeout, an abort or a destroy (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/386">#386</a>).</td>
 </tr>
 </tbody>
 </table></div>
@@ -1024,12 +1021,15 @@ register a callback for state changes. Four currently provide a constrained offl
 <p>The registration call sites show the callback, argument, and output-ID slot; the guest later passes
 the returned ID to unregister. The callback pointer is kept opaque and never called. Static
 call-site evidence establishes these shapes, not every <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> error case.</p>
-<p>The other two stay unresolved and are registered only to produce a useful fatal diagnostic:</p>
-<ul>
-<li><strong><code>sceNetCtlGetInfo</code></strong>: the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> structure layout, module-14 meaning, and offline answer are unknown.</li>
-<li><strong><code>sceNetCtlGetNatInfo</code></strong>: the guest writes a 16-byte size and later reads offset 8, but the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> meaning of that field and offline NAT value are unknown.</li>
-</ul>
-<p>Their registry presence does not mean they are implemented.</p>
+<p><strong><code>sceNetCtlGetNatInfo</code></strong> asks what kind of network address translation the connection is
+behind. The game writes the structure's size (16) first and reads only the NAT type at offset 8,
+and only on success; on any other answer it assumes NAT type 1 itself. Offline the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> answers
+"not connected" (<code>0x80412108</code>) and writes nothing, so the game's own fallback applies (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/380">#380</a>).
+The structure's layout and the error value come from public sources of other <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> runtimes, as
+facts; a size other than 16 stops by name.</p>
+<p><strong><code>sceNetCtlGetInfo</code></strong> stays unresolved and is registered only to produce a useful fatal
+diagnostic: the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> structure layout, the meaning of module 14 (the only one the game asks for),
+and the offline answer are unknown. Its registry presence does not mean it is implemented.</p>
 <details class="reference">
 <summary>Network: sources, PRs and tests</summary>
 <p><strong>Byte order.</strong> The declaration reference (see References) is PSP2SDK's public <code>net.h</code> API
@@ -1096,6 +1096,15 @@ actually send something stops by name. PRs
 <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/158">#158</a>,
 <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/159">#159</a> and
 <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/160">#160</a>.</p>
+<p><strong>HTTPS options.</strong> The game's HTTP wrapper turns server verification on or off on its template.
+The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> keeps each template's option bits (a new template starts with server verification,
+the name and known-CA checks and SNI on) for when a request is sent, which offline never happens
+(<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/381">#381</a>).</p>
+<p><strong>Network waits.</strong> The game's network thread creates a waiting set (an "epoll" set) and waits on
+it. Offline no socket ever becomes ready, so a wait returns no events when its timeout passes, or
+is cut short when the game aborts or destroys the set. A failing network call sets the network
+library's own error variable, separate from the C library's <code>errno</code>, which <code>sceNetErrnoLoc</code> points
+at (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/386">#386</a>).</p>
 <h2 id="system-modules-libscesysmodule">System modules (<code>libSceSysmodule</code>)</h2>
 <div class="wk-table is-stack"><table class="wk-stack">
 <thead>
@@ -1109,7 +1118,7 @@ actually send something stops by name. PRs
 <tr>
 <td data-label="Call"><code>sceSysmoduleLoadModule</code>, <code>sceSysmoduleIsLoaded</code>, <code>sceSysmoduleUnloadModule</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
-<td data-label="What the runtime does">Answer for stub modules only; every other case stops by name.</td>
+<td data-label="What the runtime does">Answer for stub modules and for system modules the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> provides itself; every other case stops by name.</td>
 </tr>
 </tbody>
 </table></div>
@@ -1118,8 +1127,11 @@ modules by id through <code>sceSysmoduleLoadModule</code>, <code>sceSysmoduleIsL
 <code>sceSysmoduleUnloadModule</code>; it imports no other <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> entry.</p>
 <p>Five of the seven modules the title ships are recorded in Paleblood's module list as stubs: the
 executable imports nothing from them, so they are not mapped. Their public ids come from the
-OpenOrbis toolchain's list.</p>
-<p><strong>How the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> answers, for stub modules only:</strong></p>
+OpenOrbis toolchain's list. System modules the game does not ship but loads by id (app content,
+PlayGo, trophies and the PSN libraries, for example) are listed as provided by the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> once it
+implements the calls the game imports from them; loading one is answered the same way, and its
+imports go to the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>'s own entries.</p>
+<p><strong>How the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> answers, for those modules:</strong></p>
 <ol>
 <li>A load marks the module loaded and succeeds without mapping anything.</li>
 <li>A query of a loaded one answers <code>0</code>.</li>
@@ -1127,8 +1139,11 @@ OpenOrbis toolchain's list.</p>
 </ol>
 <p>Everything else stops by name: a module that is not a stub (the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> cannot load system modules
 yet), a second load of a loaded stub, and a query or unload of a stub that is not loaded. The error
-values for those cases are not public. The saved boot stops before the first load, so which ids the
-game passes is not yet observed.</p>
+values for those cases are not public.</p>
+<p>The boot recorded on 6 November 2026 (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/443">#443</a>) shows which modules the game loaded: none of
+the five stubs it ships, and nine system modules the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> provides (app content, PlayGo,
+trophies, and the PSN utility, matchmaking, score ranking, authentication, profile dialog and
+signalling libraries).</p>
 <details class="reference">
 <summary>System modules: PR and credits</summary>
 <p>Merged <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/83">PR #83</a>, by
@@ -1172,7 +1187,12 @@ game passes is not yet observed.</p>
 <tr>
 <td data-label="Call"><code>sceKernelCreateSema</code> … <code>sceKernelPollSema</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
-<td data-label="What the runtime does">Counting semaphores: create, wait, signal, poll, delete.</td>
+<td data-label="What the runtime does">Counting semaphores: create, wait, signal, poll, delete. A semaphore created for priority order wakes its best-priority waiter first (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/426">#426</a>).</td>
+</tr>
+<tr>
+<td data-label="Call"><code>scePthreadExit</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">Ends the calling thread exactly as a return from its entry function would (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/389">#389</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/399">#399</a>).</td>
 </tr>
 <tr>
 <td data-label="Call"><code>pthread_cond_*</code></td>
@@ -1229,7 +1249,17 @@ thread its own stack and its own copy of the game's thread-local data, then runs
 function on a new host thread. The game asks for a 16 KiB stack again whenever a smaller size is
 refused, which is how the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> knows the smallest size it should accept.</p>
 <p><strong>Waiting.</strong> A semaphore holds a count. A thread that needs a unit waits until another thread
-signals one. Condition variables do the same job for the POSIX side of the game's libraries.</p>
+signals one. Condition variables do the same job for the POSIX side of the game's libraries.
+Waiters are served in the order they arrived, or, for a semaphore the game creates with priority
+order, by thread priority: the most urgent (smallest number) first, equal priorities in arrival
+order (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/426">#426</a>). Before that change a second waiter on such a semaphore stopped the boot
+by name, which happened in some boots and not others, depending on thread timing.</p>
+<p><strong>Ending a thread.</strong> A thread can end itself early with <code>scePthreadExit</code>. The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> cannot
+unwind the game's stack frames with the host's tools, so it marks the point where it starts the
+game's entry function and jumps back there: the thread then ends exactly as if its entry had
+returned, keeping the value for a join and running its per-thread destructors (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/389">#389</a>).
+It uses the compiler's own <code>setjmp</code>/<code>longjmp</code>: the C library's checked <code>longjmp</code>, which some
+compilers switch on by default, can refuse a jump from the game's stack to the host's (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/399">#399</a>).</p>
 <p><strong>Thread handles fit in 40 bits.</strong> The game's own lock code stores the owner thread's handle in
 only 40 bits, then compares it with the full handle. A handle above 2^40 would never match, and the
 thread would wait forever on a lock it already held. A local boot hung exactly there. The host's
@@ -1256,8 +1286,9 @@ the set for each thread and gives it back unchanged.</p>
   <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/179">#179</a> (event queues).</li>
 <li>The 16 KiB retry is at <code>0x02a3b383</code>; the 40-bit lock is at <code>0x024368c0</code>.</li>
 <li><strong>Stops by name:</strong> creating a thread without an attribute, a stack size or a detach state; a
-  stack the guest supplies; an empty CPU mask; a semaphore wait with a timeout; a second
-  waiter woken by priority; timed condition waits.</li>
+  stack the guest supplies; an empty CPU mask; a semaphore wait with a timeout; a wait for
+  more than one unit behind another waiter; a thread exit from a destructor or from the main
+  thread.</li>
 </ul>
 </details>
 <h2 id="memory-direct-and-flexible">Memory: direct and flexible</h2>
@@ -1283,7 +1314,7 @@ the set for each thread and gives it back unchanged.</p>
 <tr>
 <td data-label="Call"><code>sceKernelMapDirectMemory</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
-<td data-label="What the runtime does">Maps an allocated range for the CPU; GPU access is accepted.</td>
+<td data-label="What the runtime does">Maps an allocated range; GPU access is accepted, and so is the no-overwrite flag (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/423">#423</a>).</td>
 </tr>
 <tr>
 <td data-label="Call"><code>sceKernelReleaseDirectMemory</code></td>
@@ -1298,7 +1329,7 @@ the set for each thread and gives it back unchanged.</p>
 <tr>
 <td data-label="Call"><code>sceKernelQueryMemoryProtection</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
-<td data-label="What the runtime does">Answers the protection the game asked for when it mapped the memory, GPU bits included.</td>
+<td data-label="What the runtime does">Answers the protection the game asked for when it mapped the memory, GPU bits included, and the mapping's start and end (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/422">#422</a>).</td>
 </tr>
 <tr>
 <td data-label="Call"><code>sceKernelVirtualQuery</code></td>
@@ -1312,13 +1343,19 @@ first reserves a range of it, then maps that range into its address space, and t
 range see the same bytes. <strong>Flexible memory</strong> is memory the system simply hands over.</p>
 <p>The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> backs direct memory with one shared host memory file, so the "same bytes" rule holds.
 The pool's size is the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>'s choice, not a measured <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> value. The game maps some memory for
-both the CPU and the GPU. The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> has no GPU yet, so it accepts the GPU flags and maps the
-memory for the CPU only. The <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> limits how much flexible memory a game may use; that budget is
+both the CPU and the GPU. The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> accepts the GPU flags and maps the memory for the CPU; with
+the display on, the renderer hands the same memory to your GPU (see "Where maps go" below). The <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> limits how much flexible memory a game may use; that budget is
 not established, so the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> does not enforce one.</p>
 <p><strong>Asking about memory.</strong> The game sometimes asks whether a piece of memory it mapped can be read
 by the CPU or by the GPU. The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> remembers every mapping with the access the game asked for,
-including GPU access it cannot provide yet, and answers from that. A direct map can also be asked
-for at a particular address, and goes exactly there when that range is free.</p>
+including GPU access, and answers from that. Asked for a start and an end too, it gives the
+mapping's first address and the address just past its last byte (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/422">#422</a>), as other <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr>
+runtimes answer; the game's movie code asks this way. A direct map can also be asked for at a
+particular address, and goes exactly there when that range is free.</p>
+<p><strong>Mapping memory twice.</strong> The movie code maps part of its own direct memory a second time, with
+the "no-overwrite" flag and no address. That flag only forbids replacing memory that is already
+mapped, which the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> never does anyway, so it is accepted and the second map shows the same
+bytes as the first (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/423">#423</a>).</p>
 <p><strong>Where maps go.</strong> When the game lets the system pick the address, a map the GPU will read goes at a
 fixed base plus its place in the pool, so the renderer can give the GPU the whole pool as one
 buffer and reach every such address at one fixed distance. Other maps go anywhere free above that
@@ -1338,10 +1375,12 @@ established.</p>
   <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/156">#156</a> (flexible memory),
   <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/175">#175</a> (protection queries) and
   <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/176">#176</a> (maps at a requested address) and
-  <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/177">#177</a> (virtual memory queries).</li>
+  <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/177">#177</a> (virtual memory queries),
+  <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/422">#422</a> (start and end) and <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/423">#423</a> (no-overwrite).</li>
 <li>The game's maps use protection 3 (CPU read and write) and <code>0x33</code> (CPU and GPU read and
   write); its only flexible map is at <code>0x02481dbe</code>.</li>
-<li><strong>Stops by name:</strong> map flags and address hints, other protection bits, lengths that are not
+<li>The movie code's second map is at <code>0x02d032b9</code> and its start-and-end query at <code>0x02d031df</code>.</li>
+<li><strong>Stops by name:</strong> map flags other than no-overwrite (<code>0x80</code>), other protection bits, lengths that are not
   whole 16 KiB pages, a range that does not fit, and releasing part of a range or a mapped one.</li>
 </ul>
 </details>
@@ -1361,6 +1400,11 @@ established.</p>
 <td data-label="What the runtime does">One user, logged in from the start.</td>
 </tr>
 <tr>
+<td data-label="Call"><code>sceUserServiceGetUserName</code>, <code>sceUserServiceGetEvent</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">The user is called <code>Hunter</code>; no one logs in or out during a run, so every event poll answers "no event" (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/372">#372</a>).</td>
+</tr>
+<tr>
 <td data-label="Call"><code>sceCommonDialogInitialize</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
 <td data-label="What the runtime does">Succeeds once; a repeat answers "already initialized".</td>
@@ -1374,6 +1418,21 @@ established.</p>
 <td data-label="Call"><code>sceAppContentInitialize</code>, <code>sceAppContentAppParamGetInt</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
 <td data-label="What the runtime does">Answers the title's own parameters from your copy's <code>param.sfo</code>.</td>
+</tr>
+<tr>
+<td data-label="Call"><code>sceAppContentGetAddcontInfoList</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">Lists the add-ons you say you own (<code>tools/boot.py --addcont LABEL</code>); none by default (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/392">#392</a>).</td>
+</tr>
+<tr>
+<td data-label="Call"><code>sceSystemServiceHideSplashScreen</code>, <code>sceSystemServiceGetStatus</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">Takes down the boot splash; reports no system events, nothing overlaid, in the foreground (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/396">#396</a>).</td>
+</tr>
+<tr>
+<td data-label="Call"><code>scePlayGoInitialize</code>, <code>…Open</code>, <code>…GetChunkId</code>, <code>…GetLocus</code>, <code>…SetInstallSpeed</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">Every part of the package is installed; the install speed is recorded (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/370">#370</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/405">#405</a>).</td>
 </tr>
 <tr>
 <td data-label="Call"><code>sceNpSetContentRestriction</code></td>
@@ -1391,6 +1450,22 @@ to use, and what its own package says about itself.</p>
 <li><strong>The title's parameters.</strong> These come from your own copy's <code>param.sfo</code>. Paleblood ships none.</li>
 <li><strong>Repeats.</strong> The game initializes some services twice. In each case its second call accepts one
   exact "already initialized" error, and the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> answers that error.</li>
+<li><strong>The user's name and events.</strong> The name is the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>'s choice, <code>Hunter</code>. A thread of the game
+  polls for login and logout events every 33 ms; no user logs in or out during a run, so each poll
+  answers "no event" (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/372">#372</a>).</li>
+<li><strong>Add-ons.</strong> The game asks which add-ons (DLC) are installed. The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> lists only the ones
+  the person running it owns and names, each as installed; by default none. The Old Hunters is
+  <code>SPEXPANSIONDLC03</code>; its data already ships with patch 1.09, so the entitlement is all it needs
+  (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/392">#392</a>).</li>
+<li><strong>The splash screen and system status.</strong> When its own screens are ready, the game tells the
+  system it may take down the boot splash; the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> notes that, a useful sign of how far a boot
+  got. The game also polls the system's status; the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> has no system menu or events, so it
+  always answers: nothing pending, nothing overlaid, in the foreground (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/396">#396</a>).</li>
+<li><strong>The install service (PlayGo).</strong> A <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> game can start before its whole package is installed and
+  asks PlayGo which parts ("chunks") are present. On the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> the whole game is always there, so
+  every chunk is reported ready; the number of chunks (3 for this title) comes from your copy's
+  <code>sce_sys/playgo-manifest.xml</code> (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/370">#370</a>). The install speed the game asks for is recorded
+  and changes nothing (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/405">#405</a>).</li>
 </ul>
 <details class="reference">
 <summary>Console services: PRs, call sites and what stops by name</summary>
@@ -1399,12 +1474,208 @@ to use, and what its own package says about itself.</p>
   <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/150">#150</a> (user service),
   <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/151">#151</a> (common dialog),
   <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/152">#152</a> (system language) and
-  <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/153">#153</a> (content restriction).</li>
+  <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/153">#153</a> (content restriction),
+  <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/370">#370</a> and <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/405">#405</a> (PlayGo), <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/372">#372</a> (user name and events),
+  <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/392">#392</a> (add-ons) and <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/396">#396</a> (splash screen and status).</li>
+<li>The event poll is at <code>0x025628e4</code>, the add-on count query at <code>0x023b67cf</code>, the splash call at
+  <code>0x01d5d995</code>, and the PlayGo calls at <code>0x023dd67a</code>-<code>0x023deb30</code>.</li>
 <li>The "already initialized" answers are <code>0x80960003</code> (user service, accepted at <code>0x010ba1ac</code>)
   and <code>0x80b80002</code> (common dialog, accepted at <code>0x02023fbb</code>). All nine language reads ask for
   setting 1.</li>
 <li><strong>Stops by name:</strong> a service call before initialize, a setting nobody gave, a title parameter
   your copy does not declare, and missing arguments.</li>
+</ul>
+</details>
+<h2 id="the-controller">The controller</h2>
+<div class="wk-table is-stack"><table class="wk-stack">
+<thead>
+<tr>
+<th>Call</th>
+<th>Status</th>
+<th>What the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td data-label="Call"><code>scePadInit</code>, <code>scePadOpen</code>, <code>scePadClose</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">One standard controller, the one user's, always connected (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/373">#373</a>).</td>
+</tr>
+<tr>
+<td data-label="Call"><code>scePadReadState</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">At rest by default; with <code>--input host</code>, your gamepad and keyboard (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/431">#431</a>).</td>
+</tr>
+<tr>
+<td data-label="Call"><code>scePadGetControllerInformation</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">A DualShock 4's touch pad size (1920 × 942) and stick deadzones of 13, the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>'s choice.</td>
+</tr>
+<tr>
+<td data-label="Call"><code>scePadSetVibration</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">Keeps the motor speeds, and with <code>--input host</code> rumbles your gamepad.</td>
+</tr>
+</tbody>
+</table></div>
+<p>The game reads its controller's latest state with <code>scePadReadState</code> (not the buffered history),
+and asks for the controller's details (the touch pad's size and the sticks' deadzones). The
+<abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> models one standard controller that is always connected.</p>
+<ul>
+<li><strong>By default</strong> (<code>--input none</code>) the controller is at rest: no button pressed, both sticks
+  centred, the triggers released. CI and recorded boots see exactly the same state every time.</li>
+<li><strong>With <code>--input host</code></strong> (and a window, <code>--display window</code>) your first gamepad and the window's
+  keyboard drive it through SDL3: buttons by position (south is cross, east circle), sticks,
+  triggers, up to two touches on a DualShock 4 or DualSense touch pad, and vibration to your
+  gamepad's motors (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/431">#431</a>). The keyboard works with or without a gamepad: W A S D move
+  the left stick, the arrow keys the right one, I J K L the D-pad, Return or Space is cross,
+  Backspace circle, R square, F triangle, Q and E L1 and R1, Z and C L2 and R2, Escape options.</li>
+<li><strong>Not modelled:</strong> the motion sensors. The units and axes the system reports them in are not
+  established, so acceleration and rotation stay zero.</li>
+</ul>
+<details class="reference">
+<summary>Controller: PRs, call sites and sources</summary>
+<ul>
+<li>PRs <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/373">#373</a> (one controller at rest) and <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/431">#431</a> (host input).</li>
+<li>The game clears exactly the 120-byte state block before each <code>scePadReadState</code> (<code>0x02a90168</code>, <code>0x02a91948</code>)
+  and then tests the "connected" byte at offset <code>0x4c</code>. It treats a stick within <code>0x80</code> ± the
+  deadzone as centred. Vibration is set at <code>0x02a9c7c1</code> and stopped at <code>0x02a9c822</code>.</li>
+<li>Layouts and button bits from the OpenOrbis homebrew SDK's <code>Pad.h</code>; the touch pad size from
+  the Linux kernel's DualShock 4 driver.</li>
+<li><strong>Stops by name:</strong> a second initialize, another user or port type, an unknown handle, and
+  the orientation and motion-sensor setters, which stay unbound until a boot reaches them.</li>
+</ul>
+</details>
+<h2 id="the-clock-and-the-calendar">The clock and the calendar</h2>
+<div class="wk-table is-stack"><table class="wk-stack">
+<thead>
+<tr>
+<th>Call</th>
+<th>Status</th>
+<th>What the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td data-label="Call"><code>sceRtcGetCurrentClockLocalTime</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">Your computer's local time, as the console gives the time its owner set (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/378">#378</a>).</td>
+</tr>
+<tr>
+<td data-label="Call"><code>sceRtcGetTick</code>, <code>sceRtcSetTick</code>, <code>sceRtcGetTickResolution</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">Ticks are microseconds since 1 January of year 1, a million a second (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/378">#378</a>).</td>
+</tr>
+<tr>
+<td data-label="Call"><code>sceRtcGetDayOfWeek</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">0 for Sunday to 6 for Saturday (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/379">#379</a>).</td>
+</tr>
+</tbody>
+</table></div>
+<p>The game asks for the local date and time in about 60 places and turns it straight into
+"ticks", a single number it can compare and subtract. The executable holds no constant that ties
+ticks to another starting point, so the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>'s convention (microseconds since year 1) is safe
+as long as it is the same in every call, which it is: setting a tick gives back exactly the date
+it came from. The day-of-week numbering (Sunday first) comes from another <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>'s public
+notes, used as a fact; an older PSP library numbered Monday first, which is why this call waited
+for evidence before it was implemented.</p>
+<details class="reference">
+<summary>Clock: PRs and what stops by name</summary>
+<ul>
+<li>PRs <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/378">#378</a> and <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/379">#379</a>; the day of the week is read at <code>0x024ee2a9</code> and
+  packed into 3 bits.</li>
+<li><strong>Stops by name:</strong> an impossible date (including 29 February in a year that is not a leap
+  year), a tick past the year 9999, and missing arguments.</li>
+</ul>
+</details>
+<h2 id="save-data-and-trophies">Save data and trophies</h2>
+<div class="wk-table is-stack"><table class="wk-stack">
+<thead>
+<tr>
+<th>Call</th>
+<th>Status</th>
+<th>What the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td data-label="Call"><code>sceSaveDataInitialize</code>, <code>…Mount</code>, <code>…Umount</code>, <code>…SetParam</code>, <code>…SaveIcon</code>, <code>…DirNameSearch</code>, <code>…Terminate</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">Saves in a folder on your computer, seen by the game as <code>/savedataN</code> (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/402">#402</a>).</td>
+</tr>
+<tr>
+<td data-label="Call"><code>sceSaveDataSetupSaveDataMemory</code>, <code>sceSaveDataGet/SetSaveDataMemory</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">The small memory-backed save, kept in one file (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/402">#402</a>).</td>
+</tr>
+<tr>
+<td data-label="Call"><code>sceNpTrophyCreateContext</code>, <code>…CreateHandle</code>, <code>…RegisterContext</code>, <code>…UnlockTrophy</code>, <code>…GetGameInfo</code>, <code>…GetTrophyInfo</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">Trophies unlock offline and are kept with your save data (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/405">#405</a>).</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Save data.</strong> The game's saves live in a folder you choose (<code>tools/boot.py --savedata DIR</code>);
+without one, each boot gets a new, empty folder, so boots start alike. A mounted save appears to the
+game as <code>/savedata0</code>, <code>/savedata1</code> and so on, read through the same file calls as the game's own
+files. A few answers depend on the SDK version the game was built with (2.00 for this executable),
+which the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> reads from the executable itself. The files are the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>'s own layout, not a
+console's.</p>
+<p><strong>Trophies.</strong> The game creates a trophy context for its user, registers it and unlocks trophies by
+number. The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> records each unlock with its time in the save folder, so unlocks survive across
+runs when you keep that folder. The trophy names and grades are in the game's encrypted trophy
+file, which the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> cannot read, so it knows none of them and never awards a platinum.</p>
+<details class="reference">
+<summary>Save data and trophies: PRs, sources and what stops by name</summary>
+<ul>
+<li>PRs <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/402">#402</a> (save data) and <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/405">#405</a> (trophies). Layouts, limits and error
+  values come from public sources of other <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> runtimes and Bloodborne ports, checked against
+  the OpenOrbis headers; the code is the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>'s own. The full list is in the
+  <a href="../runtime-reference/"><abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> call reference</a>.</li>
+<li><strong>Stops by name:</strong> another title's saves, the free-space check, backup copies, and a
+  memory-backed read or write past the size set up. Deleting a save and the save data dialog
+  stay unbound until a boot reaches them.</li>
+</ul>
+</details>
+<h2 id="psn-offline">PSN, offline</h2>
+<div class="wk-table is-stack"><table class="wk-stack">
+<thead>
+<tr>
+<th>Call</th>
+<th>Status</th>
+<th>What the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td data-label="Call"><code>sceNpSetNpTitleId</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">Keeps the title's PSN id; the secret is not kept (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/382">#382</a>).</td>
+</tr>
+<tr>
+<td data-label="Call"><code>sceNpGetState</code>, <code>sceNpCheckCallback</code>, <code>sceNpRegisterStateCallback</code>, <code>sceNpUnregisterStateCallback</code>, <code>sceNpRegisterGamePresenceCallback</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">The user is signed out for the whole run; callbacks are kept and never called, because nothing changes (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/385">#385</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/400">#400</a>).</td>
+</tr>
+<tr>
+<td data-label="Call"><code>sceNpMatching2Initialize</code>, <code>sceNpMatching2Terminate</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">Start and stop the matchmaking library; nothing is ever sent (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/385">#385</a>).</td>
+</tr>
+</tbody>
+</table></div>
+<p>The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> never contacts a network. To the game, its user is simply signed out of PSN, and stays
+signed out: the state never changes, so no state callback is ever due. The game still registers its
+title id and starts its matchmaking library at start-up, and both succeed offline.</p>
+<details class="reference">
+<summary>PSN: PRs and call sites</summary>
+<ul>
+<li>PRs <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/382">#382</a> (title id), <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/385">#385</a> (sign-in state, callbacks, matchmaking) and
+  <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/400">#400</a> (the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> can read back the callbacks it keeps, for a future online path;
+  this also fixed a Clang 23 build).</li>
+<li>The title id is set at <code>0x010ba192</code>, the presence callback registered at <code>0x010b8386</code>, and
+  matchmaking started at <code>0x010ba2d0</code>.</li>
 </ul>
 </details>
 <h2 id="sound">Sound</h2>
@@ -1420,12 +1691,17 @@ to use, and what its own package says about itself.</p>
 <tr>
 <td data-label="Call"><code>sceAjmInitialize</code>, <code>sceAjmModuleRegister</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
-<td data-label="What the runtime does">Start the audio decoder with the one module the game registers.</td>
+<td data-label="What the runtime does">Start the audio decoder with the one codec the game registers, ATRAC9.</td>
+</tr>
+<tr>
+<td data-label="Call"><code>sceAjmInstanceCreate</code>, the batch calls (<code>sceAjmBatchJob…</code>, <code>…StartBuffer</code>, <code>…Wait</code>, <code>…Cancel</code>)</td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">Decode the game's ATRAC9 sound with LibAtrac9 (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/398">#398</a>).</td>
 </tr>
 <tr>
 <td data-label="Call"><code>sceAudioOutInit</code>, <code>sceAudioOutOpen</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
-<td data-label="What the runtime does">Open the game's two output ports: 256 float samples at 48 kHz, eight channels.</td>
+<td data-label="What the runtime does">Open the game's two output ports (256 float samples at 48 kHz, eight channels) and the movie player's (1024 samples, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/420">#420</a>).</td>
 </tr>
 <tr>
 <td data-label="Call"><code>sceAudioOutSetVolume</code></td>
@@ -1435,29 +1711,86 @@ to use, and what its own package says about itself.</p>
 <tr>
 <td data-label="Call"><code>sceAudioOutOutput</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
-<td data-label="What the runtime does">Takes one block every 5.33 ms, as a real port would; nothing is played yet.</td>
+<td data-label="What the runtime does">Takes one block every 5.33 ms, as a real port would; with <code>--audio host</code> it plays the block on your computer (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/406">#406</a>).</td>
 </tr>
 <tr>
 <td data-label="Call"><code>sceAudioOutGetPortState</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
-<td data-label="What the runtime does">Reports that no port is heard anywhere, which is true until the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> plays sound.</td>
+<td data-label="What the runtime does">Reports a port as heard only while it plays on your computer.</td>
 </tr>
 </tbody>
 </table></div>
 <p>Bloodborne mixes its sound in eight channels (7.1) and hands the console one block of 256 samples
 at a time, 48,000 samples a second. Its audio thread has no timer of its own: handing over a block
 blocks until the console has room for the next, so the output call is what keeps the game's audio
-in time. The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> takes one block every 5.33 ms, exactly as fast as real playback, but does not
-play the samples on your computer yet.</p>
+in time. The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> takes one block every 5.33 ms, exactly as fast as real playback.</p>
+<p><strong>Decoding.</strong> The game's sounds are stored compressed as ATRAC9, and its sound engine (FMOD) hands
+them to the console's audio job manager in batches of jobs: set up a decoder, then decode so many
+frames into a buffer. The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> runs each batch when the game starts it and decodes with
+LibAtrac9 (MIT, by Alex Barney, included unmodified in Paleblood) (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/398">#398</a>). The tests use a
+stand-in decoder, because no ATRAC9 data may be kept in the repository.</p>
+<p><strong>Playing it.</strong> Boots are silent by default. With <code>--audio host</code> each port plays through SDL3 on
+your default sound device, each channel at the volume the game set, and the output call waits
+while more than four blocks are queued, so the game's audio runs at your device's pace
+(<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/406">#406</a>). In the maintainer's local runs the game's own music and sounds start after about
+17 seconds; that is an observation, not a saved record.</p>
+<p><strong>The movie player's sound</strong> gets a port of its own: 1024 samples at 48 kHz, in a format chosen
+from the movie's channel count (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/420">#420</a>).</p>
 <details class="reference">
 <summary>Sound: PRs and call sites</summary>
 <ul>
 <li>PRs <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/166">#166</a> (audio decoder start-up),
   <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/167">#167</a> (output ports and volume) and
   <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/169">#169</a> (real-time pacing) and
-  <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/174">#174</a> (port state).</li>
+  <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/174">#174</a> (port state),
+  <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/398">#398</a> (ATRAC9 decoding), <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/406">#406</a> (sound on the host) and <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/420">#420</a> (the movie's port).</li>
+<li>The game creates its ATRAC9 decoders at <code>0x01118d9a</code>, with one to eight channels, 16-bit
+  samples and gapless looping. The movie's port is opened at <code>0x02c225ae</code> and <code>0x02c22842</code>.</li>
+<li><strong>Stops by name:</strong> codecs other than ATRAC9, sample formats other than 16-bit, resampling, and
+  any port the game was not seen to open.</li>
 <li>The output format is the game's own evidence: its callback at <code>0x0111b600</code> asks for format
   <code>4 | (channels == 8)</code>, so 5 is float with eight channels.</li>
+</ul>
+</details>
+<h2 id="movies">Movies</h2>
+<div class="wk-table is-stack"><table class="wk-stack">
+<thead>
+<tr>
+<th>Call</th>
+<th>Status</th>
+<th>What the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td data-label="Call"><code>sceAvPlayerInit</code>, <code>…PostInit</code>, <code>…AddSource</code>, <code>…Start</code>, <code>…Stop</code>, <code>…Close</code> and the other movie player calls</td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">Opens the movie from your copy and decodes it with FFmpeg on your computer (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/419">#419</a>).</td>
+</tr>
+<tr>
+<td data-label="Call"><code>sceAvPlayerGetVideoDataEx</code>, <code>sceAvPlayerGetAudioData</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">Hand the game each picture and block of sound when the movie's clock reaches it.</td>
+</tr>
+</tbody>
+</table></div>
+<p>The game plays its movies (H.264 video with AAC sound in several languages) through the console's
+movie player, all from one wrapper in the executable. It opens a movie, waits until it is ready,
+picks one video stream and the sound in your language, starts it, then asks for a picture each
+frame and for sound on its audio thread.</p>
+<p>The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> decodes a few frames ahead on a thread of its own, so the decoder never runs on one
+of the game's small thread stacks, and the game's calls only copy finished pictures and sound into
+the game's buffers, on the movie's clock. A movie that loops starts again; one that does not ends
+with a "stopped" event. FFmpeg is optional when building Paleblood: without it, opening a movie
+stops by name.</p>
+<details class="reference">
+<summary>Movies: PRs, call sites and sources</summary>
+<ul>
+<li>PRs <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/419">#419</a> (the movie player) and <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/420">#420</a> (its sound port).</li>
+<li>The wrapper's calls are at <code>0x02cfdf33</code>-<code>0x02d004a9</code>. Pictures are NV12, in a buffer from the
+  game's own texture allocator.</li>
+<li>Layouts, event numbers and error values come from public sources of another <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>,
+  checked against the OpenOrbis <code>AvPlayer.h</code>; the code is the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>'s own.</li>
 </ul>
 </details>
 <h2 id="reading-the-games-files">Reading the game's files</h2>
@@ -1476,6 +1809,11 @@ play the samples on your computer yet.</p>
 <td data-label="What the runtime does">Describes a file of your copy (without write permission) or of the scratch folder.</td>
 </tr>
 <tr>
+<td data-label="Call"><code>stat</code> (<code>libScePosix</code>), <code>__error</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">The same answer the POSIX way, with the error in the calling thread's own <code>errno</code> (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/376">#376</a>).</td>
+</tr>
+<tr>
 <td data-label="Call"><code>sceKernelOpen</code>, <code>sceKernelRead</code>, <code>sceKernelPread</code>, <code>sceKernelLseek</code>, <code>sceKernelFstat</code>, <code>sceKernelClose</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
 <td data-label="What the runtime does">Read your copy's files, where any attempt to write is refused as on a read-only disc; open, create and truncate files in the scratch folder <code>/data</code> (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/308">#308</a>).</td>
@@ -1489,10 +1827,14 @@ The first file Bloodborne looks for and reads is <code>sprj_mixer.fev</code>, it
 there and creates a fresh <code>cache.bin</code> at start-up. The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> serves <code>/data</code> from a writable
 folder of its own choosing (<code>pbboot --data</code>); <code>tools/boot.py</code> gives each run a new, empty one,
 so every boot starts alike and nothing the game writes outlives the run.</p>
+<p>The executable also asks for file details through POSIX <code>stat</code>, which reports an error through
+<code>errno</code> instead of its result. The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> answers from the same lookup, and keeps a separate
+<code>errno</code> for each of the game's threads, as the C library expects (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/376">#376</a>).</p>
 <details class="reference">
 <summary>Files: PRs and what stops by name</summary>
 <ul>
-<li>PR <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/170">#170</a>.</li>
+<li>PRs <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/170">#170</a> and <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/376">#376</a> (POSIX
+  <code>stat</code> and <code>errno</code>; the executable's one <code>stat</code> call is at <code>0x00465431</code>).</li>
 <li>Stops by name: any folder other than <code>/app0</code>, a <code>..</code> in a path, and host errors other than a
   missing file or folder.</li>
 </ul>
@@ -1534,8 +1876,10 @@ queue until the console reports that the flip happened, or reads the flip status
 catches up. The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> keeps the buffers and answers every flip straight away, so the game's
 frame loop can run. Each buffer also has a frame on your side, which the flip shows: in a window
 with <code>--display window</code> (SDL3 and Vulkan), or written to image files with <code>--display-capture DIR</code>
-(<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/313">#313</a>). Those frames are black for now, because the game draws with the GPU, and drawing
-comes with <a href="../runtime/#the-renderer">the renderer</a>.</p>
+(<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/313">#313</a>). Since <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/369">#369</a> the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>'s own
+<a href="../runtime/#the-renderer">renderer</a> draws into those frames when the game submits its GPU work,
+and since 6 November 2026 the maintainer's local runs show the studio logos and the title screen
+there (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/441">#441</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/442">#442</a>). With the display off they are not drawn.</p>
 <details class="reference">
 <summary>Video out: PRs and call sites</summary>
 <ul>
@@ -1585,12 +1929,12 @@ comes with <a href="../runtime/#the-renderer">the renderer</a>.</p>
 <tr>
 <td data-label="Call"><code>sceGnmSet{Es,Gs,Hs,Ls,Ps,Vs}Shader</code>, <code>sceGnmUpdate{Gs,Hs,Ps,Vs}Shader</code>, the marker calls, <code>sceGnmInsertWaitFlipDone</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
-<td data-label="What the runtime does">Fill the space the game reserved with one no-op packet (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/310">#310</a>).</td>
+<td data-label="What the runtime does">Fill the space the game reserved with one no-op packet (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/310">#310</a>). The vertex, pixel and compute shader calls also hand the shader to the renderer (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/412">#412</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/418">#418</a>).</td>
 </tr>
 <tr>
 <td data-label="Call"><code>sceGnmSubmitCommandBuffers</code>, <code>sceGnmSubmitAndFlipCommandBuffers</code>, <code>sceGnmSubmitDone</code></td>
 <td data-label="Status">implemented (temporary stand-in)</td>
-<td data-label="What the runtime does">Complete a frame's GPU work at once: "work done" values are written, waits are checked, draws are skipped; then the frame is flipped (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/310">#310</a>).</td>
+<td data-label="What the runtime does">Complete a frame's GPU work at once: "work done" values are written, waits are checked, the other packets are skipped; then the frame is flipped (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/310">#310</a>). With the display on, the renderer also runs the drawing calls recorded for each submitted buffer (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/369">#369</a>).</td>
 </tr>
 <tr>
 <td data-label="Call"><code>sceGnmMapComputeQueue</code></td>
@@ -1620,6 +1964,17 @@ engine's own renderer replaces this layer, the doorbell completes the work at on
 follows each buffer, skips the shader steps (nothing is drawn or computed), writes the "work done"
 value and moves the queue's read position on. Any other kind of step stops by name. This keeps
 start-up moving; it does not make anything appear on screen.</p>
+<p><strong>What the stand-in skips safely.</strong> As the boot went further, the frame's command buffers held more
+kinds of packets. The stand-in skips only those that change nothing it would have to model: an
+empty constant-buffer entry (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/375">#375</a>), a memory read that only warms the GPU's cache and the
+size of an index (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/377">#377</a>), and an indexed draw's packets (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/395">#395</a>). Any other form still
+stops by name.</p>
+<p><strong>The renderer alongside it.</strong> The drawing itself does not happen here. When the game binds a
+shader through <code>sceGnmSetVsShader</code>, <code>sceGnmSetPsShader</code> or <code>sceGnmSetCsShader</code>, the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> also
+hands the shader's registers to Paleblood's renderer (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/412">#412</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/418">#418</a>), and the
+game's own GPU library functions report its draws (see <a href="../runtime/#the-renderer">The renderer</a>).
+At each submit the renderer runs what was recorded for that buffer on your GPU, and the stand-in
+still writes the "work done" values the game waits for.</p>
 <p><strong>Where the engine meets the GPU.</strong> Every one of the game's 50 graphics-driver imports is
 reached through one thin engine wrapper, with one or two callers each, and none of them draws
 anything. Bloodborne builds its GPU command buffers itself, with the graphics library compiled into
@@ -1639,6 +1994,11 @@ it, in the engine's own renderer (its <code>GX</code> graphics framework). The f
 <li>The compute submit is at <code>0x0148c830</code> and its ring-packet writer at <code>0x0148b330</code>; the stand-in
   handles the packet kinds a boot found there: NOP, SET_SH_REG, DISPATCH_DIRECT and RELEASE_MEM
   (AMD's public <abbr title="The command packet format the PS4's GPU reads.">PM4</abbr> format).</li>
+<li>Since then: <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/375">#375</a> (empty constant entries, from the second submit caller at
+  <code>0x0149bf3a</code>), <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/377">#377</a> (<code>DMA_DATA</code> into <code>CP_DMA_READ_TAGS</code>, <code>INDEX_TYPE</code>), <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/395">#395</a>
+  (<code>INDEX_BASE</code>, <code>INDEX_BUFFER_SIZE</code>, <code>DRAW_INDEX_2</code>, <code>DRAW_INDEX_OFFSET_2</code>), <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/412">#412</a> (vertex and
+  pixel shaders handed to the renderer; a vertex shader's modifier is applied to its register
+  block) and <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/418">#418</a> (compute shaders).</li>
 </ul>
 </details>
 <h2 id="every-call-the-runtime-answers">Every call the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> answers</h2>
@@ -3311,7 +3671,7 @@ has the affinity declaration. It is corroboration, not a measured <abbr title="P
 <ul>
 <li>Implement only behavior supported by public documentation, independent reverse engineering, or observed behavior.</li>
 <li>Keep unresolved target behavior visible; do not fabricate a return value to make <code>tools/boot.py</code> advance.</li>
-<li>Add cases to the <a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/test/test_syslib.c">RT_SYSLIB unit test</a> for each established behavior and error path.</li>
+<li>Add cases for each established behavior and error path in a test file of the group's own, <code>test/syslib/&lt;group&gt;.c</code>, as <code>SYSLIB_TEST(name) { ... }</code> blocks (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/407">#407</a>; <a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/test/syslib/np_trophy.c"><code>test/syslib/np_trophy.c</code></a> is an example), so parallel pull requests do not edit the same lines. Cases already in <a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/test/test_syslib.c"><code>test/test_syslib.c</code></a> may be updated there.</li>
 <li>Runtime-only contributions do not need a game dump, <abbr title="Inputs recorded while the game ran, replayed by the harness.">captures</abbr>, or function-level <code>verify.py</code> results; CI builds and runs the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> and syslib tests.</li>
 </ul>
 <h2 id="references">References</h2>

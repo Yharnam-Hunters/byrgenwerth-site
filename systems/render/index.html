@@ -418,49 +418,21 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 5, 2026 05:35:28 UTC">November 5, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 6, 2026 21:52:44 UTC">November 6, 2026</span></p>
       
-      
-      
-      <aside class="wk-freshness" role="note">
-        <p><b>Not yet updated for 19 merged changes.</b>
-        This page was last checked against Paleblood
-        <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/99951e6375b8fa2fa7120d9af3158f42873ce560"><code>99951e6</code></a>;
-        these pull requests changed what it describes since:</p>
-        <ul>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/441">#441</a> renderer: the logo pass's user data, vertex colours and BC textures (first logo frame)</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/435">#435</a> renderer: depth targets, stencil writes, triangle strips</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/352">#352</a> test: derive packet fixture addresses from the harness</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/418">#418</a> renderer: run compute dispatches</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/416">#416</a> renderer: observe setRenderTarget and the user-data writers</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/414">#414</a> renderer: the GPU library's replacements report to the renderer</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/411">#411</a> render: verify draw calls and register packets (from #233 by @evill33t)</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/365">#365</a> render: verify context section (from #231 by @evill33t)</li>
-          
-          <li>and 11 more</li>
-        </ul>
-      </aside>
       
       <h1 id="render">Render</h1>
-<p class="wk-lede">The render system draws each frame and presents it to the screen. This page covers three mapped pieces: the per-frame render update, the pacing of each present, and one helper from the YEBIS post-processing middleware.</p>
+<p class="wk-lede">The render system draws each frame and presents it to the screen. This page covers the per-frame render update, the pacing of each present, one helper from the YEBIS post-processing middleware, and the GPU helper library compiled into the game: its command writers, state setters, swap chain and shader uploads, and how they now report to Paleblood's renderer.</p>
 
 <div class="wk-glance">
 <p><span class="wk-label">At a glance</span></p>
 <dl>
 <dt>Scope</dt>
-<dd><code>render_frame_update_02377bd0</code>, <code>render_swap_chain_present</code> and <code>render_yebis_get_recursive_sample_parameters</code>.</dd>
+<dd><code>render_frame_update_02377bd0</code>, <code>render_swap_chain_present</code>, <code>render_yebis_get_recursive_sample_parameters</code>, and the GPU helper library's command writers, state setters, swap chain and shader uploads.</dd>
 <dt>Verified</dt>
 <dd>All three: the reference-counted object list, the <abbr title="Vertical blank: the gap between two screen refreshes, when a frame is shown.">vblank</abbr> pacing of the present, and the blur sample counts.</dd>
 <dt>Open</dt>
-<dd>What the listed objects and the two children are; most of draw submission, shaders and post-processing. The first command-buffer, present-record and swap-chain functions are mapped (<abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr>).</dd>
+<dd>What the listed objects and the two children are; the engine's own drawing code above the GPU library, materials and post-processing. Many GPU library functions are mapped and <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr>; they now tell Paleblood's renderer what they set.</dd>
 </dl>
 </div>
 <h2 id="summary">Summary</h2>
@@ -494,7 +466,8 @@ post-processing middleware. Its <code>GPUTexUtil_GetRecursiveSampleParameters</c
 <li>how far apart the first one samples.</li>
 </ul>
 <p>It carries the middleware's own assertions.</p>
-<p>Scope still to map: draw submission, <abbr title="The PS4's low-level graphics API.">GNM</abbr> command buffers, shaders, post-processing.</p>
+<p>Scope still to map: the engine's draw submission above the GPU library, materials and
+post-processing.</p>
 <p>The game's shaders ship as compiled AMD GPU code in its shader bundles. A census tool in the code
 repository decodes the shaders in your own copy and counts the instructions they use, for
 Paleblood's shader translator (Paleblood #316). It prints counts only; no shader code leaves your
@@ -543,6 +516,84 @@ arguments. The first of the engine's own packet writers are mapped, all by <a hr
 <li><strong>fields:</strong> seven setters (<code>0x01486520</code>–<code>0x01486800</code>) replace one field each, keeping the
     rest of the word <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/324">#324</a>, from #236.</li>
 </ul>
+<h3 id="setting-gpu-state-and-drawing">Setting GPU state and drawing</h3>
+<p>The GPU helper library keeps no state of its own: each setter writes its value straight into the
+command buffer as a register packet, and the GPU reads it from there. A large group of setters and
+draw writers was mapped and <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> by <a href="https://github.com/evill33t">@evill33t</a>, each <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> to
+write exactly the original packets:</p>
+<ul>
+<li><strong>Blending and colour output</strong> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/411">#411</a> (from #233): <code>render_set_cb_blend_control</code>
+  (<code>0x01473090</code>, one colour buffer's blend equation, <code>CB_BLENDn_CONTROL</code>),
+  <code>render_set_cb_color_control</code> (<code>0x01473320</code>, the colour output mode and raster operation,
+  <code>CB_COLOR_CONTROL</code>) and <code>render_set_cb_target_mask</code> (<code>0x01472fd0</code>, which colour components each
+  target writes, <code>CB_TARGET_MASK</code>).</li>
+<li><strong>Depth and stencil</strong> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/411">#411</a>: <code>render_set_db_depth_control</code> (<code>0x014733a0</code>, the depth and
+  stencil tests and writes) and <code>render_set_db_stencil_control</code> (<code>0x01473400</code>, the front- and
+  back-face stencil operations).</li>
+<li><strong>What is drawn</strong> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/411">#411</a>: <code>render_set_vgt_primitive_type</code> (<code>0x01473fe0</code>, triangles,
+  strips, rectangles and so on), <code>render_emit_num_instances</code> (<code>0x01475370</code>, how many copies a draw
+  makes), <code>render_emit_draw_index_auto</code> (<code>0x014741b0</code>, a draw of consecutive vertices) and
+  <code>render_emit_event_write</code> (<code>0x01475da0</code>, a GPU event such as a cache flush), with two record
+  helpers (<code>0x01485390</code>, <code>0x014853f0</code>) and the one call that asks the system whether the GPU's
+  performance-analysis mode is on (<code>0x01489c40</code>).</li>
+<li><strong>Where on screen</strong> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/364">#364</a> (from #232): <code>render_configure_viewport</code> (<code>0x014765e0</code>, the
+  viewport's scale, offset and depth range), <code>render_configure_screen_scissor</code> (<code>0x01476790</code>),
+  <code>render_set_screen_offset</code> (<code>0x01473650</code>), the guard-band clip and discard adjustments
+  (<code>0x014736d0</code>, <code>0x01473750</code>) and the viewport-transform controls (<code>0x01476980</code>, <code>0x01485220</code>).</li>
+<li><strong>A present's context section</strong> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/365">#365</a> (from #231): <code>render_emit_present_context_section</code>
+  (<code>0x01472870</code>) reserves room and writes the context registers a present needs.</li>
+</ul>
+<h3 id="command-buffers-swap-chain-and-shader-uploads">Command buffers, swap chain and shader uploads</h3>
+<ul>
+<li><strong>Command buffers</strong> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/360">#360</a> (from #256): <code>render_command_buffer_init</code> (<code>0x01471270</code>) sets up
+  a command buffer's pointers and its "need more room" callback. <code>render_command_submit_batch</code>
+  (<code>0x02ab0ce0</code>), <code>render_command_submit_snapshot</code> (<code>0x02ab0e30</code>) and <code>render_command_submit_present</code>
+  (<code>0x02aafb30</code>) hand finished regions to the system's submit call, with the waits the GPU needs.
+  The room check that every packet writer makes before writing is now shared code <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/291">#291</a>.</li>
+<li><strong>The swap chain</strong> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/361">#361</a> (from #254): <code>render_setup_swap_chain</code> (<code>0x02ad5e90</code>) allocates
+  and registers the swap chain's frame buffers with video out and sets up its cached resource data
+  and tone curves; two cleanups release the curve and the cached record (<code>0x02571c60</code>,
+  <code>0x02572290</code>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/359">#359</a>, from #244).</li>
+<li><strong>The last present record</strong> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/354">#354</a> (from #260): <code>render_present_last_record_consume</code>
+  (<code>0x02ab6810</code>) consumes the final record of a present, or only updates its tracking when the
+  commands do not fit.</li>
+<li><strong>Shaders</strong> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/263">#263</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/363">#363</a> (from #251): <code>render_flush_shader_preparation</code>
+  (<code>0x02ab9850</code>) flushes a pending barrier before a shader event, and <code>render_allocate_shader_upload</code>
+  (<code>0x02aaddc0</code>) finds room of at most 64 KiB for a shader's code, reclaiming once if none is free.</li>
+<li><strong>Resource descriptors</strong> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/357">#357</a> (from #255), <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/358">#358</a> (from #222): the records that
+  describe a texture's layout, its mip levels and their offsets (<code>0x014a1e80</code>, <code>0x014a2c40</code>), its
+  encoding (<code>0x014712d0</code>, <code>0x01471770</code>, <code>0x01489910</code>-<code>0x01489960</code>) and its tiling
+  (<code>0x0149cc60</code>, which converts a tile-mode table index), and how its parameters are derived
+  (<code>0x02abaf10</code>, <code>0x0149cb30</code>).</li>
+</ul>
+<h3 id="how-the-renderer-learns-what-the-game-draws">How the renderer learns what the game draws</h3>
+<p>Paleblood does not replay the finished GPU commands. Instead, the GPU library's replacements, with
+their packets unchanged, also tell Paleblood's renderer what they set, and the renderer draws that
+on your GPU (see <a href="../../runtime/#the-renderer">Runtime: the renderer</a>):</p>
+<ul>
+<li><strong>Observer calls in replacements</strong> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/414">#414</a>: the blend, colour, depth, stencil,
+  primitive-type, instance-count, viewport and draw replacements above each report the same value
+  they write, with the place in the command buffer where they wrote it. Under the verification
+  <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr> the calls do nothing. The depth and stencil clear values and <code>DB_RENDER_CONTROL</code>
+  replacements report too <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/435">#435</a>.</li>
+<li><strong>Observed functions without replacements yet</strong> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/416">#416</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/418">#418</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/435">#435</a>,
+  <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/441">#441</a>: where a library function has no replacement, the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> watches its arguments at
+  its entry and lets the original run. These are <code>setRenderTarget</code> (<code>0x014738b0</code>), the depth target
+  (<code>0x014739b0</code>), the stencil references (<code>0x01473190</code>, <code>0x014731f0</code>), the shaders' user-data writers
+  (<code>0x014761a0</code>-<code>0x014764a0</code>), the indexed-draw setters and draw (<code>0x01475270</code>-<code>0x01475320</code>,
+  <code>0x01474420</code>) and two compute dispatch writers (<code>0x01474c50</code>, <code>0x0148a350</code>).</li>
+</ul>
+<p>This needs the game library built from the decompilation (<code>tools/boot.py --game-lib</code>). In the
+maintainer's local runs it was enough to draw the studio logos and the title screen <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/441">#441</a>.</p>
+<details class="evidence">
+<summary>How the library functions were <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></summary>
+<p>Each replacement above was checked against the original instructions on constructed <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr>,
+which also caught deliberately broken variants; none was checked on recorded game frames. All
+are <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr>. They are <a href="https://github.com/evill33t">@evill33t</a>'s work, brought up to date
+with <code>main</code> and merged from the PRs named in brackets; #362 adds cases for the shader
+preparation's reset modes (from #350) and #352 derives the packet tests' addresses from the
+<abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr>. The observer calls were added afterwards and leave the packets unchanged.</p>
+</details>
 <details class="evidence">
 <summary>How these were <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></summary>
 <p>Each was checked against the original instructions on constructed <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr> by an independent
@@ -1153,7 +1204,11 @@ the frame update was re-<abbr title="A replaced function that behaved exactly li
 <h2 id="open-questions">Open questions</h2>
 <ul>
 <li>What the reference-counted objects in the per-frame list are, and what the two children are.</li>
-<li>Draw submission, <abbr title="The PS4's low-level graphics API.">GNM</abbr> command buffers, shaders and post-processing have not been studied yet.</li>
+<li>The engine's own drawing code above the GPU library, its materials and post-processing have not
+  been studied yet.</li>
+<li>Which <abbr title="Graphics Core Next, the AMD GPU architecture of the PS4.">GCN</abbr> descriptor kinds the user-data writers' NOP markers (<code>0x68750004</code>, <code>0x68750005</code>,
+  <code>0x68750006</code>) name.</li>
+<li>What the fifth argument of the dispatch writers' relatives (<code>0x01474d10</code>, <code>0x0148a410</code>) selects.</li>
 </ul>
       
       </div>
