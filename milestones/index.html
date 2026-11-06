@@ -403,6 +403,8 @@
           
           <li><a href="#what-the-screen-shows" class="wk-toc-link">What the screen shows</a></li>
           
+          <li><a href="#visual-history-frames-from-palebloods-renderer" class="wk-toc-link">Visual history: frames from Paleblood's renderer</a></li>
+          
         </ol>
       </nav>
       
@@ -412,11 +414,11 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 6, 2026 21:02:57 UTC">November 6, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 6, 2026 22:03:17 UTC">November 6, 2026</span></p>
       
       
       <h1 id="milestones">Milestones</h1>
-<p class="wk-lede">The project's milestones in pictures: how far the game gets on Paleblood's own runtime, from the first recorded boot to the latest. Everything on this page is generated from the saved boot records by <code>tools/sync_progress.py</code>; nothing is drawn by hand.</p>
+<p class="wk-lede">The project's milestones in pictures: how far the game gets on Paleblood's own runtime, from the first recorded boot to the latest. The boot journey is generated from the saved boot records by <code>tools/sync_progress.py</code>; the frames below were drawn by Paleblood's own renderer.</p>
 
 <h2 id="the-boot-journey">The boot journey</h2>
 <p>Each point is one recorded boot of merged <code>main</code>, and its height is the furthest milestone that
@@ -505,10 +507,40 @@ own renderer draws them: in the maintainer's local runs with the display on, the
 studio logos and reaches the title screen (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/441">#441</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/442">#442</a>). The saved boot records above run
 with the display off, so they do not show this. The renderer's phases are on the
 <a href="../runtime/#the-renderer">Runtime</a> page.</p>
-<p>Frames from those runs may appear here once each one has passed review. Each image
-is reviewed on its own before it is published, as the <a href="../MEDIA_POLICY/">media review</a> requires:
-its source, what it shows, how much of it is needed, and the maintainer's approval. Nothing
-from another project, and no extracted game assets, appear on this page.</p>
+<h2 id="visual-history-frames-from-palebloods-renderer">Visual history: frames from Paleblood's renderer</h2>
+<p>These are the game's own frames, drawn on a PC by Paleblood's <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> and renderer from the
+maintainer's own copy, at full resolution as rendered (1920x1080), in the order they first
+appeared. Each passed the <a href="../MEDIA_POLICY/">media review</a> on its own. Nothing here comes from
+another project, and no extracted game assets appear on this page. <em>Bloodborne</em> and its logos and
+art are © Sony Interactive Entertainment / FromSoftware; they are shown as evidence of technical
+milestones. Times are when the pull request that made each frame possible merged (UTC).</p>
+<p><strong>Before 6 November 2026: black.</strong> The game ran its frames and flipped them
+(<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/310">#310</a>), and the display showed them
+(<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/313">#313</a>), but nothing drew into them. From
+<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/369">#369</a> (6 November, 07:20) the renderer was
+wired into the running game, waiting for the game's drawing calls to reach it.</p>
+<figure>
+<p><img alt="A flat mid-grey 1920x1080 frame" src="../assets/media/milestones/2026-11-06-first-non-black-frame-grey-lut-pass.png" /></p>
+<figcaption>6 November, 18:18 (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/433">#433</a>): the first non-black frame. The game's compute pass clears its image to grey and its full-screen colour pass carries it to the screen; grey is the correct output of that pass. It proved the whole path: compute, the PS4's tiled image layouts, descriptors read from game memory, texture sampling, the draw and the flip.</figcaption>
+</figure>
+<figure>
+<p><img alt="The words &quot;Sony Computer Entertainment presents&quot; in grey on a black screen" src="../assets/media/milestones/2026-11-06-first-logo-frame-sce-presents.png" /></p>
+<figcaption>6 November, 20:26 (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/441">#441</a>): the first logo. The game's own logo pass, with its indexed draws, vertex colours and a BC7 texture, drawn through the renderer.</figcaption>
+</figure>
+<figure>
+<p><img alt="The JAPAN Studio logo on a black screen" src="../assets/media/milestones/2026-11-06-logo-japan-studio.png" /></p>
+<figcaption>6 November, 20:46 (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/442">#442</a>): once the renderer ran about 22 times faster, the boot reached the later logos. The JAPAN Studio card matches a reference capture pixel for pixel in the maintainer's local runs.</figcaption>
+</figure>
+<figure>
+<p><img alt="The FROM SOFTWARE logo on a black screen" src="../assets/media/milestones/2026-11-06-logo-from-software.png" /></p>
+<figcaption>The FROM SOFTWARE card, from the same runs, also identical to the reference.</figcaption>
+</figure>
+<figure>
+<p><img alt="Bloodborne's title screen: a hunter seen from behind in a dark Yharnam street, the Bloodborne logo, and the Play Online and Play Offline menu" src="../assets/media/milestones/2026-11-06-title-screen.png" /></p>
+<figcaption>The title screen, from the same runs (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/442">#442</a>). It differs from the reference only in the animated menu highlight (0.7% of pixels<!-- number:ok -->).</figcaption>
+</figure>
+<p>New frames are added here as later milestones are reached: the menus after the title, character
+creation, and the first 3D scene.</p>
       
       </div>
 
