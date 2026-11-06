@@ -355,6 +355,21 @@
  "runtime.md": {
   "behind": [
    {
+    "commit": "9755afbc02dc",
+    "pr": 442,
+    "title": "renderer: targets move only when needed; unset user data stops (title screen)"
+   },
+   {
+    "commit": "4a3bed6a6f47",
+    "pr": 441,
+    "title": "renderer: the logo pass's user data, vertex colours and BC textures (first logo frame)"
+   },
+   {
+    "commit": "4569dcde0782",
+    "pr": 438,
+    "title": "renderer: GPU state carries over from buffer to buffer"
+   },
+   {
     "commit": "37ef7af5a818",
     "pr": 437,
     "title": "renderer: format stores check only the format's selectors"
@@ -649,6 +664,11 @@
  },
  "systems/render.md": {
   "behind": [
+   {
+    "commit": "4a3bed6a6f47",
+    "pr": 441,
+    "title": "renderer: the logo pass's user data, vertex colours and BC textures (first logo frame)"
+   },
    {
     "commit": "da172c02608f",
     "pr": 435,
