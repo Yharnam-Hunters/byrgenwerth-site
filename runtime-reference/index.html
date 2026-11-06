@@ -1178,7 +1178,7 @@ reported installed (<code>runtime/syslib/playgo.c</code>).</p>
 <tr>
 <td data-label="Call"><code>scePlayGoSetInstallSpeed(handle, speed)</code></td>
 <td data-label="Shape (from the executable&#x27;s own calls)">called through a function pointer (<code>0x023dd891</code>) with 1 (trickle) or 2 (full); 0 is suspended</td>
-<td data-label="Runtime">records it (everything is installed); an unknown handle <code>0x80B20009</code>, before initialize <code>0x80B20005</code>, another speed <code>0x80B20004</code> (shadPS4's <code>libScePlayGo</code>)</td>
+<td data-label="Runtime">accepts it (everything is installed, so there is nothing to pace; nothing reads it back); an unknown handle <code>0x80B20009</code>, before initialize <code>0x80B20005</code>, another speed <code>0x80B20004</code> (shadPS4's <code>libScePlayGo</code>)</td>
 </tr>
 </tbody>
 </table></div>
@@ -1392,6 +1392,27 @@ cancel out, and buttons combine. The default layout (<code>rt_default_keys</code
 <p>The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>'s choices: the L2 and R2 bits are set while their trigger is off zero; touch ids count
 0..127 and wrap, down fingers listed first; a held vibration is sent to SDL again every 30
 seconds, as SDL's rumble lasts at most about 65.</p>
+<p><strong>Scripted input (<code>pbboot --input-script SPEC</code>, <code>tools/boot.py --no-record --input-script SPEC</code>).</strong>
+For unattended boots, a timed script plays the controller through the same backend interface
+(<code>runtime/input/input_script.c</code>); it works with any <code>--display</code> mode and cannot be combined with
+<code>--input host</code>. SPEC is the script, or <code>@FILE</code> to read it from a file. Events are separated by
+commas, semicolons or new lines, and <code>#</code> starts a comment. Each event is <code>WHEN:CONTROLS[*HOLD]</code>:</p>
+<ul>
+<li><code>WHEN</code> is seconds since the process started (<code>45</code>, <code>45.5s</code>) or frames presented by video out's
+  first port (<code>700f</code>). Frames follow the game's own progress, so they suit a slow boot; seconds
+  need no display.</li>
+<li><code>CONTROLS</code> are names joined by <code>+</code>: <code>cross circle square triangle up down left right l1 r1 l2 r2
+  l3 r3 options touch</code>, and the stick directions <code>lstick-up lstick-down lstick-left lstick-right</code>
+  and <code>rstick-up</code> ... <code>rstick-right</code> at full deflection. A scripted trigger is fully pressed.</li>
+<li>The controls are held from <code>WHEN</code> for <code>HOLD</code>, on the same clock (default 0.25 s or 4 frames),
+  then released; overlapping events combine.</li>
+</ul>
+<p>pbboot writes <code>pbboot: input script: event N starts (S s, frame F)</code> when the title first reads
+the pad during an event, so a run's log shows when each press landed. For example:</p>
+<div class="language-text highlight"><span class="filename">Text Only</span><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1"></a><a href="#__codelineno-1-1"><span class="linenos" data-linenos="1 "></span></a>python3 tools/boot.py --no-record --display headless --input-script "45:down,47:cross"
+</code></pre></div>
+<p>A malformed event, an unknown control, a hold on the other clock, more than 256 events or a script
+file over 64 KiB is refused before the boot, naming the event.</p>
 <p>Fields the executable does not read are left zero. <strong>Not modelled:</strong> motion. The accelerometer
 and gyroscope are not forwarded, because the units and axes the system reports them in are not
 established here (shadPS4 scales SDL's m/s² by 0.098 without a source); acceleration and angular

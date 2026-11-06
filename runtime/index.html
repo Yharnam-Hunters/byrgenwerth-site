@@ -424,7 +424,7 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 6, 2026 21:52:44 UTC">November 6, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 6, 2026 22:23:57 UTC">November 6, 2026</span></p>
       
       
       <h1 id="runtime">Runtime</h1>
@@ -482,7 +482,11 @@ FFmpeg is optional when building: without it, opening a movie stops by name.</p>
 <p><strong>Controller input.</strong> With <code>--input host</code> (and a window, <code>--display window</code>) the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> reads
 your first gamepad and the keyboard through SDL3 and fills in the game's controller state:
 buttons, sticks, triggers, touch pad and vibration (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/431">#431</a>). The default is <code>--input none</code>:
-one controller at rest, so recorded boots and CI see the same state every time.</p>
+one controller at rest, so recorded boots and CI see the same state every time. For unattended
+runs, <code>--input-script</code> plays timed button presses (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/447">#447</a>). In the maintainer's local runs it selects
+"Play Offline" on the title screen; the game starts creating its save data and then stops at
+<code>sceKernelWrite</code>, which contributor <a href="https://github.com/EzequielRindello">@EzequielRindello</a> is
+implementing in <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/444">#444</a>.</p>
 <p><strong>Function replacements and <abbr title="14-byte jumps written over the start of original functions, sending their callers to the replacements.">hooks</abbr>.</strong> The project's plug-in receives the guest image and a
 <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr>-install callback, then registers its function replacements. Paleblood now also provides a small
 implementation of the version-1 <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> callback:</p>
