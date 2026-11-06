@@ -1,19 +1,19 @@
 {
   "edge_verified": {
-    "bytes": 32208,
-    "bytes_pct": 0.08,
-    "functions": 121,
-    "functions_pct": 0.08
+    "bytes": 41221,
+    "bytes_pct": 0.1,
+    "functions": 149,
+    "functions_pct": 0.09
   },
   "inputs": {
-    "functions_sha256": "48e85e93958dac9fd92666e893951436349df332e31cff126d0c6c41f8c3bd99",
+    "functions_sha256": "a537a819c0ed9265c398271569acd6afc23bb422fef3bbfaeb0b30a0ed66bd56",
     "ghidra_functions_sha256": "fc7e244dc9f211963118a9ab97716de03e0f342421c63cafc9a8ae747abb8ebd"
   },
   "replaced": {
-    "bytes": 32208,
-    "bytes_pct": 0.08,
-    "functions": 121,
-    "functions_pct": 0.08
+    "bytes": 41221,
+    "bytes_pct": 0.1,
+    "functions": 149,
+    "functions_pct": 0.09
   },
   "runtime": {
     "fault": null,
@@ -25,12 +25,12 @@
       "symbol": "scePlayGoInitialize"
     },
     "imports_bundled": 219,
-    "imports_covered": 369,
-    "imports_implemented": 150,
-    "imports_pct": 53.79,
-    "imports_remaining": 317,
+    "imports_covered": 371,
+    "imports_implemented": 152,
+    "imports_pct": 54.08,
+    "imports_remaining": 315,
     "imports_total": 686,
-    "imports_unbound": 314,
+    "imports_unbound": 312,
     "imports_unresolved": 3,
     "milestone": "first flip",
     "milestone_index": 8,
@@ -205,7 +205,7 @@
       "bytes": 677827,
       "end": "0x0125a72f",
       "functions": 2746,
-      "replaced_bytes": 447,
+      "replaced_bytes": 465,
       "start": "0x011ab79c",
       "verified_bytes": 0
     },
@@ -237,7 +237,7 @@
       "bytes": 681944,
       "end": "0x0151657b",
       "functions": 2543,
-      "replaced_bytes": 3439,
+      "replaced_bytes": 6643,
       "start": "0x014675e8",
       "verified_bytes": 0
     },
@@ -429,7 +429,7 @@
       "bytes": 644042,
       "end": "0x0257db43",
       "functions": 2095,
-      "replaced_bytes": 0,
+      "replaced_bytes": 94,
       "start": "0x024cebb0",
       "verified_bytes": 0
     },
@@ -493,7 +493,7 @@
       "bytes": 657317,
       "end": "0x02af57db",
       "functions": 3151,
-      "replaced_bytes": 2286,
+      "replaced_bytes": 7983,
       "start": "0x02a46848",
       "verified_bytes": 0
     },
@@ -584,10 +584,10 @@
       "verified": 1
     },
     "engine": {
-      "edge_verified": 15,
-      "replaced": 15,
-      "replaced_bytes": 843,
-      "tracked": 15,
+      "edge_verified": 16,
+      "replaced": 16,
+      "replaced_bytes": 861,
+      "tracked": 16,
       "verified": 0
     },
     "event": {
@@ -626,10 +626,10 @@
       "verified": 1
     },
     "render": {
-      "edge_verified": 37,
-      "replaced": 37,
-      "replaced_bytes": 7578,
-      "tracked": 37,
+      "edge_verified": 64,
+      "replaced": 64,
+      "replaced_bytes": 16573,
+      "tracked": 64,
       "verified": 3
     }
   },
@@ -638,8 +638,8 @@
     "functions": 157757
   },
   "tracked": {
-    "bytes": 32383,
-    "functions": 123
+    "bytes": 41396,
+    "functions": 151
   },
   "verified": {
     "bytes": 14010,

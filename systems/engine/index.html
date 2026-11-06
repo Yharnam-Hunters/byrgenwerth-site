@@ -380,7 +380,7 @@
       <span class="wk-stat-track" role="img" aria-label="0.033 percent of target code bytes verified">
         <span class="wk-stat-fill" style="width:0.033%"></span>
       </span>
-      <span class="wk-progress-foot">0.033% of code bytes verified · 121 replaced</span>
+      <span class="wk-progress-foot">0.033% of code bytes verified · 149 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -417,11 +417,13 @@
       
       
       <aside class="wk-freshness" role="note">
-        <p><b>Not yet updated for 2 merged changes.</b>
+        <p><b>Not yet updated for 3 merged changes.</b>
         This page was last checked against Paleblood
         <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/67db79f0ea96a2e9adbabed155cae356c30f7949"><code>67db79f</code></a>;
         these pull requests changed what it describes since:</p>
         <ul>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/125">#125</a> engine: replace ASCII lowercase byte mapping</li>
           
           <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/337">#337</a> engine: replace string append helpers (from #118 by @evill33t)</li>
           
@@ -551,6 +553,13 @@ on current <code>main</code>, and an independent review approved it.</p>
 <td data-label="Name"><code>engine_string_append_counted</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">Bounded string append uses low32 count; zero count touches neither pointer; appends NUL after count bytes when needed</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x011c48f0</code></td>
+<td style="text-align: right;" data-label="Size">18</td>
+<td data-label="Name"><code>engine_ascii_to_lower</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">ASCII lowercase of the low input byte; sign-extend the result byte to 32 bits; the upper 32 bits of RAX are zero</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x011c4910</code></td>

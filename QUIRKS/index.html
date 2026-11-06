@@ -380,7 +380,7 @@
       <span class="wk-stat-track" role="img" aria-label="0.033 percent of target code bytes verified">
         <span class="wk-stat-fill" style="width:0.033%"></span>
       </span>
-      <span class="wk-progress-foot">0.033% of code bytes verified · 121 replaced</span>
+      <span class="wk-progress-foot">0.033% of code bytes verified · 149 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -623,7 +623,11 @@ jumps.</p>
 <code>0x3c088889</code> (1/120 s). A replacement must reproduce the reachable patched routes, including
 their float operand order, rather than keep the stock time step because one isolated edit
 looks invalid. Retain the exact XML revision and replay all its writes before reasoning about
-option coverage; other revisions may differ.</p>
+option coverage; other revisions may differ. The file at that commit has SHA-256
+<code>cb85bec1aa772b1092327b231bcf81e42b8670d73a0a7032cf061e6da9d29e00</code>: check yours before
+<code>tools/patch_overlap.py</code> or <code>tools/verify.py --patch</code>. Any other patch file can differ (it may
+lack lines such as the <code>60 FPS++</code> write at <code>0x0183E2B2</code>), so a check against it can fail where
+the community patches don't, or miss an edit they make.</p>
 <h2 id="unknown-fmod-thread-names-do-not-initialize-the-affinity-output">Unknown FMOD thread names do not initialize the affinity output</h2>
 <p>The thread-name affinity lookup (<code>0x0111a8c0</code>) returns zero even when no name matches, leaving
 its output untouched. Its thread-creation caller (<code>0x0111a9f0</code>) passes an uninitialized stack

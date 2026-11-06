@@ -380,7 +380,7 @@
       <span class="wk-stat-track" role="img" aria-label="0.033 percent of target code bytes verified">
         <span class="wk-stat-fill" style="width:0.033%"></span>
       </span>
-      <span class="wk-progress-foot">0.033% of code bytes verified · 121 replaced</span>
+      <span class="wk-progress-foot">0.033% of code bytes verified · 149 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -426,6 +426,26 @@
       
       <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 5, 2026 20:38:25 UTC">November 5, 2026</span></p>
       
+      
+      
+      <aside class="wk-freshness" role="note">
+        <p><b>Not yet updated for 4 merged changes.</b>
+        This page was last checked against Paleblood
+        <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/0cafed06400e7a9d5fd7b2d4a7ddb9b1d07d9db9"><code>0cafed0</code></a>;
+        these pull requests changed what it describes since:</p>
+        <ul>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/353">#353</a> runtime: implement pthread_cond_timedwait</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/351">#351</a> runtime: implement nanosleep</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/227">#227</a> runtime: prepare owned module TLS before guest startup</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/229">#229</a> runtime: preserve the complete VideoOut buffer-attribute wire</li>
+          
+          
+        </ul>
+      </aside>
       
       <h1 id="runtime">Runtime</h1>
 <p class="wk-lede">Paleblood is building a runtime of its own. A runtime is the software that loads a program and provides the system services it expects.</p>
@@ -496,7 +516,7 @@ the originals during a boot. Without the option the boot runs the original code 
 <tbody>
 <tr>
 <td>System imports provided</td>
-<td>369 of 686 (53.79%): 219 by the game's own modules, 150 by the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>; 317 remaining</td>
+<td>371 of 686 (54.08%): 219 by the game's own modules, 152 by the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>; 315 remaining</td>
 </tr>
 <tr>
 <td>Furthest boot milestone</td>
@@ -659,13 +679,13 @@ Paleblood's function table; see the <a href="../progress/">progress dashboard</a
 </tr>
 <tr>
 <td>Replaced</td>
-<td style="text-align: right;">121 (0.08%)</td>
-<td style="text-align: right;">32,208 (0.08%)</td>
+<td style="text-align: right;">149 (0.09%)</td>
+<td style="text-align: right;">41,221 (0.10%)</td>
 </tr>
 <tr>
 <td>Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> (includes <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>)</td>
-<td style="text-align: right;">121 (0.08%)</td>
-<td style="text-align: right;">32,208 (0.08%)</td>
+<td style="text-align: right;">149 (0.09%)</td>
+<td style="text-align: right;">41,221 (0.10%)</td>
 </tr>
 <tr>
 <td>Verified</td>
@@ -721,11 +741,11 @@ Paleblood's function table; see the <a href="../progress/">progress dashboard</a
 </tr>
 <tr>
 <td>engine</td>
-<td style="text-align: right;">15</td>
-<td style="text-align: right;">15</td>
-<td style="text-align: right;">15</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">16</td>
 <td style="text-align: right;">0</td>
-<td style="text-align: right;">843</td>
+<td style="text-align: right;">861</td>
 </tr>
 <tr>
 <td>event</td>
@@ -777,11 +797,11 @@ Paleblood's function table; see the <a href="../progress/">progress dashboard</a
 </tr>
 <tr>
 <td>render</td>
-<td style="text-align: right;">37</td>
-<td style="text-align: right;">37</td>
-<td style="text-align: right;">37</td>
+<td style="text-align: right;">64</td>
+<td style="text-align: right;">64</td>
+<td style="text-align: right;">64</td>
 <td style="text-align: right;">3</td>
-<td style="text-align: right;">7,578</td>
+<td style="text-align: right;">16,573</td>
 </tr>
 </tbody>
 </table></div>
