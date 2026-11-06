@@ -2079,6 +2079,18 @@ flags 0 (<code>O_RDONLY</code>) and mode 0555.</p>
   descriptor (the title only passes it back). One the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> did not hand out is <code>EBADF</code>.
 - <strong>Seeking.</strong> A whence other than 0, 1 or 2 (<code>SEEK_SET</code>, <code>SEEK_CUR</code>, <code>SEEK_END</code>, the same on
   FreeBSD and Linux), and a seek before the start, are <code>EINVAL</code>.</p>
+<h3 id="truncating-and-renaming">Truncating and renaming</h3>
+<p><code>sceKernelFtruncate(fd, length)</code> is FreeBSD's <code>ftruncate(2)</code> under its SCE name (shape from the
+OpenOrbis homebrew SDK's <code>libkernel.h</code>). The title reaches it after Play Offline, while it creates
+its save data: its file object cuts its file at its current position (<code>0x02473290</code>). The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>
+passes the length to the host. A negative length, and a descriptor opened without write
+permission, are <code>EINVAL</code> (FreeBSD's <code>truncate(2)</code>; Linux answers the same); one the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> did not
+hand out is <code>EBADF</code>. Any other host error stops by name.</p>
+<p><code>sceKernelRename(from, to)</code> is FreeBSD's <code>rename(2)</code> (shape from <code>libkernel.h</code>); the title calls it
+(<code>0x02474a85</code>) while it creates its save data. The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> renames the host file, replacing an
+existing <code>to</code> as <code>rename(2)</code> does. Paths on two different mounts are <code>EXDEV</code> (<code>rename(2)</code>: "on
+different logical devices"); on the read-only <code>/app0</code> <code>EROFS</code>, after the lookup; a missing file or
+directory component <code>ENOENT</code> or <code>ENOTDIR</code>. Any other host error stops by name.</p>
 <h2 id="memory-protection-queries-scekernelquerymemoryprotection-issue-34">Memory protection queries (<code>sceKernelQueryMemoryProtection</code>, issue #34)</h2>
 <p><code>sceKernelQueryMemoryProtection(void *address, void **start, void **end, int32_t *protection)</code>, as
 the OpenOrbis homebrew SDK's <code>libkernel.h</code> declares it, gives the protection of the mapping that
