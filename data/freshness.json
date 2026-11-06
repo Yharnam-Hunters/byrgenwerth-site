@@ -109,32 +109,11 @@
  },
  "runtime-syscalls.md": {
   "behind": [],
-  "reviewed": "49e5230c55a38a9af709b60ab87518eafd7f7f2f"
+  "reviewed": "2212b93a43eb753c0a277f77421bb98f5e0e4bb5"
  },
  "runtime.md": {
-  "behind": [
-   {
-    "commit": "915e1a0efc2c",
-    "pr": 353,
-    "title": "runtime: implement pthread_cond_timedwait"
-   },
-   {
-    "commit": "bf29c4adc229",
-    "pr": 351,
-    "title": "runtime: implement nanosleep"
-   },
-   {
-    "commit": "cfd306146202",
-    "pr": 227,
-    "title": "runtime: prepare owned module TLS before guest startup"
-   },
-   {
-    "commit": "26d640cdcc44",
-    "pr": 229,
-    "title": "runtime: preserve the complete VideoOut buffer-attribute wire"
-   }
-  ],
-  "reviewed": "0cafed06400e7a9d5fd7b2d4a7ddb9b1d07d9db9"
+  "behind": [],
+  "reviewed": "2212b93a43eb753c0a277f77421bb98f5e0e4bb5"
  },
  "systems/ai.md": {
   "behind": [],
