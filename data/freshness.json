@@ -6,6 +6,21 @@
  "CONTRIBUTING.md": {
   "behind": [
    {
+    "commit": "5fe11d6bf658",
+    "pr": 430,
+    "title": "tools: test/syslib/ files count as runtime tests"
+   },
+   {
+    "commit": "1ca1b564fdbe",
+    "pr": 429,
+    "title": "Boot record: 234 imports answered by the runtime"
+   },
+   {
+    "commit": "fcac4620fe03",
+    "pr": 417,
+    "title": "tools: session_report --verify takes a verify.py run's output"
+   },
+   {
     "commit": "228e97ff918c",
     "pr": 408,
     "title": "Boot record: the game keeps running until the time limit"
@@ -54,6 +69,16 @@
  },
  "index.md": {
   "behind": [
+   {
+    "commit": "1ca1b564fdbe",
+    "pr": 429,
+    "title": "Boot record: 234 imports answered by the runtime"
+   },
+   {
+    "commit": "4c3e3dab75b6",
+    "pr": 411,
+    "title": "render: verify draw calls and register packets (from #233 by @evill33t)"
+   },
    {
     "commit": "228e97ff918c",
     "pr": 408,
@@ -159,6 +184,46 @@
  },
  "runtime-syscalls.md": {
   "behind": [
+   {
+    "commit": "44a6fe52dccc",
+    "pr": 431,
+    "title": "runtime: host controller input for libScePad (--input none|host)"
+   },
+   {
+    "commit": "da5d6fc4043d",
+    "pr": 426,
+    "title": "runtime: semaphores with priority order wake the best-priority waiter"
+   },
+   {
+    "commit": "6a04b66a1fc2",
+    "pr": 423,
+    "title": "runtime: sceKernelMapDirectMemory accepts no-overwrite (0x80)"
+   },
+   {
+    "commit": "c5d206a08e37",
+    "pr": 422,
+    "title": "runtime: sceKernelQueryMemoryProtection answers start and end"
+   },
+   {
+    "commit": "37e53987b7cb",
+    "pr": 420,
+    "title": "runtime: the movie player's sound port (1024 samples, formats 0 to 5)"
+   },
+   {
+    "commit": "6397e3b04911",
+    "pr": 419,
+    "title": "runtime: the movie player (libSceAvPlayer), decoding with FFmpeg"
+   },
+   {
+    "commit": "29405ca40036",
+    "pr": 418,
+    "title": "renderer: run compute dispatches"
+   },
+   {
+    "commit": "c1f12c010d71",
+    "pr": 412,
+    "title": "renderer: record the shaders the game binds (sceGnmSetVsShader, sceGnmSetPsShader)"
+   },
    {
     "commit": "b26f41cd82e1",
     "pr": 410,
@@ -289,6 +354,116 @@
  },
  "runtime.md": {
   "behind": [
+   {
+    "commit": "37ef7af5a818",
+    "pr": 437,
+    "title": "renderer: format stores check only the format's selectors"
+   },
+   {
+    "commit": "252e2635ada8",
+    "pr": 436,
+    "title": "renderer: vertex shaders calling fetch shaders"
+   },
+   {
+    "commit": "da172c02608f",
+    "pr": 435,
+    "title": "renderer: depth targets, stencil writes, triangle strips"
+   },
+   {
+    "commit": "815df68116b0",
+    "pr": 434,
+    "title": "renderer: blending"
+   },
+   {
+    "commit": "f698a12c0781",
+    "pr": 433,
+    "title": "renderer: image_sample with the shader's sampler (first non-black frame)"
+   },
+   {
+    "commit": "d1b06747439a",
+    "pr": 432,
+    "title": "renderer: image descriptors loaded from memory"
+   },
+   {
+    "commit": "44a6fe52dccc",
+    "pr": 431,
+    "title": "runtime: host controller input for libScePad (--input none|host)"
+   },
+   {
+    "commit": "aabab343baa5",
+    "pr": 428,
+    "title": "renderer: images from guest texels, pixel shaders' image_load_mip"
+   },
+   {
+    "commit": "c0b22d383665",
+    "pr": 427,
+    "title": "renderer: GFX7 tiled image layouts (linear, 1D and 2D thin)"
+   },
+   {
+    "commit": "da5d6fc4043d",
+    "pr": 426,
+    "title": "runtime: semaphores with priority order wake the best-priority waiter"
+   },
+   {
+    "commit": "41817d6c7164",
+    "pr": 425,
+    "title": "renderer: pixel position inputs, VCC outside compute, whole quad mode"
+   },
+   {
+    "commit": "32a79765bbcc",
+    "pr": 424,
+    "title": "renderer: compute shaders' storage images, and swizzled format loads"
+   },
+   {
+    "commit": "6a04b66a1fc2",
+    "pr": 423,
+    "title": "runtime: sceKernelMapDirectMemory accepts no-overwrite (0x80)"
+   },
+   {
+    "commit": "c5d206a08e37",
+    "pr": 422,
+    "title": "runtime: sceKernelQueryMemoryProtection answers start and end"
+   },
+   {
+    "commit": "13e19769c60f",
+    "pr": 421,
+    "title": "renderer: run-time stop channel, descriptor-format buffer accesses, 40-bit descriptor bases"
+   },
+   {
+    "commit": "37e53987b7cb",
+    "pr": 420,
+    "title": "runtime: the movie player's sound port (1024 samples, formats 0 to 5)"
+   },
+   {
+    "commit": "6397e3b04911",
+    "pr": 419,
+    "title": "runtime: the movie player (libSceAvPlayer), decoding with FFmpeg"
+   },
+   {
+    "commit": "29405ca40036",
+    "pr": 418,
+    "title": "renderer: run compute dispatches"
+   },
+   {
+    "commit": "fd02d7eba3c9",
+    "pr": 416,
+    "title": "renderer: observe setRenderTarget and the user-data writers"
+   },
+   {
+    "commit": "68d6f82d8fd5",
+    "pr": 415,
+    "title": "renderer: draw rect lists"
+   },
+   {
+    "commit": "e652c0b5bc3d",
+    "pr": 414,
+    "title": "renderer: the GPU library's replacements report to the renderer"
+   },
+   {
+    "commit": "c1f12c010d71",
+    "pr": 412,
+    "title": "renderer: record the shaders the game binds (sceGnmSetVsShader, sceGnmSetPsShader)"
+   },
    {
     "commit": "c9077c3a765b",
     "pr": 406,
@@ -474,6 +649,36 @@
  },
  "systems/render.md": {
   "behind": [
+   {
+    "commit": "da172c02608f",
+    "pr": 435,
+    "title": "renderer: depth targets, stencil writes, triangle strips"
+   },
+   {
+    "commit": "12c0602f11dc",
+    "pr": 352,
+    "title": "test: derive packet fixture addresses from the harness"
+   },
+   {
+    "commit": "29405ca40036",
+    "pr": 418,
+    "title": "renderer: run compute dispatches"
+   },
+   {
+    "commit": "fd02d7eba3c9",
+    "pr": 416,
+    "title": "renderer: observe setRenderTarget and the user-data writers"
+   },
+   {
+    "commit": "e652c0b5bc3d",
+    "pr": 414,
+    "title": "renderer: the GPU library's replacements report to the renderer"
+   },
+   {
+    "commit": "4c3e3dab75b6",
+    "pr": 411,
+    "title": "render: verify draw calls and register packets (from #233 by @evill33t)"
+   },
    {
     "commit": "3c21c6965b2a",
     "pr": 365,

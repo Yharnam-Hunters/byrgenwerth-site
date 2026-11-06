@@ -380,7 +380,7 @@
       <span class="wk-stat-track" role="img" aria-label="0.033 percent of target code bytes verified">
         <span class="wk-stat-fill" style="width:0.033%"></span>
       </span>
-      <span class="wk-progress-foot">0.033% of code bytes verified · 149 replaced</span>
+      <span class="wk-progress-foot">0.033% of code bytes verified · 161 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -429,29 +429,29 @@
       
       
       <aside class="wk-freshness" role="note">
-        <p><b>Not yet updated for 24 merged changes.</b>
+        <p><b>Not yet updated for 46 merged changes.</b>
         This page was last checked against Paleblood
         <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/0b27c1a7a29a7e87ec9ab227d3ed8b877b96e460"><code>0b27c1a</code></a>;
         these pull requests changed what it describes since:</p>
         <ul>
           
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/406">#406</a> runtime: play the title's sound on the host (--audio host)</li>
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/437">#437</a> renderer: format stores check only the format's selectors</li>
           
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/405">#405</a> runtime: offline trophies, and PlayGo's install speed</li>
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/436">#436</a> renderer: vertex shaders calling fetch shaders</li>
           
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/396">#396</a> runtime: the splash screen and the system status</li>
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/435">#435</a> renderer: depth targets, stencil writes, triangle strips</li>
           
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/395">#395</a> gnm: skip an indexed draw's packets</li>
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/434">#434</a> renderer: blending</li>
           
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/398">#398</a> runtime: decode ATRAC9 audio with LibAtrac9</li>
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/433">#433</a> renderer: image_sample with the shader's sampler (first non-black frame)</li>
           
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/402">#402</a> runtime: save data, kept in a host folder and mounted as /savedataN</li>
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/432">#432</a> renderer: image descriptors loaded from memory</li>
           
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/401">#401</a> renderer: record the registers the GPU library sets, and the instance count</li>
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/431">#431</a> runtime: host controller input for libScePad (--input none|host)</li>
           
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/392">#392</a> runtime: the title's add-ons, as the person running it owns them</li>
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/428">#428</a> renderer: images from guest texels, pixel shaders' image_load_mip</li>
           
-          <li>and 16 more</li>
+          <li>and 38 more</li>
         </ul>
       </aside>
       
@@ -525,7 +525,7 @@ the originals during a boot. Without the option the boot runs the original code 
 <tbody>
 <tr>
 <td>System imports provided</td>
-<td>437 of 686 (63.70%): 219 by the game's own modules, 218 by the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>; 249 remaining</td>
+<td>453 of 686 (66.03%): 219 by the game's own modules, 234 by the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>; 233 remaining</td>
 </tr>
 <tr>
 <td>Furthest boot milestone</td>
@@ -714,13 +714,13 @@ Paleblood's function table; see the <a href="../progress/">progress dashboard</a
 </tr>
 <tr>
 <td>Replaced</td>
-<td style="text-align: right;">149 (0.09%)</td>
-<td style="text-align: right;">41,221 (0.10%)</td>
+<td style="text-align: right;">161 (0.10%)</td>
+<td style="text-align: right;">42,198 (0.10%)</td>
 </tr>
 <tr>
 <td>Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> (includes <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>)</td>
-<td style="text-align: right;">149 (0.09%)</td>
-<td style="text-align: right;">41,221 (0.10%)</td>
+<td style="text-align: right;">161 (0.10%)</td>
+<td style="text-align: right;">42,198 (0.10%)</td>
 </tr>
 <tr>
 <td>Verified</td>
@@ -832,11 +832,11 @@ Paleblood's function table; see the <a href="../progress/">progress dashboard</a
 </tr>
 <tr>
 <td>render</td>
-<td style="text-align: right;">64</td>
-<td style="text-align: right;">64</td>
-<td style="text-align: right;">64</td>
+<td style="text-align: right;">76</td>
+<td style="text-align: right;">76</td>
+<td style="text-align: right;">76</td>
 <td style="text-align: right;">3</td>
-<td style="text-align: right;">16,573</td>
+<td style="text-align: right;">17,550</td>
 </tr>
 </tbody>
 </table></div>

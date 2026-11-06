@@ -1,34 +1,34 @@
 {
   "edge_verified": {
-    "bytes": 41221,
+    "bytes": 42198,
     "bytes_pct": 0.1,
-    "functions": 149,
-    "functions_pct": 0.09
+    "functions": 161,
+    "functions_pct": 0.1
   },
   "inputs": {
-    "functions_sha256": "a537a819c0ed9265c398271569acd6afc23bb422fef3bbfaeb0b30a0ed66bd56",
+    "functions_sha256": "4cac15077dbad9519e386995c2d59a35c5f320938c9d69be78ae5566b440e4a7",
     "ghidra_functions_sha256": "fc7e244dc9f211963118a9ab97716de03e0f342421c63cafc9a8ae747abb8ebd"
   },
   "replaced": {
-    "bytes": 41221,
+    "bytes": 42198,
     "bytes_pct": 0.1,
-    "functions": 149,
-    "functions_pct": 0.09
+    "functions": 161,
+    "functions_pct": 0.1
   },
   "runtime": {
     "fault": {
       "address": "0x0",
-      "at": "host+0x7f801cb7bcc0",
+      "at": "host+0x7f3965b2dcc0",
       "signal": 0
     },
     "first_unimplemented": null,
     "imports_bundled": 219,
-    "imports_covered": 437,
-    "imports_implemented": 218,
-    "imports_pct": 63.7,
-    "imports_remaining": 249,
+    "imports_covered": 453,
+    "imports_implemented": 234,
+    "imports_pct": 66.03,
+    "imports_remaining": 233,
     "imports_total": 686,
-    "imports_unbound": 247,
+    "imports_unbound": 231,
     "imports_unresolved": 2,
     "milestone": "first flip",
     "milestone_index": 8,
@@ -235,7 +235,7 @@
       "bytes": 681944,
       "end": "0x0151657b",
       "functions": 2543,
-      "replaced_bytes": 6643,
+      "replaced_bytes": 7620,
       "start": "0x014675e8",
       "verified_bytes": 0
     },
@@ -624,10 +624,10 @@
       "verified": 1
     },
     "render": {
-      "edge_verified": 64,
-      "replaced": 64,
-      "replaced_bytes": 16573,
-      "tracked": 64,
+      "edge_verified": 76,
+      "replaced": 76,
+      "replaced_bytes": 17550,
+      "tracked": 76,
       "verified": 3
     }
   },
@@ -636,8 +636,8 @@
     "functions": 157757
   },
   "tracked": {
-    "bytes": 41396,
-    "functions": 151
+    "bytes": 42373,
+    "functions": 163
   },
   "verified": {
     "bytes": 14010,

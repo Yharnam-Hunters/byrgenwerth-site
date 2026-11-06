@@ -380,7 +380,7 @@
       <span class="wk-stat-track" role="img" aria-label="0.033 percent of target code bytes verified">
         <span class="wk-stat-fill" style="width:0.033%"></span>
       </span>
-      <span class="wk-progress-foot">0.033% of code bytes verified · 149 replaced</span>
+      <span class="wk-progress-foot">0.033% of code bytes verified · 161 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -453,29 +453,29 @@
       
       
       <aside class="wk-freshness" role="note">
-        <p><b>Not yet updated for 25 merged changes.</b>
+        <p><b>Not yet updated for 33 merged changes.</b>
         This page was last checked against Paleblood
         <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/2212b93a43eb753c0a277f77421bb98f5e0e4bb5"><code>2212b93</code></a>;
         these pull requests changed what it describes since:</p>
         <ul>
           
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/410">#410</a> docs: name the other ports generically in the runtime notes</li>
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/431">#431</a> runtime: host controller input for libScePad (--input none|host)</li>
           
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/406">#406</a> runtime: play the title's sound on the host (--audio host)</li>
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/426">#426</a> runtime: semaphores with priority order wake the best-priority waiter</li>
           
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/405">#405</a> runtime: offline trophies, and PlayGo's install speed</li>
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/423">#423</a> runtime: sceKernelMapDirectMemory accepts no-overwrite (0x80)</li>
           
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/396">#396</a> runtime: the splash screen and the system status</li>
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/422">#422</a> runtime: sceKernelQueryMemoryProtection answers start and end</li>
           
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/395">#395</a> gnm: skip an indexed draw's packets</li>
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/420">#420</a> runtime: the movie player's sound port (1024 samples, formats 0 to 5)</li>
           
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/398">#398</a> runtime: decode ATRAC9 audio with LibAtrac9</li>
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/419">#419</a> runtime: the movie player (libSceAvPlayer), decoding with FFmpeg</li>
           
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/402">#402</a> runtime: save data, kept in a host folder and mounted as /savedataN</li>
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/418">#418</a> renderer: run compute dispatches</li>
           
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/392">#392</a> runtime: the title's add-ons, as the person running it owns them</li>
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/412">#412</a> renderer: record the shaders the game binds (sceGnmSetVsShader, sceGnmSetPsShader)</li>
           
-          <li>and 17 more</li>
+          <li>and 25 more</li>
         </ul>
       </aside>
       
@@ -2207,6 +2207,98 @@ call is registered only to name itself and stop, because its answer is not estab
 <td><code>sceAudioOutSetVolume</code></td>
 <td><span class="wk-badge wk-badge--implemented">implemented</span></td>
 <td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/audio_out.c"><code>runtime/syslib/audio_out.c</code></a></td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="libsceavplayer"><code>libSceAvPlayer</code></h4>
+<div class="wk-table"><table>
+<thead>
+<tr>
+<th>Call</th>
+<th>Status</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>sceAvPlayerAddSource</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/avplayer.c"><code>runtime/syslib/avplayer.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceAvPlayerClose</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/avplayer.c"><code>runtime/syslib/avplayer.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceAvPlayerCurrentTime</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/avplayer.c"><code>runtime/syslib/avplayer.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceAvPlayerEnableStream</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/avplayer.c"><code>runtime/syslib/avplayer.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceAvPlayerGetAudioData</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/avplayer.c"><code>runtime/syslib/avplayer.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceAvPlayerGetStreamInfo</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/avplayer.c"><code>runtime/syslib/avplayer.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceAvPlayerGetVideoDataEx</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/avplayer.c"><code>runtime/syslib/avplayer.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceAvPlayerInit</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/avplayer.c"><code>runtime/syslib/avplayer.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceAvPlayerIsActive</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/avplayer.c"><code>runtime/syslib/avplayer.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceAvPlayerPause</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/avplayer.c"><code>runtime/syslib/avplayer.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceAvPlayerPostInit</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/avplayer.c"><code>runtime/syslib/avplayer.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceAvPlayerResume</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/avplayer.c"><code>runtime/syslib/avplayer.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceAvPlayerSetLooping</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/avplayer.c"><code>runtime/syslib/avplayer.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceAvPlayerStart</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/avplayer.c"><code>runtime/syslib/avplayer.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceAvPlayerStop</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/avplayer.c"><code>runtime/syslib/avplayer.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceAvPlayerStreamCount</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/avplayer.c"><code>runtime/syslib/avplayer.c</code></a></td>
 </tr>
 </tbody>
 </table></div>

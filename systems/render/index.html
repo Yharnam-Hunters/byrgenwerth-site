@@ -380,7 +380,7 @@
       <span class="wk-stat-track" role="img" aria-label="0.033 percent of target code bytes verified">
         <span class="wk-stat-fill" style="width:0.033%"></span>
       </span>
-      <span class="wk-progress-foot">0.033% of code bytes verified · 149 replaced</span>
+      <span class="wk-progress-foot">0.033% of code bytes verified · 161 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -423,29 +423,29 @@
       
       
       <aside class="wk-freshness" role="note">
-        <p><b>Not yet updated for 12 merged changes.</b>
+        <p><b>Not yet updated for 18 merged changes.</b>
         This page was last checked against Paleblood
         <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/99951e6375b8fa2fa7120d9af3158f42873ce560"><code>99951e6</code></a>;
         these pull requests changed what it describes since:</p>
         <ul>
           
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/435">#435</a> renderer: depth targets, stencil writes, triangle strips</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/352">#352</a> test: derive packet fixture addresses from the harness</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/418">#418</a> renderer: run compute dispatches</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/416">#416</a> renderer: observe setRenderTarget and the user-data writers</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/414">#414</a> renderer: the GPU library's replacements report to the renderer</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/411">#411</a> render: verify draw calls and register packets (from #233 by @evill33t)</li>
+          
           <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/365">#365</a> render: verify context section (from #231 by @evill33t)</li>
           
           <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/364">#364</a> render: verify present parameters (from #232 by @evill33t)</li>
           
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/363">#363</a> render: verify shader upload (from #251 by @evill33t)</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/362">#362</a> test: cover shader preparation reset modes (from #350 by @evill33t)</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/361">#361</a> render: verify swap chain setup (from #254 by @evill33t)</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/360">#360</a> render: verify command buffer submit (from #256 by @evill33t)</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/359">#359</a> render: verify swap chain cleanup (from #244 by @evill33t)</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/358">#358</a> render: replace record parameters (from #222 by @evill33t)</li>
-          
-          <li>and 4 more</li>
+          <li>and 10 more</li>
         </ul>
       </aside>
       
@@ -633,6 +633,41 @@ frames. #279, #286 and #287 were brought up to date with <code>main</code> from 
 <td data-label="Notes">Keep the low-DWORD capacity decision separate from the full remaining-word count sent to the original import. Its effects may change the live cursor.</td>
 </tr>
 <tr>
+<td data-label="Address"><code>0x01472fd0</code></td>
+<td style="text-align: right;" data-label="Size">86</td>
+<td data-label="Name"><code>render_set_cb_target_mask</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Write the complete CB_TARGET_MASK value, preserving all supplied component-enable bits.</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x01473090</code></td>
+<td style="text-align: right;" data-label="Size">109</td>
+<td data-label="Name"><code>render_set_cb_blend_control</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Write masked CB_BLENDn_CONTROL for the selected color-buffer bank.</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x01473320</code></td>
+<td style="text-align: right;" data-label="Size">117</td>
+<td data-label="Name"><code>render_set_cb_color_control</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Write CB_COLOR_CONTROL.MODE and ROP3 from their masked input fields.</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x014733a0</code></td>
+<td style="text-align: right;" data-label="Size">93</td>
+<td data-label="Name"><code>render_set_db_depth_control</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Write the observed mask of DB_DEPTH_CONTROL depth/stencil test and write-control fields.</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x01473400</code></td>
+<td style="text-align: right;" data-label="Size">93</td>
+<td data-label="Name"><code>render_set_db_stencil_control</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Write the low 24 bits of DB_STENCIL_CONTROL, including front- and back-face stencil operations.</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x01473590</code></td>
 <td style="text-align: right;" data-label="Size">95</td>
 <td data-label="Name"><code>render_emit_present_preparation_scalar</code></td>
@@ -666,6 +701,34 @@ frames. #279, #286 and #287 were brought up to date with <code>main</code> from 
 <td data-label="Name"><code>render_set_guard_band_discard_adjust</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">Write vertical then horizontal guard-band discard adjustments as unchanged float bit patterns. Capture both float representations before the capacity callback and publish from the captured cursor.</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x01473fe0</code></td>
+<td style="text-align: right;" data-label="Size">90</td>
+<td data-label="Name"><code>render_set_vgt_primitive_type</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Write the low six primitive-type bits to VGT_PRIMITIVE_TYPE.</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x014741b0</code></td>
+<td style="text-align: right;" data-label="Size">156</td>
+<td data-label="Name"><code>render_emit_draw_index_auto</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Emit DRAW_INDEX_AUTO and a query-selected THREAD_TRACE_MARKER event or NOP. Reload flags and cursor after overlapping packet stores before selecting and publishing the trailing packet.</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x01475370</code></td>
+<td style="text-align: right;" data-label="Size">76</td>
+<td data-label="Name"><code>render_emit_num_instances</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Emit NUM_INSTANCES with the complete supplied instance count.</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x01475da0</code></td>
+<td style="text-align: right;" data-label="Size">101</td>
+<td data-label="Name"><code>render_emit_event_write</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Emit EVENT_WRITE with a masked event type and the original table-selected event index.</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x014765e0</code></td>
@@ -729,6 +792,20 @@ frames. #279, #286 and #287 were brought up to date with <code>main</code> from 
 <td data-label="Name"><code>render_set_pa_cl_vte_cntl</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">Expand the toggled input byte into overlapping register fields. The original result is the shifted byte, independent of the preserved old bits or the final stored word.</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x01485390</code></td>
+<td style="text-align: right;" data-label="Size">24</td>
+<td data-label="Name"><code>render_set_record_register_range</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Pack one bit from the first input and three from the last, preserving all other bits.</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x014853f0</code></td>
+<td style="text-align: right;" data-label="Size">16</td>
+<td data-label="Name"><code>render_set_record_register_enabled</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Preserve the original byte-wide input: doubling it can contribute bits beyond bit one.</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x01486520</code></td>
@@ -813,6 +890,13 @@ frames. #279, #286 and #287 were brought up to date with <code>main</code> from 
 <td data-label="Name"><code>render_record_descriptor_encoding</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">Read packed words at offsets 0x04 then 0x0c; pass six extracted fields to the encoding packer.</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x01489c40</code></td>
+<td style="text-align: right;" data-label="Size">16</td>
+<td data-label="Name"><code>render_record_step_user_pa_enabled</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Query the actual import once; no cached global, fallback or service value is invented.</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x0149c850</code></td>

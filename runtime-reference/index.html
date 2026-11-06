@@ -380,7 +380,7 @@
       <span class="wk-stat-track" role="img" aria-label="0.033 percent of target code bytes verified">
         <span class="wk-stat-fill" style="width:0.033%"></span>
       </span>
-      <span class="wk-progress-foot">0.033% of code bytes verified · 149 replaced</span>
+      <span class="wk-progress-foot">0.033% of code bytes verified · 161 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -489,6 +489,8 @@
           
           <li><a href="#audio-output-sceaudiooutinit-sceaudiooutopen-sceaudiooutsetvolume-sceaudiooutoutput-issue-37" class="wk-toc-link">Audio output (sceAudioOutInit, sceAudioOutOpen, sceAudioOutSetVolume, sceAudioOutOutput, issue #37)</a></li>
           
+          <li><a href="#the-movie-player-libsceavplayer" class="wk-toc-link">The movie player (libSceAvPlayer)</a></li>
+          
           <li><a href="#attribute-priority-and-cpu-mask-scepthreadattrsetschedparam-scepthreadattrsetaffinity-issue-34" class="wk-toc-link">Attribute priority and CPU mask (scePthreadAttrSetschedparam, scePthreadAttrSetaffinity, issue #34)</a></li>
           
           <li><a href="#save-data-libscesavedata" class="wk-toc-link">Save data (libSceSaveData)</a></li>
@@ -500,6 +502,8 @@
           <li><a href="#gnm-the-tessellation-factor-ring-scegnmgetthetessellationfactorringbufferbaseaddress-issue-39" class="wk-toc-link">GNM: the tessellation factor ring (sceGnmGetTheTessellationFactorRingBufferBaseAddress, issue #39)</a></li>
           
           <li><a href="#virtual-memory-queries-scekernelvirtualquery-issue-34" class="wk-toc-link">Virtual memory queries (sceKernelVirtualQuery, issue #34)</a></li>
+          
+          <li><a href="#gnm-binding-vertex-and-pixel-shaders-scegnmsetvsshader-scegnmsetpsshader-issue-39" class="wk-toc-link">GNM: binding vertex and pixel shaders (sceGnmSetVsShader, sceGnmSetPsShader, issue #39)</a></li>
           
           <li><a href="#gnm-compute-queues-scegnmmapcomputequeue-issue-39" class="wk-toc-link">GNM: compute queues (sceGnmMapComputeQueue, issue #39)</a></li>
           
@@ -970,7 +974,10 @@ use is the startup heap, at <code>0x02481a80</code>:</p>
 <li>lengths, starts or alignments that are not multiples of 16 KiB (the granularity the
     executable's calls use);</li>
 <li>memory types other than 0, 3 and 10;</li>
-<li>map flags, and an address hint without flags;</li>
+<li>map flags other than no-overwrite (<code>0x80</code>, shadPS4's kernel <code>memory.h</code>). No-overwrite keeps a
+    map off memory already mapped, and the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> never replaces a mapping, so it changes nothing.
+    The movie code (<code>0x02d032b9</code>) passes it with no address, to map part of its own direct memory a
+    second time;</li>
 <li>protection other than CPU and GPU read and write;</li>
 <li>a range that does not fit or was not allocated;</li>
 <li>releasing part of a range or a mapped one;</li>
@@ -1005,8 +1012,14 @@ evidence here. They include the audio wrappers at <code>0x0111ad10</code>–<cod
 <p>The signatures, and attr 1 = FIFO and 2 = priority wake order, match the OpenOrbis homebrew SDK
 headers (supporting evidence only).</p>
 <p><strong>What the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> does.</strong> A semaphore is a <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> object behind the handle. Wait blocks until the
-units are there, and waiters are served in the order they arrived. Signal adds units and wakes the
-waiters.</p>
+units are there. Waiters are served in the order they arrived, or with attr 2 by thread priority:
+- the best priority goes first, which is the smallest number (OpenOrbis <code>_types/user.h</code>: <code>0x100</code>
+  highest, <code>0x2FF</code> lowest);
+- equal priorities are served in arrival order;
+- each waiter is placed by the priority its thread has when it starts to wait. The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> records
+  each guest thread's priority (<code>scePthreadSetprio</code>, inherited at creation).</p>
+<p>shadPS4's semaphore (<code>threads/semaphore.cpp</code>) orders its wait list the same way. Signal adds units
+and wakes the waiters.</p>
 <p><strong>What stops by name.</strong> Every case whose <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> answer is not established stops with the function's
 name:
 - timeouts;
@@ -1016,7 +1029,6 @@ name:
 - signalling past the maximum;
 - a poll that cannot be satisfied now;
 - deleting a semaphore with waiters;
-- a second waiter under priority order (guest thread priorities are not modelled);
 - a wait for more than one unit behind another waiter (whether it may be passed is not
   established);
 - the error values.</p>
@@ -1233,13 +1245,22 @@ the days so, and notes that a real <abbr title="PlayStation 4: an AMD x86-64 CPU
 facts only. (The PSP SDK documents 0 as Monday, for an older library.) A date out of range stops
 by name.</p>
 <h2 id="the-controller-libscepad">The controller (<code>libScePad</code>)</h2>
-<p>The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> models one standard controller, the one user's, always connected and at rest
-(<code>runtime/syslib/pad.c</code>). Real input from a host controller is not provided yet.</p>
+<p>The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> models one standard controller, the one user's, always connected
+(<code>runtime/syslib/pad.c</code>). Its state comes from the input backend (<code>runtime/input_host.h</code>,
+<code>runtime/input/</code>): by default (<code>pbboot --input none</code>, <code>tools/boot.py --input none</code>) none is
+installed and the pad is at rest, so CI and recorded boots read the same state as before. With
+<code>--input host</code> the host's first gamepad and the window's keyboard drive it, and the title's
+vibration rumbles the gamepad.</p>
 <p><strong>Sources.</strong>
 - <strong>Signatures and layouts:</strong> the OpenOrbis homebrew SDK's <code>Pad.h</code>, <code>_types/pad.h</code> and
-  <code>_types/errors.h</code>. They give the 120-byte <code>OrbisPadData</code>, the 28-byte <code>OrbisPadInformation</code>, the
-  two-byte vibration block (large motor, then small), port type 0 (standard), and
+  <code>_types/errors.h</code>. They give the 120-byte <code>OrbisPadData</code> (touch data at <code>0x34</code>: a count, seven
+  reserved bytes, then two 8-byte touches of x, y and an id), the 28-byte <code>OrbisPadInformation</code>,
+  the two-byte vibration block (large motor, then small), port type 0 (standard), and
   <code>ALREADY_OPENED</code> <code>0x80920004</code>.
+- <strong>Button bits:</strong> OpenOrbis' <code>OrbisPadButton</code>; shadPS4's <code>OrbisPadButtonDataOffset</code>
+  (<code>src/core/libraries/pad/pad.h</code>) agrees: L3 <code>0x2</code>, R3 <code>0x4</code>, options <code>0x8</code>, up <code>0x10</code>, right
+  <code>0x20</code>, down <code>0x40</code>, left <code>0x80</code>, L2 <code>0x100</code>, R2 <code>0x200</code>, L1 <code>0x400</code>, R1 <code>0x800</code>, triangle
+  <code>0x1000</code>, circle <code>0x2000</code>, cross <code>0x4000</code>, square <code>0x8000</code>, touch pad <code>0x100000</code>.
 - <strong>The executable's own calls agree:</strong>
   - before each <code>scePadReadState</code> (<code>0x02a90168</code>, <code>0x02a91948</code>) it clears exactly 120 bytes, and
     afterwards it tests <code>connected</code> at offset <code>0x4c</code>;
@@ -1251,8 +1272,16 @@ by name.</p>
     opens again;
   - <code>scePadSetVibration</code> is called with the title's speeds (<code>0x02a9c7c1</code>) or with both 0 to stop
     (<code>0x02a9c822</code>), and 0 counts as success.
-- <strong>The DualShock 4's touch pad is 1920 × 942:</strong> <code>DS4_TOUCHPAD_WIDTH</code> and <code>_HEIGHT</code> in the Linux
-  kernel's <code>drivers/hid/hid-playstation.c</code>.</p>
+- <strong>The DualShock 4:</strong> the touch pad is 1920 × 942 (<code>DS4_TOUCHPAD_WIDTH</code> and <code>_HEIGHT</code> in the
+  Linux kernel's <code>drivers/hid/hid-playstation.c</code>); each stick axis is a byte, 0 at the left and
+  at the top; a touch carries a 7-bit id that changes for each new touch; the left motor is the
+  strong one (a force-feedback effect's strong magnitude goes to <code>motor_left</code>).
+- <strong>SDL3:</strong> stick axes run -32768 (left, up) to 32767 (right, down) and triggers 0 to 32767
+  (<code>SDL_GetGamepadAxis</code>); touch fingers are 0..1 of the pad (<code>SDL_GetGamepadTouchpadFinger</code>);
+  scancodes are USB HID keyboard usages (<code>SDL_scancode.h</code>); <code>SDL_RumbleGamepad</code>'s low-frequency
+  motor is the left one.
+- <strong>The timestamp</strong> is the process time in microseconds when the state is read, as shadPS4 stamps
+  it (<code>src/input/controller.cpp</code>); the title does not read it.</p>
 <div class="wk-table"><table>
 <thead>
 <tr>
@@ -1275,7 +1304,7 @@ by name.</p>
 </tr>
 <tr>
 <td><code>scePadReadState</code></td>
-<td>no button, sticks <code>0x80</code>, triggers 0, no touch or motion, identity orientation, <code>connected</code> 1</td>
+<td>the backend's buttons, sticks, triggers and touches, the timestamp, <code>connected</code> 1; no motion, identity orientation. At rest without a backend: no button, sticks <code>0x80</code>, triggers 0, no touch, timestamp 0</td>
 </tr>
 <tr>
 <td><code>scePadGetControllerInformation</code></td>
@@ -1283,11 +1312,90 @@ by name.</p>
 </tr>
 <tr>
 <td><code>scePadSetVibration</code></td>
-<td>0; the speeds are kept (<code>rt_pad_vibration</code>), and nothing on the host vibrates yet</td>
+<td>0; the speeds are kept (<code>rt_pad_vibration</code>) and passed to the backend: with <code>--input host</code>, the large motor to SDL's low-frequency rumble, the small one to the high-frequency rumble</td>
 </tr>
 </tbody>
 </table></div>
-<p>Fields the executable does not read are left zero. <strong>Stops by name:</strong> a second initialize, a call
+<p><strong>Host input (<code>pbboot --input host</code>, <code>tools/boot.py --input host</code>).</strong> It needs a build with SDL3
+(the window's) and <code>--display window</code>, since the window's event loop reads the devices: SDL's
+events are pumped on the display's thread (<code>display_vulkan.c</code>), never from a guest thread, and
+after each pump <code>rt_input_host_pump</code> samples the gamepad and keyboard there
+(<code>runtime/input/input_host_sdl.c</code>). The state therefore changes once per presented frame. For
+example:</p>
+<div class="language-text highlight"><span class="filename">Text Only</span><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1"></a><a href="#__codelineno-0-1"><span class="linenos" data-linenos="1 "></span></a>python3 tools/boot.py --display window --audio host --input host
+</code></pre></div>
+<p>The first connected SDL gamepad is used, and the next one when it is removed. Its buttons map by
+position: south cross, east circle, west square, north triangle, start options, back and the
+touch pad click the touch pad, the shoulders L1 and R1, the stick clicks L3 and R3, the D-pad the
+D-pad. A DualShock 4 or DualSense touch pad reports up to two touches. Stick bytes are the axis'
+top eight bits after the offset; the triggers are scaled to 0..255. The keyboard works with or
+without a gamepad; a key's stick direction overrides the gamepad's stick, both keys of an axis
+cancel out, and buttons combine. The default layout (<code>rt_default_keys</code>, <code>runtime/input/input.c</code>):</p>
+<div class="wk-table"><table>
+<thead>
+<tr>
+<th>Keys</th>
+<th>Pad</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>W A S D</td>
+<td>left stick up, left, down, right (full deflection)</td>
+</tr>
+<tr>
+<td>arrow keys</td>
+<td>right stick</td>
+</tr>
+<tr>
+<td>I J K L</td>
+<td>D-pad up, left, down, right</td>
+</tr>
+<tr>
+<td>Return, Space</td>
+<td>cross</td>
+</tr>
+<tr>
+<td>Backspace</td>
+<td>circle</td>
+</tr>
+<tr>
+<td>R</td>
+<td>square</td>
+</tr>
+<tr>
+<td>F</td>
+<td>triangle</td>
+</tr>
+<tr>
+<td>Q / E</td>
+<td>L1 / R1</td>
+</tr>
+<tr>
+<td>Z / C</td>
+<td>L2 / R2, fully pressed</td>
+</tr>
+<tr>
+<td>left Shift / Tab</td>
+<td>L3 / R3</td>
+</tr>
+<tr>
+<td>Escape</td>
+<td>options</td>
+</tr>
+<tr>
+<td>T</td>
+<td>touch pad click</td>
+</tr>
+</tbody>
+</table></div>
+<p>The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>'s choices: the L2 and R2 bits are set while their trigger is off zero; touch ids count
+0..127 and wrap, down fingers listed first; a held vibration is sent to SDL again every 30
+seconds, as SDL's rumble lasts at most about 65.</p>
+<p>Fields the executable does not read are left zero. <strong>Not modelled:</strong> motion. The accelerometer
+and gyroscope are not forwarded, because the units and axes the system reports them in are not
+established here (shadPS4 scales SDL's m/s² by 0.098 without a source); acceleration and angular
+velocity stay 0 and the orientation the identity. <strong>Stops by name:</strong> a second initialize, a call
 before initialize, another user, port type, index or open parameters, an unknown handle, a
 missing argument, and the other error values. <code>scePadResetOrientation</code>,
 <code>scePadSetAngularVelocityDeadbandState</code> and <code>scePadSetTiltCorrectionState</code> stay unbound until the
@@ -1685,10 +1793,17 @@ headers give:
   channels and passes <code>4 | (channels == 8)</code>. So 4 is float stereo (as in the SDK) and 5 is float
   with eight channels. The boot opens eight channels.
 - A second open (<code>0x0111b6fc</code>) passes port type 1 with the same settings, and does not check the
-  result. The <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> name of type 1 is not public; the sibling Vita SDK calls it BGM.</p>
+  result. The <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> name of type 1 is not public; the sibling Vita SDK calls it BGM.
+- The movie player's sound gets a port of its own (<code>0x02c225ae</code>, <code>0x02c22842</code>): 1024 samples at
+  48000 Hz. Its format comes from the movie's channel count: 0, 1 or 2 (16-bit mono, stereo, eight
+  channels) for 48 kHz sound, and 3, 4 or 5 (float) otherwise. The SDK's <code>_types/audio_out.h</code>
+  names 0, 1, 3 and 4; shadPS4's <code>audioout.h</code> adds 2 and 5 as the eight-channel forms. The
+  6-channel movies open format 2. With <code>--audio host</code>, 16-bit blocks are scaled to -1..1 for the
+  host stream.</p>
 <p><strong>What the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> does.</strong> It records each open port and hands out handles from 1. Sound output
 belongs to the output calls, which stop by name until they are implemented.</p>
-<p><strong>What stops by name:</strong> any open other than the observed ones, and running out of handles.</p>
+<p><strong>What stops by name:</strong> any open other than the observed ones (256 float samples in formats 4
+and 5, or 1024 samples in formats 0 to 5, at 48000 Hz), and running out of handles.</p>
 <p><code>int32_t sceAudioOutSetVolume(handle, flag, int32_t *volume)</code>, as the SDK declares it, comes next.
 The executable's only call (<code>0x0111b6d6</code>) passes its new port, flag <code>0xff</code> and eight volumes of
 32768, and treats nonzero as failure. Flag bit n selects channel n, whose volume is <code>volume[n]</code>.</p>
@@ -1732,6 +1847,88 @@ ports keep time on their own as before. Boots are silent by default.</p>
   <code>audioout.h</code>).</li>
 <li><strong>Observed:</strong> with ATRAC9 decoding, a boot plays the game's own sound after about 17 seconds.</li>
 </ul>
+<h2 id="the-movie-player-libsceavplayer">The movie player (<code>libSceAvPlayer</code>)</h2>
+<p>The title plays its movies (<code>/app0/.../movie/*.mp4</code>: H.264 video, AAC sound in several languages)
+through the console's movie player. One wrapper in the executable makes every call
+(<code>0x02cfdf33</code> to <code>0x02d004a9</code>):</p>
+<ol>
+<li><code>sceAvPlayerInit</code> gets a 0x78-byte block with the title's memory callbacks and an event callback.
+   The block has no file callbacks, auto start is 0 and the default language is none.</li>
+<li><code>sceAvPlayerPostInit</code> gets decoder settings (video decoder type 3).</li>
+<li><code>sceAvPlayerAddSource</code> gets the movie's path and <code>sceAvPlayerSetLooping</code> a flag.</li>
+<li>After the ready event the title counts the streams and reads each one's info. It enables one
+   video stream and the audio stream its language setting picks, then calls <code>sceAvPlayerStart</code>.</li>
+<li>Each frame, a picture comes from <code>sceAvPlayerGetVideoDataEx</code> and sound from
+   <code>sceAvPlayerGetAudioData</code> on the title's audio thread.</li>
+</ol>
+<p>The layouts, event numbers and error values are from shadPS4's <code>libSceAvPlayer</code> (<code>avplayer.h</code>,
+<code>avplayer_error.h</code>, <code>avplayer_state.cpp</code>, <code>avplayer_source.cpp</code>), checked against the OpenOrbis
+<code>AvPlayer.h</code>. The code is the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>'s own (<code>runtime/syslib/avplayer.c</code>). Decoding uses FFmpeg on
+the host (<code>runtime/media/</code>, <code>runtime/media_host.h</code>), when the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> is built with it.</p>
+<div class="wk-table is-stack"><table class="wk-stack">
+<thead>
+<tr>
+<th>Call</th>
+<th>What the title passes and reads</th>
+<th>Runtime answer</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td data-label="Call"><code>sceAvPlayerInit(const InitData *)</code></td>
+<td data-label="What the title passes and reads">memory callbacks {allocate, deallocate, allocate texture, deallocate texture}, an event callback, no file callbacks</td>
+<td data-label="Runtime answer">a handle; file callbacks, auto start, a missing allocator or event callback stop by name</td>
+</tr>
+<tr>
+<td data-label="Call"><code>sceAvPlayerPostInit(handle, data)</code></td>
+<td data-label="What the title passes and reads">decoder types and parameters</td>
+<td data-label="Runtime answer">0 (they change how the console decodes, not the result)</td>
+</tr>
+<tr>
+<td data-label="Call"><code>sceAvPlayerAddSource(handle, path)</code></td>
+<td data-label="What the title passes and reads">the movie under <code>/app0</code></td>
+<td data-label="Runtime answer">opens and probes it, sends event 2 (ready), 0; a movie the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> cannot open stops by name</td>
+</tr>
+<tr>
+<td data-label="Call"><code>sceAvPlayerStreamCount</code>, <code>sceAvPlayerGetStreamInfo</code></td>
+<td data-label="What the title passes and reads">the type (0 video, 1 audio), an audio stream's channels and rate</td>
+<td data-label="Runtime answer">the movie's video and audio streams, durations in ms</td>
+</tr>
+<tr>
+<td data-label="Call"><code>sceAvPlayerEnableStream(handle, index)</code></td>
+<td data-label="What the title passes and reads">one video stream and one audio stream</td>
+<td data-label="Runtime answer">0</td>
+</tr>
+<tr>
+<td data-label="Call"><code>sceAvPlayerStart</code></td>
+<td data-label="What the title passes and reads"></td>
+<td data-label="Runtime answer">event 3 (playing); the movie's clock starts</td>
+</tr>
+<tr>
+<td data-label="Call"><code>sceAvPlayerGetVideoDataEx(handle, FrameInfoEx *)</code></td>
+<td data-label="What the title passes and reads">the picture's address, width, height and four crops; it lays the planes out from the width</td>
+<td data-label="Runtime answer">true once the clock reaches the next picture. The picture is NV12 in a buffer from the title's texture allocator (alignment 0x100), with pitch = width rounded up to 64 and height rounded up to 16, cropped back to the picture</td>
+</tr>
+<tr>
+<td data-label="Call"><code>sceAvPlayerGetAudioData(handle, FrameInfo *)</code></td>
+<td data-label="What the title passes and reads">address, size in bytes, channels, rate</td>
+<td data-label="Runtime answer">true with up to 1024 interleaved 16-bit sample frames, handed out up to 0.1 s ahead of the clock</td>
+</tr>
+<tr>
+<td data-label="Call"><code>sceAvPlayerIsActive</code>, <code>sceAvPlayerCurrentTime</code></td>
+<td data-label="What the title passes and reads"></td>
+<td data-label="Runtime answer">true until a movie that does not loop has handed out its last frame, then event 1 (stopped) once; the clock in ms, standing still while paused</td>
+</tr>
+<tr>
+<td data-label="Call"><code>sceAvPlayerPause</code>, <code>sceAvPlayerResume</code>, <code>sceAvPlayerStop</code>, <code>sceAvPlayerClose</code></td>
+<td data-label="What the title passes and reads"></td>
+<td data-label="Runtime answer">events 4, 3 and 1; Close frees the buffers through the title's callbacks</td>
+</tr>
+</tbody>
+</table></div>
+<p>The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> decodes a few frames ahead on a host thread of its own, so FFmpeg never runs on a guest
+thread's small stack. The guest calls only copy finished frames into the title's buffers. A looping
+movie starts again with its clock carried on. Without FFmpeg, opening a movie stops by name.</p>
 <h2 id="attribute-priority-and-cpu-mask-scepthreadattrsetschedparam-scepthreadattrsetaffinity-issue-34">Attribute priority and CPU mask (<code>scePthreadAttrSetschedparam</code>, <code>scePthreadAttrSetaffinity</code>, issue #34)</h2>
 <p><code>scePthreadAttrSetschedparam(attr, const struct sched_param *param)</code> sets the priority
 (<code>sched_param</code>'s one int) of a thread created with the attribute. OpenOrbis' <code>libkernel.h</code> gives
@@ -1866,11 +2063,14 @@ flags 0 (<code>O_RDONLY</code>) and mode 0555.</p>
 the OpenOrbis homebrew SDK's <code>libkernel.h</code> declares it, gives the protection of the mapping that
 holds an address.</p>
 <p><strong>What the executable does.</strong> Its helpers (<code>0x02abad98</code>, <code>0x02abadf8</code>) pass no start or end. They
-test the protection's CPU read bit (1) and GPU read bit (<code>0x10</code>), on memory the game mapped itself.</p>
+test the protection's CPU read bit (1) and GPU read bit (<code>0x10</code>), on memory the game mapped itself.
+Another (<code>0x02d031df</code>, reached once the movie player runs) passes a start and an end and reads only
+the protection.</p>
 <p><strong>What the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> does.</strong> It records every direct and flexible mapping with the protection the
-guest asked for, GPU bits included, and answers that.</p>
+guest asked for, GPU bits included, and answers that. A start gets the mapping's start, and an end
+the address one past its last byte (exclusive), as shadPS4's <code>MemoryManager::QueryProtection</code> and
+PS4Recomp's <code>ps4_direct_mem.c</code> both answer.</p>
 <p><strong>What stops by name:</strong>
-- a start or end (whether end is inclusive is not established);
 - an address outside those mappings (other memory is not tracked yet);
 - a missing variable.</p>
 <h2 id="gnm-the-tessellation-factor-ring-scegnmgetthetessellationfactorringbufferbaseaddress-issue-39"><abbr title="The PS4's low-level graphics API.">GNM</abbr>: the tessellation factor ring (<code>sceGnmGetTheTessellationFactorRingBufferBaseAddress</code>, issue #39)</h2>
@@ -1938,6 +2138,42 @@ past the mapping.</p>
 - a size other than 0x48;
 - an address outside those mappings (other memory is not tracked yet);
 - a missing structure.</p>
+<h2 id="gnm-binding-vertex-and-pixel-shaders-scegnmsetvsshader-scegnmsetpsshader-issue-39"><abbr title="The PS4's low-level graphics API.">GNM</abbr>: binding vertex and pixel shaders (<code>sceGnmSetVsShader</code>, <code>sceGnmSetPsShader</code>, issue #39)</h2>
+<p><code>sceGnmSetVsShader</code> and <code>sceGnmUpdateVsShader</code> take (command buffer, dwords, registers, modifier);
+<code>sceGnmSetPsShader</code> and <code>sceGnmUpdatePsShader</code> take (command buffer, dwords, registers). The
+argument order is shadPS4's <code>libSceGnmDriver</code> (<code>gnmdriver.cpp</code>). A boot shows the registers argument
+holding the shader's register block (7 words for a vertex shader, 12 for a pixel shader; see
+Paleblood's <code>docs/RENDERER.md</code>).</p>
+<div class="wk-table"><table>
+<thead>
+<tr>
+<th>Detail</th>
+<th>Answer</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>The reserved space</td>
+<td>one <abbr title="The command packet format the PS4's GPU reads.">PM4</abbr> NOP packet, as for the other command-buffer writers</td>
+</tr>
+<tr>
+<td>The shader</td>
+<td>handed to the renderer, placed at the command-buffer address (<abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>/renderer.h); nothing without the display</td>
+</tr>
+<tr>
+<td>The vertex shader's modifier</td>
+<td>replaces <code>PGM_RSRC1</code>'s SGPR count (bits 6-9) and input VGPR count (bits 24-25): (<code>PGM_RSRC1 &amp; 0xfcfffc3f</code>) OR the modifier, as shadPS4 applies it. The game's vertex shaders pass one (they call a fetch shader). A modifier with any other bit stops by name</td>
+</tr>
+<tr>
+<td>A null pixel shader block</td>
+<td>no pixel shader (a depth-only pass): recorded as such, and a draw with it stops in the renderer</td>
+</tr>
+<tr>
+<td>No vertex shader registers</td>
+<td>stops by name</td>
+</tr>
+</tbody>
+</table></div>
 <h2 id="gnm-compute-queues-scegnmmapcomputequeue-issue-39"><abbr title="The PS4's low-level graphics API.">GNM</abbr>: compute queues (<code>sceGnmMapComputeQueue</code>, issue #39)</h2>
 <p>OpenOrbis' <code>GnmDriver.h</code> only names this call, so its shape comes from the engine's wrapper
 (<code>0x01489a80</code>, called from its compute queue setup at <code>0x0148c7b0</code>).</p>
