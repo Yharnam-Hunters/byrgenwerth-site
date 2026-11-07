@@ -473,6 +473,8 @@
           
           <li><a href="#http-waiting-handles-scehttpcreateepoll-issue-41" class="wk-toc-link">HTTP waiting handles (sceHttpCreateEpoll, issue #41)</a></li>
           
+          <li><a href="#network-ssl-and-http-teardown-scehttpterm-scesslterm-scenetpooldestroy-issue-41" class="wk-toc-link">Network, SSL and HTTP teardown (sceHttpTerm, sceSslTerm, sceNetPoolDestroy, issue #41)</a></li>
+          
           <li><a href="#https-options-scehttpsenableoption-scehttpsdisableoption" class="wk-toc-link">HTTPS options (sceHttpsEnableOption, sceHttpsDisableOption)</a></li>
           
           <li><a href="#http-request-headers-scehttpaddrequestheader-issue-41" class="wk-toc-link">HTTP request headers (sceHttpAddRequestHeader, issue #41)</a></li>
@@ -1459,7 +1461,7 @@ person running it chose:
 <h2 id="psn-offline-sign-in-state-callbacks-and-matchmaking-start-up">PSN offline: sign-in state, callbacks and matchmaking start-up</h2>
 <p>The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> is offline: the one user is signed out of PSN for the whole run, and nothing about
 that ever changes. The facts come from shadPS4's <code>libSceNpManager</code> and <code>libSceNpMatching2</code>
-(<code>np_manager.h</code>, <code>np_types2.h</code>, <code>np_error.h</code>), checked against two other Bloodborne ports. The code is the
+(<code>np_manager.h</code>, <code>np_manager.cpp</code>, <code>np_types.h</code>, <code>np_types2.h</code>, <code>np_common.cpp</code>, <code>np_error.h</code>), checked against two other Bloodborne ports and PS4Recomp's <code>libSceNp</code> (<code>ps4_np.c</code>), which answer the same for a signed-out user. The code is the
 <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>'s own.</p>
 <div class="wk-table"><table>
 <thead>
@@ -1488,6 +1490,42 @@ that ever changes. The facts come from shadPS4's <code>libSceNpManager</code> an
 <tr>
 <td><code>sceNpCheckCallback()</code></td>
 <td>0, running nothing: offline nothing changes</td>
+</tr>
+<tr>
+<td><code>sceNpGetNpId(user, NP id *)</code>, <code>sceNpGetOnlineId(user, online id *)</code></td>
+<td><code>0x80550006</code> (signed out), writing nothing: a signed-out user has no PSN identity. A missing variable answers <code>0x80550003</code>; the invalid user (-1, whose answer depends on the system software version) and a user the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> did not hand out stop by name. The callers (<code>0x010bd072</code>, <code>0x010c0860</code>, <code>0x010b4666</code>, <code>0x010b4e5d</code>, <code>0x010b8931</code>) take their offline path.</td>
+</tr>
+<tr>
+<td><code>sceNpGetGamePresenceStatus(const online id *, int32_t *status)</code></td>
+<td>0 with status 0 (offline; 1 is online) for every player; a missing argument answers <code>0x80550003</code></td>
+</tr>
+<tr>
+<td><code>sceNpRegisterPlusEventCallback(callback, data)</code>, <code>sceNpUnregisterPlusEventCallback()</code></td>
+<td>the state callback's rules (<code>0x80550003</code>, <code>0x80550008</code>, <code>0x80550009</code>); kept and never called, since offline no PlayStation Plus event happens</td>
+</tr>
+<tr>
+<td><code>sceNpNotifyPlusFeature(const parameter *)</code></td>
+<td>0: offline there is no one to tell. The callers (<code>0x01d38ac9</code>, <code>0x02275873</code>, <code>0x022769e6</code>) pass the 0x38-byte block of <code>sceNpCheckPlus</code> and read no result; a missing block stops by name.</td>
+</tr>
+<tr>
+<td><code>sceNpCreateAsyncRequest(const parameter *)</code></td>
+<td>a request id from <code>0x20000001</code>, at most 32 in use (<code>0x80550013</code>), a deleted one's slot reused. The block is 0x18 bytes <code>{size, CPU affinity mask, thread priority}</code>: no block <code>0x80550003</code>, another size <code>0x80550011</code>. The caller (<code>0x02274f54</code>) passes 0x18, <code>0x3f</code>, 700.</td>
+</tr>
+<tr>
+<td><code>sceNpCheckNpAvailability(id, const online id *, reserved)</code>, <code>sceNpCheckPlus(id, const parameter *, result *)</code>, <code>sceNpGetParentalControlInfo(id, const online id *, int8_t *age, info *)</code></td>
+<td>the check completes at once: the call answers 0 and the request's result is <code>0x80550006</code> (signed out); nothing is written. A request id of 0 or a missing argument <code>0x80550003</code>, an id that is no request <code>0x80550014</code>, an aborted request <code>0x80550012</code>, a second check on one request <code>0x80550003</code>. <code>sceNpCheckPlus</code>'s 0x38-byte block <code>{size, user, padding, features, 32 reserved}</code>: another size <code>0x80550011</code>; features outside 1–3, a non-zero reserved byte or the invalid user <code>0x80550003</code>; another user stops by name. A third argument to the availability check other than the observed 0 stops by name.</td>
+</tr>
+<tr>
+<td><code>sceNpPollAsync(id, int32_t *result)</code></td>
+<td>0 with the result once the check ran (always at once offline); no variable <code>0x80550003</code>, an id that is no request <code>0x80550014</code>, a request that ran no check <code>0x80550015</code>. The caller (<code>0x022767b5</code>) reads 0 as done, 1 as still running. A request aborted before its check stops by name.</td>
+</tr>
+<tr>
+<td><code>sceNpAbortRequest(id)</code>, <code>sceNpDeleteRequest(id)</code></td>
+<td>0, or <code>0x80550014</code> for an id that is no request. Abort marks an unchecked request aborted and leaves a checked one alone; delete frees the id.</td>
+</tr>
+<tr>
+<td><code>sceNpCmpOnlineId(a, b)</code>, <code>sceNpCmpNpId(a, b)</code> (<code>libSceNpCommon</code>)</td>
+<td>0 for the same identity, <code>0x80550609</code> (no match) otherwise, <code>0x80550003</code> for a missing one. Online ids compare their 16 characters as <code>strncmp</code> does; NP ids then compare their 8 option and 8 reserved bytes. Callers <code>0x010a28d1</code> and <code>0x010b4676</code>.</td>
 </tr>
 <tr>
 <td><code>sceNpMatching2Initialize(const parameter *)</code></td>
@@ -1661,6 +1699,50 @@ eight-byte slot preset to 0, and its caller (<code>0x023e4567</code>) discards t
 allocates one per call and answers 0. What the title later does with it (waiting on requests)
 belongs to other calls, which stop by name until they are implemented.</p>
 <p><strong>What stops by name:</strong> an HTTP context the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> did not hand out, and a missing slot.</p>
+<h2 id="network-ssl-and-http-teardown-scehttpterm-scesslterm-scenetpooldestroy-issue-41">Network, SSL and HTTP teardown (<code>sceHttpTerm</code>, <code>sceSslTerm</code>, <code>sceNetPoolDestroy</code>, issue #41)</h2>
+<p>The executable's HTTP manager tears down what it set up, each call only for an id it got, and
+none reads an answer:
+- its connection object (<code>0x013d1d90</code>, <code>0x013d1e10</code>) calls <code>sceHttpAbortWaitRequest(handle)</code>,
+  <code>sceHttpDestroyEpoll(HTTP context, handle)</code> and <code>sceHttpDeleteTemplate(template)</code>;
+- the manager (<code>0x013d20d0</code>, <code>0x013d2120</code>, <code>0x013d2170</code>) calls <code>sceHttpTerm(HTTP context)</code>,
+  <code>sceSslTerm(SSL context)</code> and <code>sceNetPoolDestroy(pool)</code>.</p>
+<p>OpenOrbis' <code>Http.h</code> and <code>Net.h</code> give the <code>int32_t</code> id arguments of <code>sceHttpTerm</code>,
+<code>sceHttpDeleteTemplate</code> and <code>sceNetPoolDestroy</code>; the others' come from these calls. The answers
+are facts from shadPS4's <code>libSceHttp</code> (<code>http.cpp</code>, <code>http_error.h</code>):</p>
+<div class="wk-table"><table>
+<thead>
+<tr>
+<th>Call</th>
+<th>Runtime</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>sceHttpTerm(context)</code>, <code>sceHttpDeleteTemplate(template)</code></td>
+<td>0, ending the id; <code>0x80431100</code> (invalid id) for one that is not live (never handed out, or already ended)</td>
+</tr>
+<tr>
+<td><code>sceHttpDestroyEpoll(context, handle)</code></td>
+<td>0, freeing the handle; <code>0x80431100</code> for a context or handle that is not live, <code>0x804311fe</code> (invalid value) for no handle</td>
+</tr>
+<tr>
+<td><code>sceHttpAbortWaitRequest(handle)</code></td>
+<td>0; <code>0x804311fe</code> for no handle, <code>0x80431100</code> for one that is not live. Every later <code>sceHttpWaitRequest</code> on the handle answers <code>0x80431080</code> (aborted). Offline no wait blocks, so there is no waiter to wake.</td>
+</tr>
+<tr>
+<td><code>sceSslTerm(context)</code>, <code>sceNetPoolDestroy(pool)</code></td>
+<td>0, ending the id</td>
+</tr>
+</tbody>
+</table></div>
+<p>Ids are never reused. Using an ended pool or SSL context in <code>sceHttpInit</code>, an ended HTTP context
+in <code>sceHttpCreateTemplate</code> or <code>sceHttpCreateEpoll</code>, and an ended template in the template calls,
+stop by name as an unknown id does (<code>sceHttpsEnableOption</code> and <code>sceHttpsDisableOption</code> answer
+<code>0x80431100</code>, as before).</p>
+<p><strong>What stops by name:</strong> ending an SSL context or pool that is not live (no source gives the
+answer). shadPS4 answers <code>0x80431001</code> (before init) for the HTTP calls before any <code>sceHttpInit</code>;
+the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> does not model that state and answers <code>0x80431100</code> there, which the executable never
+reaches.</p>
 <h2 id="https-options-scehttpsenableoption-scehttpsdisableoption">HTTPS options (<code>sceHttpsEnableOption</code>, <code>sceHttpsDisableOption</code>)</h2>
 <p><code>sceHttpsEnableOption(id, flags)</code> and <code>sceHttpsDisableOption(id, flags)</code> set and clear HTTPS
 flags on a template. The facts come from shadPS4's and PS4Recomp's <code>libSceHttp</code>, which agree:

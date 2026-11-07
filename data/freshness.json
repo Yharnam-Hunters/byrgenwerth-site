@@ -18,6 +18,16 @@
  "runtime-syscalls.md": {
   "behind": [
    {
+    "commit": "c270da5d33cb",
+    "pr": 451,
+    "title": "runtime: network, SSL and HTTP teardown, offline"
+   },
+   {
+    "commit": "43b211cf52a6",
+    "pr": 450,
+    "title": "runtime: PSN identity, Plus and async checks answer offline (signed out)"
+   },
+   {
     "commit": "f0a2fc564580",
     "pr": 449,
     "title": "syslib: sceKernelFtruncate and sceKernelRename"
@@ -27,6 +37,16 @@
  },
  "runtime.md": {
   "behind": [
+   {
+    "commit": "c270da5d33cb",
+    "pr": 451,
+    "title": "runtime: network, SSL and HTTP teardown, offline"
+   },
+   {
+    "commit": "43b211cf52a6",
+    "pr": 450,
+    "title": "runtime: PSN identity, Plus and async checks answer offline (signed out)"
+   },
    {
     "commit": "f0a2fc564580",
     "pr": 449,

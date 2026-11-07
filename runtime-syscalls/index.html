@@ -463,11 +463,15 @@
       
       
       <aside class="wk-freshness" role="note">
-        <p><b>Not yet updated for 1 merged change.</b>
+        <p><b>Not yet updated for 3 merged changes.</b>
         This page was last checked against Paleblood
         <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/afe552f56e8230f6a3b1618cd58c1db47a2b241f"><code>afe552f</code></a>;
         these pull requests changed what it describes since:</p>
         <ul>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/451">#451</a> runtime: network, SSL and HTTP teardown, offline</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/450">#450</a> runtime: PSN identity, Plus and async checks answer offline (signed out)</li>
           
           <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/449">#449</a> syslib: sceKernelFtruncate and sceKernelRename</li>
           
@@ -2865,6 +2869,11 @@ call is registered only to name itself and stop, because its answer is not estab
 </thead>
 <tbody>
 <tr>
+<td><code>sceHttpAbortWaitRequest</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/network.c"><code>runtime/syslib/network.c</code></a></td>
+</tr>
+<tr>
 <td><code>sceHttpAddRequestHeader</code></td>
 <td><span class="wk-badge wk-badge--implemented">implemented</span></td>
 <td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/network.c"><code>runtime/syslib/network.c</code></a></td>
@@ -2876,6 +2885,16 @@ call is registered only to name itself and stop, because its answer is not estab
 </tr>
 <tr>
 <td><code>sceHttpCreateTemplate</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/network.c"><code>runtime/syslib/network.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceHttpDeleteTemplate</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/network.c"><code>runtime/syslib/network.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceHttpDestroyEpoll</code></td>
 <td><span class="wk-badge wk-badge--implemented">implemented</span></td>
 <td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/network.c"><code>runtime/syslib/network.c</code></a></td>
 </tr>
@@ -2896,6 +2915,11 @@ call is registered only to name itself and stop, because its answer is not estab
 </tr>
 <tr>
 <td><code>sceHttpSetNonblock</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/network.c"><code>runtime/syslib/network.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceHttpTerm</code></td>
 <td><span class="wk-badge wk-badge--implemented">implemented</span></td>
 <td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/network.c"><code>runtime/syslib/network.c</code></a></td>
 </tr>
@@ -3004,6 +3028,11 @@ call is registered only to name itself and stop, because its answer is not estab
 <td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/network.c"><code>runtime/syslib/network.c</code></a></td>
 </tr>
 <tr>
+<td><code>sceNetPoolDestroy</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/network.c"><code>runtime/syslib/network.c</code></a></td>
+</tr>
+<tr>
 <td><code>sceNetTerm</code></td>
 <td><span class="wk-badge wk-badge--implemented">implemented</span></td>
 <td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/network.c"><code>runtime/syslib/network.c</code></a></td>
@@ -3052,6 +3081,28 @@ call is registered only to name itself and stop, because its answer is not estab
 </tr>
 </tbody>
 </table></div>
+<h4 id="libscenpcommon"><code>libSceNpCommon</code></h4>
+<div class="wk-table"><table>
+<thead>
+<tr>
+<th>Call</th>
+<th>Status</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>sceNpCmpNpId</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/np_common.c"><code>runtime/syslib/np_common.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceNpCmpOnlineId</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/np_common.c"><code>runtime/syslib/np_common.c</code></a></td>
+</tr>
+</tbody>
+</table></div>
 <h4 id="libscenpmanager"><code>libSceNpManager</code></h4>
 <div class="wk-table"><table>
 <thead>
@@ -3063,7 +3114,52 @@ call is registered only to name itself and stop, because its answer is not estab
 </thead>
 <tbody>
 <tr>
+<td><code>sceNpAbortRequest</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/np_manager.c"><code>runtime/syslib/np_manager.c</code></a></td>
+</tr>
+<tr>
 <td><code>sceNpCheckCallback</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/np_manager.c"><code>runtime/syslib/np_manager.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceNpCheckNpAvailability</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/np_manager.c"><code>runtime/syslib/np_manager.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceNpCheckPlus</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/np_manager.c"><code>runtime/syslib/np_manager.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceNpCreateAsyncRequest</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/np_manager.c"><code>runtime/syslib/np_manager.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceNpDeleteRequest</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/np_manager.c"><code>runtime/syslib/np_manager.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceNpGetGamePresenceStatus</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/np_manager.c"><code>runtime/syslib/np_manager.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceNpGetNpId</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/np_manager.c"><code>runtime/syslib/np_manager.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceNpGetOnlineId</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/np_manager.c"><code>runtime/syslib/np_manager.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceNpGetParentalControlInfo</code></td>
 <td><span class="wk-badge wk-badge--implemented">implemented</span></td>
 <td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/np_manager.c"><code>runtime/syslib/np_manager.c</code></a></td>
 </tr>
@@ -3073,7 +3169,22 @@ call is registered only to name itself and stop, because its answer is not estab
 <td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/np_manager.c"><code>runtime/syslib/np_manager.c</code></a></td>
 </tr>
 <tr>
+<td><code>sceNpNotifyPlusFeature</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/np_manager.c"><code>runtime/syslib/np_manager.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceNpPollAsync</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/np_manager.c"><code>runtime/syslib/np_manager.c</code></a></td>
+</tr>
+<tr>
 <td><code>sceNpRegisterGamePresenceCallback</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/np_manager.c"><code>runtime/syslib/np_manager.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceNpRegisterPlusEventCallback</code></td>
 <td><span class="wk-badge wk-badge--implemented">implemented</span></td>
 <td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/np_manager.c"><code>runtime/syslib/np_manager.c</code></a></td>
 </tr>
@@ -3089,6 +3200,11 @@ call is registered only to name itself and stop, because its answer is not estab
 </tr>
 <tr>
 <td><code>sceNpSetNpTitleId</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/np_manager.c"><code>runtime/syslib/np_manager.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceNpUnregisterPlusEventCallback</code></td>
 <td><span class="wk-badge wk-badge--implemented">implemented</span></td>
 <td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/np_manager.c"><code>runtime/syslib/np_manager.c</code></a></td>
 </tr>
@@ -3490,6 +3606,11 @@ call is registered only to name itself and stop, because its answer is not estab
 <tbody>
 <tr>
 <td><code>sceSslInit</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/network.c"><code>runtime/syslib/network.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceSslTerm</code></td>
 <td><span class="wk-badge wk-badge--implemented">implemented</span></td>
 <td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/network.c"><code>runtime/syslib/network.c</code></a></td>
 </tr>
