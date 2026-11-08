@@ -224,6 +224,14 @@
     },
     {
       "aliases": [],
+      "avatar_url": "https://avatars.githubusercontent.com/u/75046310?v=4",
+      "github_url": "https://github.com/sweetbbak",
+      "id": 75046310,
+      "login": "sweetbbak",
+      "state": "active"
+    },
+    {
+      "aliases": [],
       "avatar_url": "https://avatars.githubusercontent.com/u/109447017?v=4",
       "github_url": "https://github.com/EzequielRindello",
       "id": 109447017,
@@ -3414,14 +3422,22 @@
       "references": [
         "https://github.com/Yharnam-Hunters/Paleblood/commit/1dbf736dea4bcee309588a78a34c9cd5f9218b54",
         "https://github.com/Yharnam-Hunters/Paleblood/commit/2e1a0447463c549e019c58f2bb40fe6ad3996b3d",
+        "https://github.com/Yharnam-Hunters/Paleblood/commit/4411ef5e3168cabb5d7607179d39e7d8368487ae",
         "https://github.com/Yharnam-Hunters/Paleblood/commit/455313362a0f8437f921fd9d3867241480036a99",
+        "https://github.com/Yharnam-Hunters/Paleblood/commit/463ac955853c58debaa55c5d7bdf01326ffc7b28",
         "https://github.com/Yharnam-Hunters/Paleblood/commit/48aa6832f4ecc0c64682ba401300f04a7e61cfe1",
         "https://github.com/Yharnam-Hunters/Paleblood/commit/4e0097ee187a0626ee9f2c4e06220262601e2011",
         "https://github.com/Yharnam-Hunters/Paleblood/commit/5caa055bf17dba2fb7f1936a9e09b9f09075be0d",
         "https://github.com/Yharnam-Hunters/Paleblood/commit/8a83de704c146b9db58840c5b6934b1530197a03",
+        "https://github.com/Yharnam-Hunters/Paleblood/commit/b5e7688ada9efb8d0f785c5348240bc7f907242d",
         "https://github.com/Yharnam-Hunters/Paleblood/commit/b934f4f3e17d07b629c4882d9629f9ffc500b2ec",
+        "https://github.com/Yharnam-Hunters/Paleblood/commit/bb774ec8e6a8869debd9691393f31216c043329f",
+        "https://github.com/Yharnam-Hunters/Paleblood/commit/cdb46886624a24a239582b169076b6b7652a7dde",
+        "https://github.com/Yharnam-Hunters/Paleblood/commit/d21b16481d3147cf422665214e0496c207b46958",
         "https://github.com/Yharnam-Hunters/Paleblood/commit/d99bf2ecf27d61901696b5c415e582ef46789bf2",
         "https://github.com/Yharnam-Hunters/Paleblood/commit/f50747e292e30767fa6b693c79922135c7994c1f",
+        "https://github.com/Yharnam-Hunters/Paleblood/commit/fbd0b062e3da3a836ee38b60455356d8d810a212",
+        "https://github.com/Yharnam-Hunters/Paleblood/commit/fe0764c252d1e1a95b712953eee0710dd5251e56",
         "https://github.com/Yharnam-Hunters/Paleblood/pull/112"
       ],
       "title": "camera: simplify follow update and refresh edge evidence",
@@ -6139,13 +6155,20 @@
       "references": [
         "https://github.com/Yharnam-Hunters/Paleblood/commit/037aa969e8b5167e673e27cfa163d7ac5e728218",
         "https://github.com/Yharnam-Hunters/Paleblood/commit/13b5d36da1c246d8de6ef5b70e18e5fa400a91ec",
+        "https://github.com/Yharnam-Hunters/Paleblood/commit/346c3491e39f77364063dbeef3e9263a2e2ae70d",
+        "https://github.com/Yharnam-Hunters/Paleblood/commit/40e85aa63fddda49d3539f1172708d1fe52dd94f",
         "https://github.com/Yharnam-Hunters/Paleblood/commit/4ce9cff120aede5c1b7604afaaf821babbe5e43d",
         "https://github.com/Yharnam-Hunters/Paleblood/commit/598f94bc682deb2b581137afdf3ed10effc3c1eb",
         "https://github.com/Yharnam-Hunters/Paleblood/commit/632bf0e9ca24928270d71efb75418164ca15ad09",
         "https://github.com/Yharnam-Hunters/Paleblood/commit/6ff36fa1651cb1a792b38efcdfe80665212380b1",
         "https://github.com/Yharnam-Hunters/Paleblood/commit/74d607f1429dbdcab89991afbef1eb79224c0503",
+        "https://github.com/Yharnam-Hunters/Paleblood/commit/7eb212f9b8ccb90cf7d48fb9e11870b723ff9ffc",
+        "https://github.com/Yharnam-Hunters/Paleblood/commit/8a692754eddcc9387419fdcb6a9b8b411cd108ac",
+        "https://github.com/Yharnam-Hunters/Paleblood/commit/93ea55316ae91fd77aba50038be860c73ced5b54",
         "https://github.com/Yharnam-Hunters/Paleblood/commit/b1e51d9ac2f4f992715f646dd00aa58b24fbcf14",
+        "https://github.com/Yharnam-Hunters/Paleblood/commit/f4cec343b5ae23173899055116be299281f72f4b",
         "https://github.com/Yharnam-Hunters/Paleblood/commit/f53deed10c85070b73b66e497865ce554869bcef",
+        "https://github.com/Yharnam-Hunters/Paleblood/commit/f7ad3ab4bd03f7222312a9bf7b98e06a56c2cec5",
         "https://github.com/Yharnam-Hunters/Paleblood/pull/242"
       ],
       "title": "render: verify present finish",
@@ -6165,6 +6188,7 @@
         "https://github.com/Yharnam-Hunters/Paleblood/commit/006f916630da3c04d56548dd2dd97ed4574a0f75",
         "https://github.com/Yharnam-Hunters/Paleblood/commit/0983e4220f8685b23415d0cdc708227392b37685",
         "https://github.com/Yharnam-Hunters/Paleblood/commit/212425eb1bdc2c8dd03449d62fa78d7bb66da25f",
+        "https://github.com/Yharnam-Hunters/Paleblood/commit/33109efb94fa017335fb353d6a325425488b1dba",
         "https://github.com/Yharnam-Hunters/Paleblood/commit/436600c3825847b88e7d75bcbf98a3dfddb4c12c",
         "https://github.com/Yharnam-Hunters/Paleblood/commit/4ca4be6fc76be61553e8784de8a1bb16c0b36ad6",
         "https://github.com/Yharnam-Hunters/Paleblood/commit/4e401bb772e2f9dac749a2c340465911feab703f",
@@ -6172,6 +6196,11 @@
         "https://github.com/Yharnam-Hunters/Paleblood/commit/6e16cbef85db9f0efafd1559fcc32211139b5f22",
         "https://github.com/Yharnam-Hunters/Paleblood/commit/9d9d7cf45e0657842a28d3bb84dc12737b88791a",
         "https://github.com/Yharnam-Hunters/Paleblood/commit/aa7c5d9b497fe7513bb03106184248272e72bd8b",
+        "https://github.com/Yharnam-Hunters/Paleblood/commit/b2fa755a8cfd706625814caaa43d77512cbd0d05",
+        "https://github.com/Yharnam-Hunters/Paleblood/commit/b7614fb1c27ca23f83bead1fafc5a3da7dc72654",
+        "https://github.com/Yharnam-Hunters/Paleblood/commit/ba87c8a71d39c062b9ea7925e5ef5fbdf5a27188",
+        "https://github.com/Yharnam-Hunters/Paleblood/commit/e426cf5587bf9942815853c6150b638f39f0dc35",
+        "https://github.com/Yharnam-Hunters/Paleblood/commit/fa1e0a0c434718ba954f0fa30b1025199825fb8b",
         "https://github.com/Yharnam-Hunters/Paleblood/pull/243"
       ],
       "title": "render: verify present source preparation",
@@ -6191,6 +6220,7 @@
         "https://github.com/Yharnam-Hunters/Paleblood/commit/1c55a3b57563c3be8ed5b87f8a3385bf593aa7e8",
         "https://github.com/Yharnam-Hunters/Paleblood/commit/2dacaf31ec3201fca79b8dc3a38e4bad4388d107",
         "https://github.com/Yharnam-Hunters/Paleblood/commit/4457a712eb9dd8de97e8bcc8ba4db1e22b368bc4",
+        "https://github.com/Yharnam-Hunters/Paleblood/commit/455054795dec51c453eb993684bca7e783fc083e",
         "https://github.com/Yharnam-Hunters/Paleblood/commit/4bcdca19d80e94b391c713a97bb0543fa50e72b9",
         "https://github.com/Yharnam-Hunters/Paleblood/commit/57e2e69b487c5b2bc10c2128f58c1cb487de9d88",
         "https://github.com/Yharnam-Hunters/Paleblood/commit/58747ff24425d49a0b156f617f0972d505fe4ba0",
@@ -6200,7 +6230,7 @@
         "https://github.com/Yharnam-Hunters/Paleblood/commit/92d21cd12bfa78f4d37e6d23516354c3ec0beefc",
         "https://github.com/Yharnam-Hunters/Paleblood/commit/a3b25b3ccb16887dd70f5754b292929264a801bd",
         "https://github.com/Yharnam-Hunters/Paleblood/commit/e74f3048380d5fd63de45dbf60cca7d86d4a75a3",
-        "https://github.com/Yharnam-Hunters/Paleblood/commit/fca1c1ce6abc0d005ed7cb4156aef811ece8e279",
+        "https://github.com/Yharnam-Hunters/Paleblood/commit/f8c20a1bfe21af590966faa46a4ab7b599751993",
         "https://github.com/Yharnam-Hunters/Paleblood/pull/245"
       ],
       "title": "render: verify swap chain resource info",
@@ -6220,6 +6250,7 @@
         "https://github.com/Yharnam-Hunters/Paleblood/commit/098556d7aca3f6888c98d450bec0c1eb653fbad6",
         "https://github.com/Yharnam-Hunters/Paleblood/commit/12d9c6756269a67f299478f52bf655d1628789a4",
         "https://github.com/Yharnam-Hunters/Paleblood/commit/151a4b05a19766ea5e77fe89cd44e4f2d174570c",
+        "https://github.com/Yharnam-Hunters/Paleblood/commit/4f66c84424d7d00de3263aa5b0a7a0964bc506f0",
         "https://github.com/Yharnam-Hunters/Paleblood/commit/642a3ff817832c7e559d2f56fd7f529954cb6c0e",
         "https://github.com/Yharnam-Hunters/Paleblood/commit/75c7b1c3443312ba3b4f5799ed711afdce538049",
         "https://github.com/Yharnam-Hunters/Paleblood/commit/7fb26a315c4238d0ddcf84c6f4fb8127877f1bea",
@@ -6229,7 +6260,7 @@
         "https://github.com/Yharnam-Hunters/Paleblood/commit/b1f667e7240afe0a9e15b22bd47b0f5efebeb9a6",
         "https://github.com/Yharnam-Hunters/Paleblood/commit/bc1b27c8f4bc09ce1afe32573de573258bfa5e2e",
         "https://github.com/Yharnam-Hunters/Paleblood/commit/bdb482ae7628027c79aa8964d0c7fc2919ec120a",
-        "https://github.com/Yharnam-Hunters/Paleblood/commit/d13ad816d7b210a87f2eebee963d768dc7429be6",
+        "https://github.com/Yharnam-Hunters/Paleblood/commit/dc2bd95ff852a2d2ee71a27ed079f83c5e567a95",
         "https://github.com/Yharnam-Hunters/Paleblood/commit/ddd556a3c84147a7991258d11c004cc8b48eb7b1",
         "https://github.com/Yharnam-Hunters/Paleblood/commit/e30be7cfaaa7de49484f26a7b4df366aa56a60bc",
         "https://github.com/Yharnam-Hunters/Paleblood/pull/246"
@@ -6254,8 +6285,9 @@
         "https://github.com/Yharnam-Hunters/Paleblood/commit/66af3348107aafbf86973a2d5a028908e5c3d68d",
         "https://github.com/Yharnam-Hunters/Paleblood/commit/7600930849b21923802526bfcda3cc5b5c37af75",
         "https://github.com/Yharnam-Hunters/Paleblood/commit/86bd56d306aee907cf6900859919ca3a91b0ca9a",
-        "https://github.com/Yharnam-Hunters/Paleblood/commit/8d61d310dffb6ed7fa12e93f4bab81cde294a033",
+        "https://github.com/Yharnam-Hunters/Paleblood/commit/8e9ea7077b31f60d134c9de0bce12319057bebbb",
         "https://github.com/Yharnam-Hunters/Paleblood/commit/91a352d391f338fdc7826a3865482f9bf7582470",
+        "https://github.com/Yharnam-Hunters/Paleblood/commit/bdb7769b36d6b8f424d980353111d683853ab469",
         "https://github.com/Yharnam-Hunters/Paleblood/commit/c0ec04d15fd84881f4a5a32f92e469912bcf747e",
         "https://github.com/Yharnam-Hunters/Paleblood/commit/c49d98e93ab11a13415ff15f1662b3960056a05e",
         "https://github.com/Yharnam-Hunters/Paleblood/commit/db3d42faab0bf348bc0e3fa72cb2d1375556adbe",
@@ -6314,11 +6346,12 @@
         "https://github.com/Yharnam-Hunters/Paleblood/commit/2283359800a068d147f94b0d2c8d99151902c615",
         "https://github.com/Yharnam-Hunters/Paleblood/commit/37e0b5611d53d67c9a05465aabc98f8a45466048",
         "https://github.com/Yharnam-Hunters/Paleblood/commit/558a28edd805b73b06db1598fba3cf1956d4cf03",
+        "https://github.com/Yharnam-Hunters/Paleblood/commit/584f0c49484ed6317aad2d1cffe5940905eb3f59",
         "https://github.com/Yharnam-Hunters/Paleblood/commit/6573401b00b0254f63989746d2ac483ea1c60084",
         "https://github.com/Yharnam-Hunters/Paleblood/commit/6a9c9c3b6f8e0ad14b06180adf876fbf6e52b3d6",
+        "https://github.com/Yharnam-Hunters/Paleblood/commit/910d1810fb16b694b1d6ba16fe4eb1cc6af0186c",
         "https://github.com/Yharnam-Hunters/Paleblood/commit/9cb37d9046fb21913294bff11c932fde1903b875",
         "https://github.com/Yharnam-Hunters/Paleblood/commit/a0b192138021c8f11c83d1734cf15c0764f68158",
-        "https://github.com/Yharnam-Hunters/Paleblood/commit/bda35c373d5b6ef7c5a6f654fc736d7f09a684f9",
         "https://github.com/Yharnam-Hunters/Paleblood/commit/c775b8de4fb0ba0b90836ffbd7b2c9aeb4d67113",
         "https://github.com/Yharnam-Hunters/Paleblood/commit/ca5193a138b90967df8b11c621685e526ab7bfad",
         "https://github.com/Yharnam-Hunters/Paleblood/commit/daf31926f5d5c79ff1f2d848cde32c1a8552f9f9",
@@ -6435,10 +6468,16 @@
       "kind": "open",
       "references": [
         "https://github.com/Yharnam-Hunters/Paleblood/commit/095799fffecfe1838264a443077f02f750fedd5d",
+        "https://github.com/Yharnam-Hunters/Paleblood/commit/10f8ffc3fe350b868aad0baae7ba88df31adda12",
         "https://github.com/Yharnam-Hunters/Paleblood/commit/190cec15b0da78bcb52706468bc7b618e63f3b97",
+        "https://github.com/Yharnam-Hunters/Paleblood/commit/1feb9db02d73498f1a061b31dbcb0eeaed33ed6d",
         "https://github.com/Yharnam-Hunters/Paleblood/commit/27e4e66138991be6e995bd8746b7b2364535a439",
+        "https://github.com/Yharnam-Hunters/Paleblood/commit/301394a86ea2f368b6df30a7ee7a157523be8aec",
         "https://github.com/Yharnam-Hunters/Paleblood/commit/3fa9f0646b67bd79f69e0c0916247143217fc712",
+        "https://github.com/Yharnam-Hunters/Paleblood/commit/8eb69b380328166febbbbc8d653c274ea659be51",
         "https://github.com/Yharnam-Hunters/Paleblood/commit/d42bc4ad119d8f7fd608d6dfd2a0e08c70e8f3fb",
+        "https://github.com/Yharnam-Hunters/Paleblood/commit/d50f11f903f7a617d8caa2c5ba85c304a2851d36",
+        "https://github.com/Yharnam-Hunters/Paleblood/commit/d5888e96ed6f44b19d1325727cbf3b1562443f3f",
         "https://github.com/Yharnam-Hunters/Paleblood/commit/e7ae02dd14852cd9aca1170fb1b293ce64d1ff87",
         "https://github.com/Yharnam-Hunters/Paleblood/commit/fa86c197eddb900e1c40f29e47910fb5c1b1a205",
         "https://github.com/Yharnam-Hunters/Paleblood/commit/fbe6168e8ece66221d6dd965a4221f0a47b4af76",
@@ -6487,18 +6526,20 @@
       "id": "Yharnam-Hunters/Paleblood:pr:5122378619",
       "kind": "open",
       "references": [
+        "https://github.com/Yharnam-Hunters/Paleblood/commit/1125d2afe27bca9946dae55c3bcbd2b1e2551903",
         "https://github.com/Yharnam-Hunters/Paleblood/commit/28fc58e78bbb135d1bd5b5c30bd235aa629b870b",
         "https://github.com/Yharnam-Hunters/Paleblood/commit/3372b4c8e38f163ffa0e242507faeaacfc1b31dc",
         "https://github.com/Yharnam-Hunters/Paleblood/commit/3c4b67d32c47f118eeb1f4fdd5ecb11583e2f8ca",
         "https://github.com/Yharnam-Hunters/Paleblood/commit/7d386593037f7934bdd498064d443a04d3f7325a",
         "https://github.com/Yharnam-Hunters/Paleblood/commit/96116098433ccc7da61f2541a03e546a13258960",
         "https://github.com/Yharnam-Hunters/Paleblood/commit/9dd91d18a77ec4f0c90a419b6d4c6f0e53e91e5a",
+        "https://github.com/Yharnam-Hunters/Paleblood/commit/aaff2c03f466df9897757cb3b82c759e946444c1",
         "https://github.com/Yharnam-Hunters/Paleblood/commit/ad47261a4326d2af8fbc7d7b1b61b1739f266453",
         "https://github.com/Yharnam-Hunters/Paleblood/commit/c964960c2977ab2c0b92dfdd3bfe491ba07ae539",
         "https://github.com/Yharnam-Hunters/Paleblood/commit/ca4f18dbe44ce6a0957dadb9580372b6a3f4ddc1",
         "https://github.com/Yharnam-Hunters/Paleblood/commit/d11acf987166ae0704a338e6bc377927114fa59d",
         "https://github.com/Yharnam-Hunters/Paleblood/commit/dee5f08e3a554a7b6b4e6925676504f01dc8d915",
-        "https://github.com/Yharnam-Hunters/Paleblood/commit/e7e80c11fbc2e927cf37efcf7e70c234e12be03d",
+        "https://github.com/Yharnam-Hunters/Paleblood/commit/e4d66c1aab04697cb0d69d28a65278e3420e6082",
         "https://github.com/Yharnam-Hunters/Paleblood/commit/f65d24ffd29739761e2bcccf8306dde37e1b7e65",
         "https://github.com/Yharnam-Hunters/Paleblood/commit/f9d17ffc29946e670305f4fa8aa4526427c60395",
         "https://github.com/Yharnam-Hunters/Paleblood/pull/264"
@@ -6517,15 +6558,21 @@
       "id": "Yharnam-Hunters/Paleblood:pr:5122500959",
       "kind": "open",
       "references": [
+        "https://github.com/Yharnam-Hunters/Paleblood/commit/04983c164289bd1739eb48d423f360d3760617ac",
         "https://github.com/Yharnam-Hunters/Paleblood/commit/0ded990d6e6fafb9ace3272c6f3e2b7911bd12cd",
         "https://github.com/Yharnam-Hunters/Paleblood/commit/10961a748adaf982ddbd42bc2c299c6d07be3982",
         "https://github.com/Yharnam-Hunters/Paleblood/commit/555d686e8e3666c83ed00b26d968027eb2692ebc",
+        "https://github.com/Yharnam-Hunters/Paleblood/commit/568263e390d61649e7dbffe4a4931119be93dd5b",
         "https://github.com/Yharnam-Hunters/Paleblood/commit/5da6088f693058ce03065b3634394b8a0f0c0674",
         "https://github.com/Yharnam-Hunters/Paleblood/commit/61a706442d255a4f5dae354f3f418ccb2c40332e",
         "https://github.com/Yharnam-Hunters/Paleblood/commit/66839a9bdda757d4ac817482475012543a212b59",
         "https://github.com/Yharnam-Hunters/Paleblood/commit/702091b53c2524a6f016e3d94f07e3a6b99a3081",
+        "https://github.com/Yharnam-Hunters/Paleblood/commit/75b73c9342e0edf7523861e47de61b00aad7e134",
+        "https://github.com/Yharnam-Hunters/Paleblood/commit/89218cefcc827e75f87e1f218e6cd5e54b6b2b04",
+        "https://github.com/Yharnam-Hunters/Paleblood/commit/aeac1f485668c5fe1f67a58bf97f22f8a87a4696",
         "https://github.com/Yharnam-Hunters/Paleblood/commit/be2e6493e8852301261121de633fbdeaab6bd1b5",
         "https://github.com/Yharnam-Hunters/Paleblood/commit/d653957bbb03a39a329e64b97fd271bceb235df9",
+        "https://github.com/Yharnam-Hunters/Paleblood/commit/e65b6d10ef02595a602f7399beef1addd8d16b3a",
         "https://github.com/Yharnam-Hunters/Paleblood/pull/265"
       ],
       "title": "render: verify finish pool",
@@ -15504,6 +15551,8 @@
       "kind": "open",
       "references": [
         "https://github.com/Yharnam-Hunters/Paleblood/commit/4999487fd2af7a181c5bda9067aa63c74cba675f",
+        "https://github.com/Yharnam-Hunters/Paleblood/commit/6e57674155611b350799ceaad9bea6331b6316ea",
+        "https://github.com/Yharnam-Hunters/Paleblood/commit/ceb988dd34948440fa7ee35e5be83faf009f0742",
         "https://github.com/Yharnam-Hunters/Paleblood/pull/444"
       ],
       "title": "runtime: implement sceKernelWrite and sceKernelPwrite",
@@ -15816,6 +15865,121 @@
       ],
       "title": "render: verify shader command packets",
       "url": "https://github.com/Yharnam-Hunters/Paleblood/pull/248"
+    },
+    {
+      "actors": [
+        109447017
+      ],
+      "categories": [
+        "runtime"
+      ],
+      "date": "2026-11-07T23:11:58Z",
+      "id": "Yharnam-Hunters/Paleblood:comment:6714301388",
+      "kind": "research",
+      "references": [
+        "https://github.com/Yharnam-Hunters/Paleblood/pull/444#issuecomment-6714301388"
+      ],
+      "title": "Technical discussion: runtime: implement sceKernelWrite and sceKernelPwrite",
+      "url": "https://github.com/Yharnam-Hunters/Paleblood/pull/444#issuecomment-6714301388"
+    },
+    {
+      "actors": [
+        75046310
+      ],
+      "categories": [
+        "project contributions"
+      ],
+      "date": "2026-11-08T02:49:49Z",
+      "id": "Yharnam-Hunters/Paleblood:issue:6266879041",
+      "kind": "research",
+      "references": [
+        "https://github.com/Yharnam-Hunters/Paleblood/issues/453"
+      ],
+      "title": "document: Known Libraries and source code layout",
+      "url": "https://github.com/Yharnam-Hunters/Paleblood/issues/453"
+    },
+    {
+      "actors": [
+        109447017
+      ],
+      "categories": [
+        "runtime"
+      ],
+      "date": "2026-11-08T04:40:50Z",
+      "id": "Yharnam-Hunters/Paleblood:pr:5208691194",
+      "kind": "open",
+      "references": [
+        "https://github.com/Yharnam-Hunters/Paleblood/commit/dc963c42bdbd919a03c79d7524788c24252cc690",
+        "https://github.com/Yharnam-Hunters/Paleblood/pull/454"
+      ],
+      "title": "runtime: implement _exit",
+      "url": "https://github.com/Yharnam-Hunters/Paleblood/pull/454"
+    },
+    {
+      "actors": [
+        109447017
+      ],
+      "categories": [
+        "runtime"
+      ],
+      "date": "2026-11-08T04:41:17Z",
+      "id": "Yharnam-Hunters/Paleblood:pr:5208693320",
+      "kind": "open",
+      "references": [
+        "https://github.com/Yharnam-Hunters/Paleblood/commit/f2574df4e99989698e366a6ed1251f2034214c04",
+        "https://github.com/Yharnam-Hunters/Paleblood/pull/455"
+      ],
+      "title": "runtime: implement sceKernelMkdir, sceKernelRmdir and sceKernelUnlink",
+      "url": "https://github.com/Yharnam-Hunters/Paleblood/pull/455"
+    },
+    {
+      "actors": [
+        109447017
+      ],
+      "categories": [
+        "runtime"
+      ],
+      "date": "2026-11-08T04:41:35Z",
+      "id": "Yharnam-Hunters/Paleblood:comment:6717341245",
+      "kind": "research",
+      "references": [
+        "https://github.com/Yharnam-Hunters/Paleblood/issues/34#issuecomment-6717341245"
+      ],
+      "title": "Technical discussion: Runtime: Kernel, threads and memory",
+      "url": "https://github.com/Yharnam-Hunters/Paleblood/issues/34#issuecomment-6717341245"
+    },
+    {
+      "actors": [
+        109447017
+      ],
+      "categories": [
+        "runtime"
+      ],
+      "date": "2026-11-08T04:41:53Z",
+      "id": "Yharnam-Hunters/Paleblood:comment:6717343771",
+      "kind": "research",
+      "references": [
+        "https://github.com/Yharnam-Hunters/Paleblood/issues/34#issuecomment-6717343771"
+      ],
+      "title": "Technical discussion: Runtime: Kernel, threads and memory",
+      "url": "https://github.com/Yharnam-Hunters/Paleblood/issues/34#issuecomment-6717343771"
+    },
+    {
+      "actors": [
+        33441881
+      ],
+      "categories": [
+        "project contributions"
+      ],
+      "date": "2026-11-08T06:44:19Z",
+      "id": "Yharnam-Hunters/Paleblood:pr:5209318884",
+      "kind": "open",
+      "references": [
+        "https://github.com/Yharnam-Hunters/Paleblood/commit/e97c95a397deb23942bcd7f1f84b5deb5485ca73",
+        "https://github.com/Yharnam-Hunters/Paleblood/pull/456"
+      ],
+      "title": "boot: check a module hook's first bytes before patching",
+      "url": "https://github.com/Yharnam-Hunters/Paleblood/pull/456"
     }
   ],
   "schema": 1
