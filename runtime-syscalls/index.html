@@ -463,19 +463,29 @@
       
       
       <aside class="wk-freshness" role="note">
-        <p><b>Not yet updated for 3 merged changes.</b>
+        <p><b>Not yet updated for 13 merged changes.</b>
         This page was last checked against Paleblood
         <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/afe552f56e8230f6a3b1618cd58c1db47a2b241f"><code>afe552f</code></a>;
         these pull requests changed what it describes since:</p>
         <ul>
           
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/451">#451</a> runtime: network, SSL and HTTP teardown, offline</li>
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/468">#468</a> runtime: gmtime, gmtime_s, printf, vprintf and vsnprintf for libSceFios2</li>
           
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/450">#450</a> runtime: PSN identity, Plus and async checks answer offline (signed out)</li>
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/467">#467</a> runtime: sceKernelMunmap, sceKernelMprotect and sceKernelGetDirectMemoryType</li>
           
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/449">#449</a> syslib: sceKernelFtruncate and sceKernelRename</li>
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/466">#466</a> runtime: RTC Unix time, time zones, RFC 2822 and the network tick; no system events</li>
           
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/465">#465</a> runtime: sceNetInetNtop for IPv4</li>
           
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/464">#464</a> runtime: timed mutex and rwlock locks</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/462">#462</a> runtime: the pad's motion settings, and the mouse, not connected</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/460">#460</a> runtime: join, detach, explicit scheduling and once for guest threads</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/461">#461</a> runtime: PSN authorization and the IP address query answer offline</li>
+          
+          <li>and 5 more</li>
         </ul>
       </aside>
       
@@ -2150,6 +2160,11 @@ call is registered only to name itself and stop, because its answer is not estab
 <td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_memory.c"><code>runtime/syslib/kernel_memory.c</code></a></td>
 </tr>
 <tr>
+<td><code>sceKernelGetDirectMemoryType</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_memory.c"><code>runtime/syslib/kernel_memory.c</code></a></td>
+</tr>
+<tr>
 <td><code>sceKernelGetProcessTime</code></td>
 <td><span class="wk-badge wk-badge--implemented">implemented</span></td>
 <td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_time_of_day.c"><code>runtime/syslib/kernel_time_of_day.c</code></a></td>
@@ -2176,6 +2191,16 @@ call is registered only to name itself and stop, because its answer is not estab
 </tr>
 <tr>
 <td><code>sceKernelMapFlexibleMemory</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_memory.c"><code>runtime/syslib/kernel_memory.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceKernelMprotect</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_memory.c"><code>runtime/syslib/kernel_memory.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceKernelMunmap</code></td>
 <td><span class="wk-badge wk-badge--implemented">implemented</span></td>
 <td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_memory.c"><code>runtime/syslib/kernel_memory.c</code></a></td>
 </tr>
@@ -2230,6 +2255,11 @@ call is registered only to name itself and stop, because its answer is not estab
 <td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/files.c"><code>runtime/syslib/files.c</code></a></td>
 </tr>
 <tr>
+<td><code>sceKernelTruncate</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/file_names.c"><code>runtime/syslib/file_names.c</code></a></td>
+</tr>
+<tr>
 <td><code>sceKernelUsleep</code></td>
 <td><span class="wk-badge wk-badge--implemented">implemented</span></td>
 <td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel.c"><code>runtime/syslib/kernel.c</code></a></td>
@@ -2271,6 +2301,11 @@ call is registered only to name itself and stop, because its answer is not estab
 </tr>
 <tr>
 <td><code>scePthreadAttrSetdetachstate</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_thread.c"><code>runtime/syslib/kernel_thread.c</code></a></td>
+</tr>
+<tr>
+<td><code>scePthreadAttrSetinheritsched</code></td>
 <td><span class="wk-badge wk-badge--implemented">implemented</span></td>
 <td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_thread.c"><code>runtime/syslib/kernel_thread.c</code></a></td>
 </tr>
@@ -2325,6 +2360,11 @@ call is registered only to name itself and stop, because its answer is not estab
 <td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_thread.c"><code>runtime/syslib/kernel_thread.c</code></a></td>
 </tr>
 <tr>
+<td><code>scePthreadDetach</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_thread.c"><code>runtime/syslib/kernel_thread.c</code></a></td>
+</tr>
+<tr>
 <td><code>scePthreadEqual</code></td>
 <td><span class="wk-badge wk-badge--implemented">implemented</span></td>
 <td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_thread.c"><code>runtime/syslib/kernel_thread.c</code></a></td>
@@ -2343,6 +2383,11 @@ call is registered only to name itself and stop, because its answer is not estab
 <td><code>scePthreadGetspecific</code></td>
 <td><span class="wk-badge wk-badge--implemented">implemented</span></td>
 <td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_key.c"><code>runtime/syslib/kernel_key.c</code></a></td>
+</tr>
+<tr>
+<td><code>scePthreadJoin</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_thread.c"><code>runtime/syslib/kernel_thread.c</code></a></td>
 </tr>
 <tr>
 <td><code>scePthreadKeyCreate</code></td>
@@ -2390,6 +2435,11 @@ call is registered only to name itself and stop, because its answer is not estab
 <td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_mutex.c"><code>runtime/syslib/kernel_mutex.c</code></a></td>
 </tr>
 <tr>
+<td><code>scePthreadMutexTimedlock</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_mutex.c"><code>runtime/syslib/kernel_mutex.c</code></a></td>
+</tr>
+<tr>
 <td><code>scePthreadMutexTrylock</code></td>
 <td><span class="wk-badge wk-badge--implemented">implemented</span></td>
 <td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_mutex.c"><code>runtime/syslib/kernel_mutex.c</code></a></td>
@@ -2398,6 +2448,11 @@ call is registered only to name itself and stop, because its answer is not estab
 <td><code>scePthreadMutexUnlock</code></td>
 <td><span class="wk-badge wk-badge--implemented">implemented</span></td>
 <td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_mutex.c"><code>runtime/syslib/kernel_mutex.c</code></a></td>
+</tr>
+<tr>
+<td><code>scePthreadOnce</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_thread.c"><code>runtime/syslib/kernel_thread.c</code></a></td>
 </tr>
 <tr>
 <td><code>scePthreadRwlockDestroy</code></td>
@@ -2411,6 +2466,16 @@ call is registered only to name itself and stop, because its answer is not estab
 </tr>
 <tr>
 <td><code>scePthreadRwlockRdlock</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_rwlock.c"><code>runtime/syslib/kernel_rwlock.c</code></a></td>
+</tr>
+<tr>
+<td><code>scePthreadRwlockTimedrdlock</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_rwlock.c"><code>runtime/syslib/kernel_rwlock.c</code></a></td>
+</tr>
+<tr>
+<td><code>scePthreadRwlockTimedwrlock</code></td>
 <td><span class="wk-badge wk-badge--implemented">implemented</span></td>
 <td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_rwlock.c"><code>runtime/syslib/kernel_rwlock.c</code></a></td>
 </tr>
@@ -2711,6 +2776,23 @@ call is registered only to name itself and stop, because its answer is not estab
 </tr>
 </tbody>
 </table></div>
+<h4 id="libscediscmap"><code>libSceDiscMap</code></h4>
+<div class="wk-table"><table>
+<thead>
+<tr>
+<th>Call</th>
+<th>Status</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>sceDiscMapIsRequestOnHDD</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/disc_map.c"><code>runtime/syslib/disc_map.c</code></a></td>
+</tr>
+</tbody>
+</table></div>
 <h4 id="libscegnmdriver"><code>libSceGnmDriver</code></h4>
 <div class="wk-table"><table>
 <thead>
@@ -2941,6 +3023,16 @@ call is registered only to name itself and stop, because its answer is not estab
 </thead>
 <tbody>
 <tr>
+<td><code>gmtime</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/libc_internal.c"><code>runtime/syslib/libc_internal.c</code></a></td>
+</tr>
+<tr>
+<td><code>gmtime_s</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/libc_internal.c"><code>runtime/syslib/libc_internal.c</code></a></td>
+</tr>
+<tr>
 <td><code>memcpy</code></td>
 <td><span class="wk-badge wk-badge--implemented">implemented</span></td>
 <td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel.c"><code>runtime/syslib/kernel.c</code></a></td>
@@ -2951,9 +3043,56 @@ call is registered only to name itself and stop, because its answer is not estab
 <td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel.c"><code>runtime/syslib/kernel.c</code></a></td>
 </tr>
 <tr>
+<td><code>printf</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/libc_internal.c"><code>runtime/syslib/libc_internal.c</code></a></td>
+</tr>
+<tr>
 <td><code>time</code></td>
 <td><span class="wk-badge wk-badge--implemented">implemented</span></td>
 <td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_time_of_day.c"><code>runtime/syslib/kernel_time_of_day.c</code></a></td>
+</tr>
+<tr>
+<td><code>vprintf</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/libc_internal.c"><code>runtime/syslib/libc_internal.c</code></a></td>
+</tr>
+<tr>
+<td><code>vsnprintf</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/libc_internal.c"><code>runtime/syslib/libc_internal.c</code></a></td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="libscemouse"><code>libSceMouse</code></h4>
+<div class="wk-table"><table>
+<thead>
+<tr>
+<th>Call</th>
+<th>Status</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>sceMouseClose</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/mouse.c"><code>runtime/syslib/mouse.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceMouseInit</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/mouse.c"><code>runtime/syslib/mouse.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceMouseOpen</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/mouse.c"><code>runtime/syslib/mouse.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceMouseRead</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/mouse.c"><code>runtime/syslib/mouse.c</code></a></td>
 </tr>
 </tbody>
 </table></div>
@@ -2999,6 +3138,11 @@ call is registered only to name itself and stop, because its answer is not estab
 </tr>
 <tr>
 <td><code>sceNetHtons</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/network.c"><code>runtime/syslib/network.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceNetInetNtop</code></td>
 <td><span class="wk-badge wk-badge--implemented">implemented</span></td>
 <td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/network.c"><code>runtime/syslib/network.c</code></a></td>
 </tr>
@@ -3056,7 +3200,7 @@ call is registered only to name itself and stop, because its answer is not estab
 </tr>
 <tr>
 <td><code>sceNetCtlGetInfo</code></td>
-<td>stops by name</td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
 <td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/netctl.c"><code>runtime/syslib/netctl.c</code></a></td>
 </tr>
 <tr>
@@ -3078,6 +3222,38 @@ call is registered only to name itself and stop, because its answer is not estab
 <td><code>sceNetCtlUnregisterCallback</code></td>
 <td><span class="wk-badge wk-badge--implemented">implemented</span></td>
 <td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/netctl.c"><code>runtime/syslib/netctl.c</code></a></td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="libscenpauth"><code>libSceNpAuth</code></h4>
+<div class="wk-table"><table>
+<thead>
+<tr>
+<th>Call</th>
+<th>Status</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>sceNpAuthCreateAsyncRequest</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/np_auth.c"><code>runtime/syslib/np_auth.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceNpAuthDeleteRequest</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/np_auth.c"><code>runtime/syslib/np_auth.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceNpAuthGetAuthorizationCode</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/np_auth.c"><code>runtime/syslib/np_auth.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceNpAuthPollAsync</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/np_auth.c"><code>runtime/syslib/np_auth.c</code></a></td>
 </tr>
 </tbody>
 </table></div>
@@ -3315,6 +3491,21 @@ call is registered only to name itself and stop, because its answer is not estab
 <td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/pad.c"><code>runtime/syslib/pad.c</code></a></td>
 </tr>
 <tr>
+<td><code>scePadResetOrientation</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/pad.c"><code>runtime/syslib/pad.c</code></a></td>
+</tr>
+<tr>
+<td><code>scePadSetAngularVelocityDeadbandState</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/pad.c"><code>runtime/syslib/pad.c</code></a></td>
+</tr>
+<tr>
+<td><code>scePadSetTiltCorrectionState</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/pad.c"><code>runtime/syslib/pad.c</code></a></td>
+</tr>
+<tr>
 <td><code>scePadSetVibration</code></td>
 <td><span class="wk-badge wk-badge--implemented">implemented</span></td>
 <td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/pad.c"><code>runtime/syslib/pad.c</code></a></td>
@@ -3379,6 +3570,11 @@ call is registered only to name itself and stop, because its answer is not estab
 <td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_time_of_day.c"><code>runtime/syslib/kernel_time_of_day.c</code></a></td>
 </tr>
 <tr>
+<td><code>mkdir</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/file_names.c"><code>runtime/syslib/file_names.c</code></a></td>
+</tr>
+<tr>
 <td><code>pthread_attr_destroy</code></td>
 <td><span class="wk-badge wk-badge--implemented">implemented</span></td>
 <td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_thread.c"><code>runtime/syslib/kernel_thread.c</code></a></td>
@@ -3390,6 +3586,11 @@ call is registered only to name itself and stop, because its answer is not estab
 </tr>
 <tr>
 <td><code>pthread_attr_setdetachstate</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_thread.c"><code>runtime/syslib/kernel_thread.c</code></a></td>
+</tr>
+<tr>
+<td><code>pthread_attr_setschedparam</code></td>
 <td><span class="wk-badge wk-badge--implemented">implemented</span></td>
 <td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_thread.c"><code>runtime/syslib/kernel_thread.c</code></a></td>
 </tr>
@@ -3429,7 +3630,22 @@ call is registered only to name itself and stop, because its answer is not estab
 <td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_mutex.c"><code>runtime/syslib/kernel_mutex.c</code></a></td>
 </tr>
 <tr>
+<td><code>pthread_create</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_thread.c"><code>runtime/syslib/kernel_thread.c</code></a></td>
+</tr>
+<tr>
 <td><code>pthread_create_name_np</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_thread.c"><code>runtime/syslib/kernel_thread.c</code></a></td>
+</tr>
+<tr>
+<td><code>pthread_exit</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_thread.c"><code>runtime/syslib/kernel_thread.c</code></a></td>
+</tr>
+<tr>
+<td><code>pthread_join</code></td>
 <td><span class="wk-badge wk-badge--implemented">implemented</span></td>
 <td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_thread.c"><code>runtime/syslib/kernel_thread.c</code></a></td>
 </tr>
@@ -3479,6 +3695,16 @@ call is registered only to name itself and stop, because its answer is not estab
 <td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_thread.c"><code>runtime/syslib/kernel_thread.c</code></a></td>
 </tr>
 <tr>
+<td><code>rename</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/file_names.c"><code>runtime/syslib/file_names.c</code></a></td>
+</tr>
+<tr>
+<td><code>rmdir</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/file_names.c"><code>runtime/syslib/file_names.c</code></a></td>
+</tr>
+<tr>
 <td><code>sleep</code></td>
 <td><span class="wk-badge wk-badge--implemented">implemented</span></td>
 <td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel.c"><code>runtime/syslib/kernel.c</code></a></td>
@@ -3506,7 +3732,27 @@ call is registered only to name itself and stop, because its answer is not estab
 </thead>
 <tbody>
 <tr>
+<td><code>sceRtcConvertLocalTimeToUtc</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/rtc.c"><code>runtime/syslib/rtc.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceRtcConvertUtcToLocalTime</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/rtc.c"><code>runtime/syslib/rtc.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceRtcFormatRFC2822LocalTime</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/rtc.c"><code>runtime/syslib/rtc.c</code></a></td>
+</tr>
+<tr>
 <td><code>sceRtcGetCurrentClockLocalTime</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/rtc.c"><code>runtime/syslib/rtc.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceRtcGetCurrentNetworkTick</code></td>
 <td><span class="wk-badge wk-badge--implemented">implemented</span></td>
 <td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/rtc.c"><code>runtime/syslib/rtc.c</code></a></td>
 </tr>
@@ -3530,6 +3776,11 @@ call is registered only to name itself and stop, because its answer is not estab
 <td><span class="wk-badge wk-badge--implemented">implemented</span></td>
 <td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/rtc.c"><code>runtime/syslib/rtc.c</code></a></td>
 </tr>
+<tr>
+<td><code>sceRtcSetTime_t</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/rtc.c"><code>runtime/syslib/rtc.c</code></a></td>
+</tr>
 </tbody>
 </table></div>
 <h4 id="libscesavedata"><code>libSceSaveData</code></h4>
@@ -3542,6 +3793,11 @@ call is registered only to name itself and stop, because its answer is not estab
 </tr>
 </thead>
 <tbody>
+<tr>
+<td><code>sceSaveDataDelete</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/save_data.c"><code>runtime/syslib/save_data.c</code></a></td>
+</tr>
 <tr>
 <td><code>sceSaveDataDirNameSearch</code></td>
 <td><span class="wk-badge wk-badge--implemented">implemented</span></td>
@@ -3665,6 +3921,11 @@ call is registered only to name itself and stop, because its answer is not estab
 </tr>
 <tr>
 <td><code>sceSystemServiceParamGetInt</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/system_service.c"><code>runtime/syslib/system_service.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceSystemServiceReceiveEvent</code></td>
 <td><span class="wk-badge wk-badge--implemented">implemented</span></td>
 <td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/system_service.c"><code>runtime/syslib/system_service.c</code></a></td>
 </tr>

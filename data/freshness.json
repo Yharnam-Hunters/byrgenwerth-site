@@ -18,6 +18,56 @@
  "runtime-syscalls.md": {
   "behind": [
    {
+    "commit": "d1fdfe20e55a",
+    "pr": 468,
+    "title": "runtime: gmtime, gmtime_s, printf, vprintf and vsnprintf for libSceFios2"
+   },
+   {
+    "commit": "23f48764ca57",
+    "pr": 467,
+    "title": "runtime: sceKernelMunmap, sceKernelMprotect and sceKernelGetDirectMemoryType"
+   },
+   {
+    "commit": "6bec5ddba530",
+    "pr": 466,
+    "title": "runtime: RTC Unix time, time zones, RFC 2822 and the network tick; no system events"
+   },
+   {
+    "commit": "6b1c66b76e8d",
+    "pr": 465,
+    "title": "runtime: sceNetInetNtop for IPv4"
+   },
+   {
+    "commit": "a0c8473f3902",
+    "pr": 464,
+    "title": "runtime: timed mutex and rwlock locks"
+   },
+   {
+    "commit": "a3c9add47d69",
+    "pr": 462,
+    "title": "runtime: the pad's motion settings, and the mouse, not connected"
+   },
+   {
+    "commit": "cc90553d7885",
+    "pr": 460,
+    "title": "runtime: join, detach, explicit scheduling and once for guest threads"
+   },
+   {
+    "commit": "f99d9c1e8651",
+    "pr": 461,
+    "title": "runtime: PSN authorization and the IP address query answer offline"
+   },
+   {
+    "commit": "0dfdf6309061",
+    "pr": 459,
+    "title": "runtime: sceSaveDataDelete removes a save; the disc map has no bitmap"
+   },
+   {
+    "commit": "27d6fd708926",
+    "pr": 458,
+    "title": "runtime: truncate by name, and the POSIX mkdir, rmdir and rename"
+   },
+   {
     "commit": "c270da5d33cb",
     "pr": 451,
     "title": "runtime: network, SSL and HTTP teardown, offline"
@@ -37,6 +87,61 @@
  },
  "runtime.md": {
   "behind": [
+   {
+    "commit": "d1fdfe20e55a",
+    "pr": 468,
+    "title": "runtime: gmtime, gmtime_s, printf, vprintf and vsnprintf for libSceFios2"
+   },
+   {
+    "commit": "23f48764ca57",
+    "pr": 467,
+    "title": "runtime: sceKernelMunmap, sceKernelMprotect and sceKernelGetDirectMemoryType"
+   },
+   {
+    "commit": "6bec5ddba530",
+    "pr": 466,
+    "title": "runtime: RTC Unix time, time zones, RFC 2822 and the network tick; no system events"
+   },
+   {
+    "commit": "6b1c66b76e8d",
+    "pr": 465,
+    "title": "runtime: sceNetInetNtop for IPv4"
+   },
+   {
+    "commit": "a0c8473f3902",
+    "pr": 464,
+    "title": "runtime: timed mutex and rwlock locks"
+   },
+   {
+    "commit": "a3c9add47d69",
+    "pr": 462,
+    "title": "runtime: the pad's motion settings, and the mouse, not connected"
+   },
+   {
+    "commit": "cc90553d7885",
+    "pr": 460,
+    "title": "runtime: join, detach, explicit scheduling and once for guest threads"
+   },
+   {
+    "commit": "f99d9c1e8651",
+    "pr": 461,
+    "title": "runtime: PSN authorization and the IP address query answer offline"
+   },
+   {
+    "commit": "0dfdf6309061",
+    "pr": 459,
+    "title": "runtime: sceSaveDataDelete removes a save; the disc map has no bitmap"
+   },
+   {
+    "commit": "27d6fd708926",
+    "pr": 458,
+    "title": "runtime: truncate by name, and the POSIX mkdir, rmdir and rename"
+   },
+   {
+    "commit": "c97746c39ee6",
+    "pr": 457,
+    "title": "renderer: 8- and 16-bit format buffer loads; stops name the shader"
+   },
    {
     "commit": "c270da5d33cb",
     "pr": 451,
