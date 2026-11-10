@@ -380,7 +380,7 @@
       <span class="wk-stat-track" role="img" aria-label="0.033 percent of target code bytes verified">
         <span class="wk-stat-fill" style="width:0.033%"></span>
       </span>
-      <span class="wk-progress-foot">0.033% of code bytes verified · 173 replaced</span>
+      <span class="wk-progress-foot">0.033% of code bytes verified · 239 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -420,6 +420,30 @@
       
       <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 10, 2026 10:09:50 UTC">November 10, 2026</span></p>
       
+      
+      
+      <aside class="wk-freshness" role="note">
+        <p><b>Not yet updated for 6 merged changes.</b>
+        This page was last checked against Paleblood
+        <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/134c703c37237abae3859755046e71ec838876ad"><code>134c703</code></a>;
+        these pull requests changed what it describes since:</p>
+        <ul>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/510">#510</a> render: observe the compute command buffer's user-data writers</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/489">#489</a> render: land evill33t's approved batch (#262, #250, #252, #253, #234, #258, #242, #243, #235, #264, #265, #240, #112)</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/487">#487</a> render: verify swap chain resource info (from #245 by @evill33t)</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/486">#486</a> render: replace resource descriptor converter (from #238 by @evill33t)</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/485">#485</a> render: replace record descriptors (from #247 by @evill33t)</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/482">#482</a> render: replace resource descriptor builder (from #237 by @evill33t)</li>
+          
+          
+        </ul>
+      </aside>
       
       <h1 id="render">Render</h1>
 <p class="wk-lede">The render system draws each frame and presents it to the screen. This page covers the per-frame render update, the pacing of each present, one helper from the YEBIS post-processing middleware, and the GPU helper library compiled into the game: its command writers, state setters, swap chain and shader uploads, and how they now report to Paleblood's renderer.</p>
@@ -693,6 +717,13 @@ frames. #279, #286 and #287 were brought up to date with <code>main</code> from 
 <td data-label="Notes">Decode accepted category nibbles; optional DWORD output untouched on rejection.</td>
 </tr>
 <tr>
+<td data-label="Address"><code>0x01471a40</code></td>
+<td style="text-align: right;" data-label="Size">73</td>
+<td data-label="Name"><code>render_read_record_descriptor_component</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Read one encoding DWORD and extract one of four 3-bit components; invalid selectors return 2 without reading input.</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x014721d0</code></td>
 <td style="text-align: right;" data-label="Size">31</td>
 <td data-label="Name"><code>render_set_present_last_record_indices</code></td>
@@ -777,6 +808,27 @@ frames. #279, #286 and #287 were brought up to date with <code>main</code> from 
 <td data-label="Notes">Write vertical then horizontal guard-band discard adjustments as unchanged float bit patterns. Capture both float representations before the capacity callback and publish from the captured cursor.</td>
 </tr>
 <tr>
+<td data-label="Address"><code>0x01473840</code></td>
+<td style="text-align: right;" data-label="Size">104</td>
+<td data-label="Name"><code>render_present_slot_emit</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Write the selected color target's two clear-word registers. Prefix stores precede an aliased input read; the final increment uses the live stored cursor.</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x014738b0</code></td>
+<td style="text-align: right;" data-label="Size">246</td>
+<td data-label="Name"><code>render_set_render_target</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Emit color-buffer registers, or clear CB_COLORn_INFO for an absent descriptor, then append its NOP payload. Recheck validity after admission and reload the cursor before overlapping trailing writes.</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x014739b0</code></td>
+<td style="text-align: right;" data-label="Size">344</td>
+<td data-label="Name"><code>render_set_depth_render_target</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Emit depth/stencil, view and HTILE registers, or clear DB_Z_INFO and DB_STENCIL_INFO for an absent descriptor. Preserve repeated validity tests and delayed reads when output overlaps descriptor state.</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x01473fe0</code></td>
 <td style="text-align: right;" data-label="Size">90</td>
 <td data-label="Name"><code>render_set_vgt_primitive_type</code></td>
@@ -789,6 +841,13 @@ frames. #279, #286 and #287 were brought up to date with <code>main</code> from 
 <td data-label="Name"><code>render_emit_draw_index_auto</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">Emit DRAW_INDEX_AUTO and a query-selected THREAD_TRACE_MARKER event or NOP. Reload flags and cursor after overlapping packet stores before selecting and publishing the trailing packet.</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x01475000</code></td>
+<td style="text-align: right;" data-label="Size">397</td>
+<td data-label="Name"><code>render_emit_shader_link_words</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Write SPI_PS_INPUT_CNTL entries from last word to first to preserve overlapping reads; retain the unmasked count shift for zero and oversized counts.</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x01475370</code></td>
@@ -831,6 +890,20 @@ frames. #279, #286 and #287 were brought up to date with <code>main</code> from 
 <td data-label="Name"><code>render_emit_present_last_record_packet</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">Write DB_RENDER_CONTROL for the last-record path. Publish and return the captured cursor plus twelve bytes; return the full callback result on rejection.</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x01477150</code></td>
+<td style="text-align: right;" data-label="Size">109</td>
+<td data-label="Name"><code>render_set_pa_sc_mode_cntl_0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Write MSAA_ENABLE and VPORT_SCISSOR_ENABLE in PA_SC_MODE_CNTL_0 after reserving three packet words.</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x014778f0</code></td>
+<td style="text-align: right;" data-label="Size">204</td>
+<td data-label="Name"><code>render_emit_present_release_packet</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Emit EVENT_WRITE_EOP with by-value selectors, address and data; preserve the complete callback rejection result and final live cursor increment.</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x01477b30</code></td>
@@ -952,6 +1025,41 @@ frames. #279, #286 and #287 were brought up to date with <code>main</code> from 
 <td data-label="Notes">Read one unaligned mapping DWORD and delegate three extracted fields to the original encoder. Full return is zero-extended.</td>
 </tr>
 <tr>
+<td data-label="Address"><code>0x014873a0</code></td>
+<td style="text-align: right;" data-label="Size">163</td>
+<td data-label="Name"><code>render_build_shader_link_words</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Match byte-pair keys, then publish each packed word in the original four-store order.</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x01487ee0</code></td>
+<td style="text-align: right;" data-label="Size">1090</td>
+<td data-label="Name"><code>render_initialize_pair_record_descriptor</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Clear 32 bytes; admit counts after float rounding, test flag bytes independently, and return packed requirements.</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x01488370</code></td>
+<td style="text-align: right;" data-label="Size">17</td>
+<td data-label="Name"><code>render_record_descriptor_set_high_field</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Set the descriptor top nibble and return the preserved old low 28 bits.</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x01488590</code></td>
+<td style="text-align: right;" data-label="Size">969</td>
+<td data-label="Name"><code>render_initialize_triple_record_descriptor</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Clear 32 bytes in order, delegate flags, retain partial writes and return packed requirements.</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x01488d90</code></td>
+<td style="text-align: right;" data-label="Size">813</td>
+<td data-label="Name"><code>render_convert_constructor_record</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Convert a constructor record into a <abbr title="Graphics Core Next, the AMD GPU architecture of the PS4.">GCN</abbr> image descriptor. Preserve overlapping reads, ordered component calls and independent low/middle-field tests when choosing its type.</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x01489910</code></td>
 <td style="text-align: right;" data-label="Size">24</td>
 <td data-label="Name"><code>render_record_descriptor_level_count</code></td>
@@ -980,6 +1088,27 @@ frames. #279, #286 and #287 were brought up to date with <code>main</code> from 
 <td data-label="Notes">Query the actual import once; no cached global, fallback or service value is invented.</td>
 </tr>
 <tr>
+<td data-label="Address"><code>0x01496f60</code></td>
+<td style="text-align: right;" data-label="Size">525</td>
+<td data-label="Name"><code>render_configure_viewport_and_guard_band</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Configure viewport transforms, scissor extent and guard-band pairs using ordered float arithmetic, floor rounding and the original upper clamp.</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0149c4e0</code></td>
+<td style="text-align: right;" data-label="Size">114</td>
+<td data-label="Name"><code>render_initialize_record_geometry_flags</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Clear the output before selector admission; selectors 7-12 copy the parameter flag only when the full 32-bit parameter equals 1.</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0149c660</code></td>
+<td style="text-align: right;" data-label="Size">486</td>
+<td data-label="Name"><code>render_record_geometry_resolve_parameter_index</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Resolve the packed parameter-table index with the original validation order and wrapping scale operations.</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x0149c850</code></td>
 <td style="text-align: right;" data-label="Size">672</td>
 <td data-label="Name"><code>render_record_apply_parameter_tuple</code></td>
@@ -999,6 +1128,13 @@ frames. #279, #286 and #287 were brought up to date with <code>main</code> from 
 <td data-label="Name"><code>render_convert_record_descriptor_classification</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">Convert a tile-mode table index for the requested array mode; preserve output on error and bypass already matching modes.</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0149ce10</code></td>
+<td style="text-align: right;" data-label="Size">5124</td>
+<td data-label="Name"><code>render_record_geometry</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Calculate record dimensions and alignment, preserving staged output on failure and live reads when descriptor and result overlap.</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x0149e2d0</code></td>
@@ -1022,11 +1158,25 @@ frames. #279, #286 and #287 were brought up to date with <code>main</code> from 
 <td data-label="Notes">Calculate the second auxiliary layout through two ordered unit admissions and wrapped alignment. Publish its four optional size and alignment outputs in 8/4/4/4-byte order.</td>
 </tr>
 <tr>
+<td data-label="Address"><code>0x0149e8d0</code></td>
+<td style="text-align: right;" data-label="Size">40</td>
+<td data-label="Name"><code>render_record_geometry_round_up_power_of_two</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Round upward in the unsigned 32-bit domain; zero and an overflowing next power wrap to zero.</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x0149e900</code></td>
 <td style="text-align: right;" data-label="Size">16</td>
 <td data-label="Name"><code>render_record_tuple_parameter_supported</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">Nonzero power-of-two test with Boolean AL interface.</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0149e920</code></td>
+<td style="text-align: right;" data-label="Size">18</td>
+<td data-label="Name"><code>render_record_geometry_index_logarithm</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Extract the exponent after converting the positive integer to float, including float rounding near powers of two.</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x0149e960</code></td>
@@ -1050,11 +1200,53 @@ frames. #279, #286 and #287 were brought up to date with <code>main</code> from 
 <td data-label="Notes">Recognize bounded alternate-classification subset with zero fallback.</td>
 </tr>
 <tr>
+<td data-label="Address"><code>0x0149ea90</code></td>
+<td style="text-align: right;" data-label="Size">40</td>
+<td data-label="Name"><code>render_record_geometry_category</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Read the three-bit category of a bounded record word; rejection leaves output untouched.</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0149eac0</code></td>
+<td style="text-align: right;" data-label="Size">40</td>
+<td data-label="Name"><code>render_record_geometry_classification</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Read the four-bit classification of a bounded record word before publishing to possibly aliased output.</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0149eb20</code></td>
+<td style="text-align: right;" data-label="Size">40</td>
+<td data-label="Name"><code>render_record_geometry_first_exponent</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Extract the first three-bit exponent used by the record geometry arithmetic.</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0149eb50</code></td>
+<td style="text-align: right;" data-label="Size">40</td>
+<td data-label="Name"><code>render_record_geometry_second_exponent</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Extract the second two-bit exponent; reject invalid indices or null output before reading the table.</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0149ed30</code></td>
+<td style="text-align: right;" data-label="Size">174</td>
+<td data-label="Name"><code>render_record_geometry_parameters</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Split one captured parameter word into four optional two-bit outputs, preserving write order when outputs alias.</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x014a1e80</code></td>
 <td style="text-align: right;" data-label="Size">803</td>
 <td data-label="Name"><code>render_initialize_record_level_descriptor</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">Publish a partial level descriptor in order, reread the source between helper calls, then convert its tile mode.</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x014a27c0</code></td>
+<td style="text-align: right;" data-label="Size">627</td>
+<td data-label="Name"><code>render_get_record_descriptor_size</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Initialize mandatory outputs after the decoder call; accumulate live values and retain partial outputs on error.</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x014a2c40</code></td>
@@ -1076,6 +1268,34 @@ frames. #279, #286 and #287 were brought up to date with <code>main</code> from 
 <td data-label="Name"><code>render_read_present_pool_counter</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">full-QWORD locked read/writeback retry, XOR before each attempt; caller adds one. Real AMD64 write cycles retained; non-AMD64 bridge unresolved Synthetic edges pass; no recordings.</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02564ed0</code></td>
+<td style="text-align: right;" data-label="Size">25</td>
+<td data-label="Name"><code>render_present_encoding_units</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Return the full 64-bit entry for wrapped encoding minus one when its index is below 99; otherwise return zero.</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02565130</code></td>
+<td style="text-align: right;" data-label="Size">30</td>
+<td data-label="Name"><code>render_present_record_bit_width</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Return the bit width of the OR of three 32-bit inputs. All-zero input returns zero; the presentation fallback passes one as the third input.</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02565f90</code></td>
+<td style="text-align: right;" data-label="Size">855</td>
+<td data-label="Name"><code>render_initialize_swap_chain_resource</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Validate resource parameters, choose independent allocator and owner defaults, prepare resource storage and publish its wrapper. Allocation failure clears the output and releases prepared storage.</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02568530</code></td>
+<td style="text-align: right;" data-label="Size">190</td>
+<td data-label="Name"><code>render_finish_present_context</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Run the presentation context's finishing calls in order with a zeroed snapshot.</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x0256e1d0</code></td>
@@ -1113,6 +1333,13 @@ frames. #279, #286 and #287 were brought up to date with <code>main</code> from 
 <td data-label="Notes">Release the swap-chain curve resource through its owner; clear only the resource after the callback.</td>
 </tr>
 <tr>
+<td data-label="Address"><code>0x02571d60</code></td>
+<td style="text-align: right;" data-label="Size">1324</td>
+<td data-label="Name"><code>render_prepare_swap_chain_resource_info</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Allocate resource storage and publish its descriptor before copying initial data. Re-read entry counts after processing/copy callbacks; copy failures preserve partial output.</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x02572290</code></td>
 <td style="text-align: right;" data-label="Size">47</td>
 <td data-label="Name"><code>render_clear_swap_chain_cached_record</code></td>
@@ -1127,6 +1354,13 @@ frames. #279, #286 and #287 were brought up to date with <code>main</code> from 
 <td data-label="Notes">GXSwapChainCtrl present: waits for the present interval in 60 Hz vblanks, maps it to a flip mode, presents (Uncap: mode 0)</td>
 </tr>
 <tr>
+<td data-label="Address"><code>0x02aaa5a0</code></td>
+<td style="text-align: right;" data-label="Size">124</td>
+<td data-label="Name"><code>render_release_present_finish_node</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Release the finish node through the manager helper, retaining its head-match decision and reloading commands across retries.</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x02aaddc0</code></td>
 <td style="text-align: right;" data-label="Size">393</td>
 <td data-label="Name"><code>render_allocate_shader_upload</code></td>
@@ -1134,11 +1368,32 @@ frames. #279, #286 and #287 were brought up to date with <code>main</code> from 
 <td data-label="Notes">Allocate one shader-upload slice of at most 64 KiB. If no suitable block exists, acquire once, reclaim, then retry once. Preserve zero-size requests and delegate block policy to the original manager.</td>
 </tr>
 <tr>
+<td data-label="Address"><code>0x02aaf030</code></td>
+<td style="text-align: right;" data-label="Size">508</td>
+<td data-label="Name"><code>render_managed_present_capacity</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Acquire managed command space, preserve partial block publication and copy the saved command snapshot in reverse order.</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02aaf700</code></td>
+<td style="text-align: right;" data-label="Size">750</td>
+<td data-label="Name"><code>render_finish_present_commands</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Finish pending command lists with live block and counter reads, then conditionally submit the cursor snapshot.</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x02aafb30</code></td>
 <td style="text-align: right;" data-label="Size">509</td>
 <td data-label="Name"><code>render_command_submit_present</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">Prepare and delegate a present submission, preserving capacity-failure returns and resetting begin markers to the live cursor.</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02ab0b00</code></td>
+<td style="text-align: right;" data-label="Size">326</td>
+<td data-label="Name"><code>render_submit_present_finish_snapshot</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Emit required counter waits and submit nonempty command regions in order; construct an empty second region when optional commands are absent.</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x02ab0ce0</code></td>
@@ -1218,11 +1473,88 @@ frames. #279, #286 and #287 were brought up to date with <code>main</code> from 
 <td data-label="Notes">Return the auxiliary-processing predicate: selectors 0x13/0x14 enable it, 0x15/0x16 use flag bit 6, and all other selectors disable it.</td>
 </tr>
 <tr>
+<td data-label="Address"><code>0x02abb6d0</code></td>
+<td style="text-align: right;" data-label="Size">48</td>
+<td data-label="Name"><code>render_emit_present_release_delegate</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Forward address and data to the release writer with fixed flags and mode and a zero final selector.</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02ace1e0</code></td>
+<td style="text-align: right;" data-label="Size">1016</td>
+<td data-label="Name"><code>render_configure_record_shader</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Populate sparse primary and optional shader bindings, update special-slot caches, bind VS/PS programs, and emit up to 32 PS link words.</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02ace5e0</code></td>
+<td style="text-align: right;" data-label="Size">5473</td>
+<td data-label="Name"><code>render_configure_record_shader_secondary</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Consume two sparse shader binding banks, emit descriptor and address packets, copy selected upload spans, and update shared upload caches.</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02acfc20</code></td>
+<td style="text-align: right;" data-label="Size">207</td>
+<td data-label="Name"><code>render_finish_record_shader</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Finalize two dirty-state passes using cached event flags, clear the source dirty flags, then read the current command mode and apply a pending mode change.</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02ad1e30</code></td>
+<td style="text-align: right;" data-label="Size">55</td>
+<td data-label="Name"><code>render_restore_color_target_from_bank</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Restore one color target from the bank selected by flag bit 0. Keep the preparation cache unchanged while delegating the register writes.</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02ad1e70</code></td>
+<td style="text-align: right;" data-label="Size">61</td>
+<td data-label="Name"><code>render_restore_depth_target_from_bank</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Restore the depth target from the bank selected by flag bit 1, independently of the color-target bank in flag bit 0.</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02ad1eb0</code></td>
+<td style="text-align: right;" data-label="Size">194</td>
+<td data-label="Name"><code>render_present_source_prepare</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Flush source state and select an explicit or derived record count. Stop at the first builder error; reload the source parameter before consuming each successful record.</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02ad1f80</code></td>
+<td style="text-align: right;" data-label="Size">385</td>
+<td data-label="Name"><code>render_present_source_flush_state</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Emit dirty non-null slots from the selected bank. Keep count and flags cached on skips; reload the pending value, flags and slot count after each emission.</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x02ad2c30</code></td>
 <td style="text-align: right;" data-label="Size">120</td>
 <td data-label="Name"><code>render_reset_present_preparation_dirty</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">Emit changed depth and stencil clear values, then cache their post-call values. Preserve the second writer's upper return bits while replacing its low word.</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02ad3b80</code></td>
+<td style="text-align: right;" data-label="Size">252</td>
+<td data-label="Name"><code>render_pop_present_buffer_pool</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Scan pool entries using the original counter and compare/exchange calls; publish the counter before successful output.</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02ad3c80</code></td>
+<td style="text-align: right;" data-label="Size">42</td>
+<td data-label="Name"><code>render_process_present_finish_item</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Mark the final pool word as processed; pass its address and a fixed selector to the release delegate, forwarding the packet result.</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02ad3d40</code></td>
+<td style="text-align: right;" data-label="Size">35</td>
+<td data-label="Name"><code>render_capture_present_buffer_pool_record</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Return zero for a zero begin address; otherwise locate the containing pool record using wrapped subtraction, arithmetic shift and unsigned division remainder.</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x02ad5dd0</code></td>
@@ -1244,6 +1576,13 @@ frames. #279, #286 and #287 were brought up to date with <code>main</code> from 
 <td data-label="Name"><code>render_swap_chain_submit</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">Owned-thread flip polling, source binding and submission; every exit reloads the global guard pointer. Native GPU helper effects remain original Synthetic GCC/Clang edges pass; no recordings.</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02fa6af0</code></td>
+<td style="text-align: right;" data-label="Size">2214</td>
+<td data-label="Name"><code>render_prepare_resource_descriptor</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Build the resource descriptor and requirements through ordered original helpers; preserve partial writes on errors and live parameter reads between calls.</td>
 </tr>
 </tbody>
 </table></div>

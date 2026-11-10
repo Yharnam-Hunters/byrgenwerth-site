@@ -4,23 +4,393 @@
   "reviewed": "134c703c37237abae3859755046e71ec838876ad"
  },
  "CONTRIBUTING.md": {
-  "behind": [],
+  "behind": [
+   {
+    "commit": "6494379afa8c",
+    "pr": 536,
+    "title": "Boot record and README: past the title, the runtime checklist done"
+   },
+   {
+    "commit": "0f8bb114973e",
+    "pr": 515,
+    "title": "leaf: function families, and the 5040 empty functions as the first"
+   }
+  ],
   "reviewed": "134c703c37237abae3859755046e71ec838876ad"
  },
  "how-the-frame-limiter-works.md": {
-  "behind": [],
+  "behind": [
+   {
+    "commit": "2180fdbef9bb",
+    "pr": 514,
+    "title": "frame_timing: replace the nine clock and sleep claim functions"
+   }
+  ],
   "reviewed": "134c703c37237abae3859755046e71ec838876ad"
  },
  "index.md": {
-  "behind": [],
+  "behind": [
+   {
+    "commit": "6494379afa8c",
+    "pr": 536,
+    "title": "Boot record and README: past the title, the runtime checklist done"
+   },
+   {
+    "commit": "a821b9c455d5",
+    "pr": 517,
+    "title": "loading: replace the seven file claim functions"
+   },
+   {
+    "commit": "871bb26006c5",
+    "pr": 531,
+    "title": "leaf: field setters, argument returns and float zero families (657 functions)"
+   },
+   {
+    "commit": "21942882af55",
+    "pr": 529,
+    "title": "leaf: field getter families (5305 functions)"
+   },
+   {
+    "commit": "4261a4049ca0",
+    "pr": 527,
+    "title": "leaf: returns_zero and returns_constant families (7017 functions)"
+   },
+   {
+    "commit": "0f8bb114973e",
+    "pr": 515,
+    "title": "leaf: function families, and the 5040 empty functions as the first"
+   },
+   {
+    "commit": "cc9a4af66db6",
+    "pr": 520,
+    "title": "input: replace the pad vibration and mouse claim functions"
+   },
+   {
+    "commit": "2180fdbef9bb",
+    "pr": 514,
+    "title": "frame_timing: replace the nine clock and sleep claim functions"
+   },
+   {
+    "commit": "e967f1a6b659",
+    "pr": 489,
+    "title": "render: land evill33t's approved batch (#262, #250, #252, #253, #234, #258, #242, #243, #235, #264, #265, #240, #112)"
+   },
+   {
+    "commit": "171589788ed5",
+    "pr": 487,
+    "title": "render: verify swap chain resource info (from #245 by @evill33t)"
+   },
+   {
+    "commit": "265adaa0cc19",
+    "pr": 486,
+    "title": "render: replace resource descriptor converter (from #238 by @evill33t)"
+   },
+   {
+    "commit": "6d82c70612c9",
+    "pr": 485,
+    "title": "render: replace record descriptors (from #247 by @evill33t)"
+   },
+   {
+    "commit": "7dafa7bb0990",
+    "pr": 482,
+    "title": "render: replace resource descriptor builder (from #237 by @evill33t)"
+   }
+  ],
   "reviewed": "134c703c37237abae3859755046e71ec838876ad"
  },
  "runtime-syscalls.md": {
-  "behind": [],
+  "behind": [
+   {
+    "commit": "4ea64a6f1b66",
+    "pr": 545,
+    "title": "docs: point the system-module evidence link at its heading"
+   },
+   {
+    "commit": "7989cdecf2a3",
+    "pr": 532,
+    "title": "runtime: GNM graphics events from the completion step, request flip, CU maps (#39)"
+   },
+   {
+    "commit": "a821b9c455d5",
+    "pr": 517,
+    "title": "loading: replace the seven file claim functions"
+   },
+   {
+    "commit": "e08b497a4f36",
+    "pr": 528,
+    "title": "runtime: the 2026-11-10 rulings, reserve/batch map and module info (#34, #35)"
+   },
+   {
+    "commit": "59872fa5c050",
+    "pr": 521,
+    "title": "syslib: register __progname and Need_sceLibcInternal so #34 counts them"
+   },
+   {
+    "commit": "de7c482209d8",
+    "pr": 507,
+    "title": "syslib: PSN matchmaking, web API, leaderboards, signaling and lookup offline"
+   },
+   {
+    "commit": "45a49e98a8fa",
+    "pr": 513,
+    "title": "syslib: what the title's C library imports from libkernel and libSceLibcInternal"
+   },
+   {
+    "commit": "718d3885f3fe",
+    "pr": 512,
+    "title": "syslib: file paths kept off the guest's stack"
+   },
+   {
+    "commit": "f2cc539072a0",
+    "pr": 509,
+    "title": "syslib: offline sockets, resolver, epoll registration and HTTP requests"
+   },
+   {
+    "commit": "58c0fef0ac00",
+    "pr": 506,
+    "title": "syslib: no microphone, no voice chat, and GNM queries and debug calls"
+   },
+   {
+    "commit": "cf50434cf19d",
+    "pr": 504,
+    "title": "syslib: sceGnmSubmitCommandBuffers takes any number of buffers"
+   },
+   {
+    "commit": "b8897d08c63a",
+    "pr": 502,
+    "title": "syslib: the on-screen keyboard, canceled, and the web browser, not opened"
+   },
+   {
+    "commit": "d9d29c59775b",
+    "pr": 500,
+    "title": "syslib: the four common dialogs, closed at once"
+   },
+   {
+    "commit": "0f803c9bb549",
+    "pr": 498,
+    "title": "syslib: sceKernelGetdirentries, sceKernelFsync and O_DIRECTORY opens"
+   },
+   {
+    "commit": "ec444c834174",
+    "pr": 490,
+    "title": "syslib: sceAudioOutClose"
+   },
+   {
+    "commit": "e967f1a6b659",
+    "pr": 489,
+    "title": "render: land evill33t's approved batch (#262, #250, #252, #253, #234, #258, #242, #243, #235, #264, #265, #240, #112)"
+   },
+   {
+    "commit": "ba8747d1f1ea",
+    "pr": 488,
+    "title": "renderer: submissions run beside the title, in order"
+   },
+   {
+    "commit": "03d047d4a9fb",
+    "pr": 470,
+    "title": "renderer: compute queues' buffers are taken and dropped, not leaked"
+   }
+  ],
   "reviewed": "134c703c37237abae3859755046e71ec838876ad"
  },
  "runtime.md": {
-  "behind": [],
+  "behind": [
+   {
+    "commit": "d177bc6daa66",
+    "pr": 534,
+    "title": "renderer: 10_11_11 and 16_16_16_16 float render targets"
+   },
+   {
+    "commit": "a17ce57c8b70",
+    "pr": 540,
+    "title": "renderer: a descriptor's pointer may be reused after the load"
+   },
+   {
+    "commit": "17c803c2baf4",
+    "pr": 539,
+    "title": "renderer: render targets cleared by a compute shader"
+   },
+   {
+    "commit": "c34cd323ab5b",
+    "pr": 537,
+    "title": "renderer: the pixel shader's front-face input"
+   },
+   {
+    "commit": "7989cdecf2a3",
+    "pr": 532,
+    "title": "runtime: GNM graphics events from the completion step, request flip, CU maps (#39)"
+   },
+   {
+    "commit": "a821b9c455d5",
+    "pr": 517,
+    "title": "loading: replace the seven file claim functions"
+   },
+   {
+    "commit": "381bd4274478",
+    "pr": 533,
+    "title": "renderer: several render targets in one draw (MRT)"
+   },
+   {
+    "commit": "b8c8528c4507",
+    "pr": 530,
+    "title": "renderer: 10_11_11 float format stores"
+   },
+   {
+    "commit": "e08b497a4f36",
+    "pr": 528,
+    "title": "runtime: the 2026-11-10 rulings, reserve/batch map and module info (#34, #35)"
+   },
+   {
+    "commit": "1c4c3fb74a00",
+    "pr": 526,
+    "title": "renderer: image_sample at the level the derivatives pick"
+   },
+   {
+    "commit": "ed3ef864cd8c",
+    "pr": 522,
+    "title": "renderer: depth target slices"
+   },
+   {
+    "commit": "a35cea733881",
+    "pr": 525,
+    "title": "renderer: 16_16_16_16 float format stores"
+   },
+   {
+    "commit": "0f8bb114973e",
+    "pr": 515,
+    "title": "leaf: function families, and the 5040 empty functions as the first"
+   },
+   {
+    "commit": "81e0fd55fd99",
+    "pr": 523,
+    "title": "renderer: mip-mapped images"
+   },
+   {
+    "commit": "1c48c56ec0b8",
+    "pr": 524,
+    "title": "renderer: stencil replace with STENCILOPVAL"
+   },
+   {
+    "commit": "59872fa5c050",
+    "pr": 521,
+    "title": "syslib: register __progname and Need_sceLibcInternal so #34 counts them"
+   },
+   {
+    "commit": "3f20f3d8a3d9",
+    "pr": 519,
+    "title": "renderer: depth-only passes"
+   },
+   {
+    "commit": "fa2a63b5bede",
+    "pr": 516,
+    "title": "tiling: mip chains"
+   },
+   {
+    "commit": "de7c482209d8",
+    "pr": 507,
+    "title": "syslib: PSN matchmaking, web API, leaderboards, signaling and lookup offline"
+   },
+   {
+    "commit": "45a49e98a8fa",
+    "pr": 513,
+    "title": "syslib: what the title's C library imports from libkernel and libSceLibcInternal"
+   },
+   {
+    "commit": "718d3885f3fe",
+    "pr": 512,
+    "title": "syslib: file paths kept off the guest's stack"
+   },
+   {
+    "commit": "f2cc539072a0",
+    "pr": 509,
+    "title": "syslib: offline sockets, resolver, epoll registration and HTTP requests"
+   },
+   {
+    "commit": "edac16983860",
+    "pr": 508,
+    "title": "renderer: s_buffer_load checked against its descriptor's range"
+   },
+   {
+    "commit": "58c0fef0ac00",
+    "pr": 506,
+    "title": "syslib: no microphone, no voice chat, and GNM queries and debug calls"
+   },
+   {
+    "commit": "2c39f00b82ea",
+    "pr": 505,
+    "title": "renderer: storage image stores outside the image write nothing"
+   },
+   {
+    "commit": "cf50434cf19d",
+    "pr": 504,
+    "title": "syslib: sceGnmSubmitCommandBuffers takes any number of buffers"
+   },
+   {
+    "commit": "a32bca0ba3ae",
+    "pr": 503,
+    "title": "renderer: 8_8_8_8 sRGB images"
+   },
+   {
+    "commit": "b8897d08c63a",
+    "pr": 502,
+    "title": "syslib: the on-screen keyboard, canceled, and the web browser, not opened"
+   },
+   {
+    "commit": "3be449d47082",
+    "pr": 501,
+    "title": "renderer: v_mul_hi_u32 and v_mul_hi_i32"
+   },
+   {
+    "commit": "d9d29c59775b",
+    "pr": 500,
+    "title": "syslib: the four common dialogs, closed at once"
+   },
+   {
+    "commit": "18a40726b1c2",
+    "pr": 499,
+    "title": "display: captured frames written off the flip"
+   },
+   {
+    "commit": "0f803c9bb549",
+    "pr": 498,
+    "title": "syslib: sceKernelGetdirentries, sceKernelFsync and O_DIRECTORY opens"
+   },
+   {
+    "commit": "258d185b4dfd",
+    "pr": 495,
+    "title": "renderer: v_rcp_iflag_f32"
+   },
+   {
+    "commit": "cdd116bc3c3b",
+    "pr": 494,
+    "title": "renderer: buffer accesses checked against their descriptor's range"
+   },
+   {
+    "commit": "80079d4ae8c3",
+    "pr": 492,
+    "title": "renderer: 8_8_8_8 uint images"
+   },
+   {
+    "commit": "ec444c834174",
+    "pr": 490,
+    "title": "syslib: sceAudioOutClose"
+   },
+   {
+    "commit": "e967f1a6b659",
+    "pr": 489,
+    "title": "render: land evill33t's approved batch (#262, #250, #252, #253, #234, #258, #242, #243, #235, #264, #265, #240, #112)"
+   },
+   {
+    "commit": "ba8747d1f1ea",
+    "pr": 488,
+    "title": "renderer: submissions run beside the title, in order"
+   },
+   {
+    "commit": "03d047d4a9fb",
+    "pr": 470,
+    "title": "renderer: compute queues' buffers are taken and dropped, not leaked"
+   }
+  ],
   "reviewed": "134c703c37237abae3859755046e71ec838876ad"
  },
  "systems/ai.md": {
@@ -33,14 +403,20 @@
  },
  "systems/camera.md": {
   "behind": [],
-  "reviewed": "134c703c37237abae3859755046e71ec838876ad"
+  "reviewed": "4ea64a6f1b6619422ee404c2fbea86b0c3bc175a"
  },
  "systems/character.md": {
   "behind": [],
   "reviewed": "134c703c37237abae3859755046e71ec838876ad"
  },
  "systems/engine.md": {
-  "behind": [],
+  "behind": [
+   {
+    "commit": "e967f1a6b659",
+    "pr": 489,
+    "title": "render: land evill33t's approved batch (#262, #250, #252, #253, #234, #258, #242, #243, #235, #264, #265, #240, #112)"
+   }
+  ],
   "reviewed": "134c703c37237abae3859755046e71ec838876ad"
  },
  "systems/event.md": {
@@ -49,11 +425,11 @@
  },
  "systems/frame_timing.md": {
   "behind": [],
-  "reviewed": "134c703c37237abae3859755046e71ec838876ad"
+  "reviewed": "4ea64a6f1b6619422ee404c2fbea86b0c3bc175a"
  },
  "systems/input.md": {
   "behind": [],
-  "reviewed": "134c703c37237abae3859755046e71ec838876ad"
+  "reviewed": "4ea64a6f1b6619422ee404c2fbea86b0c3bc175a"
  },
  "systems/kernel.md": {
   "behind": [],
@@ -61,14 +437,45 @@
  },
  "systems/loading.md": {
   "behind": [],
-  "reviewed": "134c703c37237abae3859755046e71ec838876ad"
+  "reviewed": "4ea64a6f1b6619422ee404c2fbea86b0c3bc175a"
  },
  "systems/physics.md": {
   "behind": [],
   "reviewed": "134c703c37237abae3859755046e71ec838876ad"
  },
  "systems/render.md": {
-  "behind": [],
+  "behind": [
+   {
+    "commit": "695a7d87055a",
+    "pr": 510,
+    "title": "render: observe the compute command buffer's user-data writers"
+   },
+   {
+    "commit": "e967f1a6b659",
+    "pr": 489,
+    "title": "render: land evill33t's approved batch (#262, #250, #252, #253, #234, #258, #242, #243, #235, #264, #265, #240, #112)"
+   },
+   {
+    "commit": "171589788ed5",
+    "pr": 487,
+    "title": "render: verify swap chain resource info (from #245 by @evill33t)"
+   },
+   {
+    "commit": "265adaa0cc19",
+    "pr": 486,
+    "title": "render: replace resource descriptor converter (from #238 by @evill33t)"
+   },
+   {
+    "commit": "6d82c70612c9",
+    "pr": 485,
+    "title": "render: replace record descriptors (from #247 by @evill33t)"
+   },
+   {
+    "commit": "7dafa7bb0990",
+    "pr": 482,
+    "title": "render: replace resource descriptor builder (from #237 by @evill33t)"
+   }
+  ],
   "reviewed": "134c703c37237abae3859755046e71ec838876ad"
  }
 }

@@ -380,7 +380,7 @@
       <span class="wk-stat-track" role="img" aria-label="0.033 percent of target code bytes verified">
         <span class="wk-stat-fill" style="width:0.033%"></span>
       </span>
-      <span class="wk-progress-foot">0.033% of code bytes verified · 173 replaced</span>
+      <span class="wk-progress-foot">0.033% of code bytes verified · 239 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -418,24 +418,98 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 4, 2026 03:56:56 UTC">November 4, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 10, 2026 20:41:05 UTC">November 10, 2026</span></p>
       
       
       <h1 id="camera">Camera</h1>
-<p class="wk-lede">The camera system covers the camera update, targeting, collision with the world and field of view. The first two follow-camera functions are mapped.</p>
+<p class="wk-lede">The follow camera: how it turns the stick, the character's movement and a lock-on target into a camera position each frame, how it keeps out of walls, and where its field of view comes from.</p>
 
 <div class="wk-glance">
 <p><span class="wk-label">At a glance</span></p>
 <dl>
 <dt>Scope</dt>
-<dd>Camera update, targeting, collision with the world, field of view.</dd>
+<dd>Camera update, targeting and lock-on, collision with the world, field of view.</dd>
 <dt>Verified</dt>
-<dd><code>camera_follow_pitch</code> and <code>camera_follow_yaw</code> are <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr> against constructed cases.</dd>
+<dd>The whole follow-camera update, <code>camera_update_follow</code> (20 KB), and the pitch and yaw getters are <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> and <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr>, each with an independent review.</dd>
+<dt>Our option</dt>
+<dd><code>BB_TARGET_FPS</code> (30, 60, uncapped) reproduces what the frame-rate patches change in the update.</dd>
 <dt>Open</dt>
-<dd>The camera update itself, targeting, collision and field of view.</dd>
+<dd>Who calls the update and sets its requests, the parameter table's other fields, and what the camera looks like in the running game.</dd>
 </dl>
 </div>
 <h2 id="summary">Summary</h2>
+<h3 id="what-the-follow-camera-does-each-frame">What the follow camera does each frame</h3>
+<p><code>camera_update_follow</code> (<code>0x0183ac60</code>) takes the camera, the character it follows (the
+<em>subject</em>), a world to cast spheres against, and the frame's time step. It works in stages:</p>
+<ol>
+<li><strong>Parameters.</strong> It picks a row from the lock-camera parameter table and eases the camera
+   toward it: distance, lowest pitch, lock-on pitch shift, height above the subject and vertical
+   field of view. The row's key is the map's ID, <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> in turn by an event ID, a boss ID while a
+   boss lock is requested, and an explicit override, whichever are set; failing that, key 0.
+   It also sets rotation speeds from an option rate (squared, between a minimum and a maximum).
+   With no subject the update stops here.</li>
+<li><strong>Carry-along.</strong> It moves last frame's camera and subject points by a stored velocity and
+   turns them by a stored angular velocity around a pivot that it reaches through the subject.</li>
+<li><strong>Stick.</strong> It reads a stick vector from the subject, or a default one. Stick input marks the
+   camera as hand-controlled. Once the stick is released, a wait and then a release time hand
+   control back.</li>
+<li><strong>Target.</strong> It chases the subject's position and places the target point at the subject plus
+   the parameter row's offset. The camera's pivot (<em>fulcrum</em>) and its first position guess (the
+   <em>candidate</em>) move with the subject.</li>
+<li><strong>Angles.</strong> Exactly one of these sets pitch and yaw:</li>
+<li><strong>reset:</strong> stored reset angles, or level pitch and the subject's heading;</li>
+<li><strong>lock-on:</strong> aim at the lock target (below);</li>
+<li><strong>front lock:</strong> turn smoothly to the subject's heading for up to a set time. It ends when the
+     time runs out, when the angles come within a small tolerance, or on stick input. (The name
+     is ours; we take it to be "reset the camera behind the character".)</li>
+<li><strong>free:</strong> stick input times the rotation speed. Pitch stays between a minimum and a maximum.
+     Pushing the stick hard up or down past a set angle ramps into a faster rotation that also
+     moves pitch directly toward its limit.</li>
+</ol>
+<p>Afterwards, unless the camera is locked on or in front lock, pitch drifts back toward a
+   target pitch.
+6. <strong>Placement and collision.</strong> It builds the look direction from the angles and keeps the
+   fulcrum at its distance from the target. Sideways movement of the subject shortens that
+   distance, between a minimum and a maximum rate. Then it avoids walls in one of two ways (see
+   <em>Keeping out of walls</em>).
+7. <strong>Chase.</strong> The final position eases toward the candidate. Up and down chase at one rate, the
+   ground plane at another, and both depend on how far the direction has swung: below a minimum
+   angle only the height follows, above a maximum angle both follow fully. Right after stick
+   rotation the camera follows at once.
+8. <strong>Orientation and checks.</strong> It builds the camera's axes and casts a sphere from the target to
+   the final position. It clears the one-frame requests (reset, lock, boss lock, front lock). If
+   any axis or the position is not a number, it restores the whole previous frame. Then it pushes
+   the camera out of <em>territories</em> (below) and pulls it a safety margin toward the target.</p>
+<h3 id="targeting-and-lock-on">Targeting and lock-on</h3>
+<p>While a lock is requested, the camera aims from its orbit point at a stored lock-target point.
+The pitch is raised by a shift that grows with the field of view and the row's lock-pitch-shift
+ratio, plus an angle from the distances involved. The pitch limits blend from the lock-on limits
+to the normal limits as the height difference to the target grows. The angles chase the goal at a
+lock rotation rate. Inside a dead angle the camera does not move. If lock adjustment is
+enabled, the stick nudges pitch and yaw up to a set maximum. The update does not choose the
+target: it only reads the point and the request flags.</p>
+<h3 id="keeping-out-of-walls">Keeping out of walls</h3>
+<p>A global byte (<code>0x05527a94</code>, which we call the wall camera mode) picks one of two methods:</p>
+<ul>
+<li><strong>Zero: pull in.</strong> A sphere is cast from the target to the fulcrum, then to the candidate. On a
+  hit the point moves to where the sphere stopped, but no closer than a minimum.</li>
+<li><strong>Non-zero: swing away.</strong> Two <em>wing</em> spheres are cast at a set angle to each side of the
+  camera's line to the target. If exactly one hits, an escape yaw builds up and turns the camera
+  away from that side. It builds at a strong rate while the hit is close, easing toward a weak
+  rate as the hit lies farther along the probe. The swing is speed-limited, fades when nothing
+  new is hit, and switches the chase rates to escape rates, which ease back afterwards. Stick input, lock-on, front lock and reset
+  switch the swing off.</li>
+</ul>
+<p>In both modes the final position gets one more sphere cast (step 8).</p>
+<p><strong>Territories</strong> are spheres in a list the update reaches through a global (<code>0x0593e858</code>). Each
+has a centre and a one-byte radius. If the camera is inside an enabled one, it moves back along
+its view axis to the sphere's surface, then a sphere cast checks the new position. A debug flag
+draws them.</p>
+<h3 id="field-of-view">Field of view</h3>
+<p>The vertical field of view (<code>+0x50</code>, radians) eases toward the parameter row's value in degrees.
+Below a minimum the row's value is <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> by a fixed minimum. Above a maximum it is capped at
+48°. A flag raises the target point toward the height that half the view angle covers at the
+current distance, going halfway to it, so the subject stays in frame.</p>
 <h3 id="which-way-the-follow-camera-looks">Which way the follow camera looks</h3>
 <p>The follow camera keeps its orientation as a direction it is looking along. Two small functions
 turn that into angles:</p>
@@ -449,10 +523,22 @@ turn that into angles:</p>
 it stored last time instead of computing a meaningless one.</p>
 <details class="evidence">
 <summary>How these were <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></summary>
-<p>By <a href="https://github.com/evill33t">@evill33t</a> in #109, merged in <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/280">#280</a>: 32 and
-30 constructed <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr> pass against the original on current <code>main</code>, including
-not-a-number directions, and an independent review approved it. No frame-rate patch edits
-either function.</p>
+<ul>
+<li><code>camera_update_follow</code>: by <a href="https://github.com/evill33t">@evill33t</a> in #112, merged in
+  <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/489">#489</a> (commit <code>9786f4b9</code>). 72
+  constructed <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr> pass against the original on stock code and under each
+  <code>BB_TARGET_FPS</code> option (30, 60, uncapped) against the matching patch: 72/72 in all four
+  runs. The cases cover both wall modes, the reset, lock and front-lock flags, chase limits,
+  the safety margin, parameter selection with no subject, territories and their debug
+  drawing, frame-time edge values, sphere-cast hits and misses, and callbacks that change the
+  camera mid-update. An independent review rebuilt the change, reran every case and checked
+  that deliberately planted mistakes are caught. It approved the change.</li>
+<li><code>camera_follow_pitch</code> and <code>camera_follow_yaw</code>: by <a href="https://github.com/evill33t">@evill33t</a>
+  in #109, merged in <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/280">#280</a>. 32 and 30
+  <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr> pass, including not-a-number directions, and an independent review approved
+  them.</li>
+<li>All three are <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr> only. No camera behaviour has been recorded in the running game.</li>
+</ul>
 </details>
 <h2 id="key-functions">Key functions</h2>
 <div class="wk-table is-stack"><table class="wk-stack">
@@ -466,6 +552,13 @@ either function.</p>
 </tr>
 </thead>
 <tbody>
+<tr>
+<td data-label="Address"><code>0x0183ac60</code></td>
+<td style="text-align: right;" data-label="Size">20077</td>
+<td data-label="Name"><code>camera_update_follow</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Updates subject-relative camera position and orientation through input, chase, collision avoidance and territory constraints; applies selected frame-rate gains</td>
+</tr>
 <tr>
 <td data-label="Address"><code>0x0183fad0</code></td>
 <td style="text-align: right;" data-label="Size">79</td>
@@ -483,13 +576,115 @@ either function.</p>
 </tbody>
 </table></div>
 <h2 id="structs-and-globals">Structs and globals</h2>
-<p>None documented yet. Record each as: name, address, size, layout, who reads and writes it.</p>
+<p><strong>The follow camera</strong> (partial; the full size is unknown). The field names describe what the
+update does with each field; they are ours, not the game's.</p>
+<div class="wk-table"><table>
+<thead>
+<tr>
+<th>Offset</th>
+<th>Fields</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>+0x10</code>, <code>+0x50</code>, <code>+0x60</code></td>
+<td>camera transform (axes and position); vertical field of view (radians); subject transform</td>
+</tr>
+<tr>
+<td><code>+0xa0</code>–<code>+0x110</code></td>
+<td>points: target reference, target, cast origin, orbit origin, fulcrum, candidate, chased position; velocity</td>
+</tr>
+<tr>
+<td><code>+0x13c</code>–<code>+0x15c</code></td>
+<td>reset requests; pitch and yaw (<code>+0x140</code>, read by the getters); target pitch; hand control</td>
+</tr>
+<tr>
+<td><code>+0x180</code>–<code>+0x234</code></td>
+<td>distances, sphere radius, safety margin; chase rates and angles (normal, escape, lock-on); pitch limits; rotation speeds</td>
+</tr>
+<tr>
+<td><code>+0x240</code>–<code>+0x288</code></td>
+<td>lock-on: rotation rate, dead angle, pitch shift, target point (<code>+0x250</code>), requests (<code>+0x260</code>–<code>+0x262</code>), front-lock timer and angles, stick adjustment</td>
+</tr>
+<tr>
+<td><code>+0x28c</code>–<code>+0x2e0</code></td>
+<td>wall escape (mode, yaw, rates, wing shape, hit fractions); territory flags and working transform</td>
+</tr>
+<tr>
+<td><code>+0x320</code>–<code>+0x344</code></td>
+<td>parameter IDs (override, event, boss lock, map) and chase rate; stick source; raise target with the field of view</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Lock-camera parameter row:</strong> camera distance (<code>+0x0</code>), lowest pitch in degrees (<code>+0x4</code>),
+lock-pitch shift ratio (<code>+0x8</code>), height above the subject (<code>+0xc</code>), vertical field of view in
+degrees (<code>+0x14</code>). The table hangs off the solo parameter repository (<code>0x05940340</code>), at <code>+0x9c0</code>
+(present when <code>+0x9b8</code> is non-zero). The update reads three of its storage formats.</p>
+<p><strong>Globals:</strong> one-shot event and boss-lock IDs (<code>0x05956678</code>, <code>+0x14</code> and <code>+0x18</code>), cleared every
+update; the wall camera mode (<code>0x05527a94</code>); the territory list (<code>0x0593e858</code>); the default stick
+vector (<code>0x04b38000</code>). The world sphere cast is <code>0x01c090e0</code>.</p>
 <h2 id="patch-points">Patch points</h2>
-<p>None documented yet. Record each as: address, what the original does there, what the
-replacement or a mod would change, and the risk.</p>
+<p>The frame-rate patches edit <code>camera_update_follow</code>. While our replacement is installed, its
+original bytes never run, so a patch line inside it does nothing. <code>BB_TARGET_FPS</code> rebuilds the
+same changes in code (see <a href="../frame_timing/">Frame timing</a>):</p>
+<div class="wk-table is-stack"><table class="wk-stack">
+<thead>
+<tr>
+<th>Where</th>
+<th>Original</th>
+<th><code>30 FPS++</code> / option 30</th>
+<th><code>60 FPS++</code>, <code>Uncap FPS++</code> / options 60, uncapped</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td data-label="Where">12 sites (<code>0x0183ae75</code>, <code>0x0183af8c</code>, <code>0x0183ba97</code>, <code>0x0183bc9b</code>, <code>0x0183c30f</code>, <code>0x0183c784</code>, <code>0x0183cef0</code>, <code>0x0183e2b2</code>, <code>0x0183e7da</code>, <code>0x0183e964</code>, <code>0x0183f97e</code>, <code>0x0183fa9f</code>)</td>
+<td data-label="Original">fixed per-frame rates (parameters, distance, subject and target chase, lock and front-lock rotation, target-pitch drift, direct pitch, escape easing)</td>
+<td data-label="30 FPS++ / option 30">unchanged</td>
+<td data-label="60 FPS++, Uncap FPS++ / options 60, uncapped">each rate is rescaled from the measured frame time, capped at 1/60 s (1/30 s for parameter and escape easing)</td>
+</tr>
+<tr>
+<td data-label="Where"><code>0x0183dc96</code>, <code>0x0183dcfe</code></td>
+<td data-label="Original">when both wings miss, the escape mode becomes 1; with the wall mode off, only the escape mode is cleared</td>
+<td data-label="30 FPS++ / option 30">mode 0; with the wall mode off, the chase rates switch to the escape rates</td>
+<td data-label="60 FPS++, Uncap FPS++ / options 60, uncapped">same</td>
+</tr>
+<tr>
+<td data-label="Where"><code>0x04d25e94</code> (constant)</td>
+<td data-label="Original">escape easing step</td>
+<td data-label="30 FPS++ / option 30">1/15</td>
+<td data-label="60 FPS++, Uncap FPS++ / options 60, uncapped">1/30</td>
+</tr>
+<tr>
+<td data-label="Where"><code>0x04d25e68</code> (constant)</td>
+<td data-label="Original">camera-distance easing rate</td>
+<td data-label="30 FPS++ / option 30">0.1</td>
+<td data-label="60 FPS++, Uncap FPS++ / options 60, uncapped">0.1</td>
+</tr>
+</tbody>
+</table></div>
+<p>The two constants lie outside the function, so those patch lines still apply with the replacement
+installed: the option runs together with the patch, which supplies them, as it does for the
+other functions the option covers.</p>
+<p><code>90 FPS++</code> and <code>120 FPS++</code> edit the same sites; we have no option for them.</p>
+<p>Three other kinds of patch edit the function too, and also do nothing while it is <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr>; none
+has a matching option. <strong>Disable Camera Auto Rotation via Movement</strong> blanks four instructions
+(<code>0x0183c6e8</code>, <code>0x0183c870</code>, <code>0x0183c984</code>, <code>0x0183dde6</code>). <strong>Increased camera distance</strong>,
+<strong>Smaller Hunter</strong> and <strong>Smallest Hunter</strong> jump out at <code>0x0183ae68</code> (the last two also at
+<code>0x0183aeef</code>); the first appears to scale the target camera distance by 1.5.</p>
 <h2 id="open-questions">Open questions</h2>
 <ul>
-<li>Everything: this system has not been studied yet.</li>
+<li>Who calls <code>camera_update_follow</code>, and who sets the lock target, the lock and front-lock
+  requests and the wall camera mode? Does the front lock really match the "camera behind the
+  character" button? Is the wall mode a menu option?</li>
+<li>The other fields of the parameter row (<code>+0x10</code> is skipped) and the parameter file's identity.</li>
+<li>What the carry-along pivot is (a moving platform or a mount, for example). Its velocity fields
+  are set elsewhere.</li>
+<li>Which of the 12 frame-rate sites carries which rate: the table matches them by count, not site
+  by site. Which stage the auto-rotation patch's four sites belong to.</li>
+<li><code>0x0183a0e0</code>, just before the update, is edited by the distance, Hunter-size and frame-rate
+  patches. It is not mapped.</li>
+<li>What the camera does in the running game: nothing has been recorded beyond constructed cases.</li>
 </ul>
       
       </div>

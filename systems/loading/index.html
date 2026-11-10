@@ -380,7 +380,7 @@
       <span class="wk-stat-track" role="img" aria-label="0.033 percent of target code bytes verified">
         <span class="wk-stat-fill" style="width:0.033%"></span>
       </span>
-      <span class="wk-progress-foot">0.033% of code bytes verified · 173 replaced</span>
+      <span class="wk-progress-foot">0.033% of code bytes verified · 239 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -418,7 +418,7 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 6, 2026 22:23:57 UTC">November 6, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 10, 2026 20:41:05 UTC">November 10, 2026</span></p>
       
       
       <h1 id="loading">Loading</h1>
@@ -430,7 +430,7 @@
 <dt>Scope</dt>
 <dd>File access, Fios file and directory handles, PlayGo chunks, and the archive and mount layers above them.</dd>
 <dt>Verified</dt>
-<dd>Only the link dependencies in the import table; no loading function is mapped yet.</dd>
+<dd>Seven functions directly above the file imports (kernel files, Fios handles, C streams) are <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> and <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr>.</dd>
 <dt>Open</dt>
 <dd>Which calls run during a load, and in what order. The boot now reads files from your copy, its scratch folder and its saves, but the game's loading code itself is not mapped.</dd>
 </dl>
@@ -488,10 +488,100 @@ results.</p>
 <li><strong><code>/savedataN</code></strong>, a mounted save, kept in a host folder you choose (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/402">#402</a>).</li>
 <li><strong>PlayGo</strong> reports every chunk installed (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/370">#370</a>).</li>
 </ul>
-<p>This is the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>'s side. The game's own archive, mount and load-screen code above these calls
-has not been mapped, so which assets it loads, and in what order, is not documented here yet.</p>
+<p>This is the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>'s side. Apart from the seven small functions below, the game's own archive,
+mount and load-screen code above these calls has not been mapped, so which assets it loads, and in what order, is not documented here yet.</p>
+<h3 id="the-first-loading-functions">The first loading functions</h3>
+<p>Seven small functions on the file path are <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> and <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr> (Paleblood
+<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/517">#517</a>). They sit directly on the
+imports above, one per interface:</p>
+<p><strong>Kernel files.</strong> The <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr>'s platform layer keeps a file as a descriptor and an "open" bit.
+<code>loading_kernel_file_open</code> (<code>0x02a70890</code>) turns the caller's mode bits into FreeBSD open flags:
+read and write pick read-only, write-only or read-write; then the first of create-exclusive,
+create-and-truncate and create that is set adds <code>O_CREAT</code> with <code>O_EXCL</code> or <code>O_TRUNC</code> (a lone
+truncate bit adds <code>O_TRUNC</code>). A new file gets permissions 0777 when it is writable and 0555 when
+it is opened only to read. This is the call that creates the start-up <code>temp:/cache.bin</code>.
+<code>loading_kernel_file_read</code> (<code>0x02a70920</code>) reads through the descriptor and hands back the count.
+Both answer 0 or -1; the kernel's own error code is dropped.</p>
+<p><strong>Fios handles.</strong> <code>loading_fios_open_file</code> (<code>0x00857cd0</code>) and <code>loading_fios_open_file_read</code>
+(<code>0x0085cda0</code>) open a file with <code>sceFiosFHOpenSync</code> and wrap the handle in a small engine object
+allocated from the calling thread's allocator. <code>loading_fios_directory_delete</code> (<code>0x0084d5a0</code>) is
+the directory object's deleting destructor: it closes the directory handle, frees the listing
+and two path strings, and returns the object to the thread allocator.</p>
+<p><strong>C streams.</strong> <code>loading_stdio_stream_open</code> (<code>0x00464b90</code>) opens a stream with <code>fopen</code> in one of
+six binary modes (<code>rb</code>, <code>r+b</code>, <code>wb</code>, <code>w+b</code>, <code>ab</code>, <code>a+b</code>) picked by mode bits, rewinds it, and
+turns a failure's <code>errno</code> into the engine's own codes: not found <code>0x1001</code>, denied (<code>EACCES</code> or
+<code>EPERM</code>) <code>0x1002</code>, no space <code>0x1004</code>, anything else <code>0x1003</code>. <code>loading_stdio_close_files</code>
+(<code>0x02e67d20</code>) closes three streams together, last first.</p>
+<details class="evidence">
+<summary>How these were <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></summary>
+<p>Each function's <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr> pass against the original (72, 19, 15, 14, 11, 30 and 9 cases),
+with deliberately wrong versions failing, and an independent review approved all seven. No
+community patch edits them. None has been recorded in a game run yet, so they are
+<abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr>, not <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>.</p>
+</details>
 <h2 id="key-functions">Key functions</h2>
-<p>No functions tracked yet.</p>
+<div class="wk-table is-stack"><table class="wk-stack">
+<thead>
+<tr>
+<th>Address</th>
+<th style="text-align: right;">Size</th>
+<th>Name</th>
+<th>Status</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td data-label="Address"><code>0x00464b90</code></td>
+<td style="text-align: right;" data-label="Size">215</td>
+<td data-label="Name"><code>loading_stdio_stream_open</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">fopen the tagged path with rb/r+b/wb/w+b/ab/a+b from mode bits at +0x28; rewind; map errno (fetched per check) to 0x1001-0x1004; zero +0x30</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0084d5a0</code></td>
+<td style="text-align: right;" data-label="Size">158</td>
+<td data-label="Name"><code>loading_fios_directory_delete</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">FIOS directory object deleting destructor: close the DH at +0x28, free entries and both tagged paths, free 0x38 bytes (or the header's size) to the thread allocator</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x00857cd0</code></td>
+<td style="text-align: right;" data-label="Size">176</td>
+<td data-label="Name"><code>loading_fios_open_file</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">sceFiosFHOpenSync with the caller's 16-bit open flags; on success a 0x18-byte file object from the thread allocator (vtable 0x055c1e00) marked open</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0085cda0</code></td>
+<td style="text-align: right;" data-label="Size">174</td>
+<td data-label="Name"><code>loading_fios_open_file_read</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">sceFiosFHOpenSync to read; on success a 0x18-byte file object (vtable 0x055c2190) open when the handle is not negative</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02a70890</code></td>
+<td style="text-align: right;" data-label="Size">141</td>
+<td data-label="Name"><code>loading_kernel_file_open</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">sceKernelOpen with FreeBSD flags and permissions from the platform mode bits; store the descriptor and set the open bit; -1 on error</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02a70920</code></td>
+<td style="text-align: right;" data-label="Size">46</td>
+<td data-label="Name"><code>loading_kernel_file_read</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">sceKernelRead the file's descriptor; -1 on a negative count, else store the count when asked and return 0</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02e67d20</code></td>
+<td style="text-align: right;" data-label="Size">80</td>
+<td data-label="Name"><code>loading_stdio_close_files</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">fclose and clear the FILE pointers at +0x10, +0x8 and +0x0 in that order, skipping null ones</td>
+</tr>
+</tbody>
+</table></div>
 <p>The import table records interfaces the executable and its bundled modules can call. The exact
 imported names and providers are in <code>symbols/imports.csv</code>.</p>
 <details class="reference">
@@ -518,8 +608,35 @@ imported names and providers are in <code>symbols/imports.csv</code>.</p>
 </ul>
 </details>
 <h2 id="structs-and-globals">Structs and globals</h2>
-<p>No file-handle, Fios operation, archive-index, or PlayGo structure layout has been <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> for
-the target. No system-wide global is currently tied to this path.</p>
+<p>What the seven <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> functions show (the field names are ours):</p>
+<div class="wk-table"><table>
+<thead>
+<tr>
+<th>Object</th>
+<th>Layout</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Kernel file</td>
+<td>descriptor (<code>+0x0</code>, 32-bit), flags (<code>+0x4</code>, bit 0: open)</td>
+</tr>
+<tr>
+<td>Fios file object (0x18 bytes)</td>
+<td>vtable; header (<code>+0x8</code>: a count that starts at 1, and an allocation size, <code>0xffff</code> meaning the class's own); Fios handle (<code>+0xc</code>); open byte (<code>+0x10</code>)</td>
+</tr>
+<tr>
+<td>Fios directory object (0x38 bytes)</td>
+<td>vtable; header (<code>+0x8</code>); two tagged path strings (<code>+0x18</code>, <code>+0x20</code>); directory handle (<code>+0x28</code>, 0 when closed); listing (<code>+0x30</code>)</td>
+</tr>
+<tr>
+<td>C stream</td>
+<td>tagged path (<code>+0x10</code>; the characters start at offset 0xc of the string); open byte (<code>+0x18</code>); <code>FILE</code> (<code>+0x20</code>); mode bits (<code>+0x28</code>); error (<code>+0x2c</code>); position (<code>+0x30</code>)</td>
+</tr>
+</tbody>
+</table></div>
+<p>The Fios objects come from the calling thread's allocator, reached through a thread-local holder.
+No Fios operation, archive-index or PlayGo layout has been <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>.</p>
 <p>A structure is recorded here only after its size and accessed fields are supported by source
 analysis or a matching observation.</p>
 <h2 id="patch-points">Patch points</h2>
@@ -529,8 +646,11 @@ address is mapped to a loading function and its effect is checked against the st
 <ul>
 <li>Which file imports are reached during startup and the order in which they run. The boot now gets
   that far, but no trace of the file calls has been recorded yet.</li>
-<li>How Fios file and directory handles are opened, used, and closed, including the relationship
-  between synchronous calls and <code>sceFiosOp*</code> operations.</li>
+<li>How Fios file handles are read and closed, and how directories are listed, including the
+  relationship between synchronous calls and <code>sceFiosOp*</code> operations (opening and the directory
+  destructor are mapped).</li>
+<li>What the stream object with the six <code>fopen</code> modes and the holder of three <code>FILE</code> pointers are
+  used for.</li>
 <li>How PlayGo chunk identifiers and install locations affect asset or map streaming.</li>
 <li>How the game's archive and mount layers translate paths into file operations. Document access
   behavior only; archive contents and extracted files are out of scope.</li>

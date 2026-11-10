@@ -380,7 +380,7 @@
       <span class="wk-stat-track" role="img" aria-label="0.033 percent of target code bytes verified">
         <span class="wk-stat-fill" style="width:0.033%"></span>
       </span>
-      <span class="wk-progress-foot">0.033% of code bytes verified · 173 replaced</span>
+      <span class="wk-progress-foot">0.033% of code bytes verified · 239 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -418,19 +418,19 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 6, 2026 21:52:44 UTC">November 6, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 10, 2026 20:41:05 UTC">November 10, 2026</span></p>
       
       
       <h1 id="input">Input</h1>
-<p class="wk-lede">The input system handles the controller pads. This page covers the once-a-frame step of FD4PadManager, the manager that keeps a map of pad entries.</p>
+<p class="wk-lede">The input system handles the controller pads. This page covers the once-a-frame step of FD4PadManager, the manager that keeps a map of pad entries, and the pad vibration and mouse setup functions.</p>
 
 <div class="wk-glance">
 <p><span class="wk-label">At a glance</span></p>
 <dl>
 <dt>Scope</dt>
-<dd><code>input_pad_step_01972900</code>, the per-frame step of the <code>FD4PadManager</code> pad map.</dd>
+<dd>Pad polling, mapping, dead zones, vibration, mouse and input buffering. Mapped so far: the per-frame step of the <code>FD4PadManager</code> pad map, pad vibration and the mouse device's setup.</dd>
 <dt>Verified</dt>
-<dd>The step marks two pad entries and, when its owner is ready, advances the owner by a frame-time step.</dd>
+<dd>The pad step is <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>; the vibration setter, the mouse device constructor and its two opens are <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr>.</dd>
 <dt>Open</dt>
 <dd>What the two entries and the owner are; where the pad is polled; mapping, dead zones and input buffering.</dd>
 </dl>
@@ -465,7 +465,7 @@
 <tr>
 <td data-label="Library"><code>libSceMouse</code></td>
 <td data-label="Calls the game imports"><code>sceMouseInit</code>, <code>sceMouseOpen</code>, <code>sceMouseClose</code>, <code>sceMouseRead</code></td>
-<td data-label="What that tells us">A mouse path exists, set up by three small functions around <code>0x02a8c000</code>.</td>
+<td data-label="What that tells us">A mouse path exists, set up by the mouse device functions around <code>0x02a8c000</code> (below).</td>
 </tr>
 <tr>
 <td data-label="Library"><code>libSceUserService</code></td>
@@ -492,43 +492,32 @@ executable's own calls fix their shapes:</p>
 </ul>
 <p>With <code>--input host</code> the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> feeds a real gamepad and the keyboard into these calls. That is the
 <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>'s side; the game code that reads the state is not decompiled yet.</p>
-<p>Functions already found, still unnamed (open to claim):</p>
-<div class="wk-table"><table>
-<thead>
-<tr>
-<th>Address</th>
-<th>Size</th>
-<th>Library calls</th>
-<th>Likely role</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>0x02a9c790</code></td>
-<td>84</td>
-<td><code>scePadSetVibration</code></td>
-<td>sets a pad's vibration</td>
-</tr>
-<tr>
-<td><code>0x02a8bf30</code></td>
-<td>108</td>
-<td><code>sceMouseOpen</code>, <code>sceMouseClose</code>, <code>sceUserServiceGetInitialUser</code></td>
-<td>mouse open or reopen</td>
-</tr>
-<tr>
-<td><code>0x02a8c210</code></td>
-<td>164</td>
-<td><code>sceMouseInit</code>, <code>sceSysmoduleLoadModule</code>; calls <code>0x02a8c420</code>, <code>0x02a8d2b0</code></td>
-<td>mouse setup: loads the module, initialises, opens</td>
-</tr>
-<tr>
-<td><code>0x02a8c420</code></td>
-<td>108</td>
-<td><code>sceMouseOpen</code>, <code>sceMouseClose</code>, <code>sceUserServiceGetInitialUser</code></td>
-<td>mouse open or reopen (a twin of <code>0x02a8bf30</code>)</td>
-</tr>
-</tbody>
-</table></div>
+<h3 id="vibration-and-the-mouse">Vibration and the mouse</h3>
+<p>Four small device functions are <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> and <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr> (Paleblood
+<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/520">#520</a>):</p>
+<ul>
+<li><strong>Vibration.</strong> <code>input_pad_set_vibration</code> (<code>0x02a9c790</code>) sets both motors of an open pad with
+  <code>scePadSetVibration</code>, and answers false when the pad is not open or the call fails. Its second
+  argument drives the small motor and its third the large one (the order of
+  <code>ScePadVibrationParam</code> is large, then small). Its one caller is <code>0x01395ca5</code>.</li>
+<li><strong>The mouse device.</strong> <code>input_mouse_construct</code> (<code>0x02a8c210</code>) builds a mouse device on top of the
+  input devices' shared base constructor (<code>0x02a8d2b0</code>): it loads the mouse system module (id
+  <code>0xa9</code>), initialises the mouse library and opens the mouse through the device's own virtual
+  open. If any step fails, the device keeps handle 0.</li>
+<li><strong>Opening for the initial user.</strong> That open, <code>input_initialize_mouse_for_initial_user</code>
+  (<code>0x02a8c420</code>, named by <a href="https://github.com/gabee12">@gabee12</a> in
+  <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/270">#270</a>), asks the user service for the
+  user who started the game, closes the previous connection when its handle is positive, and
+  opens the mouse for that user (type 0, index 0). It is true when the new handle is positive.
+  A second mouse device class has an identical open, <code>input_mouse_b_open_for_initial_user</code>
+  (<code>0x02a8bf30</code>), with its handle at <code>+0x128</code> instead of <code>+0x168</code>.</li>
+</ul>
+<details class="evidence">
+<summary>How these were <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></summary>
+<p>Each function's <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr> pass against the original (9, 10, 11 and 11 cases), deliberately
+wrong versions fail, and an independent review approved all four. No community patch edits
+them. They are <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr>: none has been recorded in a game run.</p>
+</details>
 <h2 id="key-functions">Key functions</h2>
 <div class="wk-table is-stack"><table class="wk-stack">
 <thead>
@@ -549,11 +538,32 @@ executable's own calls fix their shapes:</p>
 <td data-label="Notes">FD4PadManager map: marks two entries, advances an owner by the frame-time step (patched to 1/15 or 1/240 s; the advance branch is idle in the clinic)</td>
 </tr>
 <tr>
+<td data-label="Address"><code>0x02a8bf30</code></td>
+<td style="text-align: right;" data-label="Size">108</td>
+<td data-label="Name"><code>input_mouse_b_open_for_initial_user</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Second mouse device class's open: initial user, close a positive handle at +0x128, sceMouseOpen(user, 0, 0, null); true when the new handle is positive</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02a8c210</code></td>
+<td style="text-align: right;" data-label="Size">164</td>
+<td data-label="Name"><code>input_mouse_construct</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Mouse device constructor: base ctor with the third argument, vtable 0x056b7d00, clear 0x140..0x177, load sysmodule 0xa9, sceMouseInit, open via slot 32; handle 0 on any failure</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x02a8c420</code></td>
 <td style="text-align: right;" data-label="Size">108</td>
 <td data-label="Name"><code>input_initialize_mouse_for_initial_user</code></td>
-<td data-label="Status"><span class="wk-badge wk-badge--original">original</span></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">Initializes or reinitializes mouse input for the initial user, closing a previous connection if necessary.</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02a9c790</code></td>
+<td style="text-align: right;" data-label="Size">84</td>
+<td data-label="Name"><code>input_pad_set_vibration</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">scePadSetVibration on the pad's handle (+0x8) if open (+0xc): large motor from the third argument, small from the second; true on success</td>
 </tr>
 </tbody>
 </table></div>
@@ -628,7 +638,8 @@ change it:</p>
 <li>Pad mapping and input buffering have not been studied yet. The sticks' dead zones are applied by
   the game's own code, from the deadzone the controller information reports (only the motion
   sensor's deadband is set through the library).</li>
-<li>Whether the mouse path is used by anything in the shipped game.</li>
+<li>Whether the mouse path is used by anything in the shipped game: the mouse device's constructor has two callers (<code>0x02558eb3</code>, <code>0x02558fb6</code>), not yet mapped, and nothing calls either open directly (only their vtable slots point at them).</li>
+<li>What the shared input device base constructor (<code>0x02a8d2b0</code>, six callers) sets up, and which other device classes use it.</li>
 </ul>
       
       </div>

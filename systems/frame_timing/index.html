@@ -380,7 +380,7 @@
       <span class="wk-stat-track" role="img" aria-label="0.033 percent of target code bytes verified">
         <span class="wk-stat-fill" style="width:0.033%"></span>
       </span>
-      <span class="wk-progress-foot">0.033% of code bytes verified · 173 replaced</span>
+      <span class="wk-progress-foot">0.033% of code bytes verified · 239 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -420,7 +420,7 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 4, 2026 12:18:00 UTC">November 4, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 10, 2026 20:41:05 UTC">November 10, 2026</span></p>
       
       
       <h1 id="frame-timing">Frame timing</h1>
@@ -643,6 +643,39 @@ as the original does, so very large delays wrap, and it always reports success.<
   checked on frames recorded from a real game run.</li>
 </ul>
 </details>
+<h3 id="small-clocks-waits-and-stopwatches">Small clocks, waits and stopwatches</h3>
+<p>Nine small helpers that read the time or sleep are <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> and <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr> (Paleblood
+<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/514">#514</a>). None of them is on the limiter's
+path:</p>
+<ul>
+<li><strong>Time of day.</strong> <code>frame_timing_time_of_day_us</code> (<code>0x02e61140</code>) gives the time of day in
+  microseconds; <code>frame_timing_time_of_day_ticks</code> (<code>0x01088550</code>) divides it by an owner's own tick
+  length; <code>frame_timing_time_seed_words</code> (<code>0x02e61280</code>) returns four seed words, the time itself
+  and the time plus a counter that steps by two on every call, so two calls in the same
+  microsecond still differ.</li>
+<li><strong>Random state.</strong> <code>frame_timing_thread_random</code> (<code>0x02c6d580</code>) returns the calling thread's
+  random number state (a thread-local variable), seeding it the first time from the low 32 bits
+  of the time in microseconds. About sixty callers fetch it.</li>
+<li><strong>Stopwatch.</strong> <code>frame_timing_stopwatch_start</code> (<code>0x01448580</code>) stores the seconds since the game
+  started, only when the stopwatch reads exactly zero; <code>frame_timing_stopwatch_stop</code>
+  (<code>0x01448620</code>) adds the time since that start to two running totals. The task frame brackets
+  work with them.</li>
+<li><strong>Waiting for a job.</strong> <code>frame_timing_job_wait</code> (<code>0x024bdd40</code>) polls a background job's state
+  until it is finished, sleeping 1 ms between polls; <code>frame_timing_job_take_result</code>
+  (<code>0x024bd150</code>) takes a job's result, polling, waiting or taking at once depending on its mode,
+  and counts one more holder of the result under a lock all jobs share.</li>
+<li><strong>Sleep.</strong> <code>frame_timing_posix_sleep_ms</code> (<code>0x00466810</code>) sleeps through the POSIX <code>usleep</code> and
+  always reports success.</li>
+</ul>
+<p>The community <strong>Performance Patch</strong> turns the stopwatch into a no-op and shortens the job waits'
+poll to 0.1 ms. Those byte edits do nothing while these functions are <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr>, and there is no
+option for them yet.</p>
+<details class="evidence">
+<summary>How these were <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></summary>
+<p>Each function's <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr> pass against the original (10 to 55 cases each), deliberately
+wrong versions fail, and an independent review approved all nine. They are <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr>:
+none has been recorded in a game run.</p>
+</details>
 <h3 id="frame-time-in-game-logic">Frame time in game logic</h3>
 <p>The frame step also passes time into character updates. One <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> update accumulates a
 per-frame points value using that time and retains fractional progress between frames. Its
@@ -684,6 +717,20 @@ piece of the game's own per-frame work, the next layer to map.</p>
 <td data-label="Name"><code>frame_timing_get_time_us</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--original">original</span></td>
 <td data-label="Notes">dead in the stock game: only unwind entries refer to it; the community frame-rate patches overwrite it as a code cave (gettimeofday in microseconds)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x00466810</code></td>
+<td style="text-align: right;" data-label="Size">19</td>
+<td data-label="Name"><code>frame_timing_posix_sleep_ms</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Sleep milliseconds through POSIX usleep (32-bit multiply wraps); ignore its result and return true</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x01088550</code></td>
+<td style="text-align: right;" data-label="Size">83</td>
+<td data-label="Name"><code>frame_timing_time_of_day_ticks</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Time of day in microseconds divided (unsigned 64-bit) by the owner's tick length at +0x1d8</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x0111a760</code></td>
@@ -754,6 +801,20 @@ piece of the game's own per-frame work, the next layer to map.</p>
 <td data-label="Name"><code>frame_timing_task_workers_step_014400a0</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--verified"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></span></td>
 <td data-label="Notes">task manager workers: three rounds over the worker queues +0x58, +0x68, +0x60</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x01448580</code></td>
+<td style="text-align: right;" data-label="Size">149</td>
+<td data-label="Name"><code>frame_timing_stopwatch_start</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Start a stopwatch from exactly zero: seconds since game start (double divide, float store) at +0x38; bump counters 0x44 and 0x4c</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x01448620</code></td>
+<td style="text-align: right;" data-label="Size">168</td>
+<td data-label="Name"><code>frame_timing_stopwatch_stop</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Stop a positive stopwatch: add seconds since its start to the totals at +0x3c and +0x54; clear the start</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x01ea47a0</code></td>
@@ -978,6 +1039,41 @@ piece of the game's own per-frame work, the next layer to map.</p>
 <td data-label="Name"><code>frame_timing_task_frame_024512a0</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--verified"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></span></td>
 <td data-label="Notes">task manager frame entry from the frame step: FD4TaskManager singleton, then 0x01388c60</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x024bd150</code></td>
+<td style="text-align: right;" data-label="Size">216</td>
+<td data-label="Name"><code>frame_timing_job_take_result</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Job handle result: mode 0 polls (null if not done), 2 takes, others wait 1 ms at a time; bumps the job's holder count under the job lock</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x024bdd40</code></td>
+<td style="text-align: right;" data-label="Size">36</td>
+<td data-label="Name"><code>frame_timing_job_wait</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Poll a job's state until finished (2), sleeping 1 ms in the kernel between polls</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02c6d580</code></td>
+<td style="text-align: right;" data-label="Size">149</td>
+<td data-label="Name"><code>frame_timing_thread_random</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">This thread's random state (thread-local); seeds it once from the 32-bit time of day in microseconds</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02e61140</code></td>
+<td style="text-align: right;" data-label="Size">67</td>
+<td data-label="Name"><code>frame_timing_time_of_day_us</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Time of day in microseconds (64-bit multiply and add wrap); the gettimeofday result is ignored</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02e61280</code></td>
+<td style="text-align: right;" data-label="Size">101</td>
+<td data-label="Name"><code>frame_timing_time_seed_words</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Four seed words in rax:rdx: 32-bit seconds, microseconds, and both offset by a counter that advances by 2 per call</td>
 </tr>
 </tbody>
 </table></div>
