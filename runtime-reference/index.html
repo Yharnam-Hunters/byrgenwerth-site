@@ -17,7 +17,7 @@
     d.setAttribute('data-theme', t); d.classList.add('wk-js'); }());
   </script>
   
-  <link rel="stylesheet" href="../stylesheets/wiki.css?v=527d16639d"><link rel="stylesheet" href="../stylesheets/hunters.css?v=e4f3c59dfb">
+  <link rel="stylesheet" href="../stylesheets/wiki.css?v=d9646b693b"><link rel="stylesheet" href="../stylesheets/hunters.css?v=e4f3c59dfb">
   
   
 </head>
@@ -380,7 +380,7 @@
       <span class="wk-stat-track" role="img" aria-label="0.033 percent of target code bytes verified">
         <span class="wk-stat-fill" style="width:0.033%"></span>
       </span>
-      <span class="wk-progress-foot">0.033% of code bytes verified · 161 replaced</span>
+      <span class="wk-progress-foot">0.033% of code bytes verified · 169 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -647,6 +647,12 @@ provider from the unresolved console kernel syscall behavior.</p>
 <td data-label="Evidence and open questions for PS4">Imported by <code>eboot</code>, <code>libSceFios2.elf</code> and <code>libc.elf</code> from <code>libkernel</code> (<code>symbols/imports.csv</code>). Implemented as a stop by name (<code>rt_fatal</code>, which aborts): ending the program is the whole guest-visible contract, so the entry counts as implemented (<code>runtime/syslib/kernel.c</code>). Not covered: the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr>'s own message or crash report, which the guest cannot observe after it ends; and <code>__stack_chk_guard</code>, a separate data import whose <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> value is not established (an unbound data import gets a zeroed page, <code>runtime/boot.c</code>).</td>
 </tr>
 <tr>
+<td data-label="Function"><code>_exit(status)</code> (libkernel)</td>
+<td data-label="Arguments and representation">One <code>int</code>, no result: <code>void _exit(int status)</code>, and it never returns (POSIX; FreeBSD's <a href="https://man.freebsd.org/cgi/man.cgi?query=_exit&amp;sektion=2"><code>_exit(2)</code></a> has the same shape and declares it <code>__dead2</code>). No call site in the repository fixes the shape further.</td>
+<td data-label="Publicly documented result and errors">POSIX: the process ends at once; functions registered with <code>atexit</code> are not called and open streams are not flushed; the low 8 bits of <code>status</code> (<code>status &amp; 0377</code>) are available to the waiting parent, and the full value to <code>waitid</code> and <code>SIGCHLD</code> handlers. FreeBSD <code>_exit(2)</code>: the same, the C library's <code>exit(3)</code> runs the <code>atexit</code> handlers and flushes, then calls <code>_exit</code>.</td>
+<td data-label="Evidence and open questions for PS4">Imported by <code>libc.elf</code> from <code>libkernel</code> (<code>symbols/imports.csv</code>). Implemented: the host's <code>_exit</code> with the guest's status, which has the same contract (<code>runtime/syslib/kernel.c</code>). Under the boot <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr>, <code>rt_exit_observer</code> records the run's outcome first, as <code>rt_fatal_observer</code> does for a stop: <code>pbboot</code> reports "exited with code" and the full status, from any guest thread, and still writes the boot record (<code>runtime/boot.c</code>). Not covered: what the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> shows the player when a game ends this way, which the guest cannot observe after it ends.</td>
+</tr>
+<tr>
 <td data-label="Function"><code>scePthreadCondInit(cond, attr, name)</code>, <code>scePthreadCondDestroy(cond)</code>, <code>scePthreadCondSignal(cond)</code>, <code>scePthreadCondBroadcast(cond)</code>, <code>scePthreadCondWait(cond, mutex)</code>, <code>scePthreadCondTimedwait(cond, mutex, microseconds)</code> (libkernel)</td>
 <td data-label="Arguments and representation">Pointers to the guest's cond and mutex variables; each returns <code>int32_t</code>. The guest fixes the wait shapes: the <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> <code>game/kernel/condition_wait.cpp</code> declares <code>Wait</code> as <code>int32_t(void *cond, void *mutex)</code> and <code>Timedwait</code> as <code>int32_t(void *cond, void *mutex, uint32_t timeout_us)</code>, a relative timeout in microseconds, not POSIX's absolute <code>timespec</code>. The public <a href="https://github.com/OpenOrbis/OpenOrbis-PS4-Toolchain/blob/master/include/orbis/libkernel.h">OpenOrbis <code>libkernel.h</code></a> declares all six with these shapes (<code>Init</code> with an attribute pointer and a name, as <code>scePthreadMutexInit</code>); it is supporting evidence for the shapes only.</td>
 <td data-label="Publicly documented result and errors">POSIX <code>pthread_cond_*</code>, as FreeBSD libthr implements it (<code>thr_cond.c</code>): a static initializer (<code>NULL</code>) set up on first use; a destroyed cond holds <code>1</code> (<code>thr_private.h</code>); <code>EINVAL</code> for a destroyed cond; <code>EBUSY</code> to destroy one with waiters; destroying an unused initializer succeeds and leaves it in place; <code>EPERM</code> when the waiter does not own the mutex, for every mutex type, <code>EINVAL</code> when the mutex is destroyed (<code>_mutex_owned</code>, <code>thr_mutex.c</code>); <code>ETIMEDOUT</code> when a timed wait expires; a recursive mutex is released completely for the wait and its count restored after (<code>_mutex_cv_unlock</code>, <code>_mutex_cv_lock</code>). The SCE name returns <code>0x80020000</code> plus the error number.</td>
@@ -750,12 +756,15 @@ hash-pinned <code>eboot.elf</code>, <code>libc.elf</code> and <code>libSceFios2.
   count stays zero;
 - <code>hardware_concurrency</code> (<code>+0x5fac0</code>, 7 bytes) with <code>stop</code>, so a caller ends the run by name
   instead of reading a count nobody established.</p>
-<p><code>pbboot --module-hook</code> writes each as a five-byte relative jump to a stub in the module's slot. A
+<p><code>pbboot --module-hook</code> first compares each function's first bytes, as the mapped and relocated
+module holds them, with the ones the file gives (<code>first_bytes</code>), and refuses the run before any
+guest code runs if they differ. It then writes each as a five-byte relative jump to a stub in the module's slot. A
 <code>return</code> stub leaves every register as the caller had it. A <code>stop</code> is reported like an
 unimplemented import: the status names the <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> and its caller in <code>stopped_by_hook</code>.
 <code>scePthreadAttrGetaffinity</code> stays unbound.</p>
 <p>The <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> guards calls only. A direct read of <code>+0xd1c54</code> that the analysis missed would see 0, not
-a measured count. The offsets fit only the pinned <code>libc.elf</code> (<code>target.sha256</code>).</p>
+a measured count. The offsets fit only the pinned <code>libc.elf</code> (<code>target.sha256</code>); another build fails
+the byte check by name instead of being patched.</p>
 <h2 id="clock-ids-and-platform-differences">Clock IDs and platform differences</h2>
 <p>The only clock ID confirmed by a decompiled game call in this repository is <code>4</code>, used with <code>sceKernelClockGettime</code> and identified there as <code>CLOCK_MONOTONIC</code>. This does not prove that the game passes <code>4</code> to the imported <code>clock_gettime</code> wrapper. POSIX defines clock identifiers symbolically; their numeric values are implementation-specific. Linux adds clocks such as <code>CLOCK_MONOTONIC_RAW</code> and <code>CLOCK_BOOTTIME</code>; FreeBSD has its own clock set, including <code>CLOCK_UPTIME</code> variants. Their names and numeric values are not interchangeable evidence for <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> behavior.</p>
 <p><code>CLOCK_MONOTONIC</code> represents elapsed time from an unspecified starting point and is not the wall clock. The precise effects of suspend, rate correction, and resolution vary by implementation. <code>gettimeofday</code> and <code>CLOCK_REALTIME</code> represent wall time tied to the Epoch and can move when system time changes. No source examined here establishes that the game asks the imported <code>clock_gettime</code> wrapper for <code>CLOCK_REALTIME</code>, <code>CLOCK_MONOTONIC_RAW</code>, <code>CLOCK_BOOTTIME</code>, or another ID.</p>
@@ -1214,6 +1223,12 @@ variable's first <code>int</code> is its state: 0 never done (the static initial
 is <code>EINVAL</code>. <code>libc.elf</code> calls it five times (<code>+0xad02</code>, <code>+0x1b292</code>, <code>+0x54ecb</code> and two tail calls)
 with a static variable and a routine. Nothing cancels a guest thread, so a routine always runs to
 its end.</p>
+<p><strong><code>scePthreadRename(thread, name)</code></strong> records a thread's name (OpenOrbis <code>libkernel.h</code>; libthr's
+<code>pthread_set_name_np</code>, to which shadPS4 binds it, facts only). The executable's job threads rename
+themselves with it (a tail call at <code>0x00466834</code>). The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> keeps the first 31 bytes, as for the
+name <code>scePthreadCreate</code> takes, names the host thread with the first 15 (the host's limit; debuggers
+and the host's thread list show it), and answers 0. Stops by name: a thread the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> does not know
+or has collected, and a missing name.</p>
 <h2 id="playgo-libsceplaygo">PlayGo (<code>libScePlayGo</code>)</h2>
 <p>PlayGo lets a title start before all of its package is installed: the title asks which chunks of
 the package are present. On this <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> the whole title is always present, so every chunk is
@@ -1923,6 +1938,12 @@ its <code>longjmp</code> (<code>libc.elf+0x2fd00</code>) puts it back with <code
 thread's mask, a new thread starting with its creator's, and does not apply it to the host thread.</p>
 <p><strong>What stops by name:</strong> an unknown <code>how</code>. Its error is reported through the guest's <code>errno</code>, which
 the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> does not model.</p>
+<p><strong><code>sigprocmask</code> and <code>sigfillset</code></strong> (<code>libc.elf</code> imports both from libkernel). <code>sigprocmask</code> is the
+same call under its POSIX name (FreeBSD's libc <code>sigprocmask</code> is the system call itself); its
+thirteen calls include <code>+0x53f84</code>, which blocks everything with <code>SIG_SETMASK</code> and a set from
+<code>sigfillset</code> and keeps the old mask. <code>sigfillset(set)</code> puts every signal in the set, each of the four
+words all ones (FreeBSD libc's <code>sigsetops.c</code>, POSIX), and answers 0. A missing set stops by name:
+POSIX defines no error for it.</p>
 <h2 id="thread-priorities-scepthreadgetprio-scepthreadsetprio-issue-34">Thread priorities (<code>scePthreadGetprio</code>, <code>scePthreadSetprio</code>, issue #34)</h2>
 <p><code>scePthreadGetprio(thread, int32_t *priority)</code> and <code>scePthreadSetprio(thread, priority)</code>, as the
 OpenOrbis homebrew SDK's <code>libkernel.h</code> declares them.</p>
@@ -2344,6 +2365,38 @@ flags 0 (<code>O_RDONLY</code>) and mode 0555.</p>
   descriptor (the title only passes it back). One the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> did not hand out is <code>EBADF</code>.
 - <strong>Seeking.</strong> A whence other than 0, 1 or 2 (<code>SEEK_SET</code>, <code>SEEK_CUR</code>, <code>SEEK_END</code>, the same on
   FreeBSD and Linux), and a seek before the start, are <code>EINVAL</code>.</p>
+<h3 id="writing">Writing</h3>
+<p><code>sceKernelWrite(fd, buf, n)</code> (imported by <code>eboot</code> and <code>libSceFios2</code>) and
+<code>sceKernelPwrite(fd, buf, n, offset)</code> (imported by <code>libSceFios2</code>) are FreeBSD's <code>write(2)</code> and
+<code>pwrite(2)</code> under their SCE names, with the shapes from the same <code>libkernel.h</code>. Each returns the
+number of bytes written, or <code>0x80020000</code> plus the error number. Writes reach files under the
+writable <code>/data</code> mount, which <code>sceKernelOpen</code> opens with the requested access mode.</p>
+<p><strong>What the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> does:</strong>
+- <strong>Order of checks.</strong> FreeBSD's order (stable/9 <code>sys_generic.c</code>, <code>sys_write</code>, <code>sys_pwrite</code> and
+  <code>kern_pwritev</code>): the size, then the descriptor, then the offset.
+- <strong><code>EBADF</code>.</strong> <code>write(2)</code> answers it for a descriptor that is not open for writing: one the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>
+  did not hand out (0 to 2 included, as for reading), and one opened read-only, which is every
+  <code>/app0</code> file and a <code>/data</code> file opened with <code>O_RDONLY</code>.
+- <strong><code>EINVAL</code>.</strong> A negative <code>pwrite</code> offset, as for <code>pread</code> (<code>pwrite(2)</code>: "The offset value was
+  negative").
+- <strong>The position.</strong> A <code>pwrite</code> leaves the file position where it was. A write past the end leaves a
+  hole that reads as zero bytes, as the host file system does. A zero count writes nothing and
+  answers 0.
+- <strong>The count.</strong> The answer is the host's count, which can be short. Linux writes at most
+  <code>0x7ffff000</code> bytes per call, so a request between that and <code>INT_MAX</code> comes back short where
+  FreeBSD would write it all.</p>
+<p><strong>What stops by name:</strong>
+- <strong>More than <code>INT_MAX</code> bytes.</strong> FreeBSD answers <code>EINVAL</code> above <code>IOSIZE_MAX</code>. That is <code>INT_MAX</code>
+  while the <code>debug.iosize_max_clamp</code> sysctl is set (its default in FreeBSD 9; current FreeBSD
+  defaults to 0), and <code>SSIZE_MAX</code> otherwise. The FreeBSD 9.0 <code>write(2)</code> page says <code>INT_MAX</code>. The
+  <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr>'s setting is not known.
+- <strong>No buffer for a non-zero count,</strong> as for reading.
+- <strong>A <code>pwrite</code> on a descriptor opened with <code>O_APPEND</code>.</strong> POSIX writes at the offset. FreeBSD's
+  <code>write(2)</code> BUGS section says its <code>pwrite</code> appends instead, and Linux does the same. The <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr>'s
+  answer is not established.
+- <strong>Any host write error</strong> (<code>ENOSPC</code>, <code>EIO</code>, <code>EFBIG</code> and the rest).</p>
+<p>What would settle the stops: guest call sites that pass these cases, or results observed on a
+console.</p>
 <h3 id="truncating-and-renaming">Truncating and renaming</h3>
 <p><code>sceKernelFtruncate(fd, length)</code> is FreeBSD's <code>ftruncate(2)</code> under its SCE name (shape from the
 OpenOrbis homebrew SDK's <code>libkernel.h</code>). The title reaches it after Play Offline, while it creates
@@ -2638,6 +2691,7 @@ metadata.</p>
 <li><a href="https://man.freebsd.org/cgi/man.cgi?query=usleep&amp;sektion=3">FreeBSD <code>usleep(3)</code></a> and <a href="https://pubs.opengroup.org/onlinepubs/7908799/xsh/usleep.html">SUSv2 <code>usleep</code></a></li>
 <li><a href="https://pubs.opengroup.org/onlinepubs/9799919799/functions/sleep.html">POSIX <code>sleep</code></a>, <a href="https://man.freebsd.org/cgi/man.cgi?query=sleep&amp;sektion=3">FreeBSD <code>sleep(3)</code></a> and FreeBSD libc <a href="https://cgit.freebsd.org/src/tree/lib/libc/gen/sleep.c"><code>sleep.c</code></a> (the <code>INT_MAX</code> split and the rounded-up remainder)</li>
 <li><a href="https://pubs.opengroup.org/onlinepubs/9799919799/functions/nanosleep.html">POSIX <code>nanosleep</code></a>, <a href="https://man.freebsd.org/cgi/man.cgi?query=nanosleep&amp;sektion=2">FreeBSD <code>nanosleep(2)</code></a> and FreeBSD <a href="https://cgit.freebsd.org/src/tree/sys/kern/kern_time.c"><code>kern_time.c</code></a> (<code>kern_nanosleep</code> in stable/9, <code>kern_clock_nanosleep</code> in main: the <code>EINVAL</code> check, the zero or negative time, when <code>rmtp</code> is written)</li>
+<li><a href="https://man.freebsd.org/cgi/man.cgi?query=write&amp;sektion=2&amp;manpath=FreeBSD+9.0-RELEASE">FreeBSD 9.0 <code>write(2)</code></a> and <a href="https://man.freebsd.org/cgi/man.cgi?query=write&amp;sektion=2">current <code>write(2)</code></a> (<code>write</code> and <code>pwrite</code>: <code>EBADF</code>, <code>EINVAL</code> for the size and a negative offset, the <code>O_APPEND</code> note in BUGS), and FreeBSD stable/9 <a href="https://cgit.freebsd.org/src/tree/sys/kern/sys_generic.c?h=stable/9"><code>sys_generic.c</code></a> (<code>sys_write</code>, <code>sys_pwrite</code>, <code>kern_pwritev</code>: the order of the checks)</li>
 <li><a href="https://pubs.opengroup.org/onlinepubs/9799919799/functions/pthread_rwlock_rdlock.html">POSIX <code>pthread_rwlock_rdlock</code></a>, <a href="https://pubs.opengroup.org/onlinepubs/9799919799/functions/pthread_rwlock_trywrlock.html"><code>pthread_rwlock_wrlock</code></a>, <a href="https://pubs.opengroup.org/onlinepubs/9799919799/functions/pthread_rwlock_unlock.html"><code>pthread_rwlock_unlock</code></a>, <a href="https://pubs.opengroup.org/onlinepubs/9799919799/functions/pthread_rwlock_destroy.html"><code>pthread_rwlock_destroy</code>/<code>init</code></a>; FreeBSD libthr <a href="https://github.com/freebsd/freebsd-src/blob/main/lib/libthr/thread/thr_rwlock.c"><code>thr_rwlock.c</code></a> and <a href="https://github.com/freebsd/freebsd-src/blob/main/lib/libthr/thread/thr_private.h"><code>thr_private.h</code></a> (<code>THR_RWLOCK_DESTROYED</code>); FreeBSD kernel <a href="https://github.com/freebsd/freebsd-src/blob/main/sys/kern/kern_umtx.c"><code>kern_umtx.c</code></a> (<code>do_rw_rdlock</code>, <code>do_rw_wrlock</code>, <code>do_rw_unlock</code>)</li>
 <li><a href="https://refspecs.linuxfoundation.org/LSB_5.0.0/LSB-Core-generic/LSB-Core-generic/libc---stack-chk-fail-1.html">LSB Core <code>__stack_chk_fail</code></a> and <a href="https://github.com/freebsd/freebsd-src/blob/main/lib/libc/secure/libc_stack_protector.c">FreeBSD libc <code>libc_stack_protector.c</code></a> (<code>__stack_chk_fail</code>, <code>__fail</code>)</li>
 <li><a href="https://pubs.opengroup.org/onlinepubs/9799919799/functions/pthread_cond_wait.html">POSIX <code>pthread_cond_wait</code></a>, <a href="https://pubs.opengroup.org/onlinepubs/9799919799/functions/pthread_cond_signal.html"><code>pthread_cond_signal</code></a>, <a href="https://pubs.opengroup.org/onlinepubs/9799919799/functions/pthread_cond_destroy.html"><code>pthread_cond_destroy</code>/<code>pthread_cond_init</code></a>; FreeBSD libthr <a href="https://github.com/freebsd/freebsd-src/blob/main/lib/libthr/thread/thr_cond.c"><code>thr_cond.c</code></a>, <a href="https://github.com/freebsd/freebsd-src/blob/main/lib/libthr/thread/thr_mutex.c"><code>thr_mutex.c</code></a> (<code>_mutex_owned</code>, <code>_mutex_cv_unlock</code>, <code>mutex_unlock_common</code>, <code>mutex_self_lock</code>, <code>mutex_self_trylock</code>) and <a href="https://github.com/freebsd/freebsd-src/blob/main/lib/libthr/thread/thr_private.h"><code>thr_private.h</code></a> (<code>THR_COND_DESTROYED</code>); for <code>pthread_cond_timedwait</code>, <a href="https://pubs.opengroup.org/onlinepubs/9799919799/functions/pthread_cond_timedwait.html">POSIX <code>pthread_cond_timedwait</code></a> (the <code>CLOCK_REALTIME</code> default, <code>ETIMEDOUT</code>, <code>EINVAL</code>), <a href="https://pubs.opengroup.org/onlinepubs/9799919799/functions/pthread_condattr_getclock.html"><code>pthread_condattr_getclock</code></a>, libthr <code>thr_cond.c</code> (<code>_pthread_cond_timedwait</code> in stable/9 and main, <code>cond_init</code>) and <a href="https://github.com/freebsd/freebsd-src/blob/main/lib/libthr/thread/thr_init.c"><code>thr_init.c</code></a> (<code>_pthread_condattr_default</code>)</li>
@@ -2675,6 +2729,6 @@ metadata.</p>
 window.WK = {base: "..", searchIndex: "../search/search_index.json",
              drawerQuery: window.matchMedia('(max-width: 900px)')};
 </script>
-<script src="../javascripts/wiki.js?v=24a562ed8b" defer></script><script src="../javascripts/hunters.js?v=28a0e867eb" defer></script><script src="../search/main.js" defer></script>
+<script src="../javascripts/wiki.js?v=c570fe17af" defer></script><script src="../javascripts/hunters.js?v=28a0e867eb" defer></script><script src="../search/main.js" defer></script>
 </body>
 </html>

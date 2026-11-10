@@ -17,7 +17,7 @@
     d.setAttribute('data-theme', t); d.classList.add('wk-js'); }());
   </script>
   
-  <link rel="stylesheet" href="../../stylesheets/wiki.css?v=527d16639d"><link rel="stylesheet" href="../../stylesheets/hunters.css?v=e4f3c59dfb">
+  <link rel="stylesheet" href="../../stylesheets/wiki.css?v=d9646b693b"><link rel="stylesheet" href="../../stylesheets/hunters.css?v=e4f3c59dfb">
   
   
 </head>
@@ -380,7 +380,7 @@
       <span class="wk-stat-track" role="img" aria-label="0.033 percent of target code bytes verified">
         <span class="wk-stat-fill" style="width:0.033%"></span>
       </span>
-      <span class="wk-progress-foot">0.033% of code bytes verified · 161 replaced</span>
+      <span class="wk-progress-foot">0.033% of code bytes verified · 169 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -418,7 +418,7 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 6, 2026 21:52:44 UTC">November 6, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 10, 2026 09:33:21 UTC">November 10, 2026</span></p>
       
       
       <h1 id="render">Render</h1>
@@ -487,6 +487,12 @@ arguments. The first of the engine's own packet writers are mapped, all by <a hr
 <li><strong>Present records.</strong> <code>render_present_record_consume</code> (<code>0x02ab5a70</code>) turns a pending present
   record into commands: it classifies the record, clamps its range, copies its payload and
   writes the final fields (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/286">#286</a>).</li>
+<li><strong>Building present records.</strong> <code>render_build_present_source_record</code> (<code>0x0256e1d0</code>) builds the
+  record for a present, by mode, keeping partial output, unsigned divisions and the packed
+  auxiliary requirements as the original does; <code>render_choose_record_constructor_selector</code>
+  (<code>0x02ab7a20</code>), <code>render_combine_record_parameters</code> (<code>0x02ab7ab0</code>) and
+  <code>render_reduce_record_parameter</code> (<code>0x02ab7e40</code>, a four-entry scale table, zero past its end)
+  pick and combine its constructor choices (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/473">#473</a>, from #268; <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr> on synthetic cases).</li>
 <li><strong>A record test.</strong> <code>render_record_auxiliary_predicate</code> (<code>0x02abb4f0</code>) answers yes or no for a
   record's selector: always yes for two selector values, a flag bit for the next two, no otherwise
   (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/293">#293</a>, from #266).</li>
@@ -515,6 +521,11 @@ arguments. The first of the engine's own packet writers are mapped, all by <a hr
     of a second auxiliary area <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/323">#323</a>, from #228;</li>
 <li><strong>fields:</strong> seven setters (<code>0x01486520</code>–<code>0x01486800</code>) replace one field each, keeping the
     rest of the word <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/324">#324</a>, from #236.</li>
+<li><strong>normalisation:</strong> <code>render_record_normalize_mode2</code>, <code>…mode3</code> and <code>…mode4</code> (<code>0x025710a0</code>,
+    <code>0x025711d0</code>, <code>0x02571340</code>) bring a record's input into one normalised form, copying the words
+    they do not interpret unchanged and keeping each helper's writes and failure codes in order, and
+    <code>render_record_translate_selector</code> (<code>0x02ab7310</code>) maps a record selector to one output word,
+    answering status 12 for a selector it does not support <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/249">#249</a> (<abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr> on synthetic cases).</li>
 </ul>
 <h3 id="setting-gpu-state-and-drawing">Setting GPU state and drawing</h3>
 <p>The GPU helper library keeps no state of its own: each setter writes its value straight into the
@@ -1034,6 +1045,34 @@ frames. #279, #286 and #287 were brought up to date with <code>main</code> from 
 <td data-label="Notes">full-QWORD locked read/writeback retry, XOR before each attempt; caller adds one. Real AMD64 write cycles retained; non-AMD64 bridge unresolved Synthetic edges pass; no recordings.</td>
 </tr>
 <tr>
+<td data-label="Address"><code>0x0256e1d0</code></td>
+<td style="text-align: right;" data-label="Size">6280</td>
+<td data-label="Name"><code>render_build_present_source_record</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Build a mode-specific presentation record, preserving partial output, unsigned division and packed auxiliary requirements. Constructor selectors are 32-bit values even in stack slots.</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x025710a0</code></td>
+<td style="text-align: right;" data-label="Size">301</td>
+<td data-label="Name"><code>render_record_normalize_mode2</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Normalize mode-2 input; preserve ordered 36-byte copy, supplied parameter bypass and helper error/status ordering.</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x025711d0</code></td>
+<td style="text-align: right;" data-label="Size">361</td>
+<td data-label="Name"><code>render_record_normalize_mode3</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Normalize mode 3 input through an ordered 48-byte copy; cache mapping across conditional parameter helpers and preserve statuses and padding.</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02571340</code></td>
+<td style="text-align: right;" data-label="Size">303</td>
+<td data-label="Name"><code>render_record_normalize_mode4</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Normalize mode-4 input; preserve ordered 40-byte copy, optional parameter path and status/reload ordering.</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x02571c60</code></td>
 <td style="text-align: right;" data-label="Size">47</td>
 <td data-label="Name"><code>render_clear_swap_chain_curve</code></td>
@@ -1087,7 +1126,7 @@ frames. #279, #286 and #287 were brought up to date with <code>main</code> from 
 <td style="text-align: right;" data-label="Size">1235</td>
 <td data-label="Name"><code>render_present_record_consume</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
-<td data-label="Notes">Track resource range or emit record commands; preserve cached tokens, index wrap and final state resets. Static reconstruction Synthetic GCC/Clang edges pass; no recordings.</td>
+<td data-label="Notes">Track a resource range or emit record commands; preserve cached tokens, index wrap and final state resets.</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x02ab6810</code></td>
@@ -1095,6 +1134,34 @@ frames. #279, #286 and #287 were brought up to date with <code>main</code> from 
 <td data-label="Name"><code>render_present_last_record_consume</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">Consume the final record range, or update its tracking bank when commands are not admitted.</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02ab7310</code></td>
+<td style="text-align: right;" data-label="Size">629</td>
+<td data-label="Name"><code>render_record_translate_selector</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Map supported selectors to one output DWORD; unsupported selectors return status 12 and zero the output.</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02ab7a20</code></td>
+<td style="text-align: right;" data-label="Size">66</td>
+<td data-label="Name"><code>render_choose_record_constructor_selector</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Choose a constructor selector from supported input values; only the low flag byte affects the extended case.</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02ab7ab0</code></td>
+<td style="text-align: right;" data-label="Size">124</td>
+<td data-label="Name"><code>render_combine_record_parameters</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Combine constructor choices, using only the low flag byte and bounding the four-entry original table before access.</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02ab7e40</code></td>
+<td style="text-align: right;" data-label="Size">22</td>
+<td data-label="Name"><code>render_reduce_record_parameter</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Return the original four-entry scale table value, or zero for an out-of-range unsigned index.</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x02ab9850</code></td>
@@ -1235,6 +1302,6 @@ the frame update was re-<abbr title="A replaced function that behaved exactly li
 window.WK = {base: "../..", searchIndex: "../../search/search_index.json",
              drawerQuery: window.matchMedia('(max-width: 900px)')};
 </script>
-<script src="../../javascripts/wiki.js?v=24a562ed8b" defer></script><script src="../../javascripts/hunters.js?v=28a0e867eb" defer></script><script src="../../search/main.js" defer></script>
+<script src="../../javascripts/wiki.js?v=c570fe17af" defer></script><script src="../../javascripts/hunters.js?v=28a0e867eb" defer></script><script src="../../search/main.js" defer></script>
 </body>
 </html>

@@ -17,7 +17,7 @@
     d.setAttribute('data-theme', t); d.classList.add('wk-js'); }());
   </script>
   
-  <link rel="stylesheet" href="../stylesheets/wiki.css?v=527d16639d"><link rel="stylesheet" href="../stylesheets/hunters.css?v=e4f3c59dfb">
+  <link rel="stylesheet" href="../stylesheets/wiki.css?v=d9646b693b"><link rel="stylesheet" href="../stylesheets/hunters.css?v=e4f3c59dfb">
   
   
 </head>
@@ -380,7 +380,7 @@
       <span class="wk-stat-track" role="img" aria-label="0.033 percent of target code bytes verified">
         <span class="wk-stat-fill" style="width:0.033%"></span>
       </span>
-      <span class="wk-progress-foot">0.033% of code bytes verified · 161 replaced</span>
+      <span class="wk-progress-foot">0.033% of code bytes verified · 169 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -414,7 +414,7 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 6, 2026 22:37:57 UTC">November 6, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 10, 2026 09:33:21 UTC">November 10, 2026</span></p>
       
       
       <h1 id="milestones">Milestones</h1>
@@ -422,38 +422,65 @@
 
 <h2 id="visual-history-frames-from-palebloods-renderer">Visual history: frames from Paleblood's renderer</h2>
 <p>These are the game's own frames, drawn on a PC by Paleblood's <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> and renderer from the
-maintainer's own copy, at full resolution as rendered (1920x1080), in the order they first
-appeared. Each passed the <a href="../MEDIA_POLICY/">media review</a> on its own. Nothing here comes from
-another project, and no extracted game assets appear on this page. <em>Bloodborne</em> and its logos and
-art are © Sony Interactive Entertainment / FromSoftware; they are shown as evidence of technical
-milestones. Times are when the pull request that made each frame possible merged (UTC).</p>
+maintainer's own copy, at full resolution as rendered (1920x1080), oldest first. Select a frame to
+see it at full size with its full caption (arrow keys move between frames, Esc closes). Each
+passed the <a href="../MEDIA_POLICY/">media review</a> on its own. Nothing here comes from another project,
+and no extracted game assets appear on this page. <em>Bloodborne</em> and its logos and art are © Sony
+Interactive Entertainment / FromSoftware; they are shown as evidence of technical milestones.
+Times are UTC: when the pull request that made each frame possible merged or, for local runs,
+when the frame was captured.</p>
 <p><strong>Before 6 November 2026: black.</strong> The game ran its frames and flipped them
 (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/310">#310</a>), and the display showed them
 (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/313">#313</a>), but nothing drew into them. From
 <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/369">#369</a> (6 November, 07:20) the renderer was
 wired into the running game, waiting for the game's drawing calls to reach it.</p>
-<figure>
-<p><img alt="A flat mid-grey 1920x1080 frame" src="../assets/media/milestones/2026-11-06-first-non-black-frame-grey-lut-pass.png" /></p>
-<figcaption>6 November, 18:18 (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/433">#433</a>): the first non-black frame. The game's compute pass clears its image to grey and its full-screen colour pass carries it to the screen; grey is the correct output of that pass. It proved the whole path: compute, the PS4's tiled image layouts, descriptors read from game memory, texture sampling, the draw and the flip.</figcaption>
+<p><strong>After the title: local runs.</strong> Frames marked <em>local run</em> come from the maintainer's own runs of
+<code>main</code> with scripted input and with pull requests that were still in review applied; each caption
+names them. They are not saved boot records.</p>
+<div class="wk-frames">
+<figure class="wk-frame">
+<p><a class="wk-frame-link" href="../assets/media/milestones/2026-11-06-first-non-black-frame-grey-lut-pass.png"><img alt="A flat mid-grey 1920x1080 frame" decoding="async" height="1080" loading="lazy" src="../assets/media/milestones/2026-11-06-first-non-black-frame-grey-lut-pass.png" width="1920" /></a></p>
+<figcaption><span class="wk-frame-when">6 Nov, 18:18</span> <span class="wk-frame-what">First non-black frame</span><span class="wk-frame-detail">6 November, 18:18 (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/433">#433</a>): the first non-black frame. The game's compute pass clears its image to grey and its full-screen colour pass carries it to the screen; grey is the correct output of that pass. It proved the whole path: compute, the PS4's tiled image layouts, descriptors read from game memory, texture sampling, the draw and the flip.</span></figcaption>
 </figure>
-<figure>
-<p><img alt="The words &quot;Sony Computer Entertainment presents&quot; in grey on a black screen" src="../assets/media/milestones/2026-11-06-first-logo-frame-sce-presents.png" /></p>
-<figcaption>6 November, 20:26 (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/441">#441</a>): the first logo. The game's own logo pass, with its indexed draws, vertex colours and a BC7 texture, drawn through the renderer.</figcaption>
+<figure class="wk-frame">
+<p><a class="wk-frame-link" href="../assets/media/milestones/2026-11-06-first-logo-frame-sce-presents.png"><img alt="The words &quot;Sony Computer Entertainment presents&quot; in grey on a black screen" decoding="async" height="1080" loading="lazy" src="../assets/media/milestones/2026-11-06-first-logo-frame-sce-presents.png" width="1920" /></a></p>
+<figcaption><span class="wk-frame-when">6 Nov, 20:26</span> <span class="wk-frame-what">First logo</span><span class="wk-frame-detail">6 November, 20:26 (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/441">#441</a>): the first logo. The game's own logo pass, with its indexed draws, vertex colours and a BC7 texture, drawn through the renderer.</span></figcaption>
 </figure>
-<figure>
-<p><img alt="The JAPAN Studio logo on a black screen" src="../assets/media/milestones/2026-11-06-logo-japan-studio.png" /></p>
-<figcaption>6 November, 20:46 (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/442">#442</a>): once the renderer ran about 22 times faster, the boot reached the later logos. The JAPAN Studio card matches a reference capture pixel for pixel in the maintainer's local runs.</figcaption>
+<figure class="wk-frame">
+<p><a class="wk-frame-link" href="../assets/media/milestones/2026-11-06-logo-japan-studio.png"><img alt="The JAPAN Studio logo on a black screen" decoding="async" height="1080" loading="lazy" src="../assets/media/milestones/2026-11-06-logo-japan-studio.png" width="1920" /></a></p>
+<figcaption><span class="wk-frame-when">6 Nov, 20:46</span> <span class="wk-frame-what">JAPAN Studio card</span><span class="wk-frame-detail">6 November, 20:46 (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/442">#442</a>): once the renderer ran about 22 times faster, the boot reached the later logos. The JAPAN Studio card matches a reference capture pixel for pixel in the maintainer's local runs.</span></figcaption>
 </figure>
-<figure>
-<p><img alt="The FROM SOFTWARE logo on a black screen" src="../assets/media/milestones/2026-11-06-logo-from-software.png" /></p>
-<figcaption>The FROM SOFTWARE card, from the same runs, also identical to the reference.</figcaption>
+<figure class="wk-frame">
+<p><a class="wk-frame-link" href="../assets/media/milestones/2026-11-06-logo-from-software.png"><img alt="The FROM SOFTWARE logo on a black screen" decoding="async" height="1080" loading="lazy" src="../assets/media/milestones/2026-11-06-logo-from-software.png" width="1920" /></a></p>
+<figcaption><span class="wk-frame-when">6 Nov, 20:46</span> <span class="wk-frame-what">FROM SOFTWARE card</span><span class="wk-frame-detail">The FROM SOFTWARE card, from the same runs (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/442">#442</a>), also identical to the reference.</span></figcaption>
 </figure>
-<figure>
-<p><img alt="Bloodborne's title screen: a hunter seen from behind in a dark Yharnam street, the Bloodborne logo, and the Play Online and Play Offline menu" src="../assets/media/milestones/2026-11-06-title-screen.png" /></p>
-<figcaption>The title screen, from the same runs (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/442">#442</a>). It differs from the reference only in the animated menu highlight (0.7% of pixels<!-- number:ok -->).</figcaption>
+<figure class="wk-frame">
+<p><a class="wk-frame-link" href="../assets/media/milestones/2026-11-06-title-screen.png"><img alt="Bloodborne's title screen: a hunter seen from behind in a dark Yharnam street, the Bloodborne logo, and the Play Online and Play Offline menu" decoding="async" height="1080" loading="lazy" src="../assets/media/milestones/2026-11-06-title-screen.png" width="1920" /></a></p>
+<figcaption><span class="wk-frame-when">6 Nov, 20:46</span> <span class="wk-frame-what">Title screen</span><span class="wk-frame-detail">The title screen, from the same runs (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/442">#442</a>). It differs from the reference only in the animated menu highlight (0.7% of pixels<!-- number:ok -->).</span></figcaption>
 </figure>
-<p>New frames are added here as later milestones are reached: the menus after the title, character
-creation, and the first 3D scene.</p>
+<figure class="wk-frame">
+<p><a class="wk-frame-link" href="../assets/media/milestones/2026-11-06-title-play-offline-selected.png"><img alt="Bloodborne's title screen with &quot;Play Offline&quot; highlighted in the menu" decoding="async" height="1080" loading="lazy" src="../assets/media/milestones/2026-11-06-title-play-offline-selected.png" width="1920" /></a></p>
+<figcaption><span class="wk-frame-when">6 Nov, ~22:05</span> <span class="wk-frame-what">Play Offline selected (local run)</span><span class="wk-frame-detail">6 November, about 22:05 (local run): "Play Offline" selected by scripted controller input, which presses buttons on a timetable so an unattended boot can get past the title (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/447">#447</a>, merged 22:17).</span></figcaption>
+</figure>
+<figure class="wk-frame">
+<p><a class="wk-frame-link" href="../assets/media/milestones/2026-11-06-creating-save-data.png"><img alt="The title screen with the menu gone and &quot;Creating save data...&quot; in the top right corner" decoding="async" height="1080" loading="lazy" src="../assets/media/milestones/2026-11-06-creating-save-data.png" width="1920" /></a></p>
+<figcaption><span class="wk-frame-when">6 Nov, ~22:05</span> <span class="wk-frame-what">Creating save data (local run)</span><span class="wk-frame-detail">Same run: after "Play Offline" the game creates its save data, which Paleblood keeps in a host folder (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/402">#402</a>). The file writes in this run came from <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/444">#444</a> (sceKernelWrite and sceKernelPwrite, by <a href="https://github.com/EzequielRindello">@EzequielRindello</a>), then in review and applied locally; it merged on 10 November at 08:11.</span></figcaption>
+</figure>
+<figure class="wk-frame">
+<p><a class="wk-frame-link" href="../assets/media/milestones/2026-11-06-main-menu-new-game.png"><img alt="The title screen's main menu with &quot;New Game&quot; highlighted, &quot;System&quot; and &quot;Log In&quot; below, and &quot;App ver. 9&quot; in the corner" decoding="async" height="1080" loading="lazy" src="../assets/media/milestones/2026-11-06-main-menu-new-game.png" width="1920" /></a></p>
+<figcaption><span class="wk-frame-when">6 Nov, ~22:50</span> <span class="wk-frame-what">Main menu (local run)</span><span class="wk-frame-detail">6 November, about 22:50 (local run): the main menu (New Game, System, Log In). The save's next calls, sceKernelFtruncate and sceKernelRename, are answered by <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/449">#449</a> (merged 22:39); the menu's draws needed 8- and 16-bit buffer formats, applied from the work that merged on 10 November as <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/457">#457</a>, with <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/444">#444</a> again applied locally.</span></figcaption>
+</figure>
+<figure class="wk-frame">
+<p><a class="wk-frame-link" href="../assets/media/milestones/2026-11-10-brightness-screen.png"><img alt="The Brightness settings screen: a man's portrait on the left, a faint beast's portrait on the right, and a brightness slider set to 5" decoding="async" height="1080" loading="lazy" src="../assets/media/milestones/2026-11-10-brightness-screen.png" width="1920" /></a></p>
+<figcaption><span class="wk-frame-when">10 Nov, ~07:30</span> <span class="wk-frame-what">Brightness screen (local run)</span><span class="wk-frame-detail">10 November, about 07:30 (local run): after New Game, the first-run Brightness screen. The run used <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/457">#457</a> (8- and 16-bit format buffer loads, merged 07:06) with <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/470">#470</a> (compute queues' buffers, in review), <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/471">#471</a> (depth and stencil tests that read the buffer, merged later at 07:59) and <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/444">#444</a> (which merged at 08:11) applied.</span></figcaption>
+</figure>
+<figure class="wk-frame">
+<p><a class="wk-frame-link" href="../assets/media/milestones/2026-11-10-controls-screen.png"><img alt="The Controls settings screen listing camera axes, camera sensitivity 5, auto target switch off, camera auto-adjust on and controller vibration 10" decoding="async" height="1080" loading="lazy" src="../assets/media/milestones/2026-11-10-controls-screen.png" width="1920" /></a></p>
+<figcaption><span class="wk-frame-when">10 Nov, ~07:52</span> <span class="wk-frame-what">Controls screen (local run)</span><span class="wk-frame-detail">10 November, about 07:52 (local run): the next screen, Controls, on <code>main</code> after the 10 November runtime batch (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/458">#458</a> to <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/469">#469</a>), again with <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/470">#470</a> (in review), <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/471">#471</a> and <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/444">#444</a> applied (both merged soon after, 07:59 and 08:11).</span></figcaption>
+</figure>
+</div>
+<p>New frames are added here as later milestones are reached: character creation and the first 3D
+scene.</p>
 <h2 id="the-boot-journey">The boot journey</h2>
 <p>Each point is one recorded boot of merged <code>main</code>, and its height is the furthest milestone that
 boot reached. A boot is recorded with <code>tools/boot.py</code> after <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> changes merge. Merging code
@@ -538,8 +565,10 @@ does not move a point by itself; only a new genuine boot does.</p>
 <p>Reaching <em>first flip</em> means the game finished a frame and asked the screen to show it. Paleblood
 can show the frames, in a window or as captured images (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/313">#313</a>), and since 6 November 2026 its
 own renderer draws them: in the maintainer's local runs with the display on, the boot shows the
-studio logos and reaches the title screen (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/441">#441</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/442">#442</a>). The saved boot records above run
-with the display off, so they do not show this. The renderer's phases are on the
+studio logos and reaches the title screen (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/441">#441</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/442">#442</a>), and with scripted input
+(<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/447">#447</a>) and pull requests that were then still in review it gets past the title to the main menu and the
+first settings screens (above). The saved boot records above run with the display off and no
+input, so they do not show this. The renderer's phases are on the
 <a href="../runtime/#the-renderer">Runtime</a> page.</p>
       
       </div>
@@ -566,6 +595,6 @@ with the display off, so they do not show this. The renderer's phases are on the
 window.WK = {base: "..", searchIndex: "../search/search_index.json",
              drawerQuery: window.matchMedia('(max-width: 900px)')};
 </script>
-<script src="../javascripts/wiki.js?v=24a562ed8b" defer></script><script src="../javascripts/hunters.js?v=28a0e867eb" defer></script><script src="../search/main.js" defer></script>
+<script src="../javascripts/wiki.js?v=c570fe17af" defer></script><script src="../javascripts/hunters.js?v=28a0e867eb" defer></script><script src="../search/main.js" defer></script>
 </body>
 </html>

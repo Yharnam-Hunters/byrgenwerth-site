@@ -300,4 +300,82 @@ function arrive(el) {
   items.forEach(function (el) { io.observe(el); });
 }());
 
+/* ── Milestones: a frame opens at full size, with its caption ────────────────── */
+(function () {
+  var grid = document.querySelector('.wk-frames');
+  if (!grid) return;
+  var cells = Array.prototype.slice.call(grid.querySelectorAll('.wk-frame'));
+  if (!cells.length) return;
+  var viewer = document.createElement('div');
+  viewer.className = 'wk-frame-viewer';
+  viewer.setAttribute('role', 'dialog');
+  viewer.setAttribute('aria-modal', 'true');
+  viewer.setAttribute('aria-label', 'Frame at full size');
+  viewer.innerHTML = '<button type="button" class="wk-frame-btn wk-frame-close" aria-label="Close">×</button>' +
+    '<button type="button" class="wk-frame-btn wk-frame-prev" aria-label="Previous frame">‹</button>' +
+    '<img alt=""><div class="wk-frame-caption" aria-live="polite"></div>' +
+    '<button type="button" class="wk-frame-btn wk-frame-next" aria-label="Next frame">›</button>';
+  viewer.hidden = true;
+  document.body.appendChild(viewer);
+  var img = viewer.querySelector('img');
+  var caption = viewer.querySelector('.wk-frame-caption');
+  var closeBtn = viewer.querySelector('.wk-frame-close');
+  var current = -1, opener = null;
+  var outside = [document.getElementById('wk-header'), document.querySelector('.wk-layout')];
+  function setInert(on) { outside.forEach(function (el) { if (el) el.inert = on; }); }
+  function show(i) {
+    current = (i + cells.length) % cells.length;
+    var cell = cells[current];
+    var link = cell.querySelector('.wk-frame-link');
+    var thumb = cell.querySelector('img');
+    img.src = link.getAttribute('href');
+    img.alt = thumb ? thumb.alt : '';
+    var when = cell.querySelector('.wk-frame-when');
+    var detail = cell.querySelector('.wk-frame-detail');
+    caption.innerHTML = '';
+    var count = document.createElement('span');
+    count.className = 'wk-frame-count';
+    count.textContent = (current + 1) + ' / ' + cells.length + (when ? ' · ' + when.textContent : '');
+    caption.appendChild(count);
+    if (detail) Array.prototype.forEach.call(detail.childNodes, function (n) { caption.appendChild(n.cloneNode(true)); });
+  }
+  function open(i, from) {
+    opener = from;
+    show(i);
+    viewer.hidden = false;
+    setInert(true);
+    requestAnimationFrame(function () { viewer.classList.add('is-open'); closeBtn.focus(); });
+  }
+  function close() {
+    viewer.classList.remove('is-open');
+    viewer.hidden = true;
+    img.removeAttribute('src');
+    setInert(false);
+    if (opener) opener.focus();
+  }
+  grid.addEventListener('click', function (e) {
+    var link = e.target.closest('a.wk-frame-link');
+    if (!link || e.ctrlKey || e.metaKey || e.shiftKey || e.button !== 0) return;
+    e.preventDefault();
+    open(cells.indexOf(link.closest('.wk-frame')), link);
+  });
+  viewer.addEventListener('click', function (e) {
+    if (e.target.closest('.wk-frame-prev')) show(current - 1);
+    else if (e.target.closest('.wk-frame-next')) show(current + 1);
+    else if (e.target === viewer || e.target.closest('.wk-frame-close')) close();
+  });
+  document.addEventListener('keydown', function (e) {
+    if (viewer.hidden) return;
+    if (e.key === 'Escape') { e.preventDefault(); close(); }
+    else if (e.key === 'ArrowLeft') show(current - 1);
+    else if (e.key === 'ArrowRight') show(current + 1);
+    else if (e.key === 'Tab') {
+      var f = Array.prototype.slice.call(viewer.querySelectorAll('button, a[href]'));
+      var first = f[0], last = f[f.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
+  });
+}());
+
 }());

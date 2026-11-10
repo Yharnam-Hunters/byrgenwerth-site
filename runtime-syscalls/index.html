@@ -17,7 +17,7 @@
     d.setAttribute('data-theme', t); d.classList.add('wk-js'); }());
   </script>
   
-  <link rel="stylesheet" href="../stylesheets/wiki.css?v=527d16639d"><link rel="stylesheet" href="../stylesheets/hunters.css?v=e4f3c59dfb">
+  <link rel="stylesheet" href="../stylesheets/wiki.css?v=d9646b693b"><link rel="stylesheet" href="../stylesheets/hunters.css?v=e4f3c59dfb">
   
   
 </head>
@@ -380,7 +380,7 @@
       <span class="wk-stat-track" role="img" aria-label="0.033 percent of target code bytes verified">
         <span class="wk-stat-fill" style="width:0.033%"></span>
       </span>
-      <span class="wk-progress-foot">0.033% of code bytes verified · 161 replaced</span>
+      <span class="wk-progress-foot">0.033% of code bytes verified · 169 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -458,36 +458,8 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 6, 2026 22:23:57 UTC">November 6, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 10, 2026 09:33:21 UTC">November 10, 2026</span></p>
       
-      
-      
-      <aside class="wk-freshness" role="note">
-        <p><b>Not yet updated for 13 merged changes.</b>
-        This page was last checked against Paleblood
-        <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/afe552f56e8230f6a3b1618cd58c1db47a2b241f"><code>afe552f</code></a>;
-        these pull requests changed what it describes since:</p>
-        <ul>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/468">#468</a> runtime: gmtime, gmtime_s, printf, vprintf and vsnprintf for libSceFios2</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/467">#467</a> runtime: sceKernelMunmap, sceKernelMprotect and sceKernelGetDirectMemoryType</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/466">#466</a> runtime: RTC Unix time, time zones, RFC 2822 and the network tick; no system events</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/465">#465</a> runtime: sceNetInetNtop for IPv4</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/464">#464</a> runtime: timed mutex and rwlock locks</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/462">#462</a> runtime: the pad's motion settings, and the mouse, not connected</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/460">#460</a> runtime: join, detach, explicit scheduling and once for guest threads</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/461">#461</a> runtime: PSN authorization and the IP address query answer offline</li>
-          
-          <li>and 5 more</li>
-        </ul>
-      </aside>
       
       <h1 id="runtime-system-call-notes">Runtime system-call notes</h1>
 <p class="wk-lede">What each runtime system call is for, what it must do, what the game was seen to do with it, and how Paleblood's runtime answers.</p>
@@ -550,6 +522,11 @@
 <td data-label="Call"><code>time</code> (<code>libSceLibcInternal</code>)</td>
 <td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
 <td data-label="What the runtime does">Seconds since the Epoch, from the same clock as <code>clock_gettime(13)</code>, also stored through a non-null pointer, as FreeBSD's <code>time.c</code> does (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/296">#296</a>, by <a href="https://github.com/EzequielRindello">@EzequielRindello</a>). The game's file module is its only caller.</td>
+</tr>
+<tr>
+<td data-label="Call"><code>gmtime</code>, <code>gmtime_s</code>, <code>printf</code>, <code>vprintf</code>, <code>vsnprintf</code> (<code>libSceLibcInternal</code>)</td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">For the bundled file library: UTC calendar time in ISO C's nine-field <code>struct tm</code> (the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr>'s is 36 bytes, measured from the library's own copy), and formatted output through the host's formatter after each format is checked; wide-character conversions stop by name (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/468">#468</a>). <!-- number:ok --></td>
 </tr>
 </tbody>
 </table></div>
@@ -889,6 +866,11 @@ interrupted sleep resumes with the time left.</p>
 <td data-label="What the runtime does">Ends the process by name; the stop is the whole contract.</td>
 </tr>
 <tr>
+<td data-label="Call"><code>_exit</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">Ends the process at once with the guest's status, as POSIX defines it (no <code>atexit</code> handlers, nothing flushed); under the boot <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr> the run is recorded as "exited with code N" first (by <a href="https://github.com/EzequielRindello">@EzequielRindello</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/454">#454</a>).</td>
+</tr>
+<tr>
 <td data-label="Call"><code>__stack_chk_guard</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--unresolved">unresolved</span></td>
 <td data-label="What the runtime does">Separate data import; currently gets a zeroed page.</td>
@@ -954,9 +936,9 @@ past the requested region, and coverage classification. These tests do not estab
 <td data-label="What the runtime does">Byte reversal between host and network order.</td>
 </tr>
 <tr>
-<td data-label="Call"><code>sceNetInetPton</code></td>
+<td data-label="Call"><code>sceNetInetPton</code>, <code>sceNetInetNtop</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
-<td data-label="What the runtime does">Parses dotted-decimal IPv4 for AF_INET only; other cases stop.</td>
+<td data-label="What the runtime does">IPv4 text to binary and back (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/465">#465</a>), for AF_INET only; other cases, and a buffer too small for the text, stop.</td>
 </tr>
 <tr>
 <td data-label="Call"><code>sceNetCtlGetState</code></td>
@@ -985,8 +967,8 @@ past the requested region, and coverage classification. These tests do not estab
 </tr>
 <tr>
 <td data-label="Call"><code>sceNetCtlGetInfo</code></td>
-<td data-label="Status"><span class="wk-badge wk-badge--unresolved">unresolved</span></td>
-<td data-label="What the runtime does">Stops by name; the layout and offline value are unknown.</td>
+<td data-label="Status">implemented (IP address only)</td>
+<td data-label="What the runtime does">Asked for the IP address (code 14), it answers "not connected" and writes nothing (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/461">#461</a>); any other code stops by name.</td>
 </tr>
 <tr>
 <td data-label="Call"><code>sceNetInit</code>, <code>sceNetTerm</code>, <code>sceNetPoolCreate</code></td>
@@ -1002,6 +984,11 @@ past the requested region, and coverage classification. These tests do not estab
 <td data-label="Call"><code>sceHttpWaitRequest</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
 <td data-label="What the runtime does">The game's network worker polls for finished requests; offline none was ever sent, so it answers "no events" (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/303">#303</a>).</td>
+</tr>
+<tr>
+<td data-label="Call"><code>sceHttpTerm</code>, <code>sceHttpDeleteTemplate</code>, <code>sceHttpDestroyEpoll</code>, <code>sceHttpAbortWaitRequest</code>, <code>sceSslTerm</code>, <code>sceNetPoolDestroy</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">Shut the offline network, SSL and HTTP set-up down again: each frees its ID; an ID that is not live answers "invalid id" (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/451">#451</a>).</td>
 </tr>
 <tr>
 <td data-label="Call"><code>sceHttpsEnableOption</code>, <code>sceHttpsDisableOption</code></td>
@@ -1055,9 +1042,11 @@ and only on success; on any other answer it assumes NAT type 1 itself. Offline t
 "not connected" (<code>0x80412108</code>) and writes nothing, so the game's own fallback applies (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/380">#380</a>).
 The structure's layout and the error value come from public sources of other <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> runtimes, as
 facts; a size other than 16 stops by name.</p>
-<p><strong><code>sceNetCtlGetInfo</code></strong> stays unresolved and is registered only to produce a useful fatal
-diagnostic: the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> structure layout, the meaning of module 14 (the only one the game asks for),
-and the offline answer are unknown. Its registry presence does not mean it is implemented.</p>
+<p><strong><code>sceNetCtlGetInfo</code></strong> is answered for the one code the game asks for, 14, which public <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr>
+headers name the IP address: a disconnected console has none, so the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> answers "not
+connected" (<code>0x80412108</code>, the value <code>sceNetCtlGetNatInfo</code> uses) and writes nothing (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/461">#461</a>). Any
+other code still stops by name: a disconnected console may still describe its device or link,
+and that answer is not established.</p>
 <details class="reference">
 <summary>Network: sources, PRs and tests</summary>
 <p><strong>Byte order.</strong> The declaration reference (see References) is PSP2SDK's public <code>net.h</code> API
@@ -1263,6 +1252,26 @@ signalling libraries).</p>
 <td data-label="What the runtime does">Keeps each thread's blocked-signal set; no signal reaches the game yet.</td>
 </tr>
 <tr>
+<td data-label="Call"><code>sigprocmask</code>, <code>sigfillset</code>, <code>scePthreadRename</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">The same per-thread signal mask under the libkernel name, a full signal set, and a thread name of up to 31 bytes (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/469">#469</a>). <!-- number:ok --></td>
+</tr>
+<tr>
+<td data-label="Call"><code>scePthreadJoin</code>, <code>scePthreadDetach</code>, <code>scePthreadOnce</code>, <code>scePthreadAttrSetinheritsched</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">Wait for a thread to end and collect it, or let it be collected when it ends; run a set-up routine exactly once; start a thread at its creator's priority or the attribute's. FreeBSD's error order; joining the main thread stops by name (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/460">#460</a>).</td>
+</tr>
+<tr>
+<td data-label="Call"><code>pthread_create</code>, <code>pthread_join</code>, <code>pthread_exit</code>, <code>pthread_attr_setschedparam</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">The POSIX names of the same calls (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/460">#460</a>).</td>
+</tr>
+<tr>
+<td data-label="Call"><code>scePthreadMutexTimedlock</code>, <code>scePthreadRwlockTimedrdlock</code>, <code>scePthreadRwlockTimedwrlock</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">Wait for a lock for at most a given number of microseconds on the monotonic clock, then answer <code>ETIMEDOUT</code> (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/464">#464</a>).</td>
+</tr>
+<tr>
 <td data-label="Call"><code>sceKernelCreateEqueue</code>, <code>sceKernelWaitEqueue</code>, <code>sceKernelDeleteEqueue</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
 <td data-label="What the runtime does">Event queues: a thread waits until the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> raises an event, such as a finished frame flip.</td>
@@ -1363,6 +1372,16 @@ the set for each thread and gives it back unchanged.</p>
 <td data-label="Call"><code>sceKernelVirtualQuery</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
 <td data-label="What the runtime does">Describes the mapping that holds an address: where it starts, and where it sits in direct memory.</td>
+</tr>
+<tr>
+<td data-label="Call"><code>sceKernelMunmap</code>, <code>sceKernelMprotect</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">Remove, or change the protection of, one whole mapping the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> made; after an unmap, the direct range can be released. Part of a mapping, or several, stops by name (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/467">#467</a>).</td>
+</tr>
+<tr>
+<td data-label="Call"><code>sceKernelGetDirectMemoryType</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">The type, start and end of the allocated range holding an offset; an offset outside every range stops by name (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/467">#467</a>).</td>
 </tr>
 </tbody>
 </table></div>
@@ -1467,6 +1486,11 @@ established.</p>
 <td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
 <td data-label="What the runtime does">Records nothing: the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> is offline and has no online content.</td>
 </tr>
+<tr>
+<td data-label="Call"><code>sceSystemServiceReceiveEvent</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> raises no system events, so it answers "no event" and writes nothing (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/466">#466</a>).</td>
+</tr>
 </tbody>
 </table></div>
 <p>Before the title screen the game asks the console a few questions: who is playing, which language
@@ -1544,6 +1568,16 @@ to use, and what its own package says about itself.</p>
 <td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
 <td data-label="What the runtime does">Keeps the motor speeds, and with <code>--input host</code> rumbles your gamepad.</td>
 </tr>
+<tr>
+<td data-label="Call"><code>scePadResetOrientation</code>, <code>scePadSetAngularVelocityDeadbandState</code>, <code>scePadSetTiltCorrectionState</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">Motion is not modelled (the controller never turns), so each answers success and changes nothing (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/462">#462</a>).</td>
+</tr>
+<tr>
+<td data-label="Call"><code>sceMouseInit</code>, <code>sceMouseOpen</code>, <code>sceMouseRead</code>, <code>sceMouseClose</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">No mouse is plugged in: a read gives one record that says "not connected" (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/462">#462</a>).</td>
+</tr>
 </tbody>
 </table></div>
 <p>The game reads its controller's latest state with <code>scePadReadState</code> (not the buffered history),
@@ -1603,6 +1637,11 @@ and asks for the controller's details (the touch pad's size and the sticks' dead
 <td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
 <td data-label="What the runtime does">0 for Sunday to 6 for Saturday (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/379">#379</a>).</td>
 </tr>
+<tr>
+<td data-label="Call"><code>sceRtcSetTime_t</code>, <code>sceRtcConvertUtcToLocalTime</code>, <code>sceRtcConvertLocalTimeToUtc</code>, <code>sceRtcFormatRFC2822LocalTime</code>, <code>sceRtcGetCurrentNetworkTick</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">Unix time to ticks, your computer's time zone and daylight saving rule, dates written as <code>Mon, 02 Nov 2026 15:05:09 +0100</code>, and the network tick from the wall clock. A local time that a daylight-saving change skips or repeats stops by name (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/466">#466</a>).</td>
+</tr>
 </tbody>
 </table></div>
 <p>The game asks for the local date and time in about 60 places and turns it straight into
@@ -1640,6 +1679,16 @@ for evidence before it was implemented.</p>
 <td data-label="Call"><code>sceSaveDataSetupSaveDataMemory</code>, <code>sceSaveDataGet/SetSaveDataMemory</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
 <td data-label="What the runtime does">The small memory-backed save, kept in one file (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/402">#402</a>).</td>
+</tr>
+<tr>
+<td data-label="Call"><code>sceSaveDataDelete</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">Removes a save's folder; a mounted save answers "busy". Another title's saves, or a save that is not there, stop by name (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/459">#459</a>).</td>
+</tr>
+<tr>
+<td data-label="Call"><code>sceDiscMapIsRequestOnHDD</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">The file library asks whether a read is on the hard disk; the game is served from files with no disc, so the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> answers "no bitmap" (<code>0x81100004</code>) and the library treats the request as not mapped (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/459">#459</a>).</td>
 </tr>
 <tr>
 <td data-label="Call"><code>sceNpTrophyCreateContext</code>, <code>…CreateHandle</code>, <code>…RegisterContext</code>, <code>…UnlockTrophy</code>, <code>…GetGameInfo</code>, <code>…GetTrophyInfo</code></td>
@@ -1694,6 +1743,16 @@ file, which the <abbr title="What the game's code runs on: Paleblood's own loade
 <td data-label="Call"><code>sceNpMatching2Initialize</code>, <code>sceNpMatching2Terminate</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
 <td data-label="What the runtime does">Start and stop the matchmaking library; nothing is ever sent (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/385">#385</a>).</td>
+</tr>
+<tr>
+<td data-label="Call"><code>sceNpGetNpId</code>, <code>sceNpGetOnlineId</code>, <code>sceNpCheckNpAvailability</code>, <code>sceNpCheckPlus</code>, <code>sceNpPollAsync</code> and the other identity and Plus calls</td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">A console that is not signed in: identity calls answer "signed out", each check completes at once with that result, and the Plus callback is kept but never called (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/450">#450</a>).</td>
+</tr>
+<tr>
+<td data-label="Call"><code>sceNpAuthCreateAsyncRequest</code>, <code>…GetAuthorizationCode</code>, <code>…PollAsync</code>, <code>…DeleteRequest</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">Requests are created and deleted; the authorization code cannot be had signed out, so the game takes its failure path (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/461">#461</a>).</td>
 </tr>
 </tbody>
 </table></div>
@@ -1849,6 +1908,21 @@ stops by name.</p>
 <td data-label="Call"><code>sceKernelOpen</code>, <code>sceKernelRead</code>, <code>sceKernelPread</code>, <code>sceKernelLseek</code>, <code>sceKernelFstat</code>, <code>sceKernelClose</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
 <td data-label="What the runtime does">Read your copy's files, where any attempt to write is refused as on a read-only disc; open, create and truncate files in the scratch folder <code>/data</code> (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/308">#308</a>).</td>
+</tr>
+<tr>
+<td data-label="Call"><code>sceKernelWrite</code>, <code>sceKernelPwrite</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">Write to a file the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> opened for writing (the scratch and save folders), returning the bytes written, with FreeBSD's checks: a descriptor not open for writing <code>EBADF</code>, a negative offset <code>EINVAL</code>. The save code's first call after "Creating save data" (by <a href="https://github.com/EzequielRindello">@EzequielRindello</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/444">#444</a>).</td>
+</tr>
+<tr>
+<td data-label="Call"><code>sceKernelFtruncate</code>, <code>sceKernelRename</code>, <code>sceKernelTruncate</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">Cut a file to a length, or rename it, in the scratch or save folders; the save code needs them after "Creating save data". Across two folders answers <code>EXDEV</code>, inside your read-only copy <code>EROFS</code> (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/449">#449</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/458">#458</a>).</td>
+</tr>
+<tr>
+<td data-label="Call"><code>mkdir</code>, <code>rmdir</code>, <code>rename</code> (<code>libScePosix</code>)</td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">The same, the POSIX way, with the error number in <code>errno</code> (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/458">#458</a>).</td>
 </tr>
 </tbody>
 </table></div>
@@ -2065,6 +2139,11 @@ call is registered only to name itself and stop, because its answer is not estab
 <td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_tls.c"><code>runtime/syslib/kernel_tls.c</code></a></td>
 </tr>
 <tr>
+<td><code>_exit</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel.c"><code>runtime/syslib/kernel.c</code></a></td>
+</tr>
+<tr>
 <td><code>_sceKernelRtldSetApplicationHeapAPI</code></td>
 <td><span class="wk-badge wk-badge--implemented">implemented</span></td>
 <td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel.c"><code>runtime/syslib/kernel.c</code></a></td>
@@ -2220,6 +2299,11 @@ call is registered only to name itself and stop, because its answer is not estab
 <td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/files.c"><code>runtime/syslib/files.c</code></a></td>
 </tr>
 <tr>
+<td><code>sceKernelPwrite</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/files.c"><code>runtime/syslib/files.c</code></a></td>
+</tr>
+<tr>
 <td><code>sceKernelQueryMemoryProtection</code></td>
 <td><span class="wk-badge wk-badge--implemented">implemented</span></td>
 <td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_memory.c"><code>runtime/syslib/kernel_memory.c</code></a></td>
@@ -2278,6 +2362,11 @@ call is registered only to name itself and stop, because its answer is not estab
 <td><code>sceKernelWaitSema</code></td>
 <td><span class="wk-badge wk-badge--implemented">implemented</span></td>
 <td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_sema.c"><code>runtime/syslib/kernel_sema.c</code></a></td>
+</tr>
+<tr>
+<td><code>sceKernelWrite</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/files.c"><code>runtime/syslib/files.c</code></a></td>
 </tr>
 <tr>
 <td><code>scePthreadAttrDestroy</code></td>
@@ -2455,6 +2544,11 @@ call is registered only to name itself and stop, because its answer is not estab
 <td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_thread.c"><code>runtime/syslib/kernel_thread.c</code></a></td>
 </tr>
 <tr>
+<td><code>scePthreadRename</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_thread.c"><code>runtime/syslib/kernel_thread.c</code></a></td>
+</tr>
+<tr>
 <td><code>scePthreadRwlockDestroy</code></td>
 <td><span class="wk-badge wk-badge--implemented">implemented</span></td>
 <td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_rwlock.c"><code>runtime/syslib/kernel_rwlock.c</code></a></td>
@@ -2526,6 +2620,16 @@ call is registered only to name itself and stop, because its answer is not estab
 </tr>
 <tr>
 <td><code>sched_yield</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_thread.c"><code>runtime/syslib/kernel_thread.c</code></a></td>
+</tr>
+<tr>
+<td><code>sigfillset</code></td>
+<td><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_thread.c"><code>runtime/syslib/kernel_thread.c</code></a></td>
+</tr>
+<tr>
+<td><code>sigprocmask</code></td>
 <td><span class="wk-badge wk-badge--implemented">implemented</span></td>
 <td><a href="https://github.com/Yharnam-Hunters/Paleblood/blob/main/runtime/syslib/kernel_thread.c"><code>runtime/syslib/kernel_thread.c</code></a></td>
 </tr>
@@ -4069,6 +4173,10 @@ in <code>game/module_hooks.csv</code> for the pinned <code>libc.elf</code>:</p>
 <li><code>std::thread::hardware_concurrency</code>, which would read that count, <strong>stops the run by name</strong> if the
   game ever calls it, the same way an unimplemented import stops it.</li>
 </ul>
+<p>Since <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/456">#456</a> (also by
+BluePinetree) each entry also lists the function's first bytes, and <code>pbboot</code> compares them with
+the loaded module before patching: a different <code>libc.elf</code> build is refused by name before any
+game code runs, instead of patching the middle of another function.</p>
 <p>The boot recorded on 4 November 2026 (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/295">#295</a>) confirms it: merged <code>main</code> now passes this
 point; later the same day (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/300">#300</a>) it reaches the video out milestone. The <abbr title="14-byte jumps written over the start of original functions, sending their callers to the replacements.">hooks</abbr> only cover these two functions, and their offsets fit only the pinned
 <code>libc.elf</code>.</p>
@@ -4126,6 +4234,6 @@ has the affinity declaration. It is corroboration, not a measured <abbr title="P
 window.WK = {base: "..", searchIndex: "../search/search_index.json",
              drawerQuery: window.matchMedia('(max-width: 900px)')};
 </script>
-<script src="../javascripts/wiki.js?v=24a562ed8b" defer></script><script src="../javascripts/hunters.js?v=28a0e867eb" defer></script><script src="../search/main.js" defer></script>
+<script src="../javascripts/wiki.js?v=c570fe17af" defer></script><script src="../javascripts/hunters.js?v=28a0e867eb" defer></script><script src="../search/main.js" defer></script>
 </body>
 </html>

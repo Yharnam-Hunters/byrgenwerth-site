@@ -1,19 +1,19 @@
 {
   "edge_verified": {
-    "bytes": 42198,
-    "bytes_pct": 0.1,
-    "functions": 161,
-    "functions_pct": 0.1
+    "bytes": 50284,
+    "bytes_pct": 0.12,
+    "functions": 169,
+    "functions_pct": 0.11
   },
   "inputs": {
-    "functions_sha256": "4cac15077dbad9519e386995c2d59a35c5f320938c9d69be78ae5566b440e4a7",
+    "functions_sha256": "f2596a4d65be286149e4173396df5a2b6cd4fefbd70e838dda8f9790010465b5",
     "ghidra_functions_sha256": "fc7e244dc9f211963118a9ab97716de03e0f342421c63cafc9a8ae747abb8ebd"
   },
   "replaced": {
-    "bytes": 42198,
-    "bytes_pct": 0.1,
-    "functions": 161,
-    "functions_pct": 0.1
+    "bytes": 50284,
+    "bytes_pct": 0.12,
+    "functions": 169,
+    "functions_pct": 0.11
   },
   "runtime": {
     "fault": {
@@ -427,7 +427,7 @@
       "bytes": 644042,
       "end": "0x0257db43",
       "functions": 2095,
-      "replaced_bytes": 94,
+      "replaced_bytes": 7339,
       "start": "0x024cebb0",
       "verified_bytes": 0
     },
@@ -491,7 +491,7 @@
       "bytes": 657317,
       "end": "0x02af57db",
       "functions": 3151,
-      "replaced_bytes": 7983,
+      "replaced_bytes": 8824,
       "start": "0x02a46848",
       "verified_bytes": 0
     },
@@ -624,10 +624,10 @@
       "verified": 1
     },
     "render": {
-      "edge_verified": 76,
-      "replaced": 76,
-      "replaced_bytes": 17550,
-      "tracked": 76,
+      "edge_verified": 84,
+      "replaced": 84,
+      "replaced_bytes": 25636,
+      "tracked": 84,
       "verified": 3
     }
   },
@@ -636,8 +636,8 @@
     "functions": 157757
   },
   "tracked": {
-    "bytes": 42373,
-    "functions": 163
+    "bytes": 50459,
+    "functions": 171
   },
   "verified": {
     "bytes": 14010,

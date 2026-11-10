@@ -17,7 +17,7 @@
     d.setAttribute('data-theme', t); d.classList.add('wk-js'); }());
   </script>
   
-  <link rel="stylesheet" href="../stylesheets/wiki.css?v=527d16639d"><link rel="stylesheet" href="../stylesheets/hunters.css?v=e4f3c59dfb">
+  <link rel="stylesheet" href="../stylesheets/wiki.css?v=d9646b693b"><link rel="stylesheet" href="../stylesheets/hunters.css?v=e4f3c59dfb">
   
   
 </head>
@@ -380,7 +380,7 @@
       <span class="wk-stat-track" role="img" aria-label="0.033 percent of target code bytes verified">
         <span class="wk-stat-fill" style="width:0.033%"></span>
       </span>
-      <span class="wk-progress-foot">0.033% of code bytes verified · 161 replaced</span>
+      <span class="wk-progress-foot">0.033% of code bytes verified · 169 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -401,7 +401,9 @@
           
           <li><a href="#tools" class="wk-toc-link">Tools</a></li>
           
-          <li><a href="#runtime-contributors" class="wk-toc-link">Runtime contributors</a></li>
+          <li><a href="#libraries-the-runtime-uses" class="wk-toc-link">Libraries the runtime uses</a></li>
+          
+          <li><a href="#contributors" class="wk-toc-link">Contributors</a></li>
           
           <li><a href="#artwork" class="wk-toc-link">Artwork</a></li>
           
@@ -418,7 +420,7 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 28, 2026 05:15:03 UTC">October 28, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 10, 2026 09:33:21 UTC">November 10, 2026</span></p>
       
       
       <h1 id="credits">Credits</h1>
@@ -430,17 +432,45 @@ work they enabled lands; nothing is copied without its license being honored.</p
 <li><strong>orbis-pkg-util</strong>: PKG extraction.</li>
 <li><strong><abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr></strong>: analysis and the function export that sets the progress denominator.</li>
 </ul>
-<h2 id="runtime-contributors">Runtime contributors</h2>
+<h2 id="libraries-the-runtime-uses">Libraries the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> uses</h2>
 <ul>
+<li><strong>LibAtrac9</strong> (Alex Barney, MIT): decodes the game's ATRAC9 sound; included unmodified in
+  Paleblood (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/398">PR #398</a>).</li>
+<li><strong>FFmpeg</strong>: decodes the game's movies on your computer; optional when building
+  (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/419">PR #419</a>).</li>
+<li><strong>SDL3</strong> and <strong>Vulkan</strong>: the window, controller and keyboard, and the GPU the renderer draws on.</li>
+<li><strong>SPIRV-Cross</strong>: turns the renderer's translated shaders into Metal shaders for macOS
+  (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/331">PR #331</a>).</li>
+</ul>
+<h2 id="contributors">Contributors</h2>
+<p>The <a href="../hunters/">Hunters</a> page lists everyone with merged work; this section names what
+each <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> and decompilation contributor's work made possible.</p>
+<ul>
+<li><a href="https://github.com/evill33t"><strong>evill33t</strong></a>: <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> and <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> functions across the frame
+  timing, audio, engine, kernel, camera and render systems, including the GPU library functions
+  whose replacements now report the game's draws to the renderer
+  (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/411">PR #411</a>, from #233); <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> and macOS
+  groundwork (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/214">PR #214</a>–<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/227">#227</a>), the standalone Metal unit
+  (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/318">PR #318</a>, from #213), and loading the
+  replacements in the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>'s own boot <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr> (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/225">PR #225</a>).</li>
 <li><a href="https://github.com/EzequielRindello"><strong>Ezequiel Rindello</strong> (<code>EzequielRindello</code>)</a>: guest-thread
-  handle comparison (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/62">PR #62</a>) and the
-  documented <code>sched_yield</code> path (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/72">PR #72</a>).</li>
+  handle comparison (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/62">PR #62</a>), the
+  documented <code>sched_yield</code> path (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/72">PR #72</a>),
+  <code>memcpy</code>/<code>memset</code>, sleeping, condition variables, reader-writer locks, thread keys, <code>time</code>,
+  mutex ownership and <code>pthread_cond_timedwait</code> (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/82">PR #82</a>–<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/353">#353</a>), and the file writes
+  the game's save data needs (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/444">PR #444</a>).</li>
+<li><a href="https://github.com/BluePinetree"><strong>BluePinetree</strong></a>: the thread attribute detach state
+  (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/81">PR #81</a>) and replacing functions inside
+  mapped modules before they run (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/207">PR #207</a>),
+  which removed the boot's October stop.</li>
+<li><a href="https://github.com/gabee12"><strong>gabee12</strong></a>: the name of the mouse initialization function
+  (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/270">PR #270</a>, from #73).</li>
 <li><a href="https://github.com/clee"><strong>Chris Lee</strong> (<code>clee</code>)</a>: constrained offline network control
   (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/59">PR #59</a>) and explicit unresolved
   page-size diagnostics (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/66">PR #66</a>).</li>
 </ul>
-<p>These contributions implement or document <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> contracts. Their synthetic tests do not by
-themselves establish new game-execution milestones.</p>
+<p>Runtime contributions implement or document <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> contracts. Their synthetic tests do not by
+themselves establish new game-execution milestones; a recorded boot does.</p>
 <h2 id="artwork">Artwork</h2>
 <ul>
 <li><strong>Menu artwork</strong> in the sidebar: credited to <strong>r_dsgnd</strong> on
@@ -490,6 +520,6 @@ added here when we use it.</p>
 window.WK = {base: "..", searchIndex: "../search/search_index.json",
              drawerQuery: window.matchMedia('(max-width: 900px)')};
 </script>
-<script src="../javascripts/wiki.js?v=24a562ed8b" defer></script><script src="../javascripts/hunters.js?v=28a0e867eb" defer></script><script src="../search/main.js" defer></script>
+<script src="../javascripts/wiki.js?v=c570fe17af" defer></script><script src="../javascripts/hunters.js?v=28a0e867eb" defer></script><script src="../search/main.js" defer></script>
 </body>
 </html>
