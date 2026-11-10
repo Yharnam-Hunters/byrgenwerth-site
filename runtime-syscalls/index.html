@@ -380,7 +380,7 @@
       <span class="wk-stat-track" role="img" aria-label="0.033 percent of target code bytes verified">
         <span class="wk-stat-fill" style="width:0.033%"></span>
       </span>
-      <span class="wk-progress-foot">0.033% of code bytes verified · 169 replaced</span>
+      <span class="wk-progress-foot">0.033% of code bytes verified · 173 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -458,7 +458,7 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 10, 2026 09:33:21 UTC">November 10, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 10, 2026 10:09:50 UTC">November 10, 2026</span></p>
       
       
       <h1 id="runtime-system-call-notes">Runtime system-call notes</h1>
@@ -1802,7 +1802,7 @@ title id and starts its matchmaking library at start-up, and both succeed offlin
 <tr>
 <td data-label="Call"><code>sceAudioOutOutput</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
-<td data-label="What the runtime does">Takes one block every 5.33 ms, as a real port would; with <code>--audio host</code> it plays the block on your computer (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/406">#406</a>).</td>
+<td data-label="What the runtime does">Takes one block every 5.33 ms, as a real port would; with <code>--audio host</code> it plays the block on your computer (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/406">#406</a>). With no block (the movie player's sound thread has nothing to give) it waits for room and hands nothing over (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/481">#481</a>).</td>
 </tr>
 <tr>
 <td data-label="Call"><code>sceAudioOutGetPortState</code></td>

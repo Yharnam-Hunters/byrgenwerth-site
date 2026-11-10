@@ -380,7 +380,7 @@
       <span class="wk-stat-track" role="img" aria-label="0.033 percent of target code bytes verified">
         <span class="wk-stat-fill" style="width:0.033%"></span>
       </span>
-      <span class="wk-progress-foot">0.033% of code bytes verified · 169 replaced</span>
+      <span class="wk-progress-foot">0.033% of code bytes verified · 173 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -418,7 +418,7 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 10, 2026 09:33:21 UTC">November 10, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 10, 2026 10:09:50 UTC">November 10, 2026</span></p>
       
       
       <h1 id="render">Render</h1>
@@ -520,7 +520,12 @@ arguments. The first of the engine's own packet writers are mapped, all by <a hr
 <li><strong>sizes:</strong> <code>render_calculate_second_auxiliary</code> (<code>0x0149e570</code>) works out the size and alignment
     of a second auxiliary area <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/323">#323</a>, from #228;</li>
 <li><strong>fields:</strong> seven setters (<code>0x01486520</code>–<code>0x01486800</code>) replace one field each, keeping the
-    rest of the word <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/324">#324</a>, from #236.</li>
+    rest of the word <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/324">#324</a>, from #236;</li>
+<li><strong>construction:</strong> <code>render_record_constructor</code> (<code>0x01485f90</code>) clears a record's 44-byte prefix
+    and fills in the record and its auxiliary outputs, returning a packed 64-bit result;
+    <code>render_record_constructor_pack_pair</code> (<code>0x01471600</code>) packs a selector pair into an encoding,
+    and two optional steps (<code>0x0149e2d0</code>, <code>0x0149e400</code>) align paired components and work out the
+    geometry, writing their outputs even when a helper reports an error <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/478">#478</a>, from #246 (<abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr> on synthetic cases);</li>
 <li><strong>normalisation:</strong> <code>render_record_normalize_mode2</code>, <code>…mode3</code> and <code>…mode4</code> (<code>0x025710a0</code>,
     <code>0x025711d0</code>, <code>0x02571340</code>) bring a record's input into one normalised form, copying the words
     they do not interpret unchanged and keeping each helper's writes and failure codes in order, and
@@ -651,6 +656,13 @@ frames. #279, #286 and #287 were brought up to date with <code>main</code> from 
 <td data-label="Name"><code>render_pack_record_mapping_word</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">Pack numeric mapping fields with priority masks and full-width mode handling; return a zero-extended DWORD.</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x01471600</code></td>
+<td style="text-align: right;" data-label="Size">190</td>
+<td data-label="Name"><code>render_record_constructor_pack_pair</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Pack a full DWORD selector pair into an encoding; the first selector controls flag handling.</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x01471730</code></td>
@@ -870,6 +882,13 @@ frames. #279, #286 and #287 were brought up to date with <code>main</code> from 
 <td data-label="Notes">Preserve the original byte-wide input: doubling it can contribute bits beyond bit one.</td>
 </tr>
 <tr>
+<td data-label="Address"><code>0x01485f90</code></td>
+<td style="text-align: right;" data-label="Size">1410</td>
+<td data-label="Name"><code>render_record_constructor</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Clear the 44-byte record prefix and publish partial record and auxiliary outputs; return the packed 64-bit result.</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x01486520</code></td>
 <td style="text-align: right;" data-label="Size">31</td>
 <td data-label="Name"><code>render_record_set_word_0c_fields</code></td>
@@ -980,6 +999,20 @@ frames. #279, #286 and #287 were brought up to date with <code>main</code> from 
 <td data-label="Name"><code>render_convert_record_descriptor_classification</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">Convert a tile-mode table index for the requested array mode; preserve output on error and bypass already matching modes.</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0149e2d0</code></td>
+<td style="text-align: right;" data-label="Size">295</td>
+<td data-label="Name"><code>render_record_constructor_optional_first</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Align paired components; retain the pre-increment product and 55-bit quantity, then publish optional outputs in order.</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0149e400</code></td>
+<td style="text-align: right;" data-label="Size">358</td>
+<td data-label="Name"><code>render_record_constructor_optional_second</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Calculate geometry and publish zeroed or partial auxiliary outputs even when a helper reports an error.</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x0149e570</code></td>

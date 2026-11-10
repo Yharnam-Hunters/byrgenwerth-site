@@ -380,7 +380,7 @@
       <span class="wk-stat-track" role="img" aria-label="0.033 percent of target code bytes verified">
         <span class="wk-stat-fill" style="width:0.033%"></span>
       </span>
-      <span class="wk-progress-foot">0.033% of code bytes verified · 169 replaced</span>
+      <span class="wk-progress-foot">0.033% of code bytes verified · 173 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -2091,8 +2091,13 @@ the next block.</p>
 - Each port takes one block per <code>length / rate</code> seconds (256 samples at 48000 Hz: 5.33 ms).
 - A call waits until the block before it would have finished playing, then answers 0 (the caller
   only checks the sign).
-- A port that falls behind starts again from now.</p>
-<p><strong>What stops by name:</strong> a missing block, and a handle the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> did not hand out.</p>
+- A port that falls behind starts again from now.
+- No block (<code>samples</code> NULL) hands nothing over: the call waits until the port has room for the next
+  block and answers 0, without moving the port's timeline on. shadPS4 (<code>audioout.cpp</code>) waits for the
+  port's buffer to drain and copies nothing for a null pointer, returning 0 samples; PS4Recomp
+  (<code>ps4_audioout.c</code>) waits for room and pushes nothing, returning 0. The movie player's sound thread
+  calls it so when it has no sound to give (found during the opening movie).</p>
+<p><strong>What stops by name:</strong> a handle the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> did not hand out.</p>
 <p><code>int32_t sceAudioOutGetPortState(handle, void *state)</code>, as the SDK declares it, reports a port's
 state. Its <code>_types/audio_out.h</code> gives the layout (32 bytes): a 16-bit output, an 8-bit channel
 count, a volume and a 64-bit flag. The executable's only call (<code>0x0111bb41</code>) asks about its second

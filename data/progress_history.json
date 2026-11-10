@@ -90,5 +90,33 @@
   "imports_total": 686,
   "boot_milestone": "first flip",
   "boot_milestone_index": 8
+ },
+ {
+  "date": "2026-11-02",
+  "commit": "efc0936",
+  "verified_bytes": 14010,
+  "verified_functions": 21,
+  "replaced_bytes": 50284,
+  "replaced_functions": 169,
+  "imports_covered": 453,
+  "imports_bundled": 219,
+  "imports_implemented": 234,
+  "imports_total": 686,
+  "boot_milestone": "first flip",
+  "boot_milestone_index": 8
+ },
+ {
+  "date": "2026-11-09",
+  "commit": "134c703c",
+  "verified_bytes": 14010,
+  "verified_functions": 21,
+  "replaced_bytes": 52537,
+  "replaced_functions": 173,
+  "imports_covered": 453,
+  "imports_bundled": 219,
+  "imports_implemented": 234,
+  "imports_total": 686,
+  "boot_milestone": "first flip",
+  "boot_milestone_index": 8
  }
 ]

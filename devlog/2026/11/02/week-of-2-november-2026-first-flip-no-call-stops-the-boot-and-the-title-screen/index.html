@@ -1,0 +1,1621 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  
+  <meta name="description" content="Notes of Paleblood, a decompilation of Bloodborne (PS4, CUSA03173 v1.09) with its own runtime, one verified function at a time, and an open place to learn how a console game works and how it is reverse engineered">
+  <link rel="canonical" href="https://yharnam-hunters.github.io/byrgenwerth-site/devlog/2026/11/02/week-of-2-november-2026-first-flip-no-call-stops-the-boot-and-the-title-screen/">
+  
+  
+  <title>Week of 2 November 2026: first flip, no call stops the boot, and the title screen — Byrgenwerth</title>
+  
+  <script>
+  /* Before first paint: the stored theme, and a flag that JavaScript (wiki.js) will run. */
+  (function () { var d = document.documentElement, t = 'dark';
+    try { t = localStorage.getItem('wk-theme') || 'dark'; } catch (e) {}
+    d.setAttribute('data-theme', t); d.classList.add('wk-js'); }());
+  </script>
+  
+  <link rel="stylesheet" href="../../../../../stylesheets/wiki.css?v=d9646b693b"><link rel="stylesheet" href="../../../../../stylesheets/hunters.css?v=e4f3c59dfb">
+  
+  
+</head>
+<body>
+
+<!-- ── Header: wordmark, section tabs (wide screens), search, theme ── -->
+
+
+<header class="wk-header" id="wk-header">
+  <button class="wk-nav-toggle" id="wk-nav-toggle" aria-label="Open navigation" aria-expanded="false" aria-controls="wk-nav">☰</button>
+  <a class="wk-wordmark" href="/byrgenwerth-site/">Byrgenwerth<small>notes of Paleblood, rebuilding Bloodborne one verified function at a time</small></a>
+
+  <!-- Section tabs (wide screens; the drawer lists the same sections on small ones) -->
+  <nav class="wk-tabs" aria-label="Sections">
+    
+    <a class="wk-tab is-active" href="../../../../.." aria-current="true">The Hunt</a>
+    
+    <a class="wk-tab" href="../../../../../great-ones/">Encyclopedia</a>
+    
+    <a class="wk-tab" href="../../../../../systems/">Systems</a>
+    
+    <a class="wk-tab" href="../../../../../ARCHITECTURE/">How It Works</a>
+    
+    <a class="wk-tab" href="../../../../../CONTRIBUTING/">For Hunters</a>
+    
+  </nav>
+
+  <div class="wk-header-right">
+    
+    <div class="wk-searchbox">
+      <input class="wk-search-input" id="wk-q" type="search"
+             placeholder="Search  [/]" autocomplete="off" aria-label="Search">
+      <div class="wk-search-results" id="wk-results" hidden role="listbox"></div>
+    </div>
+    <button class="wk-toggle" id="wk-toggle" title="Toggle theme" aria-label="Toggle dark/light">☀</button>
+  </div>
+</header>
+
+<!-- ── Layout ──────────────────────────────────────────────── -->
+<div class="wk-layout">
+
+  <div class="wk-nav-backdrop" id="wk-nav-backdrop" hidden></div>
+
+  <!-- Left sidebar -->
+  <nav class="wk-nav has-current" id="wk-nav" aria-label="Site navigation">
+    <!-- Menu artwork: credited on the Credits page; provenance and rights notes in the private media review -->
+    <figure class="wk-portal-icon">
+      <a href="/byrgenwerth-site/" aria-label="Byrgenwerth home">
+        <img src="../../../../../assets/media/bloodborne-menu-art.png" width="256" height="256" alt="A lone Bloodborne hunter stands in a rain-darkened Yharnam street beneath the game's gothic architecture.">
+      </a>
+    </figure>
+
+    
+    <section class="wk-nav-section is-current">
+      
+      
+      
+      
+      
+      
+      <p class="wk-nav-heading">The Hunt</p>
+      
+      <ul class="wk-nav-list">
+        
+        
+        <li><a class="wk-nav-link" href="../../../../..">Home</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link is-active" href="../../../../" aria-current="page">Devlog</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../../../../progress/">Progress</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../../../../milestones/">Milestones</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../../../../hunters/">The Hunters</a></li>
+        
+        
+      </ul>
+    
+      
+    </section>
+    
+    <section class="wk-nav-section">
+      
+      
+      
+      
+      
+      
+      <p class="wk-nav-heading">Encyclopedia</p>
+      
+      <ul class="wk-nav-list">
+        
+        
+        <li class="wk-nav-group">
+      
+      
+      
+        
+        
+      
+      
+      <a class="wk-nav-subheading" href="../../../../../great-ones/">The Great Ones</a>
+      
+      <ul class="wk-nav-list">
+        
+        
+        <li><a class="wk-nav-link" href="../../../../../great-ones/boss-directory/">Boss Directory</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../../../../great-ones/ai-and-phases/">Boss AI & Phases</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../../../../great-ones/mechanics/">Boss Mechanics</a></li>
+        
+        
+      </ul>
+    </li>
+        
+        
+        
+        <li class="wk-nav-group">
+      
+      
+      
+        
+        
+      
+      
+      <a class="wk-nav-subheading" href="../../../../../beasts-of-yharnam/">Beasts of Yharnam</a>
+      
+      <ul class="wk-nav-list">
+        
+        
+        <li><a class="wk-nav-link" href="../../../../../beasts-of-yharnam/enemy-directory/">Enemy Directory</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../../../../beasts-of-yharnam/ai-and-behavior/">Enemy AI & Behavior</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../../../../beasts-of-yharnam/npcs-and-hunters/">NPCs & Hunters</a></li>
+        
+        
+      </ul>
+    </li>
+        
+        
+        
+        <li class="wk-nav-group">
+      
+      
+      
+        
+        
+      
+      
+      <a class="wk-nav-subheading" href="../../../../../workshop/">The Hunter's Workshop</a>
+      
+      <ul class="wk-nav-list">
+        
+        
+        <li><a class="wk-nav-link" href="../../../../../workshop/combat-damage/">Combat & Damage</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../../../../workshop/weapons-transformations/">Weapons & Transformations</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../../../../workshop/movement-stamina/">Movement & Stamina</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../../../../workshop/hitboxes-collision/">Hitboxes & Collision</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../../../../workshop/stats-progression/">Stats & Progression</a></li>
+        
+        
+      </ul>
+    </li>
+        
+        
+      </ul>
+    
+      
+    </section>
+    
+    <section class="wk-nav-section">
+      
+      
+      
+      
+      
+      
+      <p class="wk-nav-heading">Systems</p>
+      
+      <ul class="wk-nav-list">
+        
+        
+        <li><a class="wk-nav-link" href="../../../../../systems/">Overview</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../../../../systems/frame_timing/">Frame timing</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../../../../systems/kernel/">Kernel</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../../../../systems/engine/">Engine</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../../../../systems/event/">Event</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../../../../systems/camera/">Camera</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../../../../systems/input/">Input</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../../../../systems/character/">Character</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../../../../systems/ai/">AI</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../../../../systems/physics/">Physics</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../../../../systems/render/">Render</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../../../../systems/loading/">Loading</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../../../../systems/audio/">Audio</a></li>
+        
+        
+      </ul>
+    
+      
+    </section>
+    
+    <section class="wk-nav-section">
+      
+      
+      
+      
+      
+      
+      <p class="wk-nav-heading">How It Works</p>
+      
+      <ul class="wk-nav-list">
+        
+        
+        <li><a class="wk-nav-link" href="../../../../../ARCHITECTURE/">Architecture</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../../../../runtime/">Runtime</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../../../../runtime-syscalls/">Runtime system calls</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../../../../runtime-reference/">Runtime call reference</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../../../../how-the-frame-limiter-works/">The Frame Limiter</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../../../../ADDRESS_MAP/">Address Map</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../../../../target/">Target</a></li>
+        
+        
+      </ul>
+    
+      
+    </section>
+    
+    <section class="wk-nav-section">
+      
+      
+      
+      
+      
+      
+      <p class="wk-nav-heading">For Hunters</p>
+      
+      <ul class="wk-nav-list">
+        
+        
+        <li><a class="wk-nav-link" href="../../../../../CONTRIBUTING/">Contributing</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../../../../QUIRKS/">Ghidra & PS4 Quirks</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../../../../glossary/">Glossary</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../../../../CI_SETUP/">CI Setup</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../../../../credits/">Credits</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../../../../MEDIA_POLICY/">Evidence & Media Review</a></li>
+        
+        
+      </ul>
+    
+      
+    </section>
+    
+
+    <!-- Progress card: every value from docs/data/progress.json (hooks/progress_extra.py) -->
+    
+    
+    <a class="wk-progress-card" href="../../../../../progress/">
+      <span class="wk-progress-label">Verified functions</span>
+      <span class="wk-progress-value">21 <small>of 157,757</small></span>
+      <span class="wk-stat-track" role="img" aria-label="0.033 percent of target code bytes verified">
+        <span class="wk-stat-fill" style="width:0.033%"></span>
+      </span>
+      <span class="wk-progress-foot">0.033% of code bytes verified · 173 replaced</span>
+      <span class="wk-progress-more">Full progress →</span>
+    </a>
+    
+  </nav>
+
+  <!-- Main content -->
+  <main class="wk-main">
+    <div class="wk-article">
+
+      
+      
+      
+      
+      
+      <nav class="wk-toc" id="wk-toc" aria-label="On this page">
+        <div class="wk-toc-header"><b>On this page</b></div>
+        <ol class="wk-toc-list" id="wk-toc-list">
+          
+          <li><a href="#runtime-and-boot-progress" class="wk-toc-link">Runtime and boot progress</a></li>
+          
+          <li><a href="#decompilation-and-verified-functions" class="wk-toc-link">Decompilation and verified functions</a></li>
+          
+          <li><a href="#tooling-and-automation" class="wk-toc-link">Tooling and automation</a></li>
+          
+          <li><a href="#documentation-and-website-changes" class="wk-toc-link">Documentation and website changes</a></li>
+          
+          <li><a href="#tests-and-validation" class="wk-toc-link">Tests and validation</a></li>
+          
+          <li><a href="#blockers-and-next-steps" class="wk-toc-link">Blockers and next steps</a></li>
+          
+        </ol>
+      </nav>
+      
+      
+      
+
+      <div class="wk-article-body">
+      
+<article>
+  <header class="wk-post-head">
+    
+    <p class="wk-post-meta">
+      <time datetime="2026-11-02 00:00:00+00:00">2026-11-02</time>
+      
+    </p>
+    
+  </header>
+  
+  <h1 id="week-of-2-november-2026-first-flip-no-call-stops-the-boot-and-the-title-screen">Week of 2 November 2026: first flip, no call stops the boot, and the title screen</h1>
+<p>The boot reached first flip on merged main, then ran with no system call stopping it; Paleblood's own renderer drew the studio logos and the title screen, and local runs with scripted input reached the main menu. Contributions by @evill33t, @EzequielRindello, @BluePinetree and @gabee12; no new function was <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>.</p>
+<!-- more -->
+
+<section class="wk-devlog-section" data-section="runtime"><h2 id="runtime-and-boot-progress">Runtime and boot progress</h2>
+<article class="wk-milestone" data-key="w45-runtime"><p><strong>The week in brief: from the October stop to the title screen.</strong> <em>Advances game execution.</em></p>
+<ul>
+<li>3–4 November: <a href="https://github.com/BluePinetree">@BluePinetree</a>'s <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/207">#207</a> removed the boot's October stop (<code>scePthreadAttrGetaffinity</code> inside the bundled C library). Recorded boots of merged <code>main</code> then climbed from milestone audio (5 of 8, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/295">#295</a>) and video out (6 of 8, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/300">#300</a>) to <strong>first flip, 8 of 8</strong> (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/310">#310</a>, 4 November): the game hands its first frame to the screen.</li>
+<li>5–6 November: a round of <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> work answered every call between the first flip and the game's main loop: PlayGo <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/370">#370</a>, the user service <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/372">#372</a>, one controller at rest <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/373">#373</a>, the clock <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/378">#378</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/379">#379</a>, PSN and network offline <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/380">#380</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/381">#381</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/382">#382</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/385">#385</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/386">#386</a>, file details and <code>errno</code> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/376">#376</a>, thread exit <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/389">#389</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/399">#399</a>, add-ons <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/392">#392</a>, the splash screen <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/396">#396</a>, save data <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/402">#402</a>, trophies <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/405">#405</a>, and sound: ATRAC9 decoded with LibAtrac9 and played on the host <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/394">#394</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/398">#398</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/406">#406</a>. The recorded boot after it (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/408">#408</a>) is the first that <strong>no system call stops</strong>: it calls 243 imports and keeps running to the time limit.</li>
+<li>Movies play through the console's movie player, decoded with FFmpeg <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/419">#419</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/420">#420</a>; a real gamepad and keyboard work with <code>--input host</code> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/431">#431</a>; scripted input lets unattended runs press buttons on a timetable <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/447">#447</a>. Kernel details found by boots: priority-ordered semaphores <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/426">#426</a>, memory-protection ranges <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/422">#422</a>, no-overwrite maps <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/423">#423</a>; later file and network calls <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/448">#448</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/449">#449</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/450">#450</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/451">#451</a>.</li>
+<li>Contributors: <a href="https://github.com/EzequielRindello">@EzequielRindello</a> implemented <code>time</code>, <code>sleep</code>, <code>nanosleep</code>, thread keys, <code>pthread_cond_timedwait</code> and mutex ownership <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/241">#241</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/296">#296</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/298">#298</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/315">#315</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/351">#351</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/353">#353</a>; <a href="https://github.com/evill33t">@evill33t</a> landed <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> and macOS groundwork and loading the decompilation's replacements in the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>'s own boot <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/214">#214</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/215">#215</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/216">#216</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/217">#217</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/218">#218</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/220">#220</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/224">#224</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/225">#225</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/226">#226</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/227">#227</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/229">#229</a>.</li>
+<li>The boot recorded after the renderer work (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/443">#443</a>): first flip, 243 imports called, 234 of them answered by the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>, still running at the limit. It runs with the display off and no input.</li>
+<li>Maintainer's local runs (not saved records): the title screen draws (below), and with scripted input and the then-open <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/444">#444</a> the game takes "Play Offline", creates its save data and shows its main menu (6 November). Frames: <a href="../../../../../milestones/">Milestones</a>.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="w45-renderer"><p><strong>The renderer: from black frames to the title screen.</strong> <em>Advances game execution (in local runs with the display on).</em></p>
+<ul>
+<li>Phase 1, the display: every frame buffer gets a window or captured image <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/313">#313</a>. Phase 2, the shader translator from AMD's <abbr title="Graphics Core Next, the AMD GPU architecture of the PS4.">GCN</abbr> code to Vulkan's SPIR-V, written from AMD's manuals: the decoder and a census of the game's 175 instructions <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/316">#316</a>, straight-line compute <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/319">#319</a>, branches <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/330">#330</a>, typed buffers <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/332">#332</a>, vertex and pixel shaders <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/333">#333</a>, arithmetic <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/334">#334</a>, clip distances <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/343">#343</a>, guest addresses <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/346">#346</a>; macOS CI compiles every test shader as Metal <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/331">#331</a>.</li>
+<li>Phase 3, hooking the game's own drawing layer: the GPU library's packet writers and key entry points mapped <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/335">#335</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/341">#341</a>, a record of its calls per command buffer <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/342">#342</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/344">#344</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/345">#345</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/401">#401</a>, and the draw executor that plays them on a Vulkan GPU <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/349">#349</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/368">#368</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/369">#369</a>.</li>
+<li>6 November, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/411">#411</a>–<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/442">#442</a>: <a href="https://github.com/evill33t">@evill33t</a>'s <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> GPU-library replacements (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/411">#411</a>, from #233) report the game's draws to the renderer <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/414">#414</a>; compute passes, tiled textures, sampling, blending, depth, fetch shaders, indexed draws and BC textures followed. Results in the maintainer's local runs: the first non-black frame (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/433">#433</a>), the first logo (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/441">#441</a>), then the JAPAN Studio and FROM SOFTWARE cards and the title screen once <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/442">#442</a> made the renderer about 22 times faster (66 to about 1,445 frames in a 90-second boot).</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-207"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/207">#207</a> <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>: replace functions inside mapped modules before they run</strong>, by <a href="https://github.com/BluePinetree">@BluePinetree</a>. Merged 2026-11-03.</p>
+<ul>
+<li>Findings: my own dump now boots to milestone audio (was libc.elf+0x81ad5).</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-241"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/241">#241</a> <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>: answer EPERM to a non-owner of a normal or adaptive mutex</strong>, by <a href="https://github.com/EzequielRindello">@EzequielRindello</a>. Merged 2026-11-03.</p>
+<ul>
+<li>System calls: scePthreadMutexUnlock; scePthreadMutexLock; scePthreadCondWait; scePthreadCondTimedwait; pthread_mutex_unlock; pthread_mutex_lock (and 1 more).</li>
+<li>Tests: 3 synthetic <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> test(s); the effect on the real boot is measured after merge, so this is not a boot result.</li>
+<li>Left unresolved: normal mutex locked again by its owner stops by name (the system would wait forever); cond waiters counted until the mutex is retaken: destroy after broadcast can answer EBUSY (recorded, unchanged).</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-297"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/297">#297</a> <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>: answer sceGnmValidateCommandBuffers with "validation not available"</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-04.</p>
+<ul>
+<li>System calls: sceGnmValidateCommandBuffers.</li>
+<li>Tests: 2 synthetic <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> test(s); the effect on the real boot is measured after merge, so this is not a boot result.</li>
+<li>Left unresolved: that a retail console answers the same value is an inference (the probe exists so retail builds run without validation), not an observation; four other callers (0x01494ad0, 0x01496470, 0x015fb340, 0x015fc290) are reached only through function tables; whether they run with validation off is not traced.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-299"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/299">#299</a> <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>: <abbr title="The PS4's low-level graphics API.">GNM</abbr> start-up answers for a <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> with no GPU</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-04.</p>
+<ul>
+<li>System calls: sceGnmDispatchInitDefaultHardwareState; sceGnmDrawInitDefaultHardwareState200; sceGnmSetCsShader; sceGnmIsUserPaEnabled.</li>
+<li>Tests: 2 synthetic <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> test(s); the effect on the real boot is measured after merge, so this is not a boot result.</li>
+<li>Left unresolved: a retail console's answers are not observed: that user PA is off on retail is an inference; the GPU work these packets would set up is not performed; the engine-level renderer is the plan (issue #39).</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-302"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/302">#302</a> gnm: the compute doorbell completes submitted work at once (temporary stand-in)</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-04.</p>
+<ul>
+<li>System calls: sceGnmDingDong.</li>
+<li>Tests: 3 synthetic <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> test(s); the effect on the real boot is measured after merge, so this is not a boot result.</li>
+<li>Left unresolved: compute shaders are not run: anything the game later reads from their output is missing; the engine-level renderer (issue #39) is to replace this stand-in; RELEASE_MEM interrupt requests do not raise an event; no event queue was seen waiting on one.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-303"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/303">#303</a> network: sceHttpWaitRequest answers no events offline</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-04.</p>
+<ul>
+<li>System calls: sceHttpWaitRequest.</li>
+<li>Tests: 2 synthetic <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> test(s); the effect on the real boot is measured after merge, so this is not a boot result.</li>
+<li>Left unresolved: whether a non-zero timeout blocks, and its unit, are not established; such a call stops by name; a retail console's answer with requests in flight is not observed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-310"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/310">#310</a> <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>: the boot reaches first flip (8 of 8)</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-04.</p>
+<ul>
+<li>No function status changed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-296"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/296">#296</a> <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>: implement time</strong>, by <a href="https://github.com/EzequielRindello">@EzequielRindello</a>. Merged 2026-11-05.</p>
+<ul>
+<li>System calls: time.</li>
+<li>Tests: 2 synthetic <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> test(s); the effect on the real boot is measured after merge, so this is not a boot result.</li>
+<li>Left unresolved: no call site in this repository shows how libSceFios2.elf uses the result; an invalid non-null pointer is undefined behaviour and not modelled.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-314"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/314">#314</a> gnm: cite call sites, not function entries</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-05.</p>
+<ul>
+<li>System calls: libSceGnmDriver comments (no behaviour change).</li>
+<li>Tests: 1 synthetic <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> test(s); the effect on the real boot is measured after merge, so this is not a boot result.</li>
+<li>Left unresolved: other <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> files cite function entries that are not tracked today; they move the same way if one becomes tracked.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-298"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/298">#298</a> <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>: implement scePthreadKeyCreate, KeyDelete, Getspecific and Setspecific</strong>, by <a href="https://github.com/EzequielRindello">@EzequielRindello</a>. Merged 2026-11-05.</p>
+<ul>
+<li>System calls: scePthreadKeyCreate; scePthreadKeyDelete; scePthreadGetspecific; scePthreadSetspecific.</li>
+<li>Tests: 3 synthetic <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> test(s); the effect on the real boot is measured after merge, so this is not a boot result.</li>
+<li>Left unresolved: the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> number of keys: stops by name at a 129th live key; the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> number of destructor rounds: stops by name if values remain after 4.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-214"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/214">#214</a> <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>: add owned Darwin guest TLS keys</strong>, by <a href="https://github.com/evill33t">@evill33t</a>. Merged 2026-11-05.</p>
+<ul>
+<li>No function status changed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-315"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/315">#315</a> <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>: implement sleep</strong>, by <a href="https://github.com/EzequielRindello">@EzequielRindello</a>. Merged 2026-11-05.</p>
+<ul>
+<li>System calls: sleep.</li>
+<li>Tests: 3 synthetic <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> test(s); the effect on the real boot is measured after merge, so this is not a boot result.</li>
+<li>Left unresolved: more than INT_MAX seconds stops by name: POSIX full sleep vs FreeBSD remainder not established for the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr>; no call site in this repository fixes the shape further.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-348"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/348">#348</a> <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>: GPU-visible direct maps at their pool offset</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-05.</p>
+<ul>
+<li>System calls: sceKernelMapDirectMemory.</li>
+<li>Tests: 2 synthetic <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> test(s); the effect on the real boot is measured after merge, so this is not a boot result.</li>
+<li>Left unresolved: a second GPU-visible map of a range stops by name (the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> keeps one at the range's GPU address); a GPU-visible map whose pool offset is off its alignment stops by name.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-351"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/351">#351</a> <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>: implement nanosleep</strong>, by <a href="https://github.com/EzequielRindello">@EzequielRindello</a>. Merged 2026-11-06.</p>
+<ul>
+<li>System calls: nanosleep.</li>
+<li>Tests: 4 synthetic <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> test(s); the effect on the real boot is measured after merge, so this is not a boot result.</li>
+<li>Left unresolved: negative seconds stop by name: POSIX undefined, FreeBSD returns 0, host EINVAL, <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> answer not established; no call site in this repository fixes the shape further.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-353"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/353">#353</a> <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>: implement pthread_cond_timedwait</strong>, by <a href="https://github.com/EzequielRindello">@EzequielRindello</a>. Merged 2026-11-06.</p>
+<ul>
+<li>System calls: pthread_cond_timedwait.</li>
+<li>Tests: 4 synthetic <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> test(s); the effect on the real boot is measured after merge, so this is not a boot result.</li>
+<li>Left unresolved: a wall-clock change during the wait is not followed; EINVAL for no time and negative seconds follows libthr where POSIX is undefined; no call site in this repository fixes the shape further.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-370"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/370">#370</a> <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>: PlayGo answers that every chunk of the package is installed</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>No function status changed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-372"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/372">#372</a> <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>: the user service's user name and its login/logout events</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>System calls: sceUserServiceGetUserName; sceUserServiceGetEvent.</li>
+<li>Tests: 2 synthetic <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> test(s); the effect on the real boot is measured after merge, so this is not a boot result.</li>
+<li>Left unresolved: whether the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> reports the first user's login as an event; the error values for an unknown user, a short buffer and a missing argument (these stop by name).</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-373"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/373">#373</a> <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>: one standard controller, connected and at rest</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>System calls: scePadInit; scePadOpen; scePadClose; scePadReadState; scePadGetControllerInformation; scePadSetVibration.</li>
+<li>Tests: 2 synthetic <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> test(s); the effect on the real boot is measured after merge, so this is not a boot result.</li>
+<li>Left unresolved: the console's stick deadzones (13 is the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>'s choice); real input from a host controller; ResetOrientation, SetAngularVelocityDeadbandState and SetTiltCorrectionState (unbound until reached).</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-375"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/375">#375</a> gnm: constant arrays with empty entries are no constant buffer</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>System calls: sceGnmSubmitCommandBuffers.</li>
+<li>Tests: 2 synthetic <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> test(s); the effect on the real boot is measured after merge, so this is not a boot result.</li>
+<li>Left unresolved: running a constant command buffer that holds packets (still stops by name).</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-376"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/376">#376</a> <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>: POSIX stat, and the thread's errno through __error</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>System calls: stat; __error.</li>
+<li>Tests: 2 synthetic <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> test(s); the effect on the real boot is measured after merge, so this is not a boot result.</li>
+<li>Left unresolved: errno for host errors other than ENOENT and ENOTDIR (these stop by name).</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-377"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/377">#377</a> gnm: skip DMA_DATA reads into CP_DMA_READ_TAGS and INDEX_TYPE</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>System calls: sceGnmSubmitCommandBuffers.</li>
+<li>Tests: 2 synthetic <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> test(s); the effect on the real boot is measured after merge, so this is not a boot result.</li>
+<li>Left unresolved: DMA_DATA copies and fills, which stop by name; index buffers for the renderer (INDEX_TYPE is only skipped).</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-378"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/378">#378</a> <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>: the real-time clock's local time and ticks</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>System calls: sceRtcGetCurrentClockLocalTime; sceRtcGetTick; sceRtcSetTick; sceRtcGetTickResolution.</li>
+<li>Tests: 2 synthetic <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> test(s); the effect on the real boot is measured after merge, so this is not a boot result.</li>
+<li>Left unresolved: sceRtcGetDayOfWeek's day numbering on the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> (left unbound); RTC error values (these stop by name); whether saved ticks must match a real console's epoch.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-379"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/379">#379</a> <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>: sceRtcGetDayOfWeek, 0 for Sunday</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>System calls: sceRtcGetDayOfWeek.</li>
+<li>Tests: 2 synthetic <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> test(s); the effect on the real boot is measured after merge, so this is not a boot result.</li>
+<li>Left unresolved: the error value for a date out of range (it stops by name).</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-380"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/380">#380</a> <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>: sceNetCtlGetNatInfo answers "not connected" offline</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>No function status changed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-381"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/381">#381</a> <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>: HTTPS options on HTTP templates</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>System calls: sceHttpsEnableOption; sceHttpsDisableOption.</li>
+<li>Tests: 2 synthetic <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> test(s); the effect on the real boot is measured after merge, so this is not a boot result.</li>
+<li>Left unresolved: HTTPS requests themselves (offline, none is sent).</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-382"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/382">#382</a> <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>: sceNpSetNpTitleId keeps the title id</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>System calls: sceNpSetNpTitleId.</li>
+<li>Tests: 2 synthetic <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> test(s); the effect on the real boot is measured after merge, so this is not a boot result.</li>
+<li>Left unresolved: PSN itself (offline).</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-385"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/385">#385</a> <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>: PSN offline: sign-in state, callbacks and matchmaking start-up</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>System calls: sceNpMatching2Initialize; sceNpMatching2Terminate; sceNpRegisterStateCallback; sceNpUnregisterStateCallback; sceNpRegisterGamePresenceCallback; sceNpGetState (and 1 more).</li>
+<li>Tests: 2 synthetic <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> test(s); the effect on the real boot is measured after merge, so this is not a boot result.</li>
+<li>Left unresolved: online PSN (the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> is offline).</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-386"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/386">#386</a> <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>: the network errno and epoll sets, offline</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>System calls: sceNetErrnoLoc; sceNetEpollCreate; sceNetEpollWait; sceNetEpollAbort; sceNetEpollDestroy.</li>
+<li>Tests: 2 synthetic <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> test(s); the effect on the real boot is measured after merge, so this is not a boot result.</li>
+<li>Left unresolved: sockets and sceNetEpollControl (not reached yet; offline no socket becomes ready).</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-389"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/389">#389</a> <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>: scePthreadExit ends a thread as a return from its entry would</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>System calls: scePthreadExit.</li>
+<li>Tests: 2 synthetic <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> test(s); the effect on the real boot is measured after merge, so this is not a boot result.</li>
+<li>Left unresolved: scePthreadJoin (not reached yet; the exit value is kept as the host thread's result); cleanup handlers (pthread_cleanup_push is not imported).</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-399"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/399">#399</a> <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>: end a thread with the compiler's setjmp, not the C library's longjmp</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>System calls: scePthreadExit.</li>
+<li>Tests: 1 synthetic <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> test(s); the effect on the real boot is measured after merge, so this is not a boot result.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-400"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/400">#400</a> <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>: let the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> read the registered PSN callbacks (builds with Clang 23)</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>System calls: sceNpRegisterStateCallback; sceNpRegisterGamePresenceCallback.</li>
+<li>Tests: 2 synthetic <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> test(s); the effect on the real boot is measured after merge, so this is not a boot result.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-392"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/392">#392</a> <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>: the title's add-ons, as the person running it owns them</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>No function status changed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-402"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/402">#402</a> <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>: save data, kept in a host folder and mounted as /savedataN</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>No function status changed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-398"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/398">#398</a> <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>: decode ATRAC9 audio with LibAtrac9</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>No function status changed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-394"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/394">#394</a> <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>: the audio job manager's instances and batches, without decoding yet</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>System calls: sceAjmInitialize; sceAjmFinalize; sceAjmModuleRegister; sceAjmModuleUnregister; sceAjmInstanceCreate; sceAjmInstanceDestroy (and 6 more).</li>
+<li>Tests: 2 synthetic <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> test(s); the effect on the real boot is measured after merge, so this is not a boot result.</li>
+<li>Left unresolved: ATRAC9 decoding (stops by name; needs a decoder); other codecs, resampling, the statistics instance.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-395"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/395">#395</a> gnm: skip an indexed draw's packets</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>System calls: sceGnmSubmitCommandBuffers.</li>
+<li>Tests: 2 synthetic <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> test(s); the effect on the real boot is measured after merge, so this is not a boot result.</li>
+<li>Left unresolved: drawing these draws (the renderer).</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-396"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/396">#396</a> <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>: the splash screen and the system status</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>System calls: sceSystemServiceHideSplashScreen; sceSystemServiceGetStatus.</li>
+<li>Tests: 2 synthetic <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> test(s); the effect on the real boot is measured after merge, so this is not a boot result.</li>
+<li>Left unresolved: the status struct's reserved tail size (not written); system events (none offline).</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-405"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/405">#405</a> <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>: offline trophies, and PlayGo's install speed</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>No function status changed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-397"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/397">#397</a> test: wait for the exiting thread by time, not by a count of yields</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>System calls: scePthreadExit.</li>
+<li>Tests: 1 synthetic <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> test(s); the effect on the real boot is measured after merge, so this is not a boot result.</li>
+<li>Left unresolved: none.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-406"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/406">#406</a> <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>: play the title's sound on the host (--audio host)</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>No function status changed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-419"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/419">#419</a> <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>: the movie player (libSceAvPlayer), decoding with FFmpeg</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>No function status changed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-420"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/420">#420</a> <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>: the movie player's sound port (1024 samples, formats 0 to 5)</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>No function status changed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-422"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/422">#422</a> <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>: sceKernelQueryMemoryProtection answers start and end</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>System calls: sceKernelQueryMemoryProtection.</li>
+<li>Tests: 1 synthetic <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> test(s); the effect on the real boot is measured after merge, so this is not a boot result.</li>
+<li>Left unresolved: addresses outside the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>'s direct and flexible mappings.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-423"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/423">#423</a> <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>: sceKernelMapDirectMemory accepts no-overwrite (0x80)</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>System calls: sceKernelMapDirectMemory.</li>
+<li>Tests: 1 synthetic <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> test(s); the effect on the real boot is measured after merge, so this is not a boot result.</li>
+<li>Left unresolved: fixed-address maps (0x10); a second GPU-visible map of one range.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-426"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/426">#426</a> <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>: semaphores with priority order wake the best-priority waiter</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>No function status changed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-431"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/431">#431</a> <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>: host controller input for libScePad (--input none|host)</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>No function status changed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-448"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/448">#448</a> <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>: scePlayGoSetInstallSpeed accepts the speed without storing it</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>No function status changed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-449"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/449">#449</a> syslib: sceKernelFtruncate and sceKernelRename</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>System calls: sceKernelFtruncate; sceKernelRename.</li>
+<li>Tests: 2 synthetic <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> test(s); the effect on the real boot is measured after merge, so this is not a boot result.</li>
+<li>Left unresolved: other host errors stop by name.</li>
+</ul></article></section>
+<section class="wk-devlog-section" data-section="decompilation"><h2 id="decompilation-and-verified-functions">Decompilation and <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> functions</h2>
+<article class="wk-milestone" data-key="w45-decompilation"><p><strong>Replaced and checked functions, mostly <a href="https://github.com/evill33t">@evill33t</a>'s.</strong> <em>Infrastructure for the decompilation; no new function reached <code>verified</code> status (the merged function table shows none this week).</em></p>
+<ul>
+<li>Render: the GPU library's command packets, shader preparation and upload, swap chain set-up, present and clean-up, command-buffer submit, context sections, draw calls and register packets, checked against the original with <code>verify.py</code> (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/208">#208</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/263">#263</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/279">#279</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/286">#286</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/287">#287</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/325">#325</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/326">#326</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/354">#354</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/359">#359</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/360">#360</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/361">#361</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/363">#363</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/364">#364</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/365">#365</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/411">#411</a>), and record helpers <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/293">#293</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/321">#321</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/322">#322</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/323">#323</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/324">#324</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/327">#327</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/357">#357</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/358">#358</a>.</li>
+<li>Engine, kernel, audio, camera and frame timing replacements: string and case helpers, handle tables, owner storage, wrappers for semaphores, mutexes and files, FMOD callbacks and helpers, follow-camera getters, the monotonic microsecond clock <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/103">#103</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/114">#114</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/125">#125</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/271">#271</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/272">#272</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/274">#274</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/275">#275</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/276">#276</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/280">#280</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/281">#281</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/282">#282</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/283">#283</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/284">#284</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/285">#285</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/288">#288</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/320">#320</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/336">#336</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/337">#337</a>. Several were carried by the maintainer from the contributor's original pull requests, credited in each title.</li>
+<li><a href="https://github.com/gabee12">@gabee12</a>'s name for the mouse initialization function landed as <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/270">#270</a> (from #73).</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-270"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/270">#270</a> input: name 0x02a8c420 input_initialize_mouse_for_initial_user (from #73 by @gabee12)</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-03.</p>
+<ul>
+<li>Named: <code>input_initialize_mouse_for_initial_user</code> (<code>0x02a8c420</code>).</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-271"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/271">#271</a> kernel: replace the audio semaphore wrapper lifecycle (from #111 by @evill33t)</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-03.</p>
+<ul>
+<li>Named: <code>kernel_semaphore_create</code> (<code>0x0111ad10</code>); <code>kernel_semaphore_destroy</code> (<code>0x0111ad80</code>); <code>kernel_semaphore_wait</code> (<code>0x0111ada0</code>); <code>kernel_semaphore_signal</code> (<code>0x0111adc0</code>).</li>
+<li>Replaced: <code>kernel_semaphore_create</code> (<code>0x0111ad10</code>); <code>kernel_semaphore_destroy</code> (<code>0x0111ad80</code>); <code>kernel_semaphore_wait</code> (<code>0x0111ada0</code>); <code>kernel_semaphore_signal</code> (<code>0x0111adc0</code>).</li>
+<li>Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>: <code>kernel_semaphore_create</code> (<code>0x0111ad10</code>); <code>kernel_semaphore_destroy</code> (<code>0x0111ad80</code>); <code>kernel_semaphore_wait</code> (<code>0x0111ada0</code>); <code>kernel_semaphore_signal</code> (<code>0x0111adc0</code>).</li>
+<li>Differential verification: 4 function(s), 88 of 88 cases passed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-272"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/272">#272</a> audio: replace the FMOD thread affinity lookup (from #106 by @evill33t)</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-03.</p>
+<ul>
+<li>Named: <code>audio_fmod_thread_affinity_lookup</code> (<code>0x0111a8c0</code>).</li>
+<li>Replaced: <code>audio_fmod_thread_affinity_lookup</code> (<code>0x0111a8c0</code>).</li>
+<li>Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>: <code>audio_fmod_thread_affinity_lookup</code> (<code>0x0111a8c0</code>).</li>
+<li>Differential verification: 1 function(s), 21 of 21 cases passed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-274"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/274">#274</a> engine: replace signed byte string comparisons (from #107 by @evill33t)</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-03.</p>
+<ul>
+<li>Named: <code>engine_compare_signed_strings</code> (<code>0x011c4970</code>); <code>engine_compare_signed_prefix</code> (<code>0x011c4990</code>).</li>
+<li>Replaced: <code>engine_compare_signed_strings</code> (<code>0x011c4970</code>); <code>engine_compare_signed_prefix</code> (<code>0x011c4990</code>).</li>
+<li>Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>: <code>engine_compare_signed_strings</code> (<code>0x011c4970</code>); <code>engine_compare_signed_prefix</code> (<code>0x011c4990</code>).</li>
+<li>Differential verification: 2 function(s), 42 of 42 cases passed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-275"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/275">#275</a> kernel: replace the recursive mutex wrapper lifecycle (from #108 by @evill33t)</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-03.</p>
+<ul>
+<li>Named: <code>kernel_mutex_create</code> (<code>0x0111abb0</code>); <code>kernel_mutex_destroy</code> (<code>0x0111ac80</code>); <code>kernel_mutex_lock</code> (<code>0x0111acd0</code>); <code>kernel_mutex_unlock</code> (<code>0x0111acf0</code>).</li>
+<li>Replaced: <code>kernel_mutex_create</code> (<code>0x0111abb0</code>); <code>kernel_mutex_destroy</code> (<code>0x0111ac80</code>); <code>kernel_mutex_lock</code> (<code>0x0111acd0</code>); <code>kernel_mutex_unlock</code> (<code>0x0111acf0</code>).</li>
+<li>Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>: <code>kernel_mutex_create</code> (<code>0x0111abb0</code>); <code>kernel_mutex_destroy</code> (<code>0x0111ac80</code>); <code>kernel_mutex_lock</code> (<code>0x0111acd0</code>); <code>kernel_mutex_unlock</code> (<code>0x0111acf0</code>).</li>
+<li>Differential verification: 4 function(s), 83 of 83 cases passed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-276"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/276">#276</a> engine: replace handle-table entry resolution (from #110 by @evill33t)</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-03.</p>
+<ul>
+<li>Named: <code>engine_entry_manager_resolve</code> (<code>0x01314320</code>).</li>
+<li>Replaced: <code>engine_entry_manager_resolve</code> (<code>0x01314320</code>).</li>
+<li>Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>: <code>engine_entry_manager_resolve</code> (<code>0x01314320</code>).</li>
+<li>Differential verification: 1 function(s), 25 of 25 cases passed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-208"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/208">#208</a> render: verify command packets</strong>, by <a href="https://github.com/evill33t">@evill33t</a>. Merged 2026-11-04.</p>
+<ul>
+<li>Named: <code>render_command_emit_counter_operation</code> (<code>0x01477b30</code>); <code>render_command_prepare_submission</code> (<code>0x014784a0</code>).</li>
+<li>Replaced: <code>render_command_emit_counter_operation</code> (<code>0x01477b30</code>); <code>render_command_prepare_submission</code> (<code>0x014784a0</code>).</li>
+<li>Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>: <code>render_command_emit_counter_operation</code> (<code>0x01477b30</code>); <code>render_command_prepare_submission</code> (<code>0x014784a0</code>).</li>
+<li>Differential verification: 2 function(s), 17 of 17 cases passed.</li>
+<li>Capture sets used: 2.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-279"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/279">#279</a> render: verify pool counter (from #209 by @evill33t)</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-04.</p>
+<ul>
+<li>Named: <code>render_read_present_pool_counter</code> (<code>0x0247eb80</code>).</li>
+<li>Replaced: <code>render_read_present_pool_counter</code> (<code>0x0247eb80</code>).</li>
+<li>Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>: <code>render_read_present_pool_counter</code> (<code>0x0247eb80</code>).</li>
+<li>Differential verification: 1 function(s), 18 of 18 cases passed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-280"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/280">#280</a> camera: replace follow-camera pitch and yaw getters (from #109 by @evill33t)</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-04.</p>
+<ul>
+<li>Named: <code>camera_follow_pitch</code> (<code>0x0183fad0</code>); <code>camera_follow_yaw</code> (<code>0x0183fb20</code>).</li>
+<li>Replaced: <code>camera_follow_pitch</code> (<code>0x0183fad0</code>); <code>camera_follow_yaw</code> (<code>0x0183fb20</code>).</li>
+<li>Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>: <code>camera_follow_pitch</code> (<code>0x0183fad0</code>); <code>camera_follow_yaw</code> (<code>0x0183fb20</code>).</li>
+<li>Differential verification: 2 function(s), 62 of 62 cases passed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-281"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/281">#281</a> engine: replace in-place ASCII case conversions (from #119 by @evill33t)</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-04.</p>
+<ul>
+<li>Named: <code>engine_ascii_to_upper_in_place</code> (<code>0x011c4910</code>); <code>engine_ascii_to_lower_in_place</code> (<code>0x011c4940</code>).</li>
+<li>Replaced: <code>engine_ascii_to_upper_in_place</code> (<code>0x011c4910</code>); <code>engine_ascii_to_lower_in_place</code> (<code>0x011c4940</code>).</li>
+<li>Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>: <code>engine_ascii_to_upper_in_place</code> (<code>0x011c4910</code>); <code>engine_ascii_to_lower_in_place</code> (<code>0x011c4940</code>).</li>
+<li>Differential verification: 2 function(s), 60 of 60 cases passed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-282"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/282">#282</a> engine: replace case-insensitive string comparison (from #120 by @evill33t)</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-04.</p>
+<ul>
+<li>Named: <code>engine_compare_ascii_ignoring_case</code> (<code>0x011c49c0</code>).</li>
+<li>Replaced: <code>engine_compare_ascii_ignoring_case</code> (<code>0x011c49c0</code>).</li>
+<li>Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>: <code>engine_compare_ascii_ignoring_case</code> (<code>0x011c49c0</code>).</li>
+<li>Differential verification: 1 function(s), 49 of 49 cases passed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-283"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/283">#283</a> kernel: replace the file wrapper cluster (from #122 by @evill33t)</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-04.</p>
+<ul>
+<li>Named: <code>kernel_file_open</code> (<code>0x0111a620</code>); <code>kernel_file_close</code> (<code>0x0111a6b0</code>); <code>kernel_file_read_count</code> (<code>0x0111a6e0</code>); <code>kernel_file_seek_absolute</code> (<code>0x0111a720</code>).</li>
+<li>Replaced: <code>kernel_file_open</code> (<code>0x0111a620</code>); <code>kernel_file_close</code> (<code>0x0111a6b0</code>); <code>kernel_file_read_count</code> (<code>0x0111a6e0</code>); <code>kernel_file_seek_absolute</code> (<code>0x0111a720</code>).</li>
+<li>Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>: <code>kernel_file_open</code> (<code>0x0111a620</code>); <code>kernel_file_close</code> (<code>0x0111a6b0</code>); <code>kernel_file_read_count</code> (<code>0x0111a6e0</code>); <code>kernel_file_seek_absolute</code> (<code>0x0111a720</code>).</li>
+<li>Differential verification: 4 function(s), 114 of 114 cases passed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-284"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/284">#284</a> engine: replace guarded wide-string initialization and destruction (from #123 by @evill33t)</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-04.</p>
+<ul>
+<li>Named: <code>engine_initialize_static_wide_string_0217ffb0</code> (<code>0x0217ffb0</code>); <code>engine_wide_string_destroy</code> (<code>0x02a44140</code>).</li>
+<li>Replaced: <code>engine_initialize_static_wide_string_0217ffb0</code> (<code>0x0217ffb0</code>); <code>engine_wide_string_destroy</code> (<code>0x02a44140</code>).</li>
+<li>Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>: <code>engine_initialize_static_wide_string_0217ffb0</code> (<code>0x0217ffb0</code>); <code>engine_wide_string_destroy</code> (<code>0x02a44140</code>).</li>
+<li>Differential verification: 2 function(s), 58 of 58 cases passed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-285"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/285">#285</a> engine: replace owner storage helpers (from #124 by @evill33t)</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-04.</p>
+<ul>
+<li>Named: <code>engine_release_owner_storage</code> (<code>0x0132c590</code>); <code>engine_resize_owner_storage</code> (<code>0x0132c6c0</code>).</li>
+<li>Replaced: <code>engine_release_owner_storage</code> (<code>0x0132c590</code>); <code>engine_resize_owner_storage</code> (<code>0x0132c6c0</code>).</li>
+<li>Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>: <code>engine_release_owner_storage</code> (<code>0x0132c590</code>); <code>engine_resize_owner_storage</code> (<code>0x0132c6c0</code>).</li>
+<li>Differential verification: 2 function(s), 65 of 65 cases passed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-286"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/286">#286</a> render: verify present record consumer (from #259 by @evill33t)</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-04.</p>
+<ul>
+<li>Named: <code>render_present_record_consume</code> (<code>0x02ab5a70</code>).</li>
+<li>Replaced: <code>render_present_record_consume</code> (<code>0x02ab5a70</code>).</li>
+<li>Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>: <code>render_present_record_consume</code> (<code>0x02ab5a70</code>).</li>
+<li>Differential verification: 1 function(s), 24 of 24 cases passed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-287"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/287">#287</a> render: verify swap chain present (from #267 by @evill33t)</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-04.</p>
+<ul>
+<li>Named: <code>render_swap_chain_present_mode</code> (<code>0x02ad5dd0</code>); <code>render_swap_chain_submit</code> (<code>0x02ad6e50</code>).</li>
+<li>Replaced: <code>render_swap_chain_present_mode</code> (<code>0x02ad5dd0</code>); <code>render_swap_chain_submit</code> (<code>0x02ad6e50</code>).</li>
+<li>Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>: <code>render_swap_chain_present_mode</code> (<code>0x02ad5dd0</code>); <code>render_swap_chain_submit</code> (<code>0x02ad6e50</code>).</li>
+<li>Differential verification: 2 function(s), 72 of 72 cases passed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-288"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/288">#288</a> engine: replace the string length helper (from #117 by @evill33t)</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-04.</p>
+<ul>
+<li>Named: <code>engine_string_length</code> (<code>0x011c47f0</code>).</li>
+<li>Replaced: <code>engine_string_length</code> (<code>0x011c47f0</code>).</li>
+<li>Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>: <code>engine_string_length</code> (<code>0x011c47f0</code>).</li>
+<li>Differential verification: 1 function(s), 30 of 30 cases passed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-103"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/103">#103</a> frame_timing: replace the monotonic microsecond clock</strong>, by <a href="https://github.com/evill33t">@evill33t</a>. Merged 2026-11-04.</p>
+<ul>
+<li>Named: <code>frame_timing_get_monotonic_us</code> (<code>0x0111a760</code>).</li>
+<li>Replaced: <code>frame_timing_get_monotonic_us</code> (<code>0x0111a760</code>).</li>
+<li>Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>: <code>frame_timing_get_monotonic_us</code> (<code>0x0111a760</code>).</li>
+<li>Differential verification: 2 function(s), 40 of 40 cases passed.</li>
+<li>Capture sets used: 1.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-293"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/293">#293</a> render: replace record auxiliary predicate (from #266 by @evill33t)</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-04.</p>
+<ul>
+<li>Named: <code>render_record_auxiliary_predicate</code> (<code>0x02abb4f0</code>).</li>
+<li>Replaced: <code>render_record_auxiliary_predicate</code> (<code>0x02abb4f0</code>).</li>
+<li>Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>: <code>render_record_auxiliary_predicate</code> (<code>0x02abb4f0</code>).</li>
+<li>Differential verification: 1 function(s), 64 of 64 cases passed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-114"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/114">#114</a> audio: replace FMOD output descriptor callbacks</strong>, by <a href="https://github.com/evill33t">@evill33t</a>. Merged 2026-11-05.</p>
+<ul>
+<li>Named: <code>audio_fmod_output_driver_count</code> (<code>0x0111b060</code>); <code>audio_fmod_output_defaults</code> (<code>0x0111b0b0</code>).</li>
+<li>Replaced: <code>audio_fmod_output_driver_count</code> (<code>0x0111b060</code>); <code>audio_fmod_output_defaults</code> (<code>0x0111b0b0</code>).</li>
+<li>Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>: <code>audio_fmod_output_driver_count</code> (<code>0x0111b060</code>); <code>audio_fmod_output_defaults</code> (<code>0x0111b0b0</code>).</li>
+<li>Differential verification: 4 function(s), 122 of 122 cases passed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-320"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/320">#320</a> audio: replace FMOD string copy helpers (from #116 by @evill33t)</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-05.</p>
+<ul>
+<li>Named: <code>audio_fmod_string_copy</code> (<code>0x011c4810</code>); <code>audio_fmod_string_copy_counted</code> (<code>0x011c4840</code>).</li>
+<li>Replaced: <code>audio_fmod_string_copy</code> (<code>0x011c4810</code>); <code>audio_fmod_string_copy_counted</code> (<code>0x011c4840</code>).</li>
+<li>Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>: <code>audio_fmod_string_copy</code> (<code>0x011c4810</code>); <code>audio_fmod_string_copy_counted</code> (<code>0x011c4840</code>).</li>
+<li>Differential verification: 2 function(s), 94 of 94 cases passed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-321"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/321">#321</a> render: replace record mapping word (from #212 by @evill33t)</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-05.</p>
+<ul>
+<li>Named: <code>render_pack_record_mapping_word</code> (<code>0x01471310</code>); <code>render_read_record_mapping_word</code> (<code>0x01486cf0</code>).</li>
+<li>Replaced: <code>render_pack_record_mapping_word</code> (<code>0x01471310</code>); <code>render_read_record_mapping_word</code> (<code>0x01486cf0</code>).</li>
+<li>Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>: <code>render_pack_record_mapping_word</code> (<code>0x01471310</code>); <code>render_read_record_mapping_word</code> (<code>0x01486cf0</code>).</li>
+<li>Differential verification: 2 function(s), 721 of 721 cases passed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-322"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/322">#322</a> render: replace record tuple (from #223 by @evill33t)</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-05.</p>
+<ul>
+<li>Named: <code>render_record_apply_parameter_tuple</code> (<code>0x0149c850</code>); <code>render_record_tuple_parameter_supported</code> (<code>0x0149e900</code>); <code>render_record_tuple_transform_classification</code> (<code>0x0149e960</code>); <code>render_record_tuple_classification_group</code> (<code>0x0149ea20</code>); <code>render_record_tuple_alternate_classification</code> (<code>0x0149ea70</code>).</li>
+<li>Replaced: <code>render_record_apply_parameter_tuple</code> (<code>0x0149c850</code>); <code>render_record_tuple_parameter_supported</code> (<code>0x0149e900</code>); <code>render_record_tuple_transform_classification</code> (<code>0x0149e960</code>); <code>render_record_tuple_classification_group</code> (<code>0x0149ea20</code>); <code>render_record_tuple_alternate_classification</code> (<code>0x0149ea70</code>).</li>
+<li>Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>: <code>render_record_apply_parameter_tuple</code> (<code>0x0149c850</code>); <code>render_record_tuple_parameter_supported</code> (<code>0x0149e900</code>); <code>render_record_tuple_transform_classification</code> (<code>0x0149e960</code>); <code>render_record_tuple_classification_group</code> (<code>0x0149ea20</code>); <code>render_record_tuple_alternate_classification</code> (<code>0x0149ea70</code>).</li>
+<li>Differential verification: 5 function(s), 1652 of 1652 cases passed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-323"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/323">#323</a> render: replace second auxiliary size (from #228 by @evill33t)</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-05.</p>
+<ul>
+<li>Named: <code>render_calculate_second_auxiliary</code> (<code>0x0149e570</code>).</li>
+<li>Replaced: <code>render_calculate_second_auxiliary</code> (<code>0x0149e570</code>).</li>
+<li>Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>: <code>render_calculate_second_auxiliary</code> (<code>0x0149e570</code>).</li>
+<li>Differential verification: 1 function(s), 78 of 78 cases passed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-324"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/324">#324</a> render: replace record fields (from #236 by @evill33t)</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-05.</p>
+<ul>
+<li>Named: <code>render_record_set_word_0c_fields</code> (<code>0x01486520</code>); <code>render_record_set_word_04_repeated_field</code> (<code>0x014866e0</code>); <code>render_record_set_word_08_low22</code> (<code>0x01486710</code>); <code>render_record_set_word_14_second_low5_field</code> (<code>0x01486760</code>); <code>render_record_set_first_auxiliary_flag</code> (<code>0x014867c0</code>); <code>render_record_set_second_auxiliary_flag</code> (<code>0x014867e0</code>).</li>
+<li>Replaced: <code>render_record_set_word_0c_fields</code> (<code>0x01486520</code>); <code>render_record_set_word_04_repeated_field</code> (<code>0x014866e0</code>); <code>render_record_set_word_08_low22</code> (<code>0x01486710</code>); <code>render_record_set_word_14_second_low5_field</code> (<code>0x01486760</code>); <code>render_record_set_first_auxiliary_flag</code> (<code>0x014867c0</code>); <code>render_record_set_second_auxiliary_flag</code> (<code>0x014867e0</code>).</li>
+<li>Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>: <code>render_record_set_word_0c_fields</code> (<code>0x01486520</code>); <code>render_record_set_word_04_repeated_field</code> (<code>0x014866e0</code>); <code>render_record_set_word_08_low22</code> (<code>0x01486710</code>); <code>render_record_set_word_14_second_low5_field</code> (<code>0x01486760</code>); <code>render_record_set_first_auxiliary_flag</code> (<code>0x014867c0</code>); <code>render_record_set_second_auxiliary_flag</code> (<code>0x014867e0</code>).</li>
+<li>Differential verification: 7 function(s), 210 of 210 cases passed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-325"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/325">#325</a> render: verify preparation packets (from #210 by @evill33t)</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-05.</p>
+<ul>
+<li>Named: <code>render_emit_present_preparation_scalar</code> (<code>0x01473590</code>); <code>render_emit_present_preparation_byte</code> (<code>0x014735f0</code>).</li>
+<li>Replaced: <code>render_emit_present_preparation_scalar</code> (<code>0x01473590</code>); <code>render_emit_present_preparation_byte</code> (<code>0x014735f0</code>).</li>
+<li>Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>: <code>render_emit_present_preparation_scalar</code> (<code>0x01473590</code>); <code>render_emit_present_preparation_byte</code> (<code>0x014735f0</code>).</li>
+<li>Differential verification: 2 function(s), 38 of 38 cases passed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-326"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/326">#326</a> render: verify last record helpers (from #211 by @evill33t)</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-05.</p>
+<ul>
+<li>Named: <code>render_set_present_last_record_indices</code> (<code>0x014721d0</code>); <code>render_emit_present_last_record_packet</code> (<code>0x014769e0</code>); <code>render_set_present_last_record_depth_compress_disable</code> (<code>0x01485070</code>); <code>render_set_present_last_record_stencil_compress_disable</code> (<code>0x01485080</code>); <code>render_reset_present_preparation_dirty</code> (<code>0x02ad2c30</code>).</li>
+<li>Replaced: <code>render_set_present_last_record_indices</code> (<code>0x014721d0</code>); <code>render_emit_present_last_record_packet</code> (<code>0x014769e0</code>); <code>render_set_present_last_record_depth_compress_disable</code> (<code>0x01485070</code>); <code>render_set_present_last_record_stencil_compress_disable</code> (<code>0x01485080</code>); <code>render_reset_present_preparation_dirty</code> (<code>0x02ad2c30</code>).</li>
+<li>Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>: <code>render_set_present_last_record_indices</code> (<code>0x014721d0</code>); <code>render_emit_present_last_record_packet</code> (<code>0x014769e0</code>); <code>render_set_present_last_record_depth_compress_disable</code> (<code>0x01485070</code>); <code>render_set_present_last_record_stencil_compress_disable</code> (<code>0x01485080</code>); <code>render_reset_present_preparation_dirty</code> (<code>0x02ad2c30</code>).</li>
+<li>Differential verification: 5 function(s), 118 of 118 cases passed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-327"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/327">#327</a> render: replace record encoding (from #261 by @evill33t)</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-05.</p>
+<ul>
+<li>Named: <code>render_record_encoding_metadata</code> (<code>0x01471730</code>); <code>render_record_encoding_components</code> (<code>0x014717a0</code>); <code>render_record_encoding_category</code> (<code>0x014719a0</code>); <code>render_record_set_encoding</code> (<code>0x01486540</code>).</li>
+<li>Replaced: <code>render_record_encoding_metadata</code> (<code>0x01471730</code>); <code>render_record_encoding_components</code> (<code>0x014717a0</code>); <code>render_record_encoding_category</code> (<code>0x014719a0</code>); <code>render_record_set_encoding</code> (<code>0x01486540</code>).</li>
+<li>Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>: <code>render_record_encoding_metadata</code> (<code>0x01471730</code>); <code>render_record_encoding_components</code> (<code>0x014717a0</code>); <code>render_record_encoding_category</code> (<code>0x014719a0</code>); <code>render_record_set_encoding</code> (<code>0x01486540</code>).</li>
+<li>Differential verification: 4 function(s), 536 of 536 cases passed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-263"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/263">#263</a> render: verify shader preparation</strong>, by <a href="https://github.com/evill33t">@evill33t</a>. Merged 2026-11-05.</p>
+<ul>
+<li>Named: <code>render_flush_shader_preparation</code> (<code>0x02ab9850</code>).</li>
+<li>Replaced: <code>render_flush_shader_preparation</code> (<code>0x02ab9850</code>).</li>
+<li>Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>: <code>render_flush_shader_preparation</code> (<code>0x02ab9850</code>).</li>
+<li>Differential verification: 2 function(s), 140 of 140 cases passed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-336"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/336">#336</a> engine: replace the ordered word product stores (from #115 by @evill33t)</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-05.</p>
+<ul>
+<li>Named: <code>engine_store_word_product</code> (<code>0x011c4510</code>).</li>
+<li>Replaced: <code>engine_store_word_product</code> (<code>0x011c4510</code>).</li>
+<li>Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>: <code>engine_store_word_product</code> (<code>0x011c4510</code>).</li>
+<li>Differential verification: 1 function(s), 32 of 32 cases passed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-337"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/337">#337</a> engine: replace string append helpers (from #118 by @evill33t)</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-05.</p>
+<ul>
+<li>Named: <code>engine_string_append</code> (<code>0x011c4870</code>); <code>engine_string_append_counted</code> (<code>0x011c48b0</code>).</li>
+<li>Replaced: <code>engine_string_append</code> (<code>0x011c4870</code>); <code>engine_string_append_counted</code> (<code>0x011c48b0</code>).</li>
+<li>Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>: <code>engine_string_append</code> (<code>0x011c4870</code>); <code>engine_string_append_counted</code> (<code>0x011c48b0</code>).</li>
+<li>Differential verification: 2 function(s), 80 of 80 cases passed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-125"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/125">#125</a> engine: replace ASCII lowercase byte mapping</strong>, by <a href="https://github.com/evill33t">@evill33t</a>. Merged 2026-11-06.</p>
+<ul>
+<li>Named: <code>engine_ascii_to_lower</code> (<code>0x011c48f0</code>).</li>
+<li>Replaced: <code>engine_ascii_to_lower</code> (<code>0x011c48f0</code>).</li>
+<li>Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>: <code>engine_ascii_to_lower</code> (<code>0x011c48f0</code>).</li>
+<li>Differential verification: 2 function(s), 582 of 582 cases passed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-354"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/354">#354</a> render: verify resource tail (from #260 by @evill33t)</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>Named: <code>render_present_last_record_consume</code> (<code>0x02ab6810</code>).</li>
+<li>Replaced: <code>render_present_last_record_consume</code> (<code>0x02ab6810</code>).</li>
+<li>Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>: <code>render_present_last_record_consume</code> (<code>0x02ab6810</code>).</li>
+<li>Differential verification: 1 function(s), 56 of 56 cases passed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-357"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/357">#357</a> render: replace record offsets (from #255 by @evill33t)</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>Named: <code>render_compose_record_encoding_fields</code> (<code>0x014712d0</code>); <code>render_record_encoding_byte_flags</code> (<code>0x01471770</code>); <code>render_record_descriptor_level_count</code> (<code>0x01489910</code>); <code>render_record_descriptor_count_exponent</code> (<code>0x01489940</code>); <code>render_record_descriptor_encoding</code> (<code>0x01489960</code>); <code>render_convert_record_descriptor_classification</code> (<code>0x0149cc60</code>).</li>
+<li>Replaced: <code>render_compose_record_encoding_fields</code> (<code>0x014712d0</code>); <code>render_record_encoding_byte_flags</code> (<code>0x01471770</code>); <code>render_record_descriptor_level_count</code> (<code>0x01489910</code>); <code>render_record_descriptor_count_exponent</code> (<code>0x01489940</code>); <code>render_record_descriptor_encoding</code> (<code>0x01489960</code>); <code>render_convert_record_descriptor_classification</code> (<code>0x0149cc60</code>).</li>
+<li>Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>: <code>render_compose_record_encoding_fields</code> (<code>0x014712d0</code>); <code>render_record_encoding_byte_flags</code> (<code>0x01471770</code>); <code>render_record_descriptor_level_count</code> (<code>0x01489910</code>); <code>render_record_descriptor_count_exponent</code> (<code>0x01489940</code>); <code>render_record_descriptor_encoding</code> (<code>0x01489960</code>); <code>render_convert_record_descriptor_classification</code> (<code>0x0149cc60</code>).</li>
+<li>Differential verification: 8 function(s), 427 of 427 cases passed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-358"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/358">#358</a> render: replace record parameters (from #222 by @evill33t)</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>Named: <code>render_record_apply_mapping</code> (<code>0x0149cb30</code>); <code>render_record_derive_parameter</code> (<code>0x02abaf10</code>).</li>
+<li>Replaced: <code>render_record_apply_mapping</code> (<code>0x0149cb30</code>); <code>render_record_derive_parameter</code> (<code>0x02abaf10</code>).</li>
+<li>Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>: <code>render_record_apply_mapping</code> (<code>0x0149cb30</code>); <code>render_record_derive_parameter</code> (<code>0x02abaf10</code>).</li>
+<li>Differential verification: 2 function(s), 622 of 622 cases passed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-359"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/359">#359</a> render: verify swap chain cleanup (from #244 by @evill33t)</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>Named: <code>render_clear_swap_chain_curve</code> (<code>0x02571c60</code>); <code>render_clear_swap_chain_cached_record</code> (<code>0x02572290</code>).</li>
+<li>Replaced: <code>render_clear_swap_chain_curve</code> (<code>0x02571c60</code>); <code>render_clear_swap_chain_cached_record</code> (<code>0x02572290</code>).</li>
+<li>Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>: <code>render_clear_swap_chain_curve</code> (<code>0x02571c60</code>); <code>render_clear_swap_chain_cached_record</code> (<code>0x02572290</code>).</li>
+<li>Differential verification: 2 function(s), 8 of 8 cases passed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-360"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/360">#360</a> render: verify command buffer submit (from #256 by @evill33t)</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>Named: <code>render_command_buffer_init</code> (<code>0x01471270</code>); <code>render_command_submit_present</code> (<code>0x02aafb30</code>); <code>render_command_submit_batch</code> (<code>0x02ab0ce0</code>); <code>render_command_submit_snapshot</code> (<code>0x02ab0e30</code>).</li>
+<li>Replaced: <code>render_command_buffer_init</code> (<code>0x01471270</code>); <code>render_command_submit_present</code> (<code>0x02aafb30</code>); <code>render_command_submit_batch</code> (<code>0x02ab0ce0</code>); <code>render_command_submit_snapshot</code> (<code>0x02ab0e30</code>).</li>
+<li>Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>: <code>render_command_buffer_init</code> (<code>0x01471270</code>); <code>render_command_submit_present</code> (<code>0x02aafb30</code>); <code>render_command_submit_batch</code> (<code>0x02ab0ce0</code>); <code>render_command_submit_snapshot</code> (<code>0x02ab0e30</code>).</li>
+<li>Differential verification: 4 function(s), 76 of 76 cases passed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-361"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/361">#361</a> render: verify swap chain setup (from #254 by @evill33t)</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>Named: <code>render_setup_swap_chain</code> (<code>0x02ad5e90</code>).</li>
+<li>Replaced: <code>render_setup_swap_chain</code> (<code>0x02ad5e90</code>).</li>
+<li>Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>: <code>render_setup_swap_chain</code> (<code>0x02ad5e90</code>).</li>
+<li>Differential verification: 1 function(s), 43 of 43 cases passed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-363"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/363">#363</a> render: verify shader upload (from #251 by @evill33t)</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>Named: <code>render_allocate_shader_upload</code> (<code>0x02aaddc0</code>).</li>
+<li>Replaced: <code>render_allocate_shader_upload</code> (<code>0x02aaddc0</code>).</li>
+<li>Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>: <code>render_allocate_shader_upload</code> (<code>0x02aaddc0</code>).</li>
+<li>Differential verification: 1 function(s), 40 of 40 cases passed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-364"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/364">#364</a> render: verify present parameters (from #232 by @evill33t)</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>Named: <code>render_set_screen_offset</code> (<code>0x01473650</code>); <code>render_set_guard_band_clip_adjust</code> (<code>0x014736d0</code>); <code>render_set_guard_band_discard_adjust</code> (<code>0x01473750</code>); <code>render_configure_viewport</code> (<code>0x014765e0</code>); <code>render_configure_screen_scissor</code> (<code>0x01476790</code>); <code>render_emit_pa_cl_vte_cntl</code> (<code>0x01476980</code>).</li>
+<li>Replaced: <code>render_set_screen_offset</code> (<code>0x01473650</code>); <code>render_set_guard_band_clip_adjust</code> (<code>0x014736d0</code>); <code>render_set_guard_band_discard_adjust</code> (<code>0x01473750</code>); <code>render_configure_viewport</code> (<code>0x014765e0</code>); <code>render_configure_screen_scissor</code> (<code>0x01476790</code>); <code>render_emit_pa_cl_vte_cntl</code> (<code>0x01476980</code>).</li>
+<li>Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>: <code>render_set_screen_offset</code> (<code>0x01473650</code>); <code>render_set_guard_band_clip_adjust</code> (<code>0x014736d0</code>); <code>render_set_guard_band_discard_adjust</code> (<code>0x01473750</code>); <code>render_configure_viewport</code> (<code>0x014765e0</code>); <code>render_configure_screen_scissor</code> (<code>0x01476790</code>); <code>render_emit_pa_cl_vte_cntl</code> (<code>0x01476980</code>).</li>
+<li>Differential verification: 7 function(s), 122 of 122 cases passed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-365"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/365">#365</a> render: verify context section (from #231 by @evill33t)</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>Named: <code>render_emit_present_context_section</code> (<code>0x01472870</code>).</li>
+<li>Replaced: <code>render_emit_present_context_section</code> (<code>0x01472870</code>).</li>
+<li>Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>: <code>render_emit_present_context_section</code> (<code>0x01472870</code>).</li>
+<li>Differential verification: 1 function(s), 28 of 28 cases passed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-411"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/411">#411</a> render: verify draw calls and register packets (from #233 by @evill33t)</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>Named: <code>render_set_cb_target_mask</code> (<code>0x01472fd0</code>); <code>render_set_cb_blend_control</code> (<code>0x01473090</code>); <code>render_set_cb_color_control</code> (<code>0x01473320</code>); <code>render_set_db_depth_control</code> (<code>0x014733a0</code>); <code>render_set_db_stencil_control</code> (<code>0x01473400</code>); <code>render_set_vgt_primitive_type</code> (<code>0x01473fe0</code>).</li>
+<li>Replaced: <code>render_set_cb_target_mask</code> (<code>0x01472fd0</code>); <code>render_set_cb_blend_control</code> (<code>0x01473090</code>); <code>render_set_cb_color_control</code> (<code>0x01473320</code>); <code>render_set_db_depth_control</code> (<code>0x014733a0</code>); <code>render_set_db_stencil_control</code> (<code>0x01473400</code>); <code>render_set_vgt_primitive_type</code> (<code>0x01473fe0</code>).</li>
+<li>Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>: <code>render_set_cb_target_mask</code> (<code>0x01472fd0</code>); <code>render_set_cb_blend_control</code> (<code>0x01473090</code>); <code>render_set_cb_color_control</code> (<code>0x01473320</code>); <code>render_set_db_depth_control</code> (<code>0x014733a0</code>); <code>render_set_db_stencil_control</code> (<code>0x01473400</code>); <code>render_set_vgt_primitive_type</code> (<code>0x01473fe0</code>).</li>
+<li>Differential verification: 12 function(s), 196 of 196 cases passed.</li>
+</ul></article></section>
+<section class="wk-devlog-section" data-section="tooling"><h2 id="tooling-and-automation">Tooling and automation</h2>
+<article class="wk-milestone" data-key="w45-tooling"><p><strong>Tooling.</strong> <em>Infrastructure only.</em></p>
+<ul>
+<li>CI runs once per pull request <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/384">#384</a>; branches merge <code>main</code> instead of rebasing, and <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> tests live in their own files under <code>test/syslib/</code> so parallel pull requests rarely conflict <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/407">#407</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/430">#430</a>.</li>
+<li>Boot records name a <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> stop as the outcome <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/304">#304</a>; <code>session_report --verify</code> takes a <code>verify.py</code> run's output <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/417">#417</a>; differential tools seed incoming registers and observe bounded callbacks <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/100">#100</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/221">#221</a>; executable bits restored <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/277">#277</a>; a status card in the README <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/383">#383</a>.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-277"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/277">#277</a> tools: restore the executable bit on check_agnostic.py and progress.py</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-03.</p>
+<ul>
+<li>No function status changed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-100"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/100">#100</a> tools: observe bounded overflow callback arguments</strong>, by <a href="https://github.com/evill33t">@evill33t</a>. Merged 2026-11-04.</p>
+<ul>
+<li>No function status changed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-221"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/221">#221</a> tools: seed incoming RAX in native differential calls</strong>, by <a href="https://github.com/evill33t">@evill33t</a>. Merged 2026-11-04.</p>
+<ul>
+<li>No function status changed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-295"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/295">#295</a> symbols: record a genuine boot of main: milestone audio (5 of 8)</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-04.</p>
+<ul>
+<li>No function status changed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-300"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/300">#300</a> symbols: record a genuine boot of main: milestone video out (6 of 8)</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-04.</p>
+<ul>
+<li>No function status changed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-304"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/304">#304</a> boot: record a <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> stop as the outcome; boot after #302 and #303</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-04.</p>
+<ul>
+<li>No function status changed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-308"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/308">#308</a> files: a writable /data scratch mount; scePthreadYield answers 0; record the boot</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-04.</p>
+<ul>
+<li>No function status changed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-306"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/306">#306</a> <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr>: remove redundant RAX setup and check entry flags</strong>, by <a href="https://github.com/evill33t">@evill33t</a>. Merged 2026-11-05.</p>
+<ul>
+<li>No function status changed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-307"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/307">#307</a> test: remove duplicate <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> path setup</strong>, by <a href="https://github.com/evill33t">@evill33t</a>. Merged 2026-11-05.</p>
+<ul>
+<li>No function status changed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-316"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/316">#316</a> renderer: phase 2 start, the <abbr title="Graphics Core Next, the AMD GPU architecture of the PS4.">GCN</abbr> shader decoder and shader census</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-05.</p>
+<ul>
+<li>No function status changed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-318"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/318">#318</a> metal: add a standalone offscreen Metal platform unit (from #213 by @evill33t)</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-05.</p>
+<ul>
+<li>No function status changed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-319"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/319">#319</a> renderer: phase 2, the <abbr title="Graphics Core Next, the AMD GPU architecture of the PS4.">GCN</abbr> to SPIR-V translator (straight-line compute)</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-05.</p>
+<ul>
+<li>No function status changed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-330"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/330">#330</a> renderer: branches and EXEC in the <abbr title="Graphics Core Next, the AMD GPU architecture of the PS4.">GCN</abbr> to SPIR-V translator</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-05.</p>
+<ul>
+<li>No function status changed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-331"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/331">#331</a> renderer: check translated shaders as Metal (SPIRV-Cross, macOS CI)</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-05.</p>
+<ul>
+<li>No function status changed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-332"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/332">#332</a> renderer: typed buffer loads and stores (32-bit float) in the <abbr title="Graphics Core Next, the AMD GPU architecture of the PS4.">GCN</abbr> translator</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-05.</p>
+<ul>
+<li>No function status changed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-333"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/333">#333</a> renderer: vertex and pixel shaders in the <abbr title="Graphics Core Next, the AMD GPU architecture of the PS4.">GCN</abbr> translator (first translated triangle)</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-05.</p>
+<ul>
+<li>No function status changed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-334"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/334">#334</a> renderer: a batch of arithmetic instructions in the <abbr title="Graphics Core Next, the AMD GPU architecture of the PS4.">GCN</abbr> translator</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-05.</p>
+<ul>
+<li>No function status changed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-335"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/335">#335</a> render: first map of the GPU library's packet writers (phase 3)</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-05.</p>
+<ul>
+<li>No function status changed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-291"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/291">#291</a> render: share packet capacity reservation</strong>, by <a href="https://github.com/evill33t">@evill33t</a>. Merged 2026-11-05.</p>
+<ul>
+<li>Differential verification: 4 function(s), 54 of 54 cases passed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-338"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/338">#338</a> boot: record the boot after #225, #226 and #315</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-05.</p>
+<ul>
+<li>No function status changed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-342"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/342">#342</a> renderer: a record of the GPU library's calls per command buffer</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-05.</p>
+<ul>
+<li>No function status changed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-343"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/343">#343</a> renderer: clip distances from pos1-pos3 in the <abbr title="Graphics Core Next, the AMD GPU architecture of the PS4.">GCN</abbr> translator</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-05.</p>
+<ul>
+<li>No function status changed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-344"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/344">#344</a> renderer: vertex and pixel shader register blocks in the call record</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-05.</p>
+<ul>
+<li>No function status changed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-345"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/345">#345</a> renderer: user data in the call record</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-05.</p>
+<ul>
+<li>No function status changed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-346"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/346">#346</a> renderer: guest addresses and per-stage push constants in the <abbr title="Graphics Core Next, the AMD GPU architecture of the PS4.">GCN</abbr> translator</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-05.</p>
+<ul>
+<li>No function status changed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-362"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/362">#362</a> test: cover shader preparation reset modes (from #350 by @evill33t)</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>No function status changed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-366"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/366">#366</a> boot: record the boot after #227, #229, #351 and #353</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>No function status changed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-368"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/368">#368</a> renderer: the draw executor runs recorded calls on a Vulkan GPU</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>No function status changed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-369"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/369">#369</a> renderer: run submitted buffers' recorded calls and show what was drawn at a flip</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>No function status changed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-371"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/371">#371</a> boot: record after PlayGo (#370): first flip, stop at sceUserServiceGetUserName</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>No function status changed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-374"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/374">#374</a> boot: record after #372 and #373: first flip, stop at constant command buffers</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>No function status changed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-383"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/383">#383</a> status card: a picture of where the project stands, in the README</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>No function status changed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-384"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/384">#384</a> ci: run once per pull request, not again for the branch push</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>No function status changed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-387"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/387">#387</a> boot: record after #376-#385: first flip, stop at sceNetEpollCreate</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>No function status changed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-401"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/401">#401</a> renderer: record the registers the GPU library sets, and the instance count</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>No function status changed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-407"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/407">#407</a> Fewer conflicts: merge main into branches, and tests in their own files</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>No function status changed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-408"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/408">#408</a> Boot record: the game keeps running until the time limit</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>No function status changed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-412"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/412">#412</a> renderer: record the shaders the game binds (sceGnmSetVsShader, sceGnmSetPsShader)</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>No function status changed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-414"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/414">#414</a> renderer: the GPU library's replacements report to the renderer</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>No function status changed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-415"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/415">#415</a> renderer: draw rect lists</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>No function status changed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-416"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/416">#416</a> renderer: observe setRenderTarget and the user-data writers</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>No function status changed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-417"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/417">#417</a> tools: session_report --verify takes a verify.py run's output</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>No function status changed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-418"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/418">#418</a> renderer: run compute dispatches</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>No function status changed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-421"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/421">#421</a> renderer: run-time stop channel, descriptor-format buffer accesses, 40-bit descriptor bases</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>No function status changed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-424"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/424">#424</a> renderer: compute shaders' storage images, and swizzled format loads</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>No function status changed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-425"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/425">#425</a> renderer: pixel position inputs, VCC outside compute, whole quad mode</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>No function status changed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-352"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/352">#352</a> test: derive packet fixture addresses from the <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr></strong>, by <a href="https://github.com/evill33t">@evill33t</a>. Merged 2026-11-06.</p>
+<ul>
+<li>Differential verification: 4 function(s), 54 of 54 cases passed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-427"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/427">#427</a> renderer: GFX7 tiled image layouts (linear, 1D and 2D thin)</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>No function status changed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-428"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/428">#428</a> renderer: images from guest texels, pixel shaders' image_load_mip</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>No function status changed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-429"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/429">#429</a> Boot record: 234 imports answered by the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr></strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>No function status changed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-430"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/430">#430</a> tools: test/syslib/ files count as <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> tests</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>No function status changed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-432"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/432">#432</a> renderer: image descriptors loaded from memory</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>No function status changed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-433"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/433">#433</a> renderer: image_sample with the shader's sampler (first non-black frame)</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>No function status changed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-434"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/434">#434</a> renderer: blending</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>No function status changed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-435"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/435">#435</a> renderer: depth targets, stencil writes, triangle strips</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>No function status changed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-436"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/436">#436</a> renderer: vertex shaders calling fetch shaders</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>No function status changed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-437"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/437">#437</a> renderer: format stores check only the format's selectors</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>No function status changed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-438"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/438">#438</a> renderer: GPU state carries over from buffer to buffer</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>No function status changed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-441"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/441">#441</a> renderer: the logo pass's user data, vertex colours and BC textures (first logo frame)</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>No function status changed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-439"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/439">#439</a> renderer: indexed draws</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>No function status changed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-440"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/440">#440</a> renderer: render targets keep their guest memory current</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>No function status changed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-442"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/442">#442</a> renderer: targets move only when needed; unset user data stops (title screen)</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>No function status changed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-443"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/443">#443</a> Boot record after the renderer work</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>No function status changed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-445"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/445">#445</a> README: rewritten, with the title screen our renderer draws</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>No function status changed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-447"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/447">#447</a> input: scripted controller input for unattended boots</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>No function status changed.</li>
+</ul></article></section>
+<section class="wk-devlog-section" data-section="documentation"><h2 id="documentation-and-website-changes">Documentation and website changes</h2>
+<article class="wk-milestone" data-key="w45-documentation"><p><strong>Documentation and website.</strong></p>
+<ul>
+<li>Paleblood: system pages kept in step with each merge <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/269">#269</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/278">#278</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/289">#289</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/294">#294</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/309">#309</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/311">#311</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/317">#317</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/328">#328</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/329">#329</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/340">#340</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/367">#367</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/409">#409</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/446">#446</a>; macOS adopted as a target alongside Linux <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/292">#292</a>; firmware libraries described as independent reverse engineering <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/356">#356</a>; the README rewritten around the title screen Paleblood's renderer draws <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/445">#445</a>.</li>
+<li>Wiki: the Runtime and system-call pages followed each merge; Milestones now opens with the renderer's frames, posted at full resolution with credit to the rights holders.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-269"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/269">#269</a> docs: an Engine system page; kernel: the current-thread handle</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-03.</p>
+<ul>
+<li>A new Engine system page (the fatal error report, singleton check, reference counting, and evill33t's stderr writer from #205), the kernel page's current-thread handle (#203), and the system index. No implementation changed.</li>
+<li>Pages: docs/systems/README.md; docs/systems/kernel.md; docs/systems/engine.md.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-273"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/273">#273</a> docs: regenerate system pages</strong>, by <a href="https://github.com/byrgenwerth-bot[bot]">@byrgenwerth-bot[bot]</a>. Merged 2026-11-03.</p>
+<ul>
+<li>Regenerated system pages: the function tables and progress summary follow symbols/ on main 78f4d72. No other text changed.</li>
+<li>Pages: docs/systems/README.md; docs/systems/input.md; docs/systems/kernel.md.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-278"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/278">#278</a> docs: system pages for the merged contributor work (audio, engine, kernel)</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-03.</p>
+<ul>
+<li>System pages for the merged contributor work: Audio (FMOD thread affinity lookup, #272), Engine (string comparisons #274, handle-table lookup #276), Kernel (FMOD semaphores #271 and recursive mutexes #275), with the function tables following symbols/ on main. No implementation changed.</li>
+<li>Pages: docs/systems/README.md; docs/systems/audio.md; docs/systems/engine.md; docs/systems/kernel.md.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-289"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/289">#289</a> docs: system pages for the work merged on 4 November</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-04.</p>
+<ul>
+<li>System pages for the work merged on 4 November: Render (command packets #208, pool counter #279, present record consumer #286, swap chain present #287), Camera (follow-camera pitch and yaw #280), Engine (string helpers #281 #282 #288, wide strings #284, owner storage #285), Kernel (file w…</li>
+<li>Pages: docs/systems/README.md; docs/systems/camera.md; docs/systems/engine.md; docs/systems/kernel.md; docs/systems/render.md.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-290"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/290">#290</a> docs: render: no hand-written byte count</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-04.</p>
+<ul>
+<li>Wording fix on the render page: the present-record consumer copies the record's payload (no hand-written byte count). No implementation changed.</li>
+<li>Pages: docs/systems/render.md.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-292"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/292">#292</a> docs: macOS is a target alongside Linux</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-04.</p>
+<ul>
+<li>The maintainer adopted macOS as a target alongside Linux: README and ARCHITECTURE now say graphics are rebuilt on Vulkan on Linux and Metal on macOS, that Linux stays the primary CI-tested platform, and that macOS-only code must not break Linux. This unblocks the macOS PRs #213, #214, #216 and \…</li>
+<li>Pages: README.md; docs/ARCHITECTURE.md.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-294"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/294">#294</a> docs: frame timing and render pages for #103 and #293</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-04.</p>
+<ul>
+<li>System pages: Frame timing notes the microsecond clock <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> in #103; Render covers the record auxiliary predicate (#293, from #266); the function tables follow symbols/ on main. No implementation changed.</li>
+<li>Pages: docs/systems/README.md; docs/systems/frame_timing.md; docs/systems/render.md.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-309"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/309">#309</a> docs: kernel: scePthreadYield answers zero (#308)</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-04.</p>
+<ul>
+<li>Kernel page: scePthreadYield now answers zero (#308), so the caveat that it is not implemented becomes a note explaining why zero is right under either signature. No implementation changed.</li>
+<li>Pages: docs/systems/kernel.md.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-311"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/311">#311</a> docs: loading: the PlayGo module loads (#310)</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-04.</p>
+<ul>
+<li>Loading page: the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> now stands in for the libScePlayGo system module (#310), so loading it succeeds; its five imported functions stop by name until implemented. No implementation changed.</li>
+<li>Pages: docs/systems/loading.md.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-305"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/305">#305</a> docs: clarify <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> evidence and <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> contracts</strong>, by <a href="https://github.com/evill33t">@evill33t</a>. Merged 2026-11-05.</p>
+<ul>
+<li>No function status changed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-317"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/317">#317</a> docs: render: the shader census (#316)</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-05.</p>
+<ul>
+<li>Render page: notes the shader census tool (#316), which decodes the shaders in your own copy and prints instruction counts only. No implementation changed.</li>
+<li>Pages: docs/systems/render.md.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-328"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/328">#328</a> docs: audio: the FMOD output callbacks (#114)</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-05.</p>
+<ul>
+<li>Audio page: the two FMOD output-device callbacks evill33t <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> in #114 (driver count; output defaults, whose sample-rate and speaker-mode meanings stay hypotheses). No implementation changed.</li>
+<li>Pages: docs/systems/audio.md; docs/systems/README.md.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-329"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/329">#329</a> docs: render: the record and clear functions (#321-#327)</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-05.</p>
+<ul>
+<li>Render page: the depth and stencil clear writers and resource-record functions evill33t <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> in #321 to #327; generated function tables refreshed on the audio page and the systems index. No implementation changed.</li>
+<li>Pages: docs/systems/README.md; docs/systems/audio.md; docs/systems/render.md.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-339"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/339">#339</a> docs: regenerate system pages</strong>, by <a href="https://github.com/byrgenwerth-bot[bot]">@byrgenwerth-bot[bot]</a>. Merged 2026-11-05.</p>
+<ul>
+<li>Regenerated system pages: the function tables and progress summary follow symbols/ on main 99a5ede. No other text changed.</li>
+<li>Pages: docs/systems/README.md; docs/systems/engine.md; docs/systems/render.md.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-340"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/340">#340</a> docs: system pages for the newly <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> engine and render functions</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-05.</p>
+<ul>
+<li>Engine and render pages: the functions evill33t <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> in #115, #118, #263 and #291; generated function tables refreshed on the systems index. No implementation changed.</li>
+<li>Pages: docs/systems/README.md; docs/systems/engine.md; docs/systems/render.md.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-341"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/341">#341</a> render: the GPU library's key entry points and how the renderer attaches</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-05.</p>
+<ul>
+<li>Renderer plan, phase 3: the GPU library's key entry points identified from their disassembly, the shader register blocks found in the game's shader files (and what pos1 carries), and how the renderer attaches to the <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> replacements as an observer. No implementation changed.</li>
+<li>Pages: docs/RENDERER.md.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-349"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/349">#349</a> render: executor step 1 done, with the boot's maps and the import's measured cost</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-05.</p>
+<ul>
+<li>Renderer plan: the draw executor's guest-memory step marked done (#346, #348), with what a boot actually maps and the measured cost of giving the pool to the GPU (importing pins the whole 5 GiB pool; a sparse buffer is the refinement if it matters). No implementation changed.</li>
+<li>Pages: docs/RENDERER.md.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-356"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/356">#356</a> docs: firmware libraries as independent reverse engineering; the pinned patch XML's hash</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>CONTRIBUTING: independent reverse engineering includes the system libraries of your own console's firmware, named by SHA-256, facts only, your own code, never copied or attached. QUIRKS: the SHA-256 of the pinned community patch XML (e344639), and that any other patch file can differ. No implementa…</li>
+<li>Pages: CONTRIBUTING.md; QUIRKS.md.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-367"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/367">#367</a> docs: system pages for the newly merged render and engine functions</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>Render and engine pages: the functions evill33t <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> or <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> in this round (#125, #222, #231, #232, #244, #251, #254, #255, #256, #260, #350, merged as #354-#365); generated function tables refreshed on the systems index. No implementation changed.</li>
+<li>Pages: docs/systems/README.md; docs/systems/engine.md; docs/systems/render.md.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-409"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/409">#409</a> docs: the loading page's PlayGo calls are answered now</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>Loading page: the PlayGo calls are answered since #370 and #405 (every chunk installed, chunk count from the copy's playgo-manifest.xml, install speed recorded) instead of stopping by name. No implementation changed.</li>
+<li>Pages: docs/systems/loading.md.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-413"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/413">#413</a> docs: regenerate system pages</strong>, by <a href="https://github.com/byrgenwerth-bot[bot]">@byrgenwerth-bot[bot]</a>. Merged 2026-11-06.</p>
+<ul>
+<li>Regenerated system pages: the function tables and progress summary follow symbols/ on main 4c3e3da. No other text changed.</li>
+<li>Pages: docs/systems/README.md; docs/systems/render.md.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-446"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/446">#446</a> docs: system pages brought up to date with main</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-06.</p>
+<ul>
+<li>System pages brought up to date with main. Render: the GPU library's state setters and draw writers (#411, #364, #365), command buffers, swap chain, last present record, shader uploads and resource descriptors (#263, #291, #354, #357-#361, #363), and how they report to the renderer (#414,…</li>
+<li>Pages: docs/systems/audio.md; docs/systems/engine.md; docs/systems/input.md; docs/systems/kernel.md; docs/systems/loading.md; docs/systems/render.md.</li>
+</ul></article></section>
+<section class="wk-devlog-section" data-section="tests"><h2 id="tests-and-validation">Tests and validation</h2>
+<article class="wk-milestone" data-key="w45-tests"><p><strong>Tests and validation.</strong></p>
+<ul>
+<li>Every <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> call above carries synthetic tests (CI); these test the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>'s answers, not the real boot. Renderer changes are tested on a real GPU with every pixel checked, and mutants (deliberately broken versions) must fail.</li>
+<li>Game-execution evidence this week is the recorded boots of merged <code>main</code>: <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/295">#295</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/300">#300</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/304">#304</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/308">#308</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/310">#310</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/338">#338</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/366">#366</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/371">#371</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/374">#374</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/387">#387</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/408">#408</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/429">#429</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/443">#443</a>. The title screen and everything after it are the maintainer's local observations, compared locally with reference frames.</li>
+</ul></article></section>
+<section class="wk-devlog-section" data-section="blockers"><h2 id="blockers-and-next-steps">Blockers and next steps</h2>
+<article class="wk-milestone" data-key="w45-blockers"><p><strong>Blockers and next steps (at the end of the week).</strong></p>
+<ul>
+<li>Save data after "Play Offline" needed <code>sceKernelWrite</code>, open at the week's end as <a href="https://github.com/EzequielRindello">@EzequielRindello</a>'s <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/444">#444</a>; the menus after the title need more renderer features (8- and 16-bit buffer formats were next).</li>
+<li>The saved boot records run headless with no input, so none of the progress past the title shows in them yet.</li>
+<li>Speed: draws still wait for the GPU one at a time; batching is next.</li>
+</ul></article></section>
+<!-- hunters:ack:start -->
+<section class="hunters-ack" aria-label="Hunters Involved">
+</section>
+<!-- hunters:ack:end -->
+  
+  
+  
+  <nav class="wk-post-nav" aria-label="More posts">
+    <a class="wk-post-prev" href="../../../10/26/week-of-26-october-2026-85-merged-pull-requests/"><span>← Older</span><b>Week of 26 October 2026: 85 merged pull requests</b></a>
+    <a class="wk-post-next" href="../../09/week-of-9-november-2026-past-the-title-to-the-first-3d-scene/"><span>Newer →</span><b>Week of 9 November 2026: past the title to the first 3D scene</b></a>
+  </nav>
+  
+  <p class="wk-post-back"><a href="../../../../">← Back to the devlog</a></p>
+</article>
+
+      </div>
+
+    </div>
+    <footer class="wk-footer">
+      <p class="wk-footer-motto">Fear the old blood</p>
+      <p>Made by people who love Bloodborne, so that it can be studied, preserved and played
+      natively, one verified function at a time.</p>
+      <p>A fan project. Not affiliated with or endorsed by Sony Interactive Entertainment or
+      FromSoftware. No game files are shared here: bring your own copy.</p>
+    </footer>
+  </main>
+
+</div>
+
+
+<!-- Back to top -->
+<button class="wk-top" id="wk-top" title="Back to top" aria-label="Scroll to top">↑</button>
+
+
+<script>
+/* Page settings for wiki.js. The drawer query matches the drawer breakpoint in wiki.css. */
+window.WK = {base: "../../../../..", searchIndex: "../../../../../search/search_index.json",
+             drawerQuery: window.matchMedia('(max-width: 900px)')};
+</script>
+<script src="../../../../../javascripts/wiki.js?v=c570fe17af" defer></script><script src="../../../../../javascripts/hunters.js?v=28a0e867eb" defer></script><script src="../../../../../search/main.js" defer></script>
+</body>
+</html>
