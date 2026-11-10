@@ -424,7 +424,7 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 10, 2026 09:33:21 UTC">November 10, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 10, 2026 09:44:35 UTC">November 10, 2026</span></p>
       
       
       <h1 id="runtime">Runtime</h1>
@@ -434,7 +434,7 @@
 <p><span class="wk-label">At a glance</span></p>
 <dl>
 <dt>Works</dt>
-<dd>An <abbr title="Executable and Linkable Format, the standard executable file format on Linux and FreeBSD.">ELF</abbr> <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> and boot <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr> load the executable and bundled modules, bind imports and run the entry point. Since 6 November 2026 Paleblood's own renderer draws the studio logos and the title screen ("Play Online / Play Offline") natively (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/441">#441</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/442">#442</a>). With scripted input (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/447">#447</a>) the maintainer's local runs go on past the title: save data is created, the main menu appears, and New Game reaches the first-run Brightness and Controls screens, with pull requests still in review applied (<a href="../milestones/">Milestones</a>).</dd>
+<dd>An <abbr title="Executable and Linkable Format, the standard executable file format on Linux and FreeBSD.">ELF</abbr> <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> and boot <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr> load the executable and bundled modules, bind imports and run the entry point. Since 6 November 2026 Paleblood's own renderer draws the studio logos and the title screen ("Play Online / Play Offline") natively (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/441">#441</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/442">#442</a>). With scripted input (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/447">#447</a>) the maintainer's local runs go on past the title: save data is created, the main menu appears, and New Game reaches the first-run Brightness and Controls screens and then the opening cinematic, the first 3D scene, with pull requests still in review applied (<a href="../milestones/">Milestones</a>).</dd>
 <dt>Stops at</dt>
 <dd>Nowhere, since 6 November 2026 (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/408">#408</a>): no system call stops the boot, and the game keeps running until the <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr>'s time limit. Without input it waits at the title screen. In local runs with input, the next stops are in the renderer: each menu needs drawing features the renderer stops on by name until they are added (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/457">#457</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/471">#471</a>).</dd>
 <dt>Full game</dt>
@@ -552,7 +552,7 @@ buffer (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/471">#471</a>
 reaches the first-run Brightness screen and then Controls, and runs on waiting for input. Scripted
 on past Controls, the next scene's draws needed image descriptors loaded behind a branch
 (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/474">#474</a>), two-channel 8-bit images (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/476">#476</a>) and samplers with anisotropy fields but plain
-filters (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/477">#477</a>). These are local observations, not saved
+filters (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/477">#477</a>); with them the game's opening cinematic, its first 3D scene, draws. These are local observations, not saved
 records; the frames are on the <a href="../milestones/">Milestones</a> page.</p>
 <p><strong>6 November 2026: the logos and the title screen.</strong> Later the same day, Paleblood's own renderer
 began drawing what the game asks for (see <a href="#the-renderer">The renderer</a>). In the maintainer's local
@@ -726,8 +726,8 @@ reference <abbr title="Inputs recorded while the game ran, replayed by the harne
 menus after the title draw too in local runs with scripted input: the main menu after
 <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/457">#457</a> (8- and 16-bit buffer formats) and the Brightness and Controls screens after <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/471">#471</a>
 (depth and stencil tests that read the buffer, stencil steps, a depth target larger than the colour
-target). The 3D game itself is not drawn yet: character creation and the first scene have not
-run.</p>
+target). Past them, the opening cinematic's first 3D frames draw too (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/474">#474</a>,
+<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/476">#476</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/477">#477</a>). Character creation and the playable game have not run yet.</p>
 <p>The work comes in four phases (Paleblood's <code>docs/RENDERER.md</code>):</p>
 <ol class="wk-steps">
 <li><strong>Display</strong> (done, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/313">#313</a>): every frame buffer the game registers gets a frame of its own, and each flip shows it, in a window (SDL3 and Vulkan) or captured to image files for tests. Since 6 November the renderer draws into them.</li>
