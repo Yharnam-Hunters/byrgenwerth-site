@@ -302,6 +302,10 @@
         
         
         
+        <li><a class="wk-nav-link" href="../families/">Function families</a></li>
+        
+        
+        
         <li><a class="wk-nav-link" href="../runtime/">Runtime</a></li>
         
         
@@ -441,6 +445,8 @@
           
           <li><a href="#graphics-the-first-calls" class="wk-toc-link">Graphics: the first calls</a></li>
           
+          <li><a href="#10-november-the-rest-of-the-checklist" class="wk-toc-link">10 November: the rest of the checklist</a></li>
+          
           <li><a href="#every-call-the-runtime-answers" class="wk-toc-link">Every call the runtime answers</a></li>
           
           <li><a href="#the-former-startup-stop-cpu-affinity" class="wk-toc-link">The former startup stop: CPU affinity</a></li>
@@ -458,36 +464,8 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 10, 2026 10:09:50 UTC">November 10, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 10, 2026 22:54:43 UTC">November 10, 2026</span></p>
       
-      
-      
-      <aside class="wk-freshness" role="note">
-        <p><b>Not yet updated for 18 merged changes.</b>
-        This page was last checked against Paleblood
-        <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/134c703c37237abae3859755046e71ec838876ad"><code>134c703</code></a>;
-        these pull requests changed what it describes since:</p>
-        <ul>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/545">#545</a> docs: point the system-module evidence link at its heading</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/532">#532</a> runtime: GNM graphics events from the completion step, request flip, CU maps (#39)</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/517">#517</a> loading: replace the seven file claim functions</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/528">#528</a> runtime: the 2026-11-10 rulings, reserve/batch map and module info (#34, #35)</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/521">#521</a> syslib: register __progname and Need_sceLibcInternal so #34 counts them</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/507">#507</a> syslib: PSN matchmaking, web API, leaderboards, signaling and lookup offline</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/513">#513</a> syslib: what the title's C library imports from libkernel and libSceLibcInternal</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/512">#512</a> syslib: file paths kept off the guest's stack</li>
-          
-          <li>and 10 more</li>
-        </ul>
-      </aside>
       
       <h1 id="runtime-system-call-notes">Runtime system-call notes</h1>
 <p class="wk-lede">What each runtime system call is for, what it must do, what the game was seen to do with it, and how Paleblood's runtime answers.</p>
@@ -496,7 +474,7 @@
 <p><span class="wk-label">At a glance</span></p>
 <dl>
 <dt>Covers</dt>
-<dd>Calls from <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> issue <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/34">#34</a>, the files from <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/35">#35</a>, the start-up services from <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/36">#36</a> and <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/40">#40</a>, sound and movies from <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/37">#37</a>, the controller, the clock, save data, trophies and the offline PSN calls, and the network slice from <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/41">#41</a>. A generated list of every registered call is near the end; the <a href="../runtime-reference/"><abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> call reference</a> has the full notes and sources for each call.</dd>
+<dd>Calls from <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> issue <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/34">#34</a>, the files from <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/35">#35</a>, the start-up services from <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/36">#36</a> and <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/40">#40</a>, sound and movies from <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/37">#37</a>, the controller, the clock, save data, trophies and the offline PSN calls, the network from <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/41">#41</a>, and the graphics calls from <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/39">#39</a>. Since 10 November every issue but #34 is closed, and #34 lists only calls contributors have claimed (<a href="#10-november-the-rest-of-the-checklist">below</a>). A generated list of every registered call is near the end; the <a href="../runtime-reference/"><abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> call reference</a> has the full notes and sources for each call.</dd>
 <dt>Status</dt>
 <dd><strong>implemented</strong>: the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> answers the call. <strong>unresolved</strong>: no established answer, so the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> has no implementation or stops by name. <strong>observed</strong>: seen in a real boot, not yet implemented.</dd>
 <dt>How to read</dt>
@@ -523,13 +501,13 @@
 <tbody>
 <tr>
 <td data-label="Call"><code>getpagesize</code></td>
-<td data-label="Status"><span class="wk-badge wk-badge--unresolved">unresolved</span></td>
-<td data-label="What the runtime does">Stops by name; the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> page size is not established.</td>
+<td data-label="Status">implemented (maintainer's ruling)</td>
+<td data-label="What the runtime does">Answers 16384 (16 KiB), the value every <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> and port uses and the alignment of every segment in the game's files (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/528">#528</a>). <!-- number:ok --></td>
 </tr>
 <tr>
 <td data-label="Call"><code>getpid</code></td>
-<td data-label="Status"><span class="wk-badge wk-badge--unresolved">unresolved</span></td>
-<td data-label="What the runtime does">Not implemented yet; the guest-visible ID is unknown.</td>
+<td data-label="Status">implemented (maintainer's ruling)</td>
+<td data-label="What the runtime does">Answers a fixed id, 1000, so runs stay reproducible; the host's process id is not the guest's (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/528">#528</a>).</td>
 </tr>
 <tr>
 <td data-label="Call"><code>clock_gettime</code>, <code>sceKernelClockGettime</code></td>
@@ -592,9 +570,11 @@ answers <code>EINVAL</code> under the SCE name.</p>
 <li><strong>Inferred, with its assumptions.</strong> If the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> follows the usual <abbr title="Executable and Linkable Format, the standard executable file format on Linux and FreeBSD.">ELF</abbr> rules for these segments, the page size cannot be larger than <code>0x4000</code>; any power of two that divides <code>0x4000</code> would fit. Narrowing that to 4 KiB, 8 KiB or 16 KiB also assumes a page is at least 4 KiB, which is our assumption, not an observation. The game's own check accepts every power of two, so it does not pick one either.</li>
 <li><strong>Unknown.</strong> The actual value. Stock FreeBSD on AMD64 uses 4096, but that describes the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> kernel's ancestor, not the console.</li>
 </ol>
-<p>So both <code>getpagesize</code> entries stop by name. Paleblood's <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> does not depend on the page size:
-it copies each segment to its exact address. Never substitute the build host's page size without
-evidence.</p>
+<p>For a month both <code>getpagesize</code> entries stopped by name. On 10 November the maintainer ruled
+on it (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/528">#528</a>): the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> answers 16 KiB. No console measurement exists, but every public <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr>
+<abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> and port answers that value, and it is the largest the files allow, the alignment every
+segment already has. It is a ruling, not a measurement, and the page says so. Paleblood's <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr>
+does not depend on the page size either way: it copies each segment to its exact address.</p>
 <details class="evidence">
 <summary>Time and process: full contract table</summary>
 <div class="wk-table is-stack"><table class="wk-stack">
@@ -639,12 +619,12 @@ FreeBSD's <code>CLOCK_MONOTONIC</code> and <code>CLOCK_SECOND</code>; Linux's nu
 </details>
 <details class="evidence">
 <summary>getpagesize: PR, call-site addresses and what would settle it</summary>
-<p>Both <code>getpagesize</code> entries are registered as fail-loud unresolved diagnostics
-(<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/66">PR #66</a>), because the value the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> returns
-is not established.</p>
+<p>Both <code>getpagesize</code> entries were registered as fail-loud unresolved diagnostics
+(<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/66">PR #66</a>) until the maintainer's ruling
+in <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/528">#528</a>.</p>
 <p>The three call sites are <code>0x00e04168</code>, <code>0x00e04939</code> and <code>0x00e05cf9</code>; they cache the result at
 <code>0x05859ec8</code>.</p>
-<p><strong>What would settle it:</strong> one <code>getpagesize()</code> result observed on a console.</p>
+<p><strong>What would still settle it:</strong> one <code>getpagesize()</code> result observed on a console.</p>
 </details>
 <h2 id="threads-and-yielding">Threads and yielding</h2>
 <div class="wk-table is-stack"><table class="wk-stack">
@@ -900,8 +880,8 @@ interrupted sleep resumes with the time left.</p>
 </tr>
 <tr>
 <td data-label="Call"><code>__stack_chk_guard</code></td>
-<td data-label="Status"><span class="wk-badge wk-badge--unresolved">unresolved</span></td>
-<td data-label="What the runtime does">Separate data import; currently gets a zeroed page.</td>
+<td data-label="Status">implemented (maintainer's ruling)</td>
+<td data-label="What the runtime does">A fixed, non-zero canary word, as other <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> runtimes use; unbound, it read a zeroed page (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/528">#528</a>).</td>
 </tr>
 </tbody>
 </table></div>
@@ -913,8 +893,9 @@ from <code>libkernel</code>.</p>
 the program ends (FreeBSD's libc reports it and aborts). So the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> stops the process by name,
 and the entry counts as implemented, unlike the fail-loud diagnostics elsewhere on this page.</p>
 <p>Not covered: the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr>'s own message or crash report, which the guest cannot observe after it ends,
-and <code>__stack_chk_guard</code>, the canary value itself. That is a separate data import whose <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> value is
-not established; an unbound data import currently gets a zeroed page.</p>
+The canary itself, <code>__stack_chk_guard</code>, is a separate data import. Its <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> value is not
+established; since <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/528">#528</a> the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> gives it a fixed non-zero word (before, an unbound data
+import got a zeroed page).</p>
 <details class="reference">
 <summary>Stack protector: PR and credits</summary>
 <p>Merged <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/97">PR #97</a>, by
@@ -2068,7 +2049,7 @@ there (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/441">#441</a>,
 <tr>
 <td data-label="Call"><code>sceGnmSubmitCommandBuffers</code>, <code>sceGnmSubmitAndFlipCommandBuffers</code>, <code>sceGnmSubmitDone</code></td>
 <td data-label="Status">implemented (temporary stand-in)</td>
-<td data-label="What the runtime does">Complete a frame's GPU work at once: "work done" values are written, waits are checked, the other packets are skipped; then the frame is flipped (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/310">#310</a>). With the display on, the renderer also runs the drawing calls recorded for each submitted buffer (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/369">#369</a>).</td>
+<td data-label="What the runtime does">Complete a frame's GPU work: "work done" values are written, waits are checked, the other packets are skipped; then the frame is flipped (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/310">#310</a>). With the display on, the renderer also runs the drawing calls recorded for each submitted buffer (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/369">#369</a>); since <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/488">#488</a> the call returns at once and the renderer's own thread runs the work in submission order, with each "work done" value, wait and flip placed after the work before it. Any number of buffers per call (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/504">#504</a>: character creation submits 70).</td>
 </tr>
 <tr>
 <td data-label="Call"><code>sceGnmMapComputeQueue</code></td>
@@ -2078,7 +2059,7 @@ there (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/441">#441</a>,
 <tr>
 <td data-label="Call"><code>sceGnmDingDong</code></td>
 <td data-label="Status">implemented (temporary stand-in)</td>
-<td data-label="What the runtime does">Completes submitted compute work at once (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/302">#302</a>): no shaders run, but each job's "work done" value is written and the queue is freed.</td>
+<td data-label="What the runtime does">Completes submitted compute work at once (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/302">#302</a>): no shaders run, but each job's "work done" value is written and the queue is freed. Since <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/470">#470</a> the renderer takes each buffer's recorded calls and drops them, so their shader bindings cannot leak into a later graphics buffer in the same memory.</td>
 </tr>
 </tbody>
 </table></div>
@@ -2135,6 +2116,86 @@ it, in the engine's own renderer (its <code>GX</code> graphics framework). The f
   block) and <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/418">#418</a> (compute shaders).</li>
 </ul>
 </details>
+<h2 id="10-november-the-rest-of-the-checklist">10 November: the rest of the checklist</h2>
+<p>On 10 November the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> answered every system import the boot can reach. Each call follows the
+executable's own call sites; where the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr>'s answer is not public, the maintainer ruled on it, using
+what other <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> runtimes and ports agree on as facts (never their code). The generated list below and
+the <a href="../runtime-reference/"><abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> call reference</a> have every call.</p>
+<div class="wk-table is-stack"><table class="wk-stack">
+<thead>
+<tr>
+<th>Group</th>
+<th>What the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> does</th>
+<th>Pull request</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td data-label="Group">Directories and flushing</td>
+<td data-label="What the runtime does">Opens a directory, lists it as FreeBSD 9 records the engine's directory walker reads, and flushes files.</td>
+<td data-label="Pull request"><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/498">#498</a></td>
+</tr>
+<tr>
+<td data-label="Group">Message, save data, profile and commerce dialogs</td>
+<td data-label="What the runtime does">Each opens and finishes at once, as a dialog the user closed; the game never reads a choice from them. Nothing is shown.</td>
+<td data-label="Pull request"><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/500">#500</a></td>
+</tr>
+<tr>
+<td data-label="Group">On-screen keyboard, web browser</td>
+<td data-label="What the runtime does">The keyboard opens and is found cancelled at the first status query; the browser is not opened.</td>
+<td data-label="Pull request"><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/502">#502</a></td>
+</tr>
+<tr>
+<td data-label="Group">Microphone and voice chat</td>
+<td data-label="What the runtime does">A console with no microphone or headset: the record port opens and gives silence, voice chat answers success with no audio.</td>
+<td data-label="Pull request"><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/506">#506</a></td>
+</tr>
+<tr>
+<td data-label="Group"><abbr title="The PS4's low-level graphics API.">GNM</abbr> queries and debug calls</td>
+<td data-label="What the runtime does">The answers of a retail console with no <abbr title="Inputs recorded while the game ran, replayed by the harness.">capture</abbr> tool attached.</td>
+<td data-label="Pull request"><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/506">#506</a></td>
+</tr>
+<tr>
+<td data-label="Group">PSN matchmaking, web API, leaderboards, signaling, lookup</td>
+<td data-label="What the runtime does">Signed out: every service is gated on the user's online id, which a signed-out console has not got.</td>
+<td data-label="Pull request"><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/507">#507</a></td>
+</tr>
+<tr>
+<td data-label="Group">Sockets, resolver, HTTP requests</td>
+<td data-label="What the runtime does">A console with no connection: sockets can be created and bound as with only loopback, anything that would leave the machine fails at once. Nothing is ever sent.</td>
+<td data-label="Pull request"><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/509">#509</a></td>
+</tr>
+<tr>
+<td data-label="Group">What the game's C library imports</td>
+<td data-label="What the runtime does">The calls and data the bundled C library and file library take from the kernel (C++ exception support, standard output, the heap, local time).</td>
+<td data-label="Pull request"><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/513">#513</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/521">#521</a></td>
+</tr>
+<tr>
+<td data-label="Group">The maintainer's kernel and file rulings</td>
+<td data-label="What the runtime does">Page size, process id, the stack canary, standard input at end of file, the process-map query, resuming at an exception landing pad, module information, reserving address space and batches of maps.</td>
+<td data-label="Pull request"><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/528">#528</a></td>
+</tr>
+<tr>
+<td data-label="Group">The last graphics calls</td>
+<td data-label="What the runtime does">Graphics events raised when the GPU's completion step performs a write that asks for one; flip requests; the remaining queries.</td>
+<td data-label="Pull request"><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/532">#532</a></td>
+</tr>
+<tr>
+<td data-label="Group">Sound ports</td>
+<td data-label="What the runtime does">A movie's sound port closes when the movie ends, and its handle is used again.</td>
+<td data-label="Pull request"><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/490">#490</a></td>
+</tr>
+<tr>
+<td data-label="Group">File paths</td>
+<td data-label="What the runtime does">Kept off the game's small thread stacks; one boot in five overflowed the save thread's stack while creating the save.</td>
+<td data-label="Pull request"><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/512">#512</a></td>
+</tr>
+</tbody>
+</table></div>
+<p>Three of the executable's imports remain unbound: <code>sceKernelMkdir</code>, <code>sceKernelRmdir</code> and
+<code>sceKernelUnlink</code>, which <a href="https://github.com/EzequielRindello">@EzequielRindello</a> is implementing in
+<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/455">#455</a>. The bundled C library's <code>scePthreadAttrGetaffinity</code> (below) is claimed by
+<a href="https://github.com/evill33t">@evill33t</a> in <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/239">#239</a>.</p>
 <h2 id="every-call-the-runtime-answers">Every call the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> answers</h2>
 <p>This list is generated from the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>'s registry in Paleblood <code>main</code> each time the wiki syncs,
 so it is complete even when the explanations above have not caught up. "Stops by name" means the

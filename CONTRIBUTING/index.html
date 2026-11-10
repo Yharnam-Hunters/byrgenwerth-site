@@ -302,6 +302,10 @@
         
         
         
+        <li><a class="wk-nav-link" href="../families/">Function families</a></li>
+        
+        
+        
         <li><a class="wk-nav-link" href="../runtime/">Runtime</a></li>
         
         
@@ -416,24 +420,8 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 6, 2026 21:52:44 UTC">November 6, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 10, 2026 22:54:43 UTC">November 10, 2026</span></p>
       
-      
-      
-      <aside class="wk-freshness" role="note">
-        <p><b>Not yet updated for 2 merged changes.</b>
-        This page was last checked against Paleblood
-        <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/134c703c37237abae3859755046e71ec838876ad"><code>134c703</code></a>;
-        these pull requests changed what it describes since:</p>
-        <ul>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/536">#536</a> Boot record and README: past the title, the runtime checklist done</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/515">#515</a> leaf: function families, and the 5040 empty functions as the first</li>
-          
-          
-        </ul>
-      </aside>
       
       <h1 id="contributing">Contributing</h1>
 <p class="wk-epigraph">Tonight, Gehrman joins the hunt.<cite>Gehrman, the First Hunter</cite></p>
@@ -504,7 +492,7 @@ Questions: <a href="https://github.com/Yharnam-Hunters/Paleblood/discussions">Di
 <ol>
 <li>Fork <a href="https://github.com/Yharnam-Hunters/Paleblood">Paleblood</a> on GitHub and run <code>tools/install_hooks.sh</code> in your clone.</li>
 <li>For decompilation, follow ONBOARDING.md from your own dump to <abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr>. A draft from <code>tools/draft.sh</code> is a starting point; it marks with <code>; GAP:</code> and decodes the code <abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr> leaves out after a call it wrongly treats as not returning (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/189">#189</a>). For <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> work, read the syscall notes and claim one function or related group in its system issue (#34–#41); use a branch named <code>runtime/&lt;function&gt;</code>.</li>
-<li>Keep one function or tightly related group per PR. Put its <code>RT_SYSLIB</code> tests in their own file, <code>test/syslib/&lt;group&gt;.c</code> (<code>test/syslib/np_trophy.c</code> is an example; cases already in <code>test/test_syslib.c</code> may be updated there), and include evidence, confirmed behavior, unresolved questions, and test results in the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> report. For a decompilation PR, <code>tools/session_report.py --verify</code> takes the output folder of a <code>tools/verify.py run</code> (or the <code>summary.json</code> it writes there) and adds its results to the session report (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/417">#417</a>).</li>
+<li>Keep one function or tightly related group per PR. Put its <code>RT_SYSLIB</code> tests in their own file, <code>test/syslib/&lt;group&gt;.c</code> (<code>test/syslib/np_trophy.c</code> is an example; cases already in <code>test/test_syslib.c</code> may be updated there), and include evidence, confirmed behavior, unresolved questions, and test results in the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> report. For a decompilation PR, <code>tools/session_report.py --verify</code> takes the output folder of a <code>tools/verify.py run</code> (or the <code>summary.json</code> it writes there) and adds its results to the session report (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/417">#417</a>). A change to a <a href="../families/">function family</a> takes the <code>summary.json</code> of a clean <code>tools/verify.py family</code> run the same way: the report lists each changed family, and CI refuses a family change without one (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/515">#515</a>).</li>
 <li>To bring your branch up to date, merge <code>origin/main</code> into it; the push gate checks only the commits main does not have yet (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/407">#407</a>).</li>
 <li>Runtime-only PRs run the compiler matrix, RT_SYSLIB tests, and repository policy checks without requiring a dump, <abbr title="Inputs recorded while the game ran, replayed by the harness.">captures</abbr>, or function-level <code>verify.py</code>. CI also builds and tests each pull request merged with every other open one (the <code>combined</code> job, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/136">#136</a>), so two changes that break only together are caught before either merges. After merge, a maintainer runs <code>tools/boot.py</code> locally and posts the result on the PR.</li>
 <li>However you work, the workflow is the same; <code>tools/handoff.py</code> writes a shareable handoff of where a piece of work stands, so someone else can pick it up (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/93">#93</a>).</li>

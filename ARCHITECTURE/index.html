@@ -302,6 +302,10 @@
         
         
         
+        <li><a class="wk-nav-link" href="../families/">Function families</a></li>
+        
+        
+        
         <li><a class="wk-nav-link" href="../runtime/">Runtime</a></li>
         
         
@@ -422,7 +426,7 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 10, 2026 09:44:35 UTC">November 10, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 10, 2026 22:54:43 UTC">November 10, 2026</span></p>
       
       
       <h1 id="architecture">Architecture</h1>
@@ -604,7 +608,9 @@ reviewer, not the author, has checked both.</p>
 <p><strong>How a replacement takes over.</strong> Replacements are registered in a <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> table. When the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>
 runs the game, each registered function's entry will jump to its replacement, so every caller lands
 in the new code. It is a 14-byte jump, which is why a function shorter than that cannot be hooked
-this way.</p>
+this way, except where the compiler's padding after it leaves room: that is how the tiny, repeated
+functions of a <a href="../families/">function family</a> are hooked, many at once, with one replacement per
+family.</p>
 <h2 id="the-runtime-track">The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> track</h2>
 <ol class="wk-steps">
 <li><strong>Load.</strong> Paleblood's <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> maps the game's executable, together with the game's own C library and file system modules.</li>
@@ -612,10 +618,11 @@ this way.</p>
 <li><strong>Boot.</strong> The boot <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr> starts the guest startup sequence. It stops at the first system function the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> does not implement yet, naming it, or runs until its time limit.</li>
 <li><strong>Implement.</strong> The next piece of <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> work implements what the boot stopped at, written clean-room from public documentation and our own reverse engineering.</li>
 </ol>
-<p>The latest saved trace (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/443">#443</a>, 6 November 2026) reaches all eight boot milestones and
-runs until the time limit: no system call stops it. With the display on, the maintainer's local
-runs draw the studio logos and the title screen, and with scripted input they get past the title
-to the main menu and the first settings screens (<a href="../runtime/#how-far-a-boot-gets">Runtime</a>).</p>
+<p>The latest saved trace (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/536">#536</a>, 10 November 2026) reaches all eight boot milestones and
+runs until the time limit: no system call stops it, and all but three of the executable's system
+imports are bound. With the display on, the maintainer's local runs draw the studio logos and the
+title screen, and with scripted input they get past the title, through the menus and the opening
+cinematic to character creation (<a href="../runtime/#how-far-a-boot-gets">Runtime</a>).</p>
 <h2 id="the-frame-pipeline">The frame pipeline</h2>
 <p>The first system decompiled. Solid boxes are <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> C++; dashed boxes are still original code.</p>
 <p><svg class="wk-diagram" viewBox="0 0 560 336" role="img" aria-label="The per-frame pipeline: frame step, limiter, task update">

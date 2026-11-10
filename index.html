@@ -302,6 +302,10 @@
         
         
         
+        <li><a class="wk-nav-link" href="families/">Function families</a></li>
+        
+        
+        
         <li><a class="wk-nav-link" href="runtime/">Runtime</a></li>
         
         
@@ -414,36 +418,8 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 10, 2026 09:44:35 UTC">November 10, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 10, 2026 22:54:43 UTC">November 10, 2026</span></p>
       
-      
-      
-      <aside class="wk-freshness" role="note">
-        <p><b>Not yet updated for 13 merged changes.</b>
-        This page was last checked against Paleblood
-        <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/134c703c37237abae3859755046e71ec838876ad"><code>134c703</code></a>;
-        these pull requests changed what it describes since:</p>
-        <ul>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/536">#536</a> Boot record and README: past the title, the runtime checklist done</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/517">#517</a> loading: replace the seven file claim functions</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/531">#531</a> leaf: field setters, argument returns and float zero families (657 functions)</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/529">#529</a> leaf: field getter families (5305 functions)</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/527">#527</a> leaf: returns_zero and returns_constant families (7017 functions)</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/515">#515</a> leaf: function families, and the 5040 empty functions as the first</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/520">#520</a> input: replace the pad vibration and mouse claim functions</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/514">#514</a> frame_timing: replace the nine clock and sleep claim functions</li>
-          
-          <li>and 5 more</li>
-        </ul>
-      </aside>
       
       <h1 class="wk-visually-hidden" id="byrgenwerth">Byrgenwerth</h1>
 <div class="wk-hero">
@@ -515,7 +491,9 @@ program, at any frame rate and resolution.</p>
 <p>Two tracks get there, side by side:</p>
 <ul>
 <li><strong>Decompilation:</strong> functions rewritten as readable C++ and proved against the original in the
-  verification <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr>, on inputs recorded earlier and on generated <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr>.</li>
+  verification <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr>, on inputs recorded earlier and on generated <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr>. Tiny functions
+  the compiler emitted many times over share one replacement per
+  <a href="families/">function family</a>, which moves the function count far more than the byte count.</li>
 <li><strong>Runtime:</strong> our own <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> (done), input <abbr title="Inputs recorded while the game ran, replayed by the harness.">capture</abbr> (a game run can now record a function's
   inputs by tracing the original), kernel, threads and memory, files, input, audio, video out,
   and the graphics, rebuilt at the engine's own level rather than by emulating the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr>'s GPU
@@ -525,10 +503,10 @@ program, at any frame rate and resolution.</p>
 merged <code>main</code> boots through all eight milestones to <strong>first flip</strong> (8 of 8): the game starts
 its threads, reads its files, sets up input, starts its sound system, opens its display and
 hands its first frame to the screen (4 November 2026). Since 6 November no system call stops
-the boot any more: it keeps running until the <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr>'s time limit (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/408">#408</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/443">#443</a>).
+the boot any more: it keeps running until the <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr>'s time limit (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/408">#408</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/443">#443</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/536">#536</a>).
 Since then too, in the maintainer's
 local runs with the display on, Paleblood's own renderer draws the studio logos and the title
-screen (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/441">#441</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/442">#442</a>), and with scripted input (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/447">#447</a>) it gets past the title: the game creates its save data, shows its main menu, New Game reaches the first-run Brightness and Controls screens, and the opening cinematic's first 3D scene draws (10 November; <a href="milestones/">Milestones</a>). Character creation and the playable game have not run yet. The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> also plays the game's movies and sound and reads a keyboard or gamepad (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/419">#419</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/398">#398</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/406">#406</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/431">#431</a>). Full game runs still use an external host scaffold while the project-owned
+screen (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/441">#441</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/442">#442</a>), and with scripted input (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/447">#447</a>) it gets past the title: the game creates its save data, shows its main menu, New Game reaches the first-run Brightness and Controls screens, and on 10 November the opening cinematic plays in 3D and the game reaches character creation (<a href="milestones/">Milestones</a>). The playable game has not run yet. The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> checklist is done: every system import the boot reaches is answered, and the last three of the executable's are claimed by contributors (<a href="runtime/">Runtime</a>). The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> also plays the game's movies and sound and reads a keyboard or gamepad (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/419">#419</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/398">#398</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/406">#406</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/431">#431</a>). Full game runs still use an external host scaffold while the project-owned
 <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> is completed; the <a href="runtime/">Runtime</a> page shows how far a boot gets.</p>
 </details>
 <details class="details">
