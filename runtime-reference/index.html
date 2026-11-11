@@ -793,35 +793,33 @@ therefore writes eight bytes:
 <p>A variable holding no attribute is <code>EINVAL</code>, as for the setter. No variable for the mask stops by
 name. Host CPU availability is not consulted. evill33t's #239 did the groundwork on this call; it
 took its value from the host, which the ruling <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr>.</p>
-<p><strong>How the boot gets past it without a value.</strong> These are observations from static analysis of the
-hash-pinned <code>eboot.elf</code>, <code>libc.elf</code> and <code>libSceFios2.elf</code> (<abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr> 12.0.3 with <abbr title="A Ghidra extension that loads PS4 executables and resolves NIDs to names.">GhidraOrbis</abbr>, issue</p>
-<h1 id="34-not-guarantees">34), not guarantees:</h1>
-<ul>
-<li>The probe's count is stored at <code>libc.elf+0xd1c54</code>. That lies past the RW segment's file size, so
-  it starts zero.</li>
-<li>The probe returns nothing. It is reached only by a tail jump from the initializer at <code>+0x5fad0</code>,
-  which the module's <code>DT_INIT</code> runs.</li>
-<li>The count's only reader found is the exported <code>std::thread::hardware_concurrency()</code> at
-  <code>+0x5fac0</code>.</li>
-<li>No reference to that function was found in those three objects, none of them imports it, and
-  none imports <code>sceKernelDlsym</code>.</li>
-</ul>
-<p>So <code>game/module_hooks.csv</code> replaces two functions before any guest code runs:
-- the probe (<code>+0x81a80</code>, 128 bytes) with <code>return</code>, so the affinity query is never made and the
-  count stays zero;
-- <code>hardware_concurrency</code> (<code>+0x5fac0</code>, 7 bytes) with <code>stop</code>, so a caller ends the run by name
-  instead of reading a count nobody established.</p>
+<p><strong>The probe now runs.</strong> Until 2026-11-10 <code>game/module_hooks.csv</code> <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> the probe with <code>return</code>
+(#207), because the call stopped by name. With the call implemented, that row is gone (maintainer
+decision, 2026-11-10) and the original probe runs in <code>libc.elf</code>'s <code>DT_INIT</code>, before any of the
+executable's code:
+- it calls <code>scePthreadAttrGetaffinity</code> on a copy of the main thread's attributes. The main thread
+  has no mask set by the guest at that point, so the answer is all ones;
+- it counts the 64 set bits and stores <strong>64</strong> at <code>libc.elf+0xd1c54</code>. A local boot without a display
+  (<code>tools/boot.py --no-record</code>) read 64 there from the running process; before, the slot stayed 0.</p>
+<p>That count is the ruling's consequence, not a measured console value: the executable's own thread
+setup asks for six CPUs (<code>0x3f</code>, below), and the console's own mask is still unmeasured.</p>
+<p>These observations come from static analysis of the hash-pinned <code>eboot.elf</code>, <code>libc.elf</code> and
+<code>libSceFios2.elf</code> (<abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr> 12.0.3 with <abbr title="A Ghidra extension that loads PS4 executables and resolves NIDs to names.">GhidraOrbis</abbr>, issue #34), not guarantees:
+- The count lies past the RW segment's file size, so it starts zero.
+- The probe returns nothing. It is reached only by a tail jump from the initializer at <code>+0x5fad0</code>.
+- The count's only reader found is the exported <code>std::thread::hardware_concurrency()</code> at
+  <code>+0x5fac0</code>.
+- No reference to that function was found in those three objects, none of them imports it, and
+  none imports <code>sceKernelDlsym</code>.</p>
+<p><code>game/module_hooks.csv</code> still replaces <code>hardware_concurrency</code> (<code>+0x5fac0</code>, 7 bytes) with <code>stop</code>, so
+a caller ends the run by name instead of reading the ruled count of 64 as if it were the console's.</p>
 <p><code>pbboot --module-hook</code> first compares each function's first bytes, as the mapped and relocated
 module holds them, with the ones the file gives (<code>first_bytes</code>), and refuses the run before any
-guest code runs if they differ. It then writes each as a five-byte relative jump to a stub in the module's slot. A
-<code>return</code> stub leaves every register as the caller had it. A <code>stop</code> is reported like an
-unimplemented import: the status names the <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> and its caller in <code>stopped_by_hook</code>.
-The call itself is implemented (above), but the probe never reaches it while this <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> is in
-place, so the count stays zero. Whether to drop the <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> and let the probe count the ruled mask is a
-separate decision.</p>
-<p>The <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> guards calls only. A direct read of <code>+0xd1c54</code> that the analysis missed would see 0, not
-a measured count. The offsets fit only the pinned <code>libc.elf</code> (<code>target.sha256</code>); another build fails
-the byte check by name instead of being patched.</p>
+guest code runs if they differ. It then writes each as a five-byte relative jump to a stub in the
+module's slot. A <code>return</code> stub leaves every register as the caller had it. A <code>stop</code> is reported
+like an unimplemented import: the status names the <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> and its caller in <code>stopped_by_hook</code>.
+The offsets fit only the pinned <code>libc.elf</code> (<code>target.sha256</code>); another build fails the byte check by
+name instead of being patched.</p>
 <h2 id="clock-ids-and-platform-differences">Clock IDs and platform differences</h2>
 <p>The only clock ID confirmed by a decompiled game call in this repository is <code>4</code>, used with <code>sceKernelClockGettime</code> and identified there as <code>CLOCK_MONOTONIC</code>. This does not prove that the game passes <code>4</code> to the imported <code>clock_gettime</code> wrapper. POSIX defines clock identifiers symbolically; their numeric values are implementation-specific. Linux adds clocks such as <code>CLOCK_MONOTONIC_RAW</code> and <code>CLOCK_BOOTTIME</code>; FreeBSD has its own clock set, including <code>CLOCK_UPTIME</code> variants. Their names and numeric values are not interchangeable evidence for <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> behavior.</p>
 <p><code>CLOCK_MONOTONIC</code> represents elapsed time from an unspecified starting point and is not the wall clock. The precise effects of suspend, rate correction, and resolution vary by implementation. <code>gettimeofday</code> and <code>CLOCK_REALTIME</code> represent wall time tied to the Epoch and can move when system time changes. No source examined here establishes that the game asks the imported <code>clock_gettime</code> wrapper for <code>CLOCK_REALTIME</code>, <code>CLOCK_MONOTONIC_RAW</code>, <code>CLOCK_BOOTTIME</code>, or another ID.</p>

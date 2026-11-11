@@ -4,7 +4,13 @@
   "reviewed": "57f77ee67371f249923035670cee6b25916517f7"
  },
  "CONTRIBUTING.md": {
-  "behind": [],
+  "behind": [
+   {
+    "commit": "6ebe1e760651",
+    "pr": 571,
+    "title": "runtime: libc's thread-count probe runs again (drop #207's hook); README update"
+   }
+  ],
   "reviewed": "57f77ee67371f249923035670cee6b25916517f7"
  },
  "families.md": {
@@ -16,15 +22,53 @@
   "reviewed": "57f77ee67371f249923035670cee6b25916517f7"
  },
  "index.md": {
-  "behind": [],
+  "behind": [
+   {
+    "commit": "6ebe1e760651",
+    "pr": 571,
+    "title": "runtime: libc's thread-count probe runs again (drop #207's hook); README update"
+   }
+  ],
   "reviewed": "57f77ee67371f249923035670cee6b25916517f7"
  },
  "runtime-syscalls.md": {
-  "behind": [],
+  "behind": [
+   {
+    "commit": "6ebe1e760651",
+    "pr": 571,
+    "title": "runtime: libc's thread-count probe runs again (drop #207's hook); README update"
+   }
+  ],
   "reviewed": "57f77ee67371f249923035670cee6b25916517f7"
  },
  "runtime.md": {
-  "behind": [],
+  "behind": [
+   {
+    "commit": "737c99feaf30",
+    "pr": 582,
+    "title": "renderer: image_sample_lz, at level 0"
+   },
+   {
+    "commit": "4581f95f9ecf",
+    "pr": 581,
+    "title": "renderer: vertex shaders' images, past the fetch-shader call"
+   },
+   {
+    "commit": "ecdab3262e40",
+    "pr": 579,
+    "title": "renderer: a CMASK filled with any one value counts as a fast clear"
+   },
+   {
+    "commit": "e2348df4b302",
+    "pr": 578,
+    "title": "renderer: the Depth2DThin64 tile mode"
+   },
+   {
+    "commit": "12b5f8e438ed",
+    "pr": 577,
+    "title": "renderer: fast clears, resolved before each draw"
+   }
+  ],
   "reviewed": "57f77ee67371f249923035670cee6b25916517f7"
  },
  "systems/ai.md": {
@@ -72,7 +116,13 @@
   "reviewed": "57f77ee67371f249923035670cee6b25916517f7"
  },
  "systems/render.md": {
-  "behind": [],
+  "behind": [
+   {
+    "commit": "12b5f8e438ed",
+    "pr": 577,
+    "title": "renderer: fast clears, resolved before each draw"
+   }
+  ],
   "reviewed": "57f77ee67371f249923035670cee6b25916517f7"
  }
 }
