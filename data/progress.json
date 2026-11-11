@@ -5,6 +5,19 @@
     "functions": 239,
     "functions_pct": 0.15
   },
+  "families": {
+    "count": 19,
+    "edge_verified": {
+      "bytes": 62426,
+      "functions": 18019
+    },
+    "replaced": {
+      "bytes": 62426,
+      "bytes_pct": 0.15,
+      "functions": 18019,
+      "functions_pct": 11.42
+    }
+  },
   "inputs": {
     "functions_sha256": "6cfdc724d78c24438f7ca0f88d5cae65e6adc145238871d3138bb169c4377ea9",
     "ghidra_functions_sha256": "a8151ce06882311f7b2e1916236b9e481790a37c90bb2975fd3e538045e26248"

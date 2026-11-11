@@ -418,7 +418,7 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 10, 2026 09:44:35 UTC">November 10, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 10, 2026 23:54:47 UTC">November 10, 2026</span></p>
       
       
       <h1 id="evidence-media-review">Evidence &amp; Media Review</h1>
@@ -500,7 +500,9 @@ closing an issue is not evidence that game execution advanced.</p>
 <ul>
 <li><strong>Use as little as possible:</strong> the smallest portion that explains the point. Frames drawn by
   Paleblood's own renderer are our own work and are shown whole, at full resolution, never
-  downscaled (maintainer decision, 2026-11-06).</li>
+  downscaled (maintainer decision, 2026-11-06). Such a frame may be up to 8 MiB, here and in the
+  code repository; code, data and every other file keep the 2 MiB cap (maintainer decision,
+  2026-11-10; <code>tools/check_policy.py</code> and <code>tools/check_publish.py</code> enforce it).</li>
 <li><strong>Never publish</strong> extracted assets, proprietary <abbr title="Inputs recorded while the game ran, replayed by the harness.">captures</abbr>, bulk game text, secrets, or unsourced material.</li>
 <li><strong>No retired or borrowed images</strong> presented as Paleblood output.</li>
 </ul>
@@ -546,8 +548,8 @@ Rules). A media review for this site does not by itself place media in the code 
 <td>Paleblood-owned, no game imagery</td>
 </tr>
 <tr>
-<td>Eleven frames drawn by Paleblood's renderer (<a href="../milestones/">Milestones</a>), from the first non-black frame to the first 3D scene</td>
-<td>Our own <abbr title="Inputs recorded while the game ran, replayed by the harness.">captures</abbr>, full resolution (shown small in a grid, opened whole), maintainer-approved 2026-11-06; each reviewed privately; rights holders credited</td>
+<td>Thirteen frames drawn by Paleblood's renderer (<a href="../milestones/">Milestones</a>), from the first non-black frame to character creation</td>
+<td>Our own <abbr title="Inputs recorded while the game ran, replayed by the harness.">captures</abbr>, full resolution (shown small in a grid, opened whole), maintainer-approved 2026-11-06 and 2026-11-10; each reviewed privately; rights holders credited</td>
 </tr>
 <tr>
 <td>Retired gallery</td>

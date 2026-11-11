@@ -541,6 +541,33 @@ reads straight through.</p>
 <div class="wk-table"><table>
 <thead>
 <tr>
+<th>With function families</th>
+<th style="text-align: right;">Functions (of target)</th>
+<th style="text-align: right;">Bytes (of target)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Members of 19 function families</td>
+<td style="text-align: right;">18,019 (11.42%)</td>
+<td style="text-align: right;">62,426 (0.15%)</td>
+</tr>
+<tr>
+<td>Replaced, with family members</td>
+<td style="text-align: right;">18,258 (11.57%)</td>
+<td style="text-align: right;">163,393 (0.38%)</td>
+</tr>
+<tr>
+<td>Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>, with family members</td>
+<td style="text-align: right;">18,258 (11.57%)</td>
+<td style="text-align: right;">163,393 (0.38%)</td>
+</tr>
+</tbody>
+</table></div>
+<p>Family members are tiny functions (one to a few bytes each) that share one replacement per family: they add far more to the function count than to the bytes.</p>
+<div class="wk-table"><table>
+<thead>
+<tr>
 <th>System</th>
 <th style="text-align: right;">Tracked</th>
 <th style="text-align: right;">Replaced</th>
