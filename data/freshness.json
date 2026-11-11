@@ -34,6 +34,36 @@
  "runtime-syscalls.md": {
   "behind": [
    {
+    "commit": "144fc5388919",
+    "pr": 606,
+    "title": "gnm: run the compute queues' work"
+   },
+   {
+    "commit": "9061dc81f9b5",
+    "pr": 595,
+    "title": "renderer: perform completion writes once the GPU is done, without waiting"
+   },
+   {
+    "commit": "3ac52f9c8a54",
+    "pr": 583,
+    "title": "runtime: execute guest workers on Darwin x86-64"
+   },
+   {
+    "commit": "01cf2ec36ce5",
+    "pr": 580,
+    "title": "runtime: back direct memory on Darwin"
+   },
+   {
+    "commit": "ef64752196b6",
+    "pr": 576,
+    "title": "runtime: support Darwin timed synchronization"
+   },
+   {
+    "commit": "662ad7c0c77f",
+    "pr": 585,
+    "title": "runtime: default CPU mask 0x3f (six CPUs), per the 2026-11-11 ruling"
+   },
+   {
     "commit": "6ebe1e760651",
     "pr": 571,
     "title": "runtime: libc's thread-count probe runs again (drop #207's hook); README update"
@@ -43,6 +73,91 @@
  },
  "runtime.md": {
   "behind": [
+   {
+    "commit": "144fc5388919",
+    "pr": 606,
+    "title": "gnm: run the compute queues' work"
+   },
+   {
+    "commit": "11f3fde6d4dc",
+    "pr": 600,
+    "title": "renderer: 3D, swizzled, sRGB and cube storage images"
+   },
+   {
+    "commit": "c57ce3e8fa4d",
+    "pr": 599,
+    "title": "renderer: write depth targets back to their memory"
+   },
+   {
+    "commit": "787d07ab9550",
+    "pr": 597,
+    "title": "renderer: a draw writes only the slots its pixel shader exports to"
+   },
+   {
+    "commit": "2b3b2639470e",
+    "pr": 596,
+    "title": "renderer: bound a dispatch's memory writes by its store descriptors"
+   },
+   {
+    "commit": "9061dc81f9b5",
+    "pr": 595,
+    "title": "renderer: perform completion writes once the GPU is done, without waiting"
+   },
+   {
+    "commit": "3ac52f9c8a54",
+    "pr": 583,
+    "title": "runtime: execute guest workers on Darwin x86-64"
+   },
+   {
+    "commit": "01cf2ec36ce5",
+    "pr": 580,
+    "title": "runtime: back direct memory on Darwin"
+   },
+   {
+    "commit": "25e005669595",
+    "pr": 593,
+    "title": "renderer: depth fast clears through HTILE"
+   },
+   {
+    "commit": "1da71b694842",
+    "pr": 574,
+    "title": "metal: bind pixel images and samplers"
+   },
+   {
+    "commit": "ef64752196b6",
+    "pr": 576,
+    "title": "runtime: support Darwin timed synchronization"
+   },
+   {
+    "commit": "0457bf4558cc",
+    "pr": 566,
+    "title": "runtime: pass full-width flags to tracer memory reads"
+   },
+   {
+    "commit": "11e4e52a6c7d",
+    "pr": 569,
+    "title": "renderer: float image formats"
+   },
+   {
+    "commit": "2af9f4ef2d2c",
+    "pr": 587,
+    "title": "renderer: multi-dword buffer stores go out as one vector store"
+   },
+   {
+    "commit": "08f4d20982db",
+    "pr": 589,
+    "title": "renderer: keep shaders' resource scans"
+   },
+   {
+    "commit": "aadb1e30abfe",
+    "pr": 586,
+    "title": "renderer: tile copies move each element in one access"
+   },
+   {
+    "commit": "662ad7c0c77f",
+    "pr": 585,
+    "title": "runtime: default CPU mask 0x3f (six CPUs), per the 2026-11-11 ruling"
+   },
    {
     "commit": "737c99feaf30",
     "pr": 582,
