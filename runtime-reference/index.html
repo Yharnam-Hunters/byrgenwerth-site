@@ -2813,6 +2813,44 @@ directory, with no buffer, or into fewer than 512 bytes (a directory block: shad
 <code>EINVAL</code>, the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr>'s answer is not established); <code>SEEK_END</code> on a directory; a host <code>fsync</code> error.</p>
 <p>An entry added or removed between two calls can move the listing by one entry, as on any file
 system that lists by position.</p>
+<h3 id="directories-and-removing-files">Directories and removing files</h3>
+<p><code>sceKernelMkdir(path, mode)</code>, <code>sceKernelRmdir(path)</code> and <code>sceKernelUnlink(path)</code> are FreeBSD's
+<code>mkdir(2)</code>, <code>rmdir(2)</code> and <code>unlink(2)</code> under their SCE names, 0 or <code>0x80020000</code> plus the error
+number. <code>eboot</code> and <code>libSceFios2.elf</code> import all three from <code>libkernel</code> (<code>symbols/imports.csv</code>).
+The shapes come from the OpenOrbis homebrew SDK's <code>libkernel.h</code> (<code>int32_t sceKernelMkdir(const
+char *, OrbisKernelMode)</code>, <code>OrbisKernelMode</code> a <code>uint16_t</code> like FreeBSD's <code>mode_t</code>;
+<code>int32_t sceKernelRmdir(const char *)</code>, <code>int32_t sceKernelUnlink(const char *)</code>), supporting
+evidence for the shapes only. No call site in the repository shows them yet.</p>
+<p><strong>Under <code>/data</code> and a writable mount</strong> the host does the work, and its error is translated:
+- a missing file or directory component is <code>ENOENT</code> or <code>ENOTDIR</code>, and <code>mkdir</code> of an existing
+  name <code>EEXIST</code> (the same numbers on FreeBSD and Linux);
+- <code>rmdir</code> of a directory with entries is <code>ENOTEMPTY</code>, 66 on FreeBSD (Linux's is 39), and of a
+  path whose last component is <code>.</code> <code>EINVAL</code> (<code>rmdir(2)</code>; Linux answers the same);
+- <code>unlink</code> of a directory is <code>EPERM</code>. FreeBSD's <code>unlink(2)</code> page lists both <code>EISDIR</code> and <code>EPERM</code>
+  for "the named file is a directory"; the kernel settles it: <code>kern_unlinkat</code> (stable/9) and
+  <code>kern_funlinkat</code> (current) answer <code>EPERM</code> ("POSIX"), and turn the lookup's <code>EINVAL</code> for a last
+  component <code>.</code> into <code>EPERM</code> too. Linux answers <code>EISDIR</code> for both, which the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> translates.
+- Any other host error stops by name.</p>
+<p><strong>The mode of <code>mkdir</code>.</strong> FreeBSD gives the new directory <code>(mode &amp; ACCESSPERMS) &amp; ~umask</code>
+(<code>kern_mkdirat</code>, stable/9 and current), so bits above 0777 are dropped. The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> passes
+<code>mode &amp; 0777</code> to the host, as <code>sceKernelOpen</code> does for a new file, and the host process's umask
+then applies. Not established: the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> process's umask, so the bits a later <code>sceKernelStat</code> shows
+are the host's answer, not a console's; and whether the console enforces those bits for the title
+(a folder made without the owner's write and search bits refuses files on the host, which then
+stop by name).</p>
+<p><strong>On a read-only mount</strong> (<code>/app0</code>, a save mounted read-only) nothing changes, and the answers follow
+FreeBSD's lookup order (<code>vfs_lookup.c</code>, stable/9 and current):
+- a missing component of the path prefix is <code>ENOENT</code> or <code>ENOTDIR</code> first;
+- <code>mkdir</code> of an existing name is <code>EEXIST</code> (the read-only check is not made for a name that
+  exists), of a new name <code>EROFS</code>;
+- <code>rmdir</code> and <code>unlink</code> of an existing name, file or directory, are <code>EROFS</code>, before <code>rmdir</code>'s
+  <code>ENOTDIR</code> and <code>ENOTEMPTY</code> and <code>unlink</code>'s <code>EPERM</code> for a directory;
+- a last component <code>.</code> is refused by the lookup before that: <code>rmdir</code> <code>EINVAL</code>, <code>unlink</code> <code>EPERM</code>.</p>
+<p><strong>Stops by name</strong>, besides the path checks every file call shares (no path, a path outside the
+mounts, a <code>..</code> component, a path longer than the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>'s buffer): <code>rmdir</code> of a mount point itself
+(<code>/data</code>, <code>/app0</code>, <code>/savedataN</code>). FreeBSD's <code>rmdir(2)</code> answers <code>EBUSY</code> for the root of a mounted
+file system, but whether <code>/data</code> is one on the console is not established, and the host would
+remove the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>'s own folder.</p>
 <h2 id="the-disc-map-scediscmapisrequestonhdd-issue-35">The disc map (<code>sceDiscMapIsRequestOnHDD</code>, issue #35)</h2>
 <p>The disc map tells the file library whether part of a file is already on the hard disk or still
 only on the disc (<code>runtime/syslib/disc_map.c</code>).</p>
@@ -3205,6 +3243,7 @@ metadata.</p>
 <li><a href="https://pubs.opengroup.org/onlinepubs/9799919799/functions/pthread_self.html">POSIX <code>pthread_self</code></a> and <a href="https://pubs.opengroup.org/onlinepubs/9799919799/functions/pthread_attr_destroy.html"><code>pthread_attr_init</code>/<code>pthread_attr_destroy</code></a></li>
 <li><a href="https://man.freebsd.org/cgi/man.cgi?query=pthread_attr_setdetachstate&amp;sektion=3">FreeBSD <code>pthread_attr(3)</code></a>, <a href="https://cgit.freebsd.org/src/tree/lib/libthr/thread/thr_attr.c">libthr <code>thr_attr.c</code></a> (<code>_pthread_attr_setdetachstate</code>, <code>_pthread_attr_get_np</code>), <a href="https://cgit.freebsd.org/src/tree/lib/libthr/thread/thr_create.c"><code>thr_create.c</code></a> (<code>_pthread_create</code>: the default attribute for a null or empty variable) and <a href="https://cgit.freebsd.org/src/tree/include/pthread.h"><code>include/pthread.h</code></a> (<code>PTHREAD_CREATE_JOINABLE</code>, <code>PTHREAD_CREATE_DETACHED</code>)</li>
 <li><a href="https://github.com/OpenOrbis/OpenOrbis-PS4-Toolchain/blob/master/include/orbis/_types/pthread.h">OpenOrbis <code>include/orbis/_types/pthread.h</code></a> - the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> homebrew SDK's <code>ORBIS_PTHREAD_CREATE_*</code> values, which follow FreeBSD's</li>
+<li>FreeBSD 9.0 <a href="https://man.freebsd.org/cgi/man.cgi?query=mkdir&amp;sektion=2&amp;manpath=FreeBSD+9.0-RELEASE"><code>mkdir(2)</code></a>, <a href="https://man.freebsd.org/cgi/man.cgi?query=rmdir&amp;sektion=2&amp;manpath=FreeBSD+9.0-RELEASE"><code>rmdir(2)</code></a>, <a href="https://man.freebsd.org/cgi/man.cgi?query=unlink&amp;sektion=2&amp;manpath=FreeBSD+9.0-RELEASE"><code>unlink(2)</code></a> and <a href="https://man.freebsd.org/cgi/man.cgi?query=unlink&amp;sektion=2">current <code>unlink(2)</code></a>; FreeBSD <a href="https://cgit.freebsd.org/src/tree/sys/kern/vfs_syscalls.c?h=stable/9"><code>vfs_syscalls.c</code></a> (stable/9 and main: <code>kern_mkdirat</code> and its mode, <code>kern_rmdirat</code>/<code>kern_frmdirat</code>, <code>kern_unlinkat</code>/<code>kern_funlinkat</code> and <code>EPERM</code> for a directory) and <a href="https://cgit.freebsd.org/src/tree/sys/kern/vfs_lookup.c?h=stable/9"><code>vfs_lookup.c</code></a> (stable/9 and main: the read-only checks and the <code>.</code> check, and their order); <a href="https://github.com/OpenOrbis/OpenOrbis-PS4-Toolchain/blob/master/include/orbis/libkernel.h">OpenOrbis <code>libkernel.h</code></a> and <a href="https://github.com/OpenOrbis/OpenOrbis-PS4-Toolchain/blob/master/include/orbis/_types/kernel.h"><code>_types/kernel.h</code></a> (<code>OrbisKernelMode</code>) for the shapes</li>
 </ul>
       
       </div>
