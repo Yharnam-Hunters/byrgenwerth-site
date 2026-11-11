@@ -384,7 +384,7 @@
       <span class="wk-stat-track" role="img" aria-label="0.033 percent of target code bytes verified">
         <span class="wk-stat-fill" style="width:0.033%"></span>
       </span>
-      <span class="wk-progress-foot">0.033% of code bytes verified · 239 replaced</span>
+      <span class="wk-progress-foot">0.033% of code bytes verified · 245 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -782,18 +782,17 @@ explicitly leaves the mask type unfinished; the declaration is corroboration, no
 describes retrieving a stored attribute mask, success/error returns and invalid attributes, but
 its API includes a size argument absent at this target call. Its errors and CPU-set layout
 cannot simply be assigned to the SCE interface.</p>
-<p><strong>Still required before implementation:</strong> independently establish the main thread's actual
-mask, how a fresh attribute differs from one filled by <code>scePthreadAttrGet</code>, the exact output
-write extent, success/error results, and invalid/null attribute or output handling. Host CPU
-availability and a guessed console core count establish none of these. No specific affinity
-implementation is added or registered by this investigation; the import remains unbound.</p>
-<p>A useful target measurement would record the console/firmware and executable identities, the
-results of attribute initialization and copying from <code>scePthreadSelf</code>, the getter's return bits,
-the output bytes with adjacent canaries, and repeated observations without changing affinity.
-Check current claims in <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/34">issue #34</a> before
-taking implementation work; mentions of the boot blocker are not themselves contributor claims.
-Generic gameplay <abbr title="Inputs recorded while the game ran, replayed by the harness.">capture</abbr> remains separate contributor-owned work, not a reason to synthesize
-the missing affinity observation.</p>
+<p><strong>What the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> answers (maintainer ruling, 2026-11-10).</strong> The console's own mask is still not
+measured. The maintainer ruled that a thread with no mask set by the guest answers <strong>all ones</strong>,
+which is what <code>scePthreadGetaffinity</code> already answers. <code>scePthreadAttrGetaffinity(attr, mask)</code>
+therefore writes eight bytes:
+- the mask set on the attribute with <code>scePthreadAttrSetaffinity</code>, or copied from a thread by
+  <code>scePthreadAttrGet</code>, which copies the thread's mask (from its creation attribute or
+  <code>scePthreadSetaffinity</code>);
+- otherwise <code>UINT64_MAX</code>.</p>
+<p>A variable holding no attribute is <code>EINVAL</code>, as for the setter. No variable for the mask stops by
+name. Host CPU availability is not consulted. evill33t's #239 did the groundwork on this call; it
+took its value from the host, which the ruling <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr>.</p>
 <p><strong>How the boot gets past it without a value.</strong> These are observations from static analysis of the
 hash-pinned <code>eboot.elf</code>, <code>libc.elf</code> and <code>libSceFios2.elf</code> (<abbr title="The NSA's open-source reverse-engineering suite, used here to find functions and their sizes.">Ghidra</abbr> 12.0.3 with <abbr title="A Ghidra extension that loads PS4 executables and resolves NIDs to names.">GhidraOrbis</abbr>, issue</p>
 <h1 id="34-not-guarantees">34), not guarantees:</h1>
@@ -817,7 +816,9 @@ module holds them, with the ones the file gives (<code>first_bytes</code>), and 
 guest code runs if they differ. It then writes each as a five-byte relative jump to a stub in the module's slot. A
 <code>return</code> stub leaves every register as the caller had it. A <code>stop</code> is reported like an
 unimplemented import: the status names the <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> and its caller in <code>stopped_by_hook</code>.
-<code>scePthreadAttrGetaffinity</code> stays unbound.</p>
+The call itself is implemented (above), but the probe never reaches it while this <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> is in
+place, so the count stays zero. Whether to drop the <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> and let the probe count the ruled mask is a
+separate decision.</p>
 <p>The <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> guards calls only. A direct read of <code>+0xd1c54</code> that the analysis missed would see 0, not
 a measured count. The offsets fit only the pinned <code>libc.elf</code> (<code>target.sha256</code>); another build fails
 the byte check by name instead of being patched.</p>

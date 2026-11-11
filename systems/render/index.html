@@ -384,7 +384,7 @@
       <span class="wk-stat-track" role="img" aria-label="0.033 percent of target code bytes verified">
         <span class="wk-stat-fill" style="width:0.033%"></span>
       </span>
-      <span class="wk-progress-foot">0.033% of code bytes verified · 239 replaced</span>
+      <span class="wk-progress-foot">0.033% of code bytes verified · 245 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -422,7 +422,7 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 10, 2026 22:54:43 UTC">November 10, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 11, 2026 04:51:28 UTC">November 11, 2026</span></p>
       
       
       <h1 id="render">Render</h1>
@@ -625,7 +625,45 @@ write exactly the original packets:</p>
   the GPU a buffer may be reused are written (<code>0x014778f0</code>, <code>0x02abb6d0</code>); and the present's
   sources are prepared and their state flushed (<code>0x02ad1eb0</code>, <code>0x02ad1f80</code>), with the encoding
   helpers <code>0x02564ed0</code> and <code>0x02565130</code> and the context finisher <code>0x02568530</code>.</li>
+<li><strong>Resetting a present's context</strong> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/557">#557</a> (from #257, 11 November): five finishers put a
+  present's context back to its starting state. <code>render_reset_present_context_preparation</code>
+  (<code>0x02ad2d20</code>) resets both nine-entry banks of preparation records and the state around them;
+  <code>render_prepare_present_context_scratch</code> (<code>0x02ad3070</code>) prepares the live bank's changed records
+  before the present finishes, reloading the bank on every pass;
+  <code>render_reset_present_context_shader_state</code> (<code>0x02acd190</code>) clears the conditional-command flag
+  and refills the shader state, keeping the invalid-value markers between fills; and two small
+  resets (<code>0x02abba10</code>, <code>0x02ad3300</code>) set one embedded state block to zero and that marker, leaving
+  padding and a shared scalar's bits as they were. What each bank's records stand for is still open.</li>
 </ul>
+<h3 id="wind-on-models">Wind on models</h3>
+<p><code>render_update_model_wind</code> (<code>0x02713870</code>) gives each model its wind, which the grass
+and tree shaders read as <code>WindForceAndTime</code> and <code>PointWindForce</code>. Every model draw calls it
+(<code>0x0216f9d0</code>, <code>0x02124660</code>). For the model's wind receiver it:</p>
+<ol>
+<li>ages the influences it keeps: each fades out over its last 0.75 s while its wave time advances
+   by the wind step;</li>
+<li>copies the live influences, up to four in each of two lists, to the output;</li>
+<li>samples every attached wind source: a base speed, a gust from fractal noise, and a direction
+   turned by noisy angles;</li>
+<li>adds or refreshes that source's influence, ramping it in over 0.1 s. Kinds 0 and 3 go to the
+   first list, which keeps the strongest four once full.</li>
+</ol>
+<p>It was the last function on the list of frame-rate-patched functions in issue <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/32">#32</a>, now closed
+(<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/568">#568</a>, 11 November). The patches point its three 1/30 s step loads at their own frame-time cell
+and rewrite one to use the measured frame time; <code>BB_TARGET_FPS</code> does the same in code
+(see <a href="../../how-the-frame-limiter-works/">The frame limiter</a>). Three quirks of the original are kept:
+three stale stack bytes copied into every influence, a failed lookup keeping the previous source's
+jitter, gust and cycle values, and a hold flag that zeroes the step for every later source. What
+each source kind stands for is still open.</p>
+<details class="evidence">
+<summary>How the wind update was <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></summary>
+<p>Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>: 120 constructed cases pass against the original stock and with the pinned
+community patch file for <code>30 FPS++</code>, <code>60 FPS++</code> and <code>Uncap FPS++</code> (each run with the matching
+<code>BB_TARGET_FPS</code>); 109 of the original's 125 branches were seen both ways, and every
+non-equivalent one of 70 deliberate mutants fails in at least one mode. A separate review
+session that did not write the code requested changes, then approved the fixes. It becomes
+<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> once recordings from the game exist.</p>
+</details>
 <h3 id="how-the-renderer-learns-what-the-game-draws">How the renderer learns what the game draws</h3>
 <p>Paleblood does not replay the finished GPU commands. Instead, the GPU library's replacements, with
 their packets unchanged, also tell Paleblood's renderer what they set, and the renderer draws that
@@ -658,7 +696,10 @@ with <code>main</code> and merged from the PRs named in brackets; #362 adds case
 preparation's reset modes (from #350) and #352 derives the packet tests' addresses from the
 <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr>. The observer calls were added afterwards and leave the packets unchanged. The
 functions of 10 November (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/482">#482</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/485">#485</a>-<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/487">#487</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/489">#489</a>) were checked the same way and are
-<abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr>; <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/489">#489</a> lists each one's cases in its session report.</p>
+<abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr>; <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/489">#489</a> lists each one's cases in its session report.
+The five context finishers of <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/557">#557</a> pass 3, 6, 3, 34 and 3 cases; an independent re-review
+on the merged tree caught four of five planted mistakes, and the claim the fifth would have
+tested (the order of one scalar load) was taken out of its note.</p>
 </details>
 <details class="evidence">
 <summary>How these were <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></summary>
@@ -1380,6 +1421,13 @@ frames. #279, #286 and #287 were brought up to date with <code>main</code> from 
 <td data-label="Notes">GXSwapChainCtrl present: waits for the present interval in 60 Hz vblanks, maps it to a flip mode, presents (Uncap: mode 0)</td>
 </tr>
 <tr>
+<td data-label="Address"><code>0x02713870</code></td>
+<td style="text-align: right;" data-label="Size">11646</td>
+<td data-label="Name"><code>render_update_model_wind</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Ages a model wind receiver's kept influences, lists the live ones and adds or refreshes one per attached wind source; applies selected frame-rate steps</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x02aaa5a0</code></td>
 <td style="text-align: right;" data-label="Size">124</td>
 <td data-label="Name"><code>render_release_present_finish_node</code></td>
@@ -1506,6 +1554,20 @@ frames. #279, #286 and #287 were brought up to date with <code>main</code> from 
 <td data-label="Notes">Forward address and data to the release writer with fixed flags and mode and a zero final selector.</td>
 </tr>
 <tr>
+<td data-label="Address"><code>0x02abba10</code></td>
+<td style="text-align: right;" data-label="Size">22</td>
+<td data-label="Name"><code>render_reset_present_context_state_b518</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Reset the first 64-bit field to zero and the second to the packed invalid-value sentinel.</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02acd190</code></td>
+<td style="text-align: right;" data-label="Size">601</td>
+<td data-label="Name"><code>render_reset_present_context_shader_state</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Clear the conditional command flag, then preserve the sentinel stores around each distinct state-fill call.</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x02ace1e0</code></td>
 <td style="text-align: right;" data-label="Size">1016</td>
 <td data-label="Name"><code>render_configure_record_shader</code></td>
@@ -1560,6 +1622,27 @@ frames. #279, #286 and #287 were brought up to date with <code>main</code> from 
 <td data-label="Name"><code>render_reset_present_preparation_dirty</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">Emit changed depth and stencil clear values, then cache their post-call values. Preserve the second writer's upper return bits while replacing its low word.</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02ad2d20</code></td>
+<td style="text-align: right;" data-label="Size">517</td>
+<td data-label="Name"><code>render_reset_present_context_preparation</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Reset both nine-entry banks and surrounding state; interleave the first eight entries before loading the live scalar.</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02ad3070</code></td>
+<td style="text-align: right;" data-label="Size">351</td>
+<td data-label="Name"><code>render_prepare_present_context_scratch</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Prepare changed live-bank records before finishing; retain eligible pointers across refresh calls and reload the bank each iteration.</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02ad3300</code></td>
+<td style="text-align: right;" data-label="Size">76</td>
+<td data-label="Name"><code>render_reset_present_context_state_b528</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Reset the embedded state without changing padding; copy the shared scalar bits unchanged.</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x02ad3b80</code></td>

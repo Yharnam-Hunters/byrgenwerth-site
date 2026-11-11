@@ -1,9 +1,9 @@
 {
   "edge_verified": {
-    "bytes": 100967,
-    "bytes_pct": 0.24,
-    "functions": 239,
-    "functions_pct": 0.15
+    "bytes": 114180,
+    "bytes_pct": 0.27,
+    "functions": 245,
+    "functions_pct": 0.16
   },
   "families": {
     "count": 19,
@@ -19,14 +19,14 @@
     }
   },
   "inputs": {
-    "functions_sha256": "6cfdc724d78c24438f7ca0f88d5cae65e6adc145238871d3138bb169c4377ea9",
-    "ghidra_functions_sha256": "a8151ce06882311f7b2e1916236b9e481790a37c90bb2975fd3e538045e26248"
+    "functions_sha256": "ea8201ce24094d33d1ebda585a267900b04bf9bc146c37cc0d897e85c0268735",
+    "ghidra_functions_sha256": "f1222f48842956a56361fb30cff5c2b92eb9437eb2e44ec42bd69c3ec04b2aac"
   },
   "replaced": {
-    "bytes": 100967,
-    "bytes_pct": 0.24,
-    "functions": 239,
-    "functions_pct": 0.15
+    "bytes": 114180,
+    "bytes_pct": 0.27,
+    "functions": 245,
+    "functions_pct": 0.16
   },
   "runtime": {
     "fault": {
@@ -461,10 +461,10 @@
       "verified_bytes": 0
     },
     {
-      "bytes": 679649,
+      "bytes": 679684,
       "end": "0x0278a9fc",
       "functions": 2077,
-      "replaced_bytes": 0,
+      "replaced_bytes": 11646,
       "start": "0x026dba69",
       "verified_bytes": 0
     },
@@ -504,7 +504,7 @@
       "bytes": 657317,
       "end": "0x02af57db",
       "functions": 3151,
-      "replaced_bytes": 18951,
+      "replaced_bytes": 20518,
       "start": "0x02a46848",
       "verified_bytes": 0
     },
@@ -644,20 +644,20 @@
       "verified": 1
     },
     "render": {
-      "edge_verified": 133,
-      "replaced": 133,
-      "replaced_bytes": 53800,
-      "tracked": 133,
+      "edge_verified": 139,
+      "replaced": 139,
+      "replaced_bytes": 67013,
+      "tracked": 139,
       "verified": 3
     }
   },
   "total": {
-    "bytes": 42487369,
+    "bytes": 42487404,
     "functions": 157757
   },
   "tracked": {
-    "bytes": 101034,
-    "functions": 240
+    "bytes": 114247,
+    "functions": 246
   },
   "verified": {
     "bytes": 14010,
