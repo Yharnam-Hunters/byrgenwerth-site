@@ -464,34 +464,8 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 11, 2026 04:54:55 UTC">November 11, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 11, 2026 18:36:25 UTC">November 11, 2026</span></p>
       
-      
-      
-      <aside class="wk-freshness" role="note">
-        <p><b>Not yet updated for 7 merged changes.</b>
-        This page was last checked against Paleblood
-        <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/57f77ee67371f249923035670cee6b25916517f7"><code>57f77ee</code></a>;
-        these pull requests changed what it describes since:</p>
-        <ul>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/606">#606</a> gnm: run the compute queues' work</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/595">#595</a> renderer: perform completion writes once the GPU is done, without waiting</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/583">#583</a> runtime: execute guest workers on Darwin x86-64</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/580">#580</a> runtime: back direct memory on Darwin</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/576">#576</a> runtime: support Darwin timed synchronization</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/585">#585</a> runtime: default CPU mask 0x3f (six CPUs), per the 2026-11-11 ruling</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/571">#571</a> runtime: libc's thread-count probe runs again (drop #207's hook); README update</li>
-          
-          
-        </ul>
-      </aside>
       
       <h1 id="runtime-system-call-notes">Runtime system-call notes</h1>
 <p class="wk-lede">What each runtime system call is for, what it must do, what the game was seen to do with it, and how Paleblood's runtime answers.</p>
@@ -695,6 +669,7 @@ for that thread, so these calls work by comparing or returning those pointers.</
 <li><strong><code>scePthreadEqual</code></strong> asks whether two handles name the same thread. The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> compares the opaque object pointers used as guest thread handles: zero means different, nonzero means equal. The exact nonzero value the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> returns, and its behavior for a null handle, are not established.</li>
 <li><strong><code>sched_yield</code></strong> lets other threads run. The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> yields the calling host thread and returns zero, following the POSIX/FreeBSD contract. A host failure stops by name. The unit test checks the result; it cannot prove that the host scheduler ran another thread.</li>
 <li><strong>On macOS</strong> the registry is gathered the same way, from a section of the Mach-O binary instead of the <abbr title="Executable and Linkable Format, the standard executable file format on Linux and FreeBSD.">ELF</abbr> one (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/216">#216</a>); Linux is unchanged.</li>
+<li><strong>Darwin (macOS) versions</strong> by <a href="https://github.com/evill33t">@evill33t</a>, each tested on their own Macs, with Linux unchanged: timed locks and condition waits on native try-locks and relative waits that recheck the original deadline (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/576">#576</a>), direct memory backed on Darwin (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/580">#580</a>), and guest worker threads with their thread-local storage on x86-64 (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/583">#583</a>). The game does not run on macOS yet.</li>
 <li><strong><code>scePthreadYield</code></strong> does the same (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/308">#308</a>). Its <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> signature is not published (FreeBSD's analogue returns nothing, Linux's returns an int), but answering zero is right either way: a caller of a function that returns nothing never reads the result, and zero is the int version's success. Every one of the game's 26 direct calls ignores the result.</li>
 <li><strong><code>pthread_self</code></strong> (<code>libScePosix</code>) returns the calling thread's own handle. It answers exactly what <code>scePthreadSelf</code> answers. With no guest thread registered on the host thread, it stops by the name the guest used. POSIX defines no error return.</li>
 </ul>
@@ -1219,7 +1194,7 @@ signalling libraries).</p>
 <tr>
 <td data-label="Call"><code>scePthreadSetaffinity</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
-<td data-label="What the runtime does">Records the CPU mask; the host schedules the thread. No thread answers "no such thread", which the game's job system ignores for its empty worker slots (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/310">#310</a>).</td>
+<td data-label="What the runtime does">Records the CPU mask; the host schedules the thread. <code>scePthreadGetaffinity</code> answers it back, or <code>0x3f</code> for a thread nobody set a mask on (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/585">#585</a>). No thread answers "no such thread", which the game's job system ignores for its empty worker slots (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/310">#310</a>).</td>
 </tr>
 <tr>
 <td data-label="Call"><code>pthread_create_name_np</code></td>
@@ -1284,7 +1259,7 @@ signalling libraries).</p>
 <tr>
 <td data-label="Call"><code>scePthreadAttrGetaffinity</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
-<td data-label="What the runtime does">Writes eight bytes: the mask set on the attribute, or copied from a thread by <code>scePthreadAttrGet</code>, otherwise all ones (maintainer ruling, 10 November). No attribute is <code>EINVAL</code>; no mask variable stops by name (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/561">#561</a>).</td>
+<td data-label="What the runtime does">Writes eight bytes: the mask set on the attribute, or copied from a thread by <code>scePthreadAttrGet</code>, otherwise <code>0x3f</code>, the six CPUs 0 to 5 (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/585">#585</a>, maintainer ruling of 11 November, which <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> the all-ones default of 10 November). No attribute is <code>EINVAL</code>; no mask variable stops by name (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/561">#561</a>).</td>
 </tr>
 <tr>
 <td data-label="Call"><code>_sigprocmask</code></td>
@@ -2088,17 +2063,17 @@ pending counts are still not modelled.</p>
 <tr>
 <td data-label="Call"><code>sceGnmSubmitCommandBuffers</code>, <code>sceGnmSubmitAndFlipCommandBuffers</code>, <code>sceGnmSubmitDone</code></td>
 <td data-label="Status">implemented (temporary stand-in)</td>
-<td data-label="What the runtime does">Complete a frame's GPU work: "work done" values are written, waits are checked, the other packets are skipped; then the frame is flipped (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/310">#310</a>). With the display on, the renderer also runs the drawing calls recorded for each submitted buffer (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/369">#369</a>); since <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/488">#488</a> the call returns at once and the renderer's own thread runs the work in submission order, with each "work done" value, wait and flip placed after the work before it. Any number of buffers per call (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/504">#504</a>: character creation submits 70). Since <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/572">#572</a> the flip after a frame's work no longer waits on that thread: the picture is taken there and the flip is queued to a video out thread, which waits for the vertical blank, updates the flip status, presents and raises the flip events in order; <code>sceVideoOutSubmitFlip</code> waits for queued flips first.</td>
+<td data-label="What the runtime does">Complete a frame's GPU work: "work done" values are written, waits are checked, the other packets are skipped; then the frame is flipped (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/310">#310</a>). With the display on, the renderer also runs the drawing calls recorded for each submitted buffer (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/369">#369</a>); since <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/488">#488</a> the call returns at once and the renderer's own thread runs the work in submission order, with each "work done" value, wait and flip placed after the work before it. Any number of buffers per call (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/504">#504</a>: character creation submits 70). Since <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/572">#572</a> the flip after a frame's work no longer waits on that thread: the picture is taken there and the flip is queued to a video out thread, which waits for the vertical blank, updates the flip status, presents and raises the flip events in order; <code>sceVideoOutSubmitFlip</code> waits for queued flips first. Since <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/595">#595</a> the renderer's thread no longer waits for the GPU at each step: the "work done" writes are performed once the GPU has finished the work before them.</td>
 </tr>
 <tr>
 <td data-label="Call"><code>sceGnmMapComputeQueue</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
-<td data-label="What the runtime does">Records a GPU compute queue and gives it an ID; the GPU itself is not run.</td>
+<td data-label="What the runtime does">Records a GPU compute queue and gives it an ID.</td>
 </tr>
 <tr>
 <td data-label="Call"><code>sceGnmDingDong</code></td>
-<td data-label="Status">implemented (temporary stand-in)</td>
-<td data-label="What the runtime does">Completes submitted compute work at once (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/302">#302</a>): no shaders run, but each job's "work done" value is written and the queue is freed. Since <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/470">#470</a> the renderer takes each buffer's recorded calls and drops them, so their shader bindings cannot leak into a later graphics buffer in the same memory.</td>
+<td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
+<td data-label="What the runtime does">Until <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/606">#606</a> (11 November) it completed submitted compute work at once (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/302">#302</a>): no shaders ran, but each job's "work done" value was written and the queue freed. Now each buffer the ring points to goes to the renderer like a graphics buffer: with the display on its dispatches run on the GPU in submission order, with the graphics work, and its "work done" values are written after them; with the display off they are written at once, as before. Since <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/470">#470</a> the renderer takes each buffer's recorded calls and drops them, so their shader bindings cannot leak into a later graphics buffer in the same memory.</td>
 </tr>
 </tbody>
 </table></div>
@@ -2117,7 +2092,9 @@ run a compute shader, then write a "work done" value to memory, which the CPU wa
 engine's own renderer replaces this layer, the doorbell completes the work at once (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/302">#302</a>): it
 follows each buffer, skips the shader steps (nothing is drawn or computed), writes the "work done"
 value and moves the queue's read position on. Any other kind of step stops by name. This keeps
-start-up moving; it does not make anything appear on screen.</p>
+start-up moving; it does not make anything appear on screen. Since <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/606">#606</a> (11 November), with the
+display on, the compute queues' dispatches run on the GPU instead: character creation's lit preview
+needs what they make (a colour volume, composed images and its light data).</p>
 <p><strong>What the stand-in skips safely.</strong> As the boot went further, the frame's command buffers held more
 kinds of packets. The stand-in skips only those that change nothing it would have to model: an
 empty constant-buffer entry (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/375">#375</a>), a memory read that only warms the GPU's cache and the
@@ -5427,7 +5404,7 @@ call is registered only to name itself and stop, because its answer is not estab
 <tr>
 <td data-label="Call"><code>scePthreadAttrGetaffinity</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
-<td data-label="What the runtime does">Answers the ruled mask since <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/561">#561</a> (11 November). Since <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/207">#207</a> the C library's probe no longer calls it. The boot of 19 October stopped here; the boot of 4 November passes it.</td>
+<td data-label="What the runtime does">Answers the ruled mask since <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/561">#561</a> (11 November), <code>0x3f</code> by default since <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/585">#585</a>. From <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/207">#207</a> the C library's probe no longer called it; since <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/571">#571</a> it does again. The boot of 19 October stopped here; the boot of 4 November passes it.</td>
 </tr>
 </tbody>
 </table></div>
@@ -5454,7 +5431,7 @@ at the function's start to a small stub just past the module's image. Two replac
 in <code>game/module_hooks.csv</code> for the pinned <code>libc.elf</code>:</p>
 <ul>
 <li>the thread-count probe described above returns at once, so <code>scePthreadAttrGetaffinity</code> is never
-  called and the stored core count stays as it was (no mask is invented);</li>
+  called and the stored core count stays as it was (no mask is invented; this <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> was dropped in <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/571">#571</a>, below);</li>
 <li><code>std::thread::hardware_concurrency</code>, which would read that count, <strong>stops the run by name</strong> if the
   game ever calls it, the same way an unimplemented import stops it.</li>
 </ul>
@@ -5467,7 +5444,7 @@ point; later the same day (<a href="https://github.com/Yharnam-Hunters/Paleblood
 <code>libc.elf</code>.</p>
 <p><strong>What it answers now (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/561">#561</a>, merged 11 November 2026).</strong> The console's own mask is still not
 measured. On 10 November the maintainer ruled that a thread whose mask the game never set answers
-<strong>all ones</strong>, as <code>scePthreadGetaffinity</code> already did. So <code>scePthreadAttrGetaffinity(attr, mask)</code> writes
+<strong>all ones</strong>, as <code>scePthreadGetaffinity</code> already did (on 11 November a second ruling made the default <code>0x3f</code>, below). So <code>scePthreadAttrGetaffinity(attr, mask)</code> writes
 eight bytes: the mask set on the attribute with <code>scePthreadAttrSetaffinity</code>, or the thread's mask that
 <code>scePthreadAttrGet</code> copied (from its creation attribute or <code>scePthreadSetaffinity</code>), otherwise
 <code>UINT64_MAX</code>. A variable holding no attribute is <code>EINVAL</code>; no variable for the mask stops by name. The
@@ -5477,6 +5454,18 @@ check a fresh attribute with canaries around the eight bytes, set masks up to bi
 threads with and without a mask, and the two error paths; four planted mistakes are caught.
 The probe <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> above stays, so the game's CPU count does not change; whether to drop it and let the
 probe count the ruled mask is a separate decision.</p>
+<p><strong>The probe runs again (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/571">#571</a>, merged 11 November 2026; default <code>0x3f</code> since <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/585">#585</a>).</strong> The
+maintainer decided to drop the probe's <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr>, so the original probe runs in <code>libc.elf</code>'s start-up code,
+before any of the executable's code. It asks <code>scePthreadAttrGetaffinity</code> about a copy of the main
+thread's attributes, which have no mask set by the game yet, counts the set bits and stores the count
+at <code>libc.elf+0xd1c54</code>. On 11 November the maintainer ruled that the default mask is <code>0x3f</code>, the six
+CPUs 0 to 5: the mask the executable's own thread setup gives each thread. Both
+<code>scePthreadGetaffinity</code> and <code>scePthreadAttrGetaffinity</code> answer it for a thread or attribute with no
+mask. A local boot without a display read <strong>6</strong> from the running process (64 under the first ruling,
+0 while the <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> was in place). That count follows from the ruling; the console's own mask is still
+not measured. The second <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> stays: <code>std::thread::hardware_concurrency</code>, the count's only reader
+found, still stops the run by name, so nothing reads the ruled count as if it were the console's.
+The boot recorded with <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/571">#571</a> shows 248 imports called, up from 243.</p>
 <details class="reference">
 <summary>scePthreadAttrGetaffinity: declaration source</summary>
 <p>OpenOrbis <a href="https://github.com/OpenOrbis/OpenOrbis-PS4-Toolchain/blob/0a1aaf9dd4a92695538bdeb09fb056d06dd11725/include/orbis/libkernel.h#L463"><code>libkernel.h</code></a>
