@@ -457,7 +457,7 @@
           
           <li><a href="#the-controller-libscepad" class="wk-toc-link">The controller (libScePad)</a></li>
           
-          <li><a href="#the-on-screen-keyboard-canceled-libsceimedialog-issue-36" class="wk-toc-link">The on-screen keyboard, canceled (libSceImeDialog, issue #36)</a></li>
+          <li><a href="#the-on-screen-keyboard-canceled-or-given-a-text-libsceimedialog-issue-36" class="wk-toc-link">The on-screen keyboard, canceled or given a text (libSceImeDialog, issue #36)</a></li>
           
           <li><a href="#the-mouse-not-connected-libscemouse-issue-36" class="wk-toc-link">The mouse, not connected (libSceMouse, issue #36)</a></li>
           
@@ -1700,17 +1700,23 @@ open handle, and a bool for the two settings, and counts 0 as success. Since mot
 modelled, a reset leaves the reported orientation the identity, neither setting changes a
 reading with no motion, and each call answers 0 (<code>test/syslib/pad_motion_settings.c</code>). An
 unknown handle and a setting other than 0 or 1 stop by name.</p>
-<h2 id="the-on-screen-keyboard-canceled-libsceimedialog-issue-36">The on-screen keyboard, canceled (<code>libSceImeDialog</code>, issue #36)</h2>
+<h2 id="the-on-screen-keyboard-canceled-or-given-a-text-libsceimedialog-issue-36">The on-screen keyboard, canceled or given a text (<code>libSceImeDialog</code>, issue #36)</h2>
 <p><strong>Facts.</strong> OpenOrbis <code>ImeDialog.h</code> and <code>_types/ime_dialog.h</code> give:
 - the shapes: <code>sceImeDialogInit(setting, extended)</code>, <code>GetStatus()</code>, <code>GetResult(result)</code> and
   <code>Term()</code>;
 - the statuses: NONE 0, RUNNING 1, STOPPED 2;
-- the result: an end status (OK 0, CANCEL 1, ABORT 2) followed by 12 reserved bytes.</p>
+- the result: an end status (OK 0, CANCEL 1, ABORT 2) followed by 12 reserved bytes.
+- the setting (<code>OrbisImeDialogSetting</code>, 96 bytes): user, type, 64-bit languages, enter label,
+  input method, a text filter callback (<code>0x18</code>), option, maximum text length (<code>0x24</code>, 16-bit
+  characters without the terminating zero), the text buffer (<code>0x28</code>), position, alignments,
+  placeholder, title and 16 reserved bytes. The text is 16-bit characters (<code>wchar_t</code> is 16 bits on
+  the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr>). shadPS4's <code>OrbisImeDialogParam</code> has the same fields.</p>
 <p>shadPS4's <code>ime_dialog.cpp</code> (facts only) gives the states: Init from NONE to RUNNING, Abort from
 RUNNING to finished with ABORT, and Term from finished to NONE.</p>
 <p><strong>The executable's keyboard</strong> (<code>0x02d03f80</code>):
-- <strong>Opening.</strong> It fills a setting with a text buffer that holds the initial text, calls Init with
-  no extended setting, and takes 0 as open.
+- <strong>Opening.</strong> It fills a setting on its stack (no text filter; a heap text buffer that holds the
+  initial text), calls Init with no extended setting, takes 0 as open and returns, so the setting's
+  memory is reused before the first status query. The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> copies the setting at Init.
 - <strong>Polling.</strong> Each frame, <code>0x02d03df0</code> asks GetStatus. On 2 it reads the result: end status 0
   takes the buffer's text; 1 and 2 (or a failed GetResult) take none.
 - <strong>Closing.</strong> <code>0x02d03e70</code> then calls Term. <code>0x02d04300</code> calls Abort while the keyboard is open
@@ -1719,13 +1725,22 @@ RUNNING to finished with ABORT, and Term from finished to NONE.</p>
 - <strong>Cancel.</strong> Init opens the keyboard, and the first GetStatus finds it closed with CANCEL, as if
   the user backed out at once. The title takes no text, the buffer is left as given, and nothing is
   shown.
+- <strong>A given text</strong> (<code>pbboot --keyboard-text TEXT</code>, <code>tools/boot.py --no-record --keyboard-text
+  TEXT</code>). The first GetStatus writes TEXT (UTF-8 on the command line, written as UTF-16) into the
+  setting's buffer, zero-terminated, and closes the keyboard with OK, as if the user typed it and
+  pressed Done. A title's text filter (shadPS4 calls it from GetStatus on the title's thread; facts
+  only) gets the text first, and its output is what the buffer gets. Character creation needs it: the contract cannot be finished without a name (the
+  game answers "A name is required."). Unattended boots use it with an input script.
 - <strong>Abort and Term.</strong> Abort of an open keyboard closes it with ABORT, and Term closes the library.</p>
 <p><strong>What stops by name:</strong>
 - Init without a setting, or while a keyboard is open or not yet terminated (shadPS4 answers busy,
   <code>0x80bc0001</code>; this is not confirmed);
 - GetResult before the keyboard closed, or with no structure;
 - Abort when no keyboard is open;
-- Term before the keyboard closed.</p>
+- Term before the keyboard closed;
+- with a given text: no text buffer, a text filter that refuses the text (non-zero; the keyboard's
+  answer then is not established) or answers more than fits, or a maximum length shorter than the
+  text.</p>
 <p>An extended setting is ignored.</p>
 <h2 id="the-mouse-not-connected-libscemouse-issue-36">The mouse, not connected (<code>libSceMouse</code>, issue #36)</h2>
 <p>The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> has no host mouse, so it answers as a console with no mouse plugged in

@@ -16,15 +16,113 @@
   "reviewed": "4918472e6abd1bd6af2a5128f5b87fdbdf1a95ad"
  },
  "index.md": {
-  "behind": [],
+  "behind": [
+   {
+    "commit": "702edc45ef36",
+    "pr": 619,
+    "title": "runtime: the on-screen keyboard can answer with a given text"
+   }
+  ],
   "reviewed": "4918472e6abd1bd6af2a5128f5b87fdbdf1a95ad"
  },
  "runtime-syscalls.md": {
-  "behind": [],
+  "behind": [
+   {
+    "commit": "98637fc4a9cb",
+    "pr": 627,
+    "title": "runtime: WRITE_DATA writes memory in order with the work"
+   },
+   {
+    "commit": "702edc45ef36",
+    "pr": 619,
+    "title": "runtime: the on-screen keyboard can answer with a given text"
+   },
+   {
+    "commit": "e24cceaf614f",
+    "pr": 616,
+    "title": "renderer: reload textures only when their memory changed"
+   }
+  ],
   "reviewed": "4918472e6abd1bd6af2a5128f5b87fdbdf1a95ad"
  },
  "runtime.md": {
-  "behind": [],
+  "behind": [
+   {
+    "commit": "a7729d573ae6",
+    "pr": 635,
+    "title": "renderer: 16-bit unorm buffer loads"
+   },
+   {
+    "commit": "7ae81ea6d3a2",
+    "pr": 634,
+    "title": "renderer: depth targets read as images, 16-bit unorm images"
+   },
+   {
+    "commit": "de17d90a39a0",
+    "pr": 633,
+    "title": "renderer: depth compares (image_sample_c_lz) and depth exports (exp mrtz)"
+   },
+   {
+    "commit": "019e050eb35e",
+    "pr": 632,
+    "title": "renderer: the loading screen's loop shader (descriptors in loops, s_addk_i32)"
+   },
+   {
+    "commit": "dfc06c4805b0",
+    "pr": 631,
+    "title": "renderer: BC6H textures"
+   },
+   {
+    "commit": "53a797ea257c",
+    "pr": 626,
+    "title": "renderer: samplers that clamp to the border colour"
+   },
+   {
+    "commit": "e0448595c263",
+    "pr": 629,
+    "title": "renderer: detile 8- and 16-bit images on the GPU"
+   },
+   {
+    "commit": "203114b58934",
+    "pr": 628,
+    "title": "renderer: 32 float and 16_16 float render targets"
+   },
+   {
+    "commit": "98637fc4a9cb",
+    "pr": 627,
+    "title": "runtime: WRITE_DATA writes memory in order with the work"
+   },
+   {
+    "commit": "1c9446e3ef59",
+    "pr": 621,
+    "title": "renderer: buffer stores to 16_16 float"
+   },
+   {
+    "commit": "016ffe3e1480",
+    "pr": 620,
+    "title": "renderer: detile mip-mapped images on the GPU"
+   },
+   {
+    "commit": "2970bcf48d88",
+    "pr": 618,
+    "title": "renderer: a dispatch storing to a CMASK or HTILE clears it"
+   },
+   {
+    "commit": "702edc45ef36",
+    "pr": 619,
+    "title": "runtime: the on-screen keyboard can answer with a given text"
+   },
+   {
+    "commit": "e24cceaf614f",
+    "pr": 616,
+    "title": "renderer: reload textures only when their memory changed"
+   },
+   {
+    "commit": "b539dde831fe",
+    "pr": 615,
+    "title": "renderer: fast-clear checks wait only for metadata stores"
+   }
+  ],
   "reviewed": "4918472e6abd1bd6af2a5128f5b87fdbdf1a95ad"
  },
  "systems/ai.md": {
