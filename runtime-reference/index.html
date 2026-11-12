@@ -2606,7 +2606,9 @@ holding no attribute is <code>EINVAL</code>.</p>
 <h2 id="save-data-libscesavedata">Save data (<code>libSceSaveData</code>)</h2>
 <p>The title's saves live in the host folder given to <code>pbboot --savedata</code>. <code>tools/boot.py</code> gives
 each run a new empty one, so boots start alike, unless <code>--savedata DIR</code> names a folder to keep
-them in. A mounted save appears to the title as <code>/savedataN</code> (N the lowest free of 16), through
+them in. <code>--savedata-from DIR</code> (with <code>--no-record</code>) starts the new folder as a copy of a checkpoint
+in the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>'s layout (<code>&lt;user id&gt;/&lt;directory&gt;/</code>, below), which the run never changes: a boot can
+load a save the game wrote in an earlier run and start where it left off. A mounted save appears to the title as <code>/savedataN</code> (N the lowest free of 16), through
 the same file calls as <code>/app0</code> and <code>/data</code>, read-only or writable as mounted.</p>
 <p><strong>Sources.</strong> shadPS4's <code>libSceSaveData</code> (<code>savedata.cpp</code>, <code>savedata.h</code>, <code>savedata_error.h</code>,
 <code>save_instance.cpp</code>, <code>save_memory.cpp</code>), checked against two other Bloodborne ports and the OpenOrbis

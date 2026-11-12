@@ -422,7 +422,7 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 11, 2026 04:51:28 UTC">November 11, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 12, 2026 07:46:38 UTC">November 12, 2026</span></p>
       
       
       <h1 id="render">Render</h1>
@@ -684,6 +684,22 @@ on your GPU (see <a href="../../runtime/#the-renderer">Runtime: the renderer</a>
   (<code>0x0148aad0</code>-<code>0x0148ada0</code>) take no stage argument and were not observed, so a compute pass ran
   with whatever user data the record held from before; one colour lookup-table pass read another
   pass's table. They now report through the same observers as the stage writers.</li>
+<li><strong>Clinic loading</strong> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/649">#649</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/654">#654</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/655">#655</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/652">#652</a>: the load into Iosefka's Clinic (12 November, local runs)
+  reached five more library functions without replacements, now observed at their entry: the
+  indirect-argument base (<code>0x014742f0</code>, which writes <code>SET_BASE</code> with base index 1), the indirect
+  dispatch (<code>0x01474de0</code>, <code>DISPATCH_INDIRECT</code> with a data offset; the GPU reads the three
+  workgroup counts at the base plus that offset) and the depth bounds setter (<code>0x01473520</code>), whose
+  two bounds arrive as floats in <code>xmm0</code> and <code>xmm1</code> and are written as <code>DB_DEPTH_BOUNDS_MIN</code> and
+  <code>_MAX</code>. The fourth is the shader-stage setter (<code>0x01476030</code>), which writes <code>VGT_SHADER_STAGES_EN</code>
+  for five values only (0, 0x45, 0xad, 0xb0, 0x200) and nothing for any other: 0x45 turns on the
+  local, hull and vertex stages of tessellation, 0xad adds a geometry shader, 0xb0 is export plus
+  geometry. The engine's indirect draw caller (<code>0x02569a4c</code>) picks the local stage's user data
+  exactly for 0x45 and 0xad. The fifth is the indirect draw (<code>0x014744d0</code>: command buffer, data
+  offset, stage, and the SGPRs for the base vertex and start instance, each 0 for none), which
+  writes <code>DRAW_INDIRECT</code>; the GPU reads the four arguments (vertices per instance, instances, start
+  vertex, start instance) at the indirect base plus the offset. Its caller at <code>0x02569a89</code> passes
+  no SGPRs. A related dispatch writer with a third argument (<code>0x01474e80</code>) is not
+  observed yet.</li>
 </ul>
 <p>This needs the game library built from the decompilation (<code>tools/boot.py --game-lib</code>). In the
 maintainer's local runs it was enough to draw the studio logos and the title screen <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/441">#441</a>.</p>

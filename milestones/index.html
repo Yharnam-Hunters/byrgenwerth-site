@@ -418,7 +418,7 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 11, 2026 18:36:25 UTC">November 11, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 12, 2026 07:46:38 UTC">November 12, 2026</span></p>
       
       
       <h1 id="milestones">Milestones</h1>
@@ -507,6 +507,18 @@ names them. They are not saved boot records.</p>
 <p><a class="wk-frame-link" href="../assets/media/milestones/2026-11-11-contract-preview-hunter-correct-colours.png"><img alt="The character creation screen with the hunter in the preview panel in the right colours: white shirt, brown striped waistcoat, grey trousers, dark cape, a natural face" decoding="async" height="1080" loading="lazy" src="../assets/media/milestones/2026-11-11-contract-preview-hunter-correct-colours.png" width="1920" /></a></p>
 <figcaption><span class="wk-frame-when">11 Nov, ~17:33</span> <span class="wk-frame-what">The preview in the right colours (local run)</span><span class="wk-frame-detail">11 November, about 17:33 (local run): the hunter in the right colours. The draw that combines the light with the albedo read its texture coordinates from the wrong vertex output, so it sampled them upside down at half size; pixel shader inputs now follow the GPU's <code>SPI_PS_INPUT_CNTL</code> registers (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/607">#607</a>, merged 17:35). The face's texture is written by a compute shader and was black until its stores reached memory: <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/609">#609</a>, applied from review (merged 18:01). The screen runs at about 9 frames a second.</span></figcaption>
 </figure>
+<figure class="wk-frame">
+<p><a class="wk-frame-link" href="../assets/media/milestones/2026-11-11-contract-named-finalise-dialog.png"><img alt="The Contract screen with the name &quot;Hunter&quot; filled in, the hunter in the preview panel, and a &quot;Finalise contract?&quot; dialog with YES and NO, NO highlighted" decoding="async" height="1080" loading="lazy" src="../assets/media/milestones/2026-11-11-contract-named-finalise-dialog.png" width="1920" /></a></p>
+<figcaption><span class="wk-frame-when">11 Nov, ~19:37</span> <span class="wk-frame-what">The contract named and finalised (local run)</span><span class="wk-frame-detail">11 November, about 19:37 (local run): the contract carries a name, "Hunter", and Finish asks "Finalise contract?". The game will not finish a contract without a name, and the runtime's on-screen keyboard was always cancelled; with <code>--keyboard-text</code> it now answers as if the name was typed and confirmed (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/619">#619</a>, applied from review, merged 20:02). Scripted input then chose Finish and YES.</span></figcaption>
+</figure>
+<figure class="wk-frame">
+<p><a class="wk-frame-link" href="../assets/media/milestones/2026-11-11-after-contract-loading-screen-fade-in.png"><img alt="A dark loading screen fading in: a book page with an item description, &quot;Powder Keg Hunter Badge&quot;, and a small hunter's mark in the top right corner" decoding="async" height="1080" loading="lazy" src="../assets/media/milestones/2026-11-11-after-contract-loading-screen-fade-in.png" width="1920" /></a></p>
+<figcaption><span class="wk-frame-when">11 Nov, ~19:38</span> <span class="wk-frame-what">The loading screen after the contract (local run)</span><span class="wk-frame-detail">Same run, a few seconds later: the loading screen after the contract fades in, with one of the game's item descriptions. Its work then stopped by name on a 16_16 float buffer store; that and the next stops became <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/621">#621</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/622">#622</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/624">#624</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/626">#626</a> to <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/628">#628</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/631">#631</a> to <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/635">#635</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/638">#638</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/639">#639</a> and <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/644">#644</a>, merged on 11 and 12 November.</span></figcaption>
+</figure>
+<figure class="wk-frame">
+<p><a class="wk-frame-link" href="../assets/media/milestones/2026-11-11-title-continue-from-save.png"><img alt="Bloodborne's title screen with a menu of Continue (highlighted), Load Game, New Game, System and Log In, and &quot;Checking save data...&quot; in the top right corner" decoding="async" height="1080" loading="lazy" src="../assets/media/milestones/2026-11-11-title-continue-from-save.png" width="1920" /></a></p>
+<figcaption><span class="wk-frame-when">12 Nov, ~02:49</span> <span class="wk-frame-what">Continue, from the game's own save (local run)</span><span class="wk-frame-detail">12 November, about 02:49 (local run): the title offers Continue. The game autosaves once the contract is finalised, and this boot started from a copy of that save (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/641">#641</a>, applied from review, merged 03:12), so it goes straight on into the load of Iosefka's Clinic instead of replaying the title, character creation and the contract. That load then needed <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/643">#643</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/645">#645</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/647">#647</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/649">#649</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/653">#653</a> and <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/654">#654</a>; it stops next at tessellation (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/655">#655</a>).</span></figcaption>
+</figure>
 </div>
 <p>Later milestones (the first playable scene) are added here as they are reached.</p>
 <h2 id="the-boot-journey">The boot journey</h2>
@@ -550,35 +562,37 @@ does not move a point by itself; only a new genuine boot does.</p>
 <text x="84" y="43.8" text-anchor="end" class="wk-milestone-axis">gpu</text>
 <line x1="92" y1="14.0" x2="704" y2="14.0" class="wk-milestone-grid"/>
 <text x="84" y="18.0" text-anchor="end" class="wk-milestone-axis">first flip</text>
-<polyline points="92.0,220.0 122.6,220.0 153.2,220.0 183.8,220.0 214.4,220.0 245.0,220.0 275.6,91.2 306.2,65.5 336.8,65.5 367.4,65.5 398.0,14.0 428.6,14.0 459.2,14.0 489.8,14.0 520.4,14.0 551.0,14.0 581.6,14.0 612.2,14.0 642.8,14.0 673.4,14.0 704.0,14.0" class="wk-milestone-line"/>
+<polyline points="92.0,220.0 121.1,220.0 150.3,220.0 179.4,220.0 208.6,220.0 237.7,220.0 266.9,91.2 296.0,65.5 325.1,65.5 354.3,65.5 383.4,14.0 412.6,14.0 441.7,14.0 470.9,14.0 500.0,14.0 529.1,14.0 558.3,14.0 587.4,14.0 616.6,14.0 645.7,14.0 674.9,14.0 704.0,14.0" class="wk-milestone-line"/>
 <circle cx="92.0" cy="220.0" r="4" class="wk-milestone-dot"><title>7 October 2026: loaded</title></circle>
 <text x="92.0" y="246" text-anchor="middle" class="wk-milestone-axis">7 October</text>
-<circle cx="122.6" cy="220.0" r="4" class="wk-milestone-dot"><title>11 October 2026: loaded</title></circle>
-<text x="122.6" y="246" text-anchor="middle" class="wk-milestone-axis">11 October</text>
-<circle cx="153.2" cy="220.0" r="4" class="wk-milestone-dot"><title>11 October 2026: loaded</title></circle>
-<circle cx="183.8" cy="220.0" r="4" class="wk-milestone-dot"><title>11 October 2026: loaded</title></circle>
-<circle cx="214.4" cy="220.0" r="4" class="wk-milestone-dot"><title>19 October 2026: loaded</title></circle>
-<text x="214.4" y="246" text-anchor="middle" class="wk-milestone-axis">19 October</text>
-<circle cx="245.0" cy="220.0" r="4" class="wk-milestone-dot"><title>19 October 2026: loaded</title></circle>
-<circle cx="275.6" cy="91.2" r="4" class="wk-milestone-dot"><title>4 November 2026: audio</title></circle>
-<text x="275.6" y="246" text-anchor="middle" class="wk-milestone-axis">4 November</text>
-<circle cx="306.2" cy="65.5" r="4" class="wk-milestone-dot"><title>4 November 2026: video out</title></circle>
-<circle cx="336.8" cy="65.5" r="4" class="wk-milestone-dot"><title>4 November 2026: video out</title></circle>
-<circle cx="367.4" cy="65.5" r="4" class="wk-milestone-dot"><title>4 November 2026: video out</title></circle>
-<circle cx="398.0" cy="14.0" r="4" class="wk-milestone-dot"><title>4 November 2026: first flip</title></circle>
-<circle cx="428.6" cy="14.0" r="4" class="wk-milestone-dot"><title>5 November 2026: first flip</title></circle>
-<text x="428.6" y="246" text-anchor="middle" class="wk-milestone-axis">5 November</text>
-<circle cx="459.2" cy="14.0" r="4" class="wk-milestone-dot"><title>5 November 2026: first flip</title></circle>
-<circle cx="489.8" cy="14.0" r="4" class="wk-milestone-dot"><title>6 November 2026: first flip</title></circle>
-<text x="489.8" y="246" text-anchor="middle" class="wk-milestone-axis">6 November</text>
-<circle cx="520.4" cy="14.0" r="4" class="wk-milestone-dot"><title>6 November 2026: first flip</title></circle>
-<circle cx="551.0" cy="14.0" r="4" class="wk-milestone-dot"><title>6 November 2026: first flip</title></circle>
-<circle cx="581.6" cy="14.0" r="4" class="wk-milestone-dot"><title>6 November 2026: first flip</title></circle>
-<circle cx="612.2" cy="14.0" r="4" class="wk-milestone-dot"><title>6 November 2026: first flip</title></circle>
-<circle cx="642.8" cy="14.0" r="4" class="wk-milestone-dot"><title>6 November 2026: first flip</title></circle>
-<circle cx="673.4" cy="14.0" r="4" class="wk-milestone-dot"><title>10 November 2026: first flip</title></circle>
-<text x="673.4" y="246" text-anchor="middle" class="wk-milestone-axis">10 November</text>
-<circle cx="704.0" cy="14.0" r="4" class="wk-milestone-dot"><title>10 November 2026: first flip</title></circle>
+<circle cx="121.1" cy="220.0" r="4" class="wk-milestone-dot"><title>11 October 2026: loaded</title></circle>
+<text x="121.1" y="246" text-anchor="middle" class="wk-milestone-axis">11 October</text>
+<circle cx="150.3" cy="220.0" r="4" class="wk-milestone-dot"><title>11 October 2026: loaded</title></circle>
+<circle cx="179.4" cy="220.0" r="4" class="wk-milestone-dot"><title>11 October 2026: loaded</title></circle>
+<circle cx="208.6" cy="220.0" r="4" class="wk-milestone-dot"><title>19 October 2026: loaded</title></circle>
+<text x="208.6" y="246" text-anchor="middle" class="wk-milestone-axis">19 October</text>
+<circle cx="237.7" cy="220.0" r="4" class="wk-milestone-dot"><title>19 October 2026: loaded</title></circle>
+<circle cx="266.9" cy="91.2" r="4" class="wk-milestone-dot"><title>4 November 2026: audio</title></circle>
+<text x="266.9" y="246" text-anchor="middle" class="wk-milestone-axis">4 November</text>
+<circle cx="296.0" cy="65.5" r="4" class="wk-milestone-dot"><title>4 November 2026: video out</title></circle>
+<circle cx="325.1" cy="65.5" r="4" class="wk-milestone-dot"><title>4 November 2026: video out</title></circle>
+<circle cx="354.3" cy="65.5" r="4" class="wk-milestone-dot"><title>4 November 2026: video out</title></circle>
+<circle cx="383.4" cy="14.0" r="4" class="wk-milestone-dot"><title>4 November 2026: first flip</title></circle>
+<circle cx="412.6" cy="14.0" r="4" class="wk-milestone-dot"><title>5 November 2026: first flip</title></circle>
+<text x="412.6" y="246" text-anchor="middle" class="wk-milestone-axis">5 November</text>
+<circle cx="441.7" cy="14.0" r="4" class="wk-milestone-dot"><title>5 November 2026: first flip</title></circle>
+<circle cx="470.9" cy="14.0" r="4" class="wk-milestone-dot"><title>6 November 2026: first flip</title></circle>
+<text x="470.9" y="246" text-anchor="middle" class="wk-milestone-axis">6 November</text>
+<circle cx="500.0" cy="14.0" r="4" class="wk-milestone-dot"><title>6 November 2026: first flip</title></circle>
+<circle cx="529.1" cy="14.0" r="4" class="wk-milestone-dot"><title>6 November 2026: first flip</title></circle>
+<circle cx="558.3" cy="14.0" r="4" class="wk-milestone-dot"><title>6 November 2026: first flip</title></circle>
+<circle cx="587.4" cy="14.0" r="4" class="wk-milestone-dot"><title>6 November 2026: first flip</title></circle>
+<circle cx="616.6" cy="14.0" r="4" class="wk-milestone-dot"><title>6 November 2026: first flip</title></circle>
+<circle cx="645.7" cy="14.0" r="4" class="wk-milestone-dot"><title>10 November 2026: first flip</title></circle>
+<text x="645.7" y="246" text-anchor="middle" class="wk-milestone-axis">10 November</text>
+<circle cx="674.9" cy="14.0" r="4" class="wk-milestone-dot"><title>10 November 2026: first flip</title></circle>
+<circle cx="704.0" cy="14.0" r="4" class="wk-milestone-dot"><title>12 November 2026: first flip</title></circle>
+<text x="704.0" y="246" text-anchor="middle" class="wk-milestone-axis">12 November</text>
 </svg></p>
 <div class="wk-milestone-cards">
 <div class="wk-milestone-card wk-milestone-reached"><div class="wk-milestone-number">0</div><div><strong>Loaded</strong><p>The game is in memory: its program and libraries are loaded and linked.</p><p class="wk-milestone-when">First reached 7 October 2026, with 19 system calls implemented by the runtime.</p></div></div>

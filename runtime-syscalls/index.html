@@ -464,26 +464,8 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 11, 2026 18:36:25 UTC">November 11, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 12, 2026 07:49:24 UTC">November 12, 2026</span></p>
       
-      
-      
-      <aside class="wk-freshness" role="note">
-        <p><b>Not yet updated for 3 merged changes.</b>
-        This page was last checked against Paleblood
-        <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/4918472e6abd1bd6af2a5128f5b87fdbdf1a95ad"><code>4918472</code></a>;
-        these pull requests changed what it describes since:</p>
-        <ul>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/627">#627</a> runtime: WRITE_DATA writes memory in order with the work</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/619">#619</a> runtime: the on-screen keyboard can answer with a given text</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/616">#616</a> renderer: reload textures only when their memory changed</li>
-          
-          
-        </ul>
-      </aside>
       
       <h1 id="runtime-system-call-notes">Runtime system-call notes</h1>
 <p class="wk-lede">What each runtime system call is for, what it must do, what the game was seen to do with it, and how Paleblood's runtime answers.</p>
@@ -1424,7 +1406,13 @@ range see the same bytes. <strong>Flexible memory</strong> is memory the system 
 <p>The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> backs direct memory with one shared host memory file, so the "same bytes" rule holds.
 The pool's size is the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>'s choice, not a measured <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> value. The game maps some memory for
 both the CPU and the GPU. The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> accepts the GPU flags and maps the memory for the CPU; with
-the display on, the renderer hands the same memory to your GPU (see "Where maps go" below). The <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> limits how much flexible memory a game may use; that budget is
+the display on, the renderer hands the same memory to your GPU (see "Where maps go" below). Since
+<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/616">#616</a> the CPU's writes to that memory are noticed through page protection, so the renderer reloads
+a texture only when its memory changed, and since <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/642">#642</a> pages under a render target the GPU has
+drawn into are closed to the CPU until the drawing is copied back: a read or write there pauses the
+thread while the renderer writes the target back, then goes on. The kernel does not pause a system
+call that way, so the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> first makes such memory current before handing it to a file read or
+write, the small memory save or the C library's output, and before <code>sceKernelMprotect</code> changes it. The <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> limits how much flexible memory a game may use; that budget is
 not established, so the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> does not enforce one.</p>
 <p><strong>Asking about memory.</strong> The game sometimes asks whether a piece of memory it mapped can be read
 by the CPU or by the GPU. The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> remembers every mapping with the access the game asked for,
@@ -1733,7 +1721,10 @@ for evidence before it was implemented.</p>
 <p><strong>Save data.</strong> The game's saves live in a folder you choose (<code>tools/boot.py --savedata DIR</code>);
 without one, each boot gets a new, empty folder, so boots start alike. A mounted save appears to the
 game as <code>/savedata0</code>, <code>/savedata1</code> and so on, read through the same file calls as the game's own
-files. A few answers depend on the SDK version the game was built with (2.00 for this executable),
+files. Since <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/641">#641</a>, <code>--savedata-from DIR</code> (for unrecorded boots) starts a run's new folder as a copy
+of a folder an earlier run kept, which itself never changes: the game autosaves once the contract is
+finalised, so a boot can choose Continue at the title and go straight on from there. A few answers
+depend on the SDK version the game was built with (2.00 for this executable),
 which the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> reads from the executable itself. The files are the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>'s own layout, not a
 console's.</p>
 <p><strong>Trophies.</strong> The game creates a trophy context for its user, registers it and unlocks trophies by
@@ -2076,12 +2067,12 @@ pending counts are still not modelled.</p>
 <tr>
 <td data-label="Call"><code>sceGnmSet{Es,Gs,Hs,Ls,Ps,Vs}Shader</code>, <code>sceGnmUpdate{Gs,Hs,Ps,Vs}Shader</code>, the marker calls, <code>sceGnmInsertWaitFlipDone</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
-<td data-label="What the runtime does">Fill the space the game reserved with one no-op packet (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/310">#310</a>). The vertex, pixel and compute shader calls also hand the shader to the renderer (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/412">#412</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/418">#418</a>).</td>
+<td data-label="What the runtime does">Fill the space the game reserved with one no-op packet (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/310">#310</a>). The vertex, pixel and compute shader calls also hand the shader to the renderer (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/412">#412</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/418">#418</a>), and since <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/659">#659</a> (12 November) so do the local, hull, export and geometry shader calls, with the hull shader's tessellation settings; draws that use those stages still stop by name.</td>
 </tr>
 <tr>
 <td data-label="Call"><code>sceGnmSubmitCommandBuffers</code>, <code>sceGnmSubmitAndFlipCommandBuffers</code>, <code>sceGnmSubmitDone</code></td>
 <td data-label="Status">implemented (temporary stand-in)</td>
-<td data-label="What the runtime does">Complete a frame's GPU work: "work done" values are written, waits are checked, the other packets are skipped; then the frame is flipped (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/310">#310</a>). With the display on, the renderer also runs the drawing calls recorded for each submitted buffer (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/369">#369</a>); since <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/488">#488</a> the call returns at once and the renderer's own thread runs the work in submission order, with each "work done" value, wait and flip placed after the work before it. Any number of buffers per call (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/504">#504</a>: character creation submits 70). Since <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/572">#572</a> the flip after a frame's work no longer waits on that thread: the picture is taken there and the flip is queued to a video out thread, which waits for the vertical blank, updates the flip status, presents and raises the flip events in order; <code>sceVideoOutSubmitFlip</code> waits for queued flips first. Since <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/595">#595</a> the renderer's thread no longer waits for the GPU at each step: the "work done" writes are performed once the GPU has finished the work before them.</td>
+<td data-label="What the runtime does">Complete a frame's GPU work: "work done" values are written, waits are checked, the other packets are skipped; then the frame is flipped (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/310">#310</a>). With the display on, the renderer also runs the drawing calls recorded for each submitted buffer (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/369">#369</a>); since <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/488">#488</a> the call returns at once and the renderer's own thread runs the work in submission order, with each "work done" value, wait and flip placed after the work before it. Any number of buffers per call (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/504">#504</a>: character creation submits 70). Since <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/572">#572</a> the flip after a frame's work no longer waits on that thread: the picture is taken there and the flip is queued to a video out thread, which waits for the vertical blank, updates the flip status, presents and raises the flip events in order; <code>sceVideoOutSubmitFlip</code> waits for queued flips first. Since <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/595">#595</a> the renderer's thread no longer waits for the GPU at each step: the "work done" writes are performed once the GPU has finished the work before them. Since <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/630">#630</a> a flip does not hold up the work after it either: the flipped picture is copied in order with the work and the flip happens once that copy has run. Constant-engine buffers (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/622">#622</a>), end-of-shader and memory writes (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/624">#624</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/627">#627</a>), indirect dispatches (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/649">#649</a>) and memory copies through the global data share (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/653">#653</a>) run too (below).</td>
 </tr>
 <tr>
 <td data-label="Call"><code>sceGnmMapComputeQueue</code></td>
@@ -2118,6 +2109,24 @@ kinds of packets. The stand-in skips only those that change nothing it would hav
 empty constant-buffer entry (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/375">#375</a>), a memory read that only warms the GPU's cache and the
 size of an index (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/377">#377</a>), and an indexed draw's packets (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/395">#395</a>). Any other form still
 stops by name.</p>
+<p><strong>What it runs since 11 November.</strong> The loading screen after character creation and the load into
+Iosefka's Clinic brought packets that change memory, so the stand-in now performs them in order
+with the drawing work around them, each a step on the renderer's thread:
+- <strong>The constant engine</strong> (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/622">#622</a>). The <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr>'s GPU has a second command processor beside the one
+  that draws. It keeps 48 KB of constant memory, which its own command buffer fills and copies out
+  into memory, and the two keep in step with counters: the drawing side waits until the constant
+  side is far enough. The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> runs the constant buffer lazily, in the drawing side's order, so
+  each copy lands just before the draws that read it.
+- <strong>Writes after the work</strong> (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/624">#624</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/627">#627</a>): <code>EVENT_WRITE_EOS</code> stores a value once the shaders
+  before it are done, and <code>WRITE_DATA</code> writes the packet's words to memory between the work before
+  and after it.
+- <strong>Indirect dispatches</strong> (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/649">#649</a>): <code>SET_BASE</code> and <code>DISPATCH_INDIRECT</code>; the GPU reads the
+  workgroup counts from memory when the dispatch runs, so earlier GPU work may have written them.
+- <strong><code>DMA_DATA</code> copies and fills</strong> (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/653">#653</a>) between memory, the packet's own value and the GPU's
+  64 KB global data share, which the engine uses for per-slot counters. Shader instructions that use
+  the global data share are not translated yet.</p>
+<p>Each still stops by name on a form it does not handle, such as register writes or a GDS store at the
+end of the shaders.</p>
 <p><strong>The renderer alongside it.</strong> The drawing itself does not happen here. When the game binds a
 shader through <code>sceGnmSetVsShader</code>, <code>sceGnmSetPsShader</code> or <code>sceGnmSetCsShader</code>, the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> also
 hands the shader's registers to Paleblood's renderer (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/412">#412</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/418">#418</a>), and the
@@ -2176,8 +2185,8 @@ the <a href="../runtime-reference/"><abbr title="What the game's code runs on: P
 </tr>
 <tr>
 <td data-label="Group">On-screen keyboard, web browser</td>
-<td data-label="What the runtime does">The keyboard opens and is found cancelled at the first status query; the browser is not opened.</td>
-<td data-label="Pull request"><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/502">#502</a></td>
+<td data-label="What the runtime does">The keyboard opens and is found cancelled at the first status query; the browser is not opened. Since <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/619">#619</a>, <code>--keyboard-text TEXT</code> (unrecorded boots) makes the keyboard answer as if TEXT was typed and confirmed: character creation's contract cannot be finalised without a name. The keyboard's settings are copied when it opens, because the game reuses their memory before the first status query.</td>
+<td data-label="Pull request"><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/502">#502</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/619">#619</a></td>
 </tr>
 <tr>
 <td data-label="Group">Microphone and voice chat</td>
