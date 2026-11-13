@@ -388,11 +388,11 @@
     
     <a class="wk-progress-card" href="../progress/">
       <span class="wk-progress-label">Verified functions</span>
-      <span class="wk-progress-value">114 <small>of 157,757</small></span>
-      <span class="wk-stat-track" role="img" aria-label="0.0685 percent of target code bytes verified">
-        <span class="wk-stat-fill" style="width:0.0685%"></span>
+      <span class="wk-progress-value">118 <small>of 157,757</small></span>
+      <span class="wk-stat-track" role="img" aria-label="0.0727 percent of target code bytes verified">
+        <span class="wk-stat-fill" style="width:0.0727%"></span>
       </span>
-      <span class="wk-progress-foot">0.0685% of code bytes verified · 555 replaced</span>
+      <span class="wk-progress-foot">0.0727% of code bytes verified · 627 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -438,6 +438,34 @@
       
       <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 13, 2026 14:54:55 UTC">November 13, 2026</span></p>
       
+      
+      
+      <aside class="wk-freshness" role="note">
+        <p><b>Not yet updated for 8 merged changes.</b>
+        This page was last checked against Paleblood
+        <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/cf669283bed4b9a9f36e72ef1ebe28bf037d1a6f"><code>cf66928</code></a>;
+        these pull requests changed what it describes since:</p>
+        <ul>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/890">#890</a> metal: support vertex instancing</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/864">#864</a> renderer: the fetch shader's user-data pair is kept by vertex shader</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/870">#870</a> renderer: render targets keep their memory span; mip loads skip unchanged memory</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/777">#777</a> render: replace the shader register packet writers</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/863">#863</a> renderer: the image cache keeps 4096 images, found by address</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/862">#862</a> metal: draw native triangle strips</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/859">#859</a> renderer: placed binds of buffers still to come are kept, the ring grows</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/852">#852</a> renderer: stop words in host-cached memory; collect only when due</li>
+          
+          
+        </ul>
+      </aside>
       
       <h1 id="runtime">Runtime</h1>
 <p class="wk-lede">Paleblood is building a runtime of its own. A runtime is the software that loads a program and provides the system services it expects.</p>
@@ -904,18 +932,18 @@ Paleblood's function table; see the <a href="../progress/">progress dashboard</a
 </tr>
 <tr>
 <td>Replaced</td>
-<td style="text-align: right;">555 (0.35%)</td>
-<td style="text-align: right;">218,157 (0.51%)</td>
+<td style="text-align: right;">627 (0.40%)</td>
+<td style="text-align: right;">234,973 (0.55%)</td>
 </tr>
 <tr>
 <td>Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> (includes <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>)</td>
-<td style="text-align: right;">555 (0.35%)</td>
-<td style="text-align: right;">218,157 (0.51%)</td>
+<td style="text-align: right;">627 (0.40%)</td>
+<td style="text-align: right;">234,973 (0.55%)</td>
 </tr>
 <tr>
 <td>Verified</td>
-<td style="text-align: right;">114 (0.07%)</td>
-<td style="text-align: right;">29,116 (0.07%)</td>
+<td style="text-align: right;">118 (0.07%)</td>
+<td style="text-align: right;">30,870 (0.07%)</td>
 </tr>
 </tbody>
 </table></div>
@@ -936,23 +964,23 @@ Paleblood's function table; see the <a href="../progress/">progress dashboard</a
 </tr>
 <tr>
 <td>Replaced, with family members</td>
-<td style="text-align: right;">18,574 (11.77%)</td>
-<td style="text-align: right;">280,583 (0.66%)</td>
+<td style="text-align: right;">18,646 (11.82%)</td>
+<td style="text-align: right;">297,399 (0.70%)</td>
 </tr>
 <tr>
 <td>Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>, with family members</td>
-<td style="text-align: right;">18,574 (11.77%)</td>
-<td style="text-align: right;">280,583 (0.66%)</td>
+<td style="text-align: right;">18,646 (11.82%)</td>
+<td style="text-align: right;">297,399 (0.70%)</td>
 </tr>
 <tr>
 <td>Verified, with family members</td>
-<td style="text-align: right;">18,133 (11.49%)</td>
-<td style="text-align: right;">91,542 (0.22%)</td>
+<td style="text-align: right;">18,137 (11.50%)</td>
+<td style="text-align: right;">93,296 (0.22%)</td>
 </tr>
 </tbody>
 </table></div>
 <p>Family members are tiny functions (one to a few bytes each) that share one replacement per family: they add far more to the function count than to the bytes.</p>
-<p>Matching tier: 118 functions compile byte for byte to the original from their own C (clang-3.4.2, every reference checked; <code>symbols/matching.csv</code>). Matching is optional evidence and is not a separate status.</p>
+<p>Matching tier: 120 functions compile byte for byte to the original from their own C (clang-3.4.2, every reference checked; <code>symbols/matching.csv</code>). Matching is optional evidence and is not a separate status.</p>
 <div class="wk-table"><table>
 <thead>
 <tr>
@@ -999,11 +1027,11 @@ Paleblood's function table; see the <a href="../progress/">progress dashboard</a
 </tr>
 <tr>
 <td>engine</td>
-<td style="text-align: right;">114</td>
-<td style="text-align: right;">114</td>
-<td style="text-align: right;">114</td>
+<td style="text-align: right;">138</td>
+<td style="text-align: right;">138</td>
+<td style="text-align: right;">138</td>
 <td style="text-align: right;">5</td>
-<td style="text-align: right;">41,884</td>
+<td style="text-align: right;">49,863</td>
 </tr>
 <tr>
 <td>event</td>
@@ -1015,11 +1043,11 @@ Paleblood's function table; see the <a href="../progress/">progress dashboard</a
 </tr>
 <tr>
 <td>frame_timing</td>
-<td style="text-align: right;">63</td>
-<td style="text-align: right;">62</td>
-<td style="text-align: right;">62</td>
+<td style="text-align: right;">69</td>
+<td style="text-align: right;">68</td>
+<td style="text-align: right;">68</td>
 <td style="text-align: right;">13</td>
-<td style="text-align: right;">16,499</td>
+<td style="text-align: right;">16,961</td>
 </tr>
 <tr>
 <td>input</td>
@@ -1031,19 +1059,19 @@ Paleblood's function table; see the <a href="../progress/">progress dashboard</a
 </tr>
 <tr>
 <td>kernel</td>
-<td style="text-align: right;">22</td>
-<td style="text-align: right;">22</td>
-<td style="text-align: right;">22</td>
+<td style="text-align: right;">38</td>
+<td style="text-align: right;">38</td>
+<td style="text-align: right;">38</td>
 <td style="text-align: right;">6</td>
-<td style="text-align: right;">1,994</td>
+<td style="text-align: right;">4,125</td>
 </tr>
 <tr>
 <td>loading</td>
-<td style="text-align: right;">42</td>
-<td style="text-align: right;">42</td>
-<td style="text-align: right;">42</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">14,401</td>
+<td style="text-align: right;">58</td>
+<td style="text-align: right;">58</td>
+<td style="text-align: right;">58</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">19,250</td>
 </tr>
 <tr>
 <td>menu</td>
@@ -1071,11 +1099,11 @@ Paleblood's function table; see the <a href="../progress/">progress dashboard</a
 </tr>
 <tr>
 <td>render</td>
-<td style="text-align: right;">154</td>
-<td style="text-align: right;">154</td>
-<td style="text-align: right;">154</td>
+<td style="text-align: right;">164</td>
+<td style="text-align: right;">164</td>
+<td style="text-align: right;">164</td>
 <td style="text-align: right;">79</td>
-<td style="text-align: right;">69,444</td>
+<td style="text-align: right;">70,839</td>
 </tr>
 </tbody>
 </table></div>

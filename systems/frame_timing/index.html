@@ -388,11 +388,11 @@
     
     <a class="wk-progress-card" href="../../progress/">
       <span class="wk-progress-label">Verified functions</span>
-      <span class="wk-progress-value">114 <small>of 157,757</small></span>
-      <span class="wk-stat-track" role="img" aria-label="0.0685 percent of target code bytes verified">
-        <span class="wk-stat-fill" style="width:0.0685%"></span>
+      <span class="wk-progress-value">118 <small>of 157,757</small></span>
+      <span class="wk-stat-track" role="img" aria-label="0.0727 percent of target code bytes verified">
+        <span class="wk-stat-fill" style="width:0.0727%"></span>
       </span>
-      <span class="wk-progress-foot">0.0685% of code bytes verified · 555 replaced</span>
+      <span class="wk-progress-foot">0.0727% of code bytes verified · 627 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -434,6 +434,20 @@
       
       <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 13, 2026 14:54:55 UTC">November 13, 2026</span></p>
       
+      
+      
+      <aside class="wk-freshness" role="note">
+        <p><b>Not yet updated for 1 merged change.</b>
+        This page was last checked against Paleblood
+        <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/cf669283bed4b9a9f36e72ef1ebe28bf037d1a6f"><code>cf66928</code></a>;
+        these pull requests changed what it describes since:</p>
+        <ul>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/795">#795</a> frame_timing: replace the task manager's helpers (6 functions)</li>
+          
+          
+        </ul>
+      </aside>
       
       <h1 id="frame-timing">Frame timing</h1>
 <p class="wk-lede">How the game paces its frames: a frame step that runs once a frame, a frame limiter that waits out each frame's budget, and a task manager that runs the frame's work.</p>
@@ -793,6 +807,20 @@ fills four 32-bit words from a 32-bit seed with a 64-bit linear congruential ste
 <td data-label="Notes">task manager run: prepare the frame; dispatch through +0x40 (virtual +0x30) with +0x38 set; finish</td>
 </tr>
 <tr>
+<td data-label="Address"><code>0x01389df0</code></td>
+<td style="text-align: right;" data-label="Size">19</td>
+<td data-label="Name"><code>frame_timing_task_entry_count_01389df0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Number of the dispatcher's registered task entries (vector of 0x88-byte entries), cut to 32 bits</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x01389e10</code></td>
+<td style="text-align: right;" data-label="Size">59</td>
+<td data-label="Name"><code>frame_timing_task_entry_at_01389e10</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Registered task entry at an index; null for a negative index or one past the end (unsigned count)</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x0138a370</code></td>
 <td style="text-align: right;" data-label="Size">330</td>
 <td data-label="Name"><code>frame_timing_task_dispatch_0138a370</code></td>
@@ -812,6 +840,27 @@ fills four 32-bit words from a 32-bit seed with a 64-bit linear congruential ste
 <td data-label="Name"><code>frame_timing_listener_list_notify_013daac0</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">Runs the list preparation 0x013dab20, then passes the frame-time descriptor to each listener (vtable slot 2), re-reading the list after every call</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0143c360</code></td>
+<td style="text-align: right;" data-label="Size">147</td>
+<td data-label="Name"><code>frame_timing_task_record_open_0143c360</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Opens an idle group record: first index, state open, flags cleared then one set from the kind (2 or 4) of the first item when in range; clears +0x64</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0143c450</code></td>
+<td style="text-align: right;" data-label="Size">93</td>
+<td data-label="Name"><code>frame_timing_task_record_close_0143c450</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Closes a closing group record (state 4): flags cleared, state idle, no index (-1)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0143d7c0</code></td>
+<td style="text-align: right;" data-label="Size">62</td>
+<td data-label="Name"><code>frame_timing_task_batch_add_0143d7c0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Pushes a job onto the back of a batch's job deque with the game's push_back; a null job is not added</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x0143de20</code></td>
@@ -854,6 +903,13 @@ fills four 32-bit words from a 32-bit seed with a 64-bit linear congruential ste
 <td data-label="Name"><code>frame_timing_task_clear_items_0143ec40</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">Under the task lock (+0x90): frees the pending items last first and their array via the allocator at +0x80; empties the list; empties +0x70/+0x78 when counted</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0143f720</code></td>
+<td style="text-align: right;" data-label="Size">82</td>
+<td data-label="Name"><code>frame_timing_task_lookup_0143f720</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Task under an id in the task table's map (std::map lower bound), null when absent; id 0 is never looked up</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x0143f9f0</code></td>

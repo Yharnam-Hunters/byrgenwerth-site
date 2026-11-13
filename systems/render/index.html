@@ -388,11 +388,11 @@
     
     <a class="wk-progress-card" href="../../progress/">
       <span class="wk-progress-label">Verified functions</span>
-      <span class="wk-progress-value">114 <small>of 157,757</small></span>
-      <span class="wk-stat-track" role="img" aria-label="0.0685 percent of target code bytes verified">
-        <span class="wk-stat-fill" style="width:0.0685%"></span>
+      <span class="wk-progress-value">118 <small>of 157,757</small></span>
+      <span class="wk-stat-track" role="img" aria-label="0.0727 percent of target code bytes verified">
+        <span class="wk-stat-fill" style="width:0.0727%"></span>
       </span>
-      <span class="wk-progress-foot">0.0685% of code bytes verified · 555 replaced</span>
+      <span class="wk-progress-foot">0.0727% of code bytes verified · 627 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -432,6 +432,26 @@
       
       <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 13, 2026 14:54:55 UTC">November 13, 2026</span></p>
       
+      
+      
+      <aside class="wk-freshness" role="note">
+        <p><b>Not yet updated for 4 merged changes.</b>
+        This page was last checked against Paleblood
+        <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/cf669283bed4b9a9f36e72ef1ebe28bf037d1a6f"><code>cf66928</code></a>;
+        these pull requests changed what it describes since:</p>
+        <ul>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/880">#880</a> render: replace the pending command submission (0x02aafa00)</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/777">#777</a> render: replace the shader register packet writers</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/789">#789</a> render: replace the swap-chain setup object creation</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/811">#811</a> render: replace the two resource info finish steps</li>
+          
+          
+        </ul>
+      </aside>
       
       <h1 id="render">Render</h1>
 <p class="wk-lede">The render system draws each frame and presents it to the screen. This page covers the per-frame render update, the pacing of each present, one helper from the YEBIS post-processing middleware, and the GPU helper library compiled into the game: its command writers, state setters, swap chain and shader uploads, and how they now report to Paleblood's renderer.</p>
@@ -1006,6 +1026,48 @@ frames. #279, #286 and #287 were brought up to date with <code>main</code> from 
 <td data-label="Notes">ACQUIRE_MEM packet (7 words) for a memory range: coherence control from the cache actions, targets and top flag; reserve via the space callback</td>
 </tr>
 <tr>
+<td data-label="Address"><code>0x01476030</code></td>
+<td style="text-align: right;" data-label="Size">140</td>
+<td data-label="Name"><code>render_set_shader_stages_01476030</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SET_CONTEXT_REG VGT_SHADER_STAGES_EN (0x2d5) to the stages (3 words), only for the values the game uses; reserve via the space callback first</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x014761a0</code></td>
+<td style="text-align: right;" data-label="Size">156</td>
+<td data-label="Name"><code>render_emit_shader_descriptor16_014761a0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">NOP with descriptor control 0x68750004, then SET_SH_REG of a 16-byte descriptor at the stage base plus slot (8 words)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x01476240</code></td>
+<td style="text-align: right;" data-label="Size">172</td>
+<td data-label="Name"><code>render_emit_shader_descriptor32_01476240</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">NOP with descriptor control 0x68750005, then SET_SH_REG of a 32-byte descriptor at the stage base plus slot (12 words)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x014762f0</code></td>
+<td style="text-align: right;" data-label="Size">156</td>
+<td data-label="Name"><code>render_emit_shader_sampler16_014762f0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">NOP with descriptor control 0x68750006, then SET_SH_REG of a 16-byte sampler at the stage base plus slot (8 words)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x01476390</code></td>
+<td style="text-align: right;" data-label="Size">133</td>
+<td data-label="Name"><code>render_emit_shader_address_01476390</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SET_SH_REG of a 64-bit address (two words) at the stage base plus slot; flag bit 1 in the header</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x01476420</code></td>
+<td style="text-align: right;" data-label="Size">126</td>
+<td data-label="Name"><code>render_emit_shader_word_01476420</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SET_SH_REG of one word at the stage base plus slot; flag bit 1 in the header</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x014765e0</code></td>
 <td style="text-align: right;" data-label="Size">238</td>
 <td data-label="Name"><code>render_configure_viewport</code></td>
@@ -1412,6 +1474,13 @@ frames. #279, #286 and #287 were brought up to date with <code>main</code> from 
 <td data-label="Notes">per-frame: ages a list of ref-counted objects; updates RendMan-side child; steps another child by 1/30 s (Uncap: measured frame time)</td>
 </tr>
 <tr>
+<td data-label="Address"><code>0x0247c4e0</code></td>
+<td style="text-align: right;" data-label="Size">24</td>
+<td data-label="Name"><code>render_setup_create_object_0247c4e0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Thunk: the owner's vtable slot 0x58 called as (owner, first, second, first), second again in r8, candidate in r9; returns its result</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x0247eb80</code></td>
 <td style="text-align: right;" data-label="Size">16</td>
 <td data-label="Name"><code>render_read_present_pool_counter</code></td>
@@ -1566,6 +1635,13 @@ frames. #279, #286 and #287 were brought up to date with <code>main</code> from 
 <td data-label="Notes">Finish pending command lists with live block and counter reads; then conditionally submit the cursor snapshot.</td>
 </tr>
 <tr>
+<td data-label="Address"><code>0x02aafa00</code></td>
+<td style="text-align: right;" data-label="Size">294</td>
+<td data-label="Name"><code>render_submit_pending_commands_02aafa00</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Submit the command buffer's region up to the cursor (with the context when a counter wait needs 7 free words; too few asks the space callback for 0 and returns), then restart the region at the cursor</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x02aafb30</code></td>
 <td style="text-align: right;" data-label="Size">509</td>
 <td data-label="Name"><code>render_command_submit_present</code></td>
@@ -1592,6 +1668,20 @@ frames. #279, #286 and #287 were brought up to date with <code>main</code> from 
 <td data-label="Name"><code>render_command_submit_snapshot</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--verified"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></span></td>
 <td data-label="Notes">Initialize the auxiliary command buffer and submit nonempty regions using only the video handle.</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02ab18c0</code></td>
+<td style="text-align: right;" data-label="Size">98</td>
+<td data-label="Name"><code>render_resource_info_submit_pending_commands_02ab18c0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Submits the packets since the buffer start as one range (low 32-bit byte count, whole words) to the queue at +0x58, then sets the start to the cursor</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02ab1930</code></td>
+<td style="text-align: right;" data-label="Size">96</td>
+<td data-label="Name"><code>render_resource_info_write_completion_label_02ab1930</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Takes the next label from the services counter (again if it equals the 64-bit reserved value) and writes a compute-done release-memory packet storing it</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x02ab5a70</code></td>

@@ -388,11 +388,11 @@
     
     <a class="wk-progress-card" href="../../progress/">
       <span class="wk-progress-label">Verified functions</span>
-      <span class="wk-progress-value">114 <small>of 157,757</small></span>
-      <span class="wk-stat-track" role="img" aria-label="0.0685 percent of target code bytes verified">
-        <span class="wk-stat-fill" style="width:0.0685%"></span>
+      <span class="wk-progress-value">118 <small>of 157,757</small></span>
+      <span class="wk-stat-track" role="img" aria-label="0.0727 percent of target code bytes verified">
+        <span class="wk-stat-fill" style="width:0.0727%"></span>
       </span>
-      <span class="wk-progress-foot">0.0685% of code bytes verified · 555 replaced</span>
+      <span class="wk-progress-foot">0.0727% of code bytes verified · 627 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -432,6 +432,22 @@
       
       <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 13, 2026 14:54:55 UTC">November 13, 2026</span></p>
       
+      
+      
+      <aside class="wk-freshness" role="note">
+        <p><b>Not yet updated for 2 merged changes.</b>
+        This page was last checked against Paleblood
+        <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/cf669283bed4b9a9f36e72ef1ebe28bf037d1a6f"><code>cf66928</code></a>;
+        these pull requests changed what it describes since:</p>
+        <ul>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/740">#740</a> kernel: replace the engine's PthreadMutex.cpp (init, destroy, lock, try lock, unlock)</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/745">#745</a> kernel: replace the engine's read-write lock (DLReadWriteLock)</li>
+          
+          
+        </ul>
+      </aside>
       
       <h1 id="kernel">Kernel</h1>
 <p class="wk-lede">The engine's core library: thin wrappers around the PS4 kernel for threads, mutexes and condition variables, which report every unexpected result through one fatal error function.</p>
@@ -727,11 +743,123 @@ ignore the result.</p>
 <td data-label="Notes">DLLightMutex unlock: the PthreadMutex unlock inlined; EPERM accepted; a mutex not initialized is reported then used</td>
 </tr>
 <tr>
+<td data-label="Address"><code>0x0247f180</code></td>
+<td style="text-align: right;" data-label="Size">15</td>
+<td data-label="Name"><code>kernel_read_write_lock_construct</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLReadWriteLock constructor: its vtable and a cleared initialized flag; the system lock handle is left as it was</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0247f190</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>kernel_read_write_lock_delete</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLReadWriteLock deleting destructor: destroys an initialized lock (EINVAL reported) without clearing the flag then frees the object</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0247f1f0</code></td>
+<td style="text-align: right;" data-label="Size">85</td>
+<td data-label="Name"><code>kernel_read_write_lock_destruct</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLReadWriteLock destructor: destroys an initialized lock; EBUSY keeps the flag set; EINVAL reported; otherwise the flag clears</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0247f250</code></td>
+<td style="text-align: right;" data-label="Size">94</td>
+<td data-label="Name"><code>kernel_read_write_lock_finalize</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLReadWriteLock finalize: asks the vtable; EBUSY returns -2 and keeps the flag; EINVAL reported; otherwise the flag clears</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0247f2b0</code></td>
+<td style="text-align: right;" data-label="Size">244</td>
+<td data-label="Name"><code>kernel_read_write_lock_initialize</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLReadWriteLock initialize: ENOMEM/EAGAIN return -1; any other result sets the flag after the EPERM/EBUSY/EINVAL/EFAULT report chain</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0247f3d0</code></td>
+<td style="text-align: right;" data-label="Size">198</td>
+<td data-label="Name"><code>kernel_read_write_lock_write</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLReadWriteLock write lock (untimed when timeout is -1): ETIMEDOUT returns -3; EINVAL/EDEADLK reports fall through to the unknown error</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0247f4a0</code></td>
+<td style="text-align: right;" data-label="Size">146</td>
+<td data-label="Name"><code>kernel_read_write_lock_try_write</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLReadWriteLock try write lock: EBUSY returns -2; EINVAL then EDEADLK reported; anything else returns 0</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0247f540</code></td>
+<td style="text-align: right;" data-label="Size">115</td>
+<td data-label="Name"><code>kernel_read_write_lock_unlock_0247f540</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLReadWriteLock unlock (one of three identical copies): EPERM returns -4; EINVAL reported</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0247f5c0</code></td>
+<td style="text-align: right;" data-label="Size">115</td>
+<td data-label="Name"><code>kernel_read_write_lock_unlock_0247f5c0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLReadWriteLock unlock (one of three identical copies): EPERM returns -4; EINVAL reported</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0247f640</code></td>
+<td style="text-align: right;" data-label="Size">206</td>
+<td data-label="Name"><code>kernel_read_write_lock_read</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLReadWriteLock read lock (untimed when timeout is -1): ETIMEDOUT returns -3; EINVAL/EAGAIN/EDEADLK reports fall through</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0247f710</code></td>
+<td style="text-align: right;" data-label="Size">115</td>
+<td data-label="Name"><code>kernel_read_write_lock_unlock_0247f710</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLReadWriteLock unlock (one of three identical copies): EPERM returns -4; EINVAL reported</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x02483e80</code></td>
 <td style="text-align: right;" data-label="Size">204</td>
 <td data-label="Name"><code>kernel_condition_wait</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--verified"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></span></td>
 <td data-label="Notes">Dantelion2 PthreadCondition wait (untimed when timeout is -1); the FPS patches put a ret on the timed path</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02483fe0</code></td>
+<td style="text-align: right;" data-label="Size">196</td>
+<td data-label="Name"><code>kernel_pthread_mutex_initialize</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Dantelion2 PthreadMutex init: recursive attribute then init; ENOMEM/EAGAIN return -1; EINVAL and unknown errors reported with the source line</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x024840b0</code></td>
+<td style="text-align: right;" data-label="Size">90</td>
+<td data-label="Name"><code>kernel_pthread_mutex_destroy</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Dantelion2 PthreadMutex destroy: EBUSY returns -2; EINVAL then the unknown error reported with the source line</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02484110</code></td>
+<td style="text-align: right;" data-label="Size">183</td>
+<td data-label="Name"><code>kernel_pthread_mutex_lock</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Dantelion2 PthreadMutex lock (untimed when timeout is -1); ETIMEDOUT returns -3; EDEADLK/EINVAL/EAGAIN reports fall through to the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> error</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x024841d0</code></td>
+<td style="text-align: right;" data-label="Size">177</td>
+<td data-label="Name"><code>kernel_pthread_mutex_try_lock</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Dantelion2 PthreadMutex try lock: EBUSY returns -2; EDEADLK/EINVAL/EAGAIN reports fall through to the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> error</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02484290</code></td>
+<td style="text-align: right;" data-label="Size">71</td>
+<td data-label="Name"><code>kernel_pthread_mutex_unlock</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Dantelion2 PthreadMutex unlock: 0 and EPERM accepted; EINVAL or any other result reported with the source line</td>
 </tr>
 </tbody>
 </table></div>

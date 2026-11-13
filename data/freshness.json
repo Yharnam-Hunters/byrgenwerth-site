@@ -4,7 +4,13 @@
   "reviewed": "cf669283bed4b9a9f36e72ef1ebe28bf037d1a6f"
  },
  "CONTRIBUTING.md": {
-  "behind": [],
+  "behind": [
+   {
+    "commit": "55d9ed3aa24b",
+    "pr": 868,
+    "title": "docs: regenerate progress"
+   }
+  ],
   "reviewed": "cf669283bed4b9a9f36e72ef1ebe28bf037d1a6f"
  },
  "families.md": {
@@ -12,7 +18,13 @@
   "reviewed": "cf669283bed4b9a9f36e72ef1ebe28bf037d1a6f"
  },
  "how-the-frame-limiter-works.md": {
-  "behind": [],
+  "behind": [
+   {
+    "commit": "e655a3b5be58",
+    "pr": 795,
+    "title": "frame_timing: replace the task manager's helpers (6 functions)"
+   }
+  ],
   "reviewed": "cf669283bed4b9a9f36e72ef1ebe28bf037d1a6f"
  },
  "index.md": {
@@ -24,7 +36,48 @@
   "reviewed": "cf669283bed4b9a9f36e72ef1ebe28bf037d1a6f"
  },
  "runtime.md": {
-  "behind": [],
+  "behind": [
+   {
+    "commit": "7fdebd38da71",
+    "pr": 890,
+    "title": "metal: support vertex instancing"
+   },
+   {
+    "commit": "018fda44d0e0",
+    "pr": 864,
+    "title": "renderer: the fetch shader's user-data pair is kept by vertex shader"
+   },
+   {
+    "commit": "72ecbdb7f914",
+    "pr": 870,
+    "title": "renderer: render targets keep their memory span; mip loads skip unchanged memory"
+   },
+   {
+    "commit": "07df061d8cb1",
+    "pr": 777,
+    "title": "render: replace the shader register packet writers"
+   },
+   {
+    "commit": "ea9208c30b2b",
+    "pr": 863,
+    "title": "renderer: the image cache keeps 4096 images, found by address"
+   },
+   {
+    "commit": "35a73576070f",
+    "pr": 862,
+    "title": "metal: draw native triangle strips"
+   },
+   {
+    "commit": "a87a5d208f32",
+    "pr": 859,
+    "title": "renderer: placed binds of buffers still to come are kept, the ring grows"
+   },
+   {
+    "commit": "1b3deeaa82cc",
+    "pr": 852,
+    "title": "renderer: stop words in host-cached memory; collect only when due"
+   }
+  ],
   "reviewed": "cf669283bed4b9a9f36e72ef1ebe28bf037d1a6f"
  },
  "systems/ai.md": {
@@ -44,7 +97,38 @@
   "reviewed": "cf669283bed4b9a9f36e72ef1ebe28bf037d1a6f"
  },
  "systems/engine.md": {
-  "behind": [],
+  "behind": [
+   {
+    "commit": "961c63bcf055",
+    "pr": 760,
+    "title": "engine: replace the wide string's assign from counted text (on #737)"
+   },
+   {
+    "commit": "f79d6282add0",
+    "pr": 767,
+    "title": "engine: replace the debug print"
+   },
+   {
+    "commit": "7649394d6198",
+    "pr": 867,
+    "title": "engine: DLFormat integer conversion and format entry points"
+   },
+   {
+    "commit": "a54d9a20f122",
+    "pr": 763,
+    "title": "engine: replace the red-black tree's insert fix-up and remove"
+   },
+   {
+    "commit": "850a0132db1a",
+    "pr": 826,
+    "title": "engine: text encoding conversions and DLFormat's %s conversion"
+   },
+   {
+    "commit": "d1e8067e1dec",
+    "pr": 755,
+    "title": "engine: replace the heap manager's locked regular heap set-up"
+   }
+  ],
   "reviewed": "cf669283bed4b9a9f36e72ef1ebe28bf037d1a6f"
  },
  "systems/event.md": {
@@ -52,7 +136,13 @@
   "reviewed": "cf669283bed4b9a9f36e72ef1ebe28bf037d1a6f"
  },
  "systems/frame_timing.md": {
-  "behind": [],
+  "behind": [
+   {
+    "commit": "e655a3b5be58",
+    "pr": 795,
+    "title": "frame_timing: replace the task manager's helpers (6 functions)"
+   }
+  ],
   "reviewed": "cf669283bed4b9a9f36e72ef1ebe28bf037d1a6f"
  },
  "systems/input.md": {
@@ -60,11 +150,38 @@
   "reviewed": "cf669283bed4b9a9f36e72ef1ebe28bf037d1a6f"
  },
  "systems/kernel.md": {
-  "behind": [],
+  "behind": [
+   {
+    "commit": "d5d694aab686",
+    "pr": 740,
+    "title": "kernel: replace the engine's PthreadMutex.cpp (init, destroy, lock, try lock, unlock)"
+   },
+   {
+    "commit": "e21ae4954e79",
+    "pr": 745,
+    "title": "kernel: replace the engine's read-write lock (DLReadWriteLock)"
+   }
+  ],
   "reviewed": "cf669283bed4b9a9f36e72ef1ebe28bf037d1a6f"
  },
  "systems/loading.md": {
-  "behind": [],
+  "behind": [
+   {
+    "commit": "97f76a208572",
+    "pr": 741,
+    "title": "loading: replace the resource info's reference count and drop"
+   },
+   {
+    "commit": "02818a4cfc61",
+    "pr": 869,
+    "title": "loading: the file load queue's kind 3 and 4 handlers, the manager's removal of a released info, the file task's read start"
+   },
+   {
+    "commit": "e023efad7480",
+    "pr": 847,
+    "title": "loading: the file task's read buffer, end and reset; finished entries; the file load queue's dispatch"
+   }
+  ],
   "reviewed": "cf669283bed4b9a9f36e72ef1ebe28bf037d1a6f"
  },
  "systems/menu.md": {
@@ -80,7 +197,28 @@
   "reviewed": "cf669283bed4b9a9f36e72ef1ebe28bf037d1a6f"
  },
  "systems/render.md": {
-  "behind": [],
+  "behind": [
+   {
+    "commit": "24491e12a07d",
+    "pr": 880,
+    "title": "render: replace the pending command submission (0x02aafa00)"
+   },
+   {
+    "commit": "07df061d8cb1",
+    "pr": 777,
+    "title": "render: replace the shader register packet writers"
+   },
+   {
+    "commit": "1388553207fc",
+    "pr": 789,
+    "title": "render: replace the swap-chain setup object creation"
+   },
+   {
+    "commit": "8a5865c7749a",
+    "pr": 811,
+    "title": "render: replace the two resource info finish steps"
+   }
+  ],
   "reviewed": "cf669283bed4b9a9f36e72ef1ebe28bf037d1a6f"
  }
 }
