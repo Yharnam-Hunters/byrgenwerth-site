@@ -270,6 +270,14 @@
         
         
         
+        <li><a class="wk-nav-link" href="../param/">Parameters</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../menu/">Menu</a></li>
+        
+        
+        
         <li><a class="wk-nav-link" href="../render/">Render</a></li>
         
         
@@ -380,11 +388,11 @@
     
     <a class="wk-progress-card" href="../../progress/">
       <span class="wk-progress-label">Verified functions</span>
-      <span class="wk-progress-value">21 <small>of 157,757</small></span>
-      <span class="wk-stat-track" role="img" aria-label="0.033 percent of target code bytes verified">
-        <span class="wk-stat-fill" style="width:0.033%"></span>
+      <span class="wk-progress-value">114 <small>of 157,757</small></span>
+      <span class="wk-stat-track" role="img" aria-label="0.0685 percent of target code bytes verified">
+        <span class="wk-stat-fill" style="width:0.0685%"></span>
       </span>
-      <span class="wk-progress-foot">0.033% of code bytes verified · 245 replaced</span>
+      <span class="wk-progress-foot">0.0685% of code bytes verified · 555 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -416,7 +424,7 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 11, 2026 04:51:28 UTC">November 11, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 13, 2026 14:54:55 UTC">November 13, 2026</span></p>
       
       
       <h1 id="engine">Engine</h1>
@@ -428,7 +436,7 @@
 <dt>Scope</dt>
 <dd>Engine-wide helpers in Paleblood's <code>game/engine/</code>: the fatal error report and singleton check, reference counting, and <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> engine utility functions.</dd>
 <dt>Verified</dt>
-<dd><code>engine_write_stderr</code>, the string helpers (comparisons, appends, case changes), wide-string set-up, owner storage, a word-and-product store and a handle-table lookup are <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr> against constructed cases.</dd>
+<dd><code>engine_write_stderr</code>, the string helpers (comparisons, appends, case changes), wide-string set-up, owner storage, a word-and-product store and a handle-table lookup are <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr> against constructed cases. Since 12 and 13 November most of the engine's memory system (its heaps and allocators), its threads and its kernel synchronization objects are <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> too; the function table below gives each one's status.</dd>
 <dt>Open</dt>
 <dd>Who calls the stderr writer during play, and with what text.</dd>
 </dl>
@@ -512,6 +520,37 @@ on current <code>main</code>, and an independent review approved it. The appends
 lowercase (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/125">#125</a>, 291 generated cases) are <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr>: their constructed
 cases pass against the original. None was checked on recorded game runs.</p>
 </details>
+<h3 id="memory-the-engines-heaps">Memory: the engine's heaps</h3>
+<p>The engine (FromSoftware's Dantelion2 library) never asks the system for memory one object at a
+time. It carves a few large ranges into heaps, each with its own strategy, and every system
+allocates from one of them. On 12 and 13 November the heaps' allocation, free, set-up and
+diagnostic paths were <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr>, function by function, each with its own edge-case generator that
+builds heaps of known shape:</p>
+<ul>
+<li><strong>The robust heap</strong> (<code>DLRobustHeap</code>): 31 small-size free lists plus a red-black tree of larger
+  free blocks. It allocates by best fit from the bottom or by the highest-addressed fit from the
+  top, aligned or not, and its free reports a double free or an address outside the heap through
+  the engine's error report, then frees the block anyway, as the game does
+  (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/667">#667</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/670">#670</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/708">#708</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/721">#721</a>).</li>
+<li><strong>The regular heap</strong> (<code>DLRegularHeap</code>): 64 size lists; its free was the most called heap function
+  in a coverage boot to character creation (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/675">#675</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/708">#708</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/721">#721</a>). A locked variant
+  guards it with a mutex, and the heap manager keeps every heap's range in an array sorted by start
+  under a read-write lock (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/758">#758</a>, by <a href="https://github.com/FFwLo">@FFwLo</a>).</li>
+<li><strong>The segregated heaps</strong> (<code>DLSegregatedBiHeap</code>, <code>DLSegregatedRegularHeap</code>): the block
+  descriptors live outside the memory they manage, handed out by a fixed-size allocator
+  (<code>DLFixedAllocator</code>); the bi-heap allocates from both ends and checks its own consistency before
+  reporting a bad free (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/677">#677</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/680">#680</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/690">#690</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/717">#717</a>).</li>
+<li><strong>Small objects and per-thread memory</strong>: the small object allocators and their fast variants,
+  the per-thread temporary heap (well over a hundred functions create it on entry) and the linear
+  heap, used from both ends (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/721">#721</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/803">#803</a>).</li>
+<li><strong>The user interface's heap</strong>: identified as Scaleform 4's page-table heap from its page
+  signature, with bins of free blocks and a two-bits-per-unit page bitset; its allocation,
+  aligned allocation, reallocation in place and free are <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/699">#699</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/732">#732</a>).</li>
+</ul>
+<p>The same work <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> the engine's thread helpers, condition signals and semaphores
+(<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/803">#803</a>; the engine's mutex wrappers are on the <a href="../kernel/">Kernel</a> page) and, by
+<a href="https://github.com/FFwLo">@FFwLo</a>, the wide string's assign from part of another string and its
+growth (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/737">#737</a>).</p>
 <h3 id="vector-and-rotation-math">Vector and rotation math</h3>
 <p>The wind update of <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/568">#568</a> (see <a href="../render/#wind-on-models">Render</a>) inlines the engine's four-lane
 vector math, now in <code>game/engine/rotation_math.h</code>: a sine and cosine polynomial evaluated on four
@@ -542,21 +581,21 @@ They are helpers of that replacement, not separate functions of the executable.<
 <td data-label="Address"><code>0x011c4510</code></td>
 <td style="text-align: right;" data-label="Size">15</td>
 <td data-label="Name"><code>engine_store_word_product</code></td>
-<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Status"><span class="wk-badge wk-badge--verified"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></span></td>
 <td data-label="Notes">Store low 32-bit input at owner+0x18 and modulo-32-bit product times four at owner+0x1c; valid unaligned byte view and full zero return; field meanings unknown</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x011c47f0</code></td>
 <td style="text-align: right;" data-label="Size">29</td>
 <td data-label="Name"><code>engine_string_length</code></td>
-<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Status"><span class="wk-badge wk-badge--verified"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></span></td>
 <td data-label="Notes">Engine strlen; scan to the first NUL and return the low 32 length bits zero-extended into RAX; other incoming GP registers are ignored</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x011c4870</code></td>
 <td style="text-align: right;" data-label="Size">51</td>
 <td data-label="Name"><code>engine_string_append</code></td>
-<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Status"><span class="wk-badge wk-badge--verified"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></span></td>
 <td data-label="Notes">NUL-terminated string append returns original destination; includes prefixes beyond four bytes and finite aliases</td>
 </tr>
 <tr>
@@ -598,7 +637,7 @@ They are helpers of that replacement, not separate functions of the executable.<
 <td data-label="Address"><code>0x011c4990</code></td>
 <td style="text-align: right;" data-label="Size">47</td>
 <td data-label="Name"><code>engine_compare_signed_prefix</code></td>
-<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Status"><span class="wk-badge wk-badge--verified"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></span></td>
 <td data-label="Notes">Compare signed bytes up to a signed 32-bit bound; always compare the first byte even for zero or negative lengths</td>
 </tr>
 <tr>
@@ -633,8 +672,666 @@ They are helpers of that replacement, not separate functions of the executable.<
 <td data-label="Address"><code>0x0217ffb0</code></td>
 <td style="text-align: right;" data-label="Size">205</td>
 <td data-label="Name"><code>engine_initialize_static_wide_string_0217ffb0</code></td>
-<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Status"><span class="wk-badge wk-badge--verified"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></span></td>
 <td data-label="Notes">Guarded static empty wide string; byte-only entry test; captured allocator; exact partial stores; destructor registration before full guard publication</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x023392d0</code></td>
+<td style="text-align: right;" data-label="Size">1121</td>
+<td data-label="Name"><code>engine_scaleform_heap_reallocate_023392d0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Scaleform MemoryHeapPT realloc: small-page block resized in place under 0x800 (else moved) / large block found in the page manager's radix tree; heap lock then page-manager lock</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0233a7f0</code></td>
+<td style="text-align: right;" data-label="Size">803</td>
+<td data-label="Name"><code>engine_scaleform_heap_bin_allocate_0233a7f0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Scaleform small-block allocation: bins' best fit; page from the block or its page header; rest binned; bitset marked</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0233ab20</code></td>
+<td style="text-align: right;" data-label="Size">680</td>
+<td data-label="Name"><code>engine_scaleform_heap_bin_free_0233ab20</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Scaleform small-block free: length from the bitset; a free neighbour unit tail-jumps to the merge; else to the head of its bin</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0233ae40</code></td>
+<td style="text-align: right;" data-label="Size">1188</td>
+<td data-label="Name"><code>engine_scaleform_heap_bin_allocate_aligned_0233ae40</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Scaleform aligned small-block allocation: aligned best fit; front and back remainders binned; bitset marked</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0233b2f0</code></td>
+<td style="text-align: right;" data-label="Size">1551</td>
+<td data-label="Name"><code>engine_scaleform_heap_bin_reallocate_0233b2f0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Scaleform in-place small-block resize: shrink binning the end (joined with a free next block); grow from a free next block within the page half; bin unlink moves the head to prev</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0233c0a0</code></td>
+<td style="text-align: right;" data-label="Size">167</td>
+<td data-label="Name"><code>engine_scaleform_heap_free_0233c0a0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Scaleform engine free: bins free; used bytes down; header counts down (the last decides); page released at zero; count down</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0233c870</code></td>
+<td style="text-align: right;" data-label="Size">474</td>
+<td data-label="Name"><code>engine_scaleform_heap_allocate_0233c870</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Scaleform engine allocation: alignment &gt; 16 to the aligned path; &lt;= 0x200 from the bins (rounded to 16) with page-add retries; larger under the page-manager lock unless held</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0233ca70</code></td>
+<td style="text-align: right;" data-label="Size">464</td>
+<td data-label="Name"><code>engine_scaleform_heap_allocate_aligned_0233ca70</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Scaleform engine aligned allocation: &lt;= 0x200 from the bins (alignment &gt;= 16) with page-add retries; larger (&gt;= 8-aligned and long; rounded to 8) to the large allocation (locked unless held)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0233d750</code></td>
+<td style="text-align: right;" data-label="Size">383</td>
+<td data-label="Name"><code>engine_scaleform_heap_bins_take_best_0233d750</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Scaleform bins best fit: head of the first non-empty bin from the length's own (last bin unchecked); head moves to prev</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0233d8d0</code></td>
+<td style="text-align: right;" data-label="Size">573</td>
+<td data-label="Name"><code>engine_scaleform_heap_bins_take_best_aligned_0233d8d0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Scaleform bins aligned best fit: from the first non-empty bin up; each ring walked backwards for a block holding the length at its first aligned address</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0233dc60</code></td>
+<td style="text-align: right;" data-label="Size">739</td>
+<td data-label="Name"><code>engine_scaleform_heap_bins_merge_free_0233dc60</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Scaleform merge of a freed block with free neighbours (previous through its tail copy); joined block to the head of the joined length's bin</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0247c000</code></td>
+<td style="text-align: right;" data-label="Size">1112</td>
+<td data-label="Name"><code>engine_heap_manager_register_area_0247c000</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLHeapManager area registration: under the write lock; sorted insert after the last area starting at or below; same heap there refused; overrun reported; vector growth</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0247d250</code></td>
+<td style="text-align: right;" data-label="Size">304</td>
+<td data-label="Name"><code>engine_temporary_heap_create_for_thread_0247d250</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLTemporaryHeap per-thread creation: the thread's size setting (0x20000 when 0; under 0x38 reported); memory from the default allocator; empty bump region after the 0x38-byte object</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0247d3a0</code></td>
+<td style="text-align: right;" data-label="Size">140</td>
+<td data-label="Name"><code>engine_temporary_heap_destroy_for_thread_0247d3a0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLTemporaryHeap per-thread destruction: range cleared, memory freed through the default allocator (quit query and allocator made when missing), slot cleared</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0247d430</code></td>
+<td style="text-align: right;" data-label="Size">34</td>
+<td data-label="Name"><code>engine_temporary_heap_set_size_0247d430</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLTemporaryHeap size setting for the thread (0 -&gt; 0x20000)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0247d470</code></td>
+<td style="text-align: right;" data-label="Size">58</td>
+<td data-label="Name"><code>engine_temporary_heap_allocator_0247d470</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLTemporaryHeap allocator interface of the thread's heap (+0x20), creating the heap first</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0247d4b0</code></td>
+<td style="text-align: right;" data-label="Size">86</td>
+<td data-label="Name"><code>engine_temporary_heap_allocate_0247d4b0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLTemporaryHeap bottom allocation on the thread's heap (linear heap step)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0247d510</code></td>
+<td style="text-align: right;" data-label="Size">121</td>
+<td data-label="Name"><code>engine_temporary_heap_allocate_aligned_0247d510</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLTemporaryHeap aligned bottom allocation on the thread's heap (linear heap step)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0247d590</code></td>
+<td style="text-align: right;" data-label="Size">31</td>
+<td data-label="Name"><code>engine_temporary_heap_ensure_0247d590</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLTemporaryHeap: creates the thread's heap when missing</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0247d5b0</code></td>
+<td style="text-align: right;" data-label="Size">58</td>
+<td data-label="Name"><code>engine_temporary_heap_mark_0247d5b0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLTemporaryHeap mark: the thread heap's bottom</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0247d5f0</code></td>
+<td style="text-align: right;" data-label="Size">110</td>
+<td data-label="Name"><code>engine_temporary_heap_free_until_0247d5f0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLTemporaryHeap FreeUntil on the thread's heap: rewinds the bottom; a mark outside the range reported</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0247dd30</code></td>
+<td style="text-align: right;" data-label="Size">31</td>
+<td data-label="Name"><code>engine_temporary_heap_ensure_0247dd30</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLTemporaryHeap: creates the thread's heap when missing (identical copy)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0247dd60</code></td>
+<td style="text-align: right;" data-label="Size">127</td>
+<td data-label="Name"><code>engine_temporary_heap_allocate_top_0247dd60</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLTemporaryHeap 8-aligned top allocation on the thread's heap (linear heap step)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0247dde0</code></td>
+<td style="text-align: right;" data-label="Size">156</td>
+<td data-label="Name"><code>engine_temporary_heap_allocate_aligned_top_0247dde0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLTemporaryHeap aligned top allocation on the thread's heap (linear heap step)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0247e1a0</code></td>
+<td style="text-align: right;" data-label="Size">161</td>
+<td data-label="Name"><code>engine_temporary_heap_free_0247e1a0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLTemporaryHeap top block free on the thread's heap (linear heap step)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0247e400</code></td>
+<td style="text-align: right;" data-label="Size">18</td>
+<td data-label="Name"><code>engine_condition_signal_construct_0247e400</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLConditionSignal constructor: vtable, flags cleared</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0247e420</code></td>
+<td style="text-align: right;" data-label="Size">201</td>
+<td data-label="Name"><code>engine_condition_signal_delete_0247e420</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLConditionSignal deleting destructor: when created, mutex then condition destroyed (busy stops; errors reported); freed</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0247e4f0</code></td>
+<td style="text-align: right;" data-label="Size">198</td>
+<td data-label="Name"><code>engine_condition_signal_destroy_base_0247e4f0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLConditionSignal base destructor: when created, mutex then condition destroyed; created flag cleared unless busy</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0247e5c0</code></td>
+<td style="text-align: right;" data-label="Size">206</td>
+<td data-label="Name"><code>engine_condition_signal_finalize_0247e5c0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLConditionSignal finalize: when created per vtable, destroys mutex and condition; -2 when busy, else 0 and not created</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0247e690</code></td>
+<td style="text-align: right;" data-label="Size">211</td>
+<td data-label="Name"><code>engine_condition_signal_create_0247e690</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLConditionSignal create: skipped when created; argument byte -&gt; signalled, waited cleared; mutex failure returned; ENOMEM/EAGAIN -1; EINVAL/EBUSY/other reported, created</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0247e780</code></td>
+<td style="text-align: right;" data-label="Size">366</td>
+<td data-label="Name"><code>engine_condition_signal_set_0247e780</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLConditionSignal set/clear under its mutex; setting wakes every waiter (pthread_cond_broadcast) when one has waited; errors reported; 0</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0247e8f0</code></td>
+<td style="text-align: right;" data-label="Size">329</td>
+<td data-label="Name"><code>engine_condition_signal_wait_0247e8f0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLConditionSignal wait under its mutex unless already set (marks a waiter); returns the condition wait result or 0</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0247ea40</code></td>
+<td style="text-align: right;" data-label="Size">61</td>
+<td data-label="Name"><code>engine_condition_signal_poll_0247ea40</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLConditionSignal poll: reports an uncreated object; 0 when signalled, else -2</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0247ea80</code></td>
+<td style="text-align: right;" data-label="Size">40</td>
+<td data-label="Name"><code>engine_condition_signal_check_0247ea80</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLConditionSignal check: reports an uncreated object; 0</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x024846f0</code></td>
+<td style="text-align: right;" data-label="Size">105</td>
+<td data-label="Name"><code>engine_fast_small_object_allocator_delete_024846f0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLFastSmallObjectAllocator deleting destructor: every class allocator released (0x02a3bc40), class array freed to the backing allocator, operator delete</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02484760</code></td>
+<td style="text-align: right;" data-label="Size">106</td>
+<td data-label="Name"><code>engine_fast_small_object_allocator_destroy_02484760</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLFastSmallObjectAllocator destructor: every class allocator released (0x02a3bc40), class array freed and forgotten</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x024847d0</code></td>
+<td style="text-align: right;" data-label="Size">309</td>
+<td data-label="Name"><code>engine_fast_small_object_allocator_delete_locked_024847d0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLFastSmallObjectAllocator deleting destructor, locked variant: classes released, array freed, PthreadMutex torn down (errors reported, busy kept), operator delete</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02484910</code></td>
+<td style="text-align: right;" data-label="Size">307</td>
+<td data-label="Name"><code>engine_fast_small_object_allocator_destroy_locked_02484910</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLFastSmallObjectAllocator destructor, locked variant: classes released, array freed, PthreadMutex torn down (errors reported, busy kept)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02484ae0</code></td>
+<td style="text-align: right;" data-label="Size">74</td>
+<td data-label="Name"><code>engine_fixed_allocator_release_chunks_02484ae0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLFixedAllocator chunk release: left subtree, right subtree, then the node's own chunk back to the backing allocator (vtable +0x70); the tree is left as it was</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02484b30</code></td>
+<td style="text-align: right;" data-label="Size">239</td>
+<td data-label="Name"><code>engine_fixed_allocator_initialize_02484b30</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLFixedAllocator set-up: reports a non-power-of-two alignment and room for fewer than two elements; element at least 8 rounded to the alignment; empty chunk list and tree</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02484c20</code></td>
+<td style="text-align: right;" data-label="Size">72</td>
+<td data-label="Name"><code>engine_fixed_allocator_clear_02484c20</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLFixedAllocator clear: releases every chunk (0x02484ae0) and forgets them (current, last freed, list, tree); counts untouched</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02484c70</code></td>
+<td style="text-align: right;" data-label="Size">361</td>
+<td data-label="Name"><code>engine_fixed_allocator_allocate_02484c70</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLFixedAllocator allocation: front element of the current chunk or the first chunk with room; a new chunk from the backing allocator joins the list and the address tree</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02484de0</code></td>
+<td style="text-align: right;" data-label="Size">295</td>
+<td data-label="Name"><code>engine_fixed_allocator_free_02484de0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLFixedAllocator free: chunk from the last-freed hint or the address tree; element to the front of its chunk; emptied chunk released past two chunks of free elements</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02484f20</code></td>
+<td style="text-align: right;" data-label="Size">162</td>
+<td data-label="Name"><code>engine_fixed_allocator_shrink_02484f20</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLFixedAllocator shrink: every chunk in the with-room list whose elements are all free leaves the list and tree and goes back to the backing allocator</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02485100</code></td>
+<td style="text-align: right;" data-label="Size">23</td>
+<td data-label="Name"><code>engine_linear_heap_allocate_02485100</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLLinearHeap bottom allocation: the next size bytes, null when the bottom would pass the top</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02485120</code></td>
+<td style="text-align: right;" data-label="Size">56</td>
+<td data-label="Name"><code>engine_linear_heap_allocate_aligned_02485120</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLLinearHeap aligned bottom allocation: bottom padded to the alignment first; null for a non-power-of-two alignment or no room</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02485160</code></td>
+<td style="text-align: right;" data-label="Size">38</td>
+<td data-label="Name"><code>engine_linear_heap_check_owned_02485160</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLLinearHeap ownership check: reports an address outside [lowest, highest)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02485190</code></td>
+<td style="text-align: right;" data-label="Size">64</td>
+<td data-label="Name"><code>engine_linear_heap_allocate_top_02485190</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLLinearHeap top allocation: an 8-aligned block below the top with a 16-byte header (previous top, in use); null when it would pass the bottom</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x024851d0</code></td>
+<td style="text-align: right;" data-label="Size">91</td>
+<td data-label="Name"><code>engine_linear_heap_allocate_aligned_top_024851d0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLLinearHeap aligned top allocation: aligned to at least 8; null for a non-power-of-two alignment or no room</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02485230</code></td>
+<td style="text-align: right;" data-label="Size">113</td>
+<td data-label="Name"><code>engine_linear_heap_free_02485230</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLLinearHeap free: the lowest top block moves the top up past the blocks no longer in use; another block is only marked; outside addresses reported</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x024852d0</code></td>
+<td style="text-align: right;" data-label="Size">65</td>
+<td data-label="Name"><code>engine_linear_heap_free_until_024852d0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLLinearHeap FreeUntil: rewinds the bottom to a mark below it; a mark outside [lowest, highest] reported</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02485330</code></td>
+<td style="text-align: right;" data-label="Size">16</td>
+<td data-label="Name"><code>engine_linear_heap_contains_02485330</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLLinearHeap: whether an address is in [lowest, highest)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02485340</code></td>
+<td style="text-align: right;" data-label="Size">183</td>
+<td data-label="Name"><code>engine_linear_heap_walk_02485340</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLLinearHeap walk step: the bottom used region, the free gap, then each top block up to the end</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02485500</code></td>
+<td style="text-align: right;" data-label="Size">256</td>
+<td data-label="Name"><code>engine_regular_heap_initialize_02485500</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLRegularHeap set-up: 64 empty lists; one free block from the first 16-aligned payload to the end block; under 0x40 bytes the heap object is zeroed (memset) and false</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02485730</code></td>
+<td style="text-align: right;" data-label="Size">356</td>
+<td data-label="Name"><code>engine_regular_heap_allocate_02485730</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLRegularHeap allocation: first block of the lowest non-empty larger list, else first fit in the own list; rest split off into its list</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x024858a0</code></td>
+<td style="text-align: right;" data-label="Size">445</td>
+<td data-label="Name"><code>engine_regular_heap_free_024858a0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLRegularHeap free: range and in-use reports (continue); merge free neighbours (16-byte blocks in no list); merged block to the front of list floor(log2(size))</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02485a60</code></td>
+<td style="text-align: right;" data-label="Size">748</td>
+<td data-label="Name"><code>engine_regular_heap_allocate_aligned_02485a60</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLRegularHeap aligned allocation: power of two; up to 16 the plain one; below 0x400 lowest list above the worst case; else first aligned fit; front and rest stay free</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02485e20</code></td>
+<td style="text-align: right;" data-label="Size">459</td>
+<td data-label="Name"><code>engine_regular_heap_check_block_02485e20</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLRegularHeap block check: the first broken word around a payload (next words, flags, back pointer, list links and their back links), or null</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02486080</code></td>
+<td style="text-align: right;" data-label="Size">570</td>
+<td data-label="Name"><code>engine_robust_heap_check_block_02486080</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLRobustHeap block check: the first broken word around a payload (next words, flags, back pointer, small-list links or large-tree size and links), or null</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x024863f0</code></td>
+<td style="text-align: right;" data-label="Size">841</td>
+<td data-label="Name"><code>engine_robust_heap_initialize_024863f0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLRobustHeap set-up: 31 list sentinels at the memory rounded to 16 then 128; one free block to the end rounded down to 16 less a header-only end block; filed by size; false for no or too little memory</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02486810</code></td>
+<td style="text-align: right;" data-label="Size">1192</td>
+<td data-label="Name"><code>engine_robust_heap_allocate_02486810</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLRobustHeap best-fit allocation: own small list; larger list split; tree smallest (split in place past 0x200 spare); large: exact or smallest larger</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02486cd0</code></td>
+<td style="text-align: right;" data-label="Size">1693</td>
+<td data-label="Name"><code>engine_robust_heap_allocate_aligned_02486cd0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLRobustHeap aligned allocation from the bottom: first block (own list aligned; larger lists; tree in order) used from its start or with an aligned payload inside</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02487380</code></td>
+<td style="text-align: right;" data-label="Size">675</td>
+<td data-label="Name"><code>engine_robust_heap_allocate_top_02487380</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLRobustHeap top allocation: the highest-address free block that fits (lists and tree) is carved from its end; the front stays free</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02487650</code></td>
+<td style="text-align: right;" data-label="Size">1252</td>
+<td data-label="Name"><code>engine_robust_heap_allocate_aligned_top_02487650</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLRobustHeap aligned top allocation: highest block whose top aligned payload fits; front and rest stay free</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02487b50</code></td>
+<td style="text-align: right;" data-label="Size">481</td>
+<td data-label="Name"><code>engine_robust_heap_free_02487b50</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLRobustHeap free: reports double frees and foreign pointers (then frees anyway); merges with free neighbours and files the result by size</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02487dd0</code></td>
+<td style="text-align: right;" data-label="Size">117</td>
+<td data-label="Name"><code>engine_segregated_bi_heap_reset_02487dd0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLSegregatedBiHeap state reset: clears from the set-up flag to the end of the state (terminator, chains, range, counters)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02487e50</code></td>
+<td style="text-align: right;" data-label="Size">469</td>
+<td data-label="Name"><code>engine_segregated_bi_heap_initialize_02487e50</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLSegregatedBiHeap set-up: 16-aligned range, inline descriptor allocator (0x66 per chunk), terminator at the limit, one free block; no descriptor tears the allocator down and fails</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02488030</code></td>
+<td style="text-align: right;" data-label="Size">677</td>
+<td data-label="Name"><code>engine_segregated_bi_heap_allocate_bottom_02488030</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLSegregatedBiHeap bottom allocation: first free block (address order) holding the 16-rounded size aligned; split rest/front via new descriptors; to the bottom chain</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x024882f0</code></td>
+<td style="text-align: right;" data-label="Size">815</td>
+<td data-label="Name"><code>engine_segregated_bi_heap_allocate_top_024882f0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLSegregatedBiHeap top allocation: last free block (address order) holding the 16-rounded size aligned; a new descriptor takes its highest aligned place, the gap above stays free; to the top chain</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02488650</code></td>
+<td style="text-align: right;" data-label="Size">203</td>
+<td data-label="Name"><code>engine_segregated_bi_heap_finalize_02488650</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLSegregatedBiHeap tear-down: releases the descriptor allocator when set up; clears the terminator, chains and range (counters kept)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02488900</code></td>
+<td style="text-align: right;" data-label="Size">1000</td>
+<td data-label="Name"><code>engine_segregated_bi_heap_free_02488900</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLSegregatedBiHeap free: find in bottom then top chain; merge free neighbours (descriptors back to the pool); relink into the address-ordered free list</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02488cf0</code></td>
+<td style="text-align: right;" data-label="Size">580</td>
+<td data-label="Name"><code>engine_segregated_bi_heap_is_consistent_02488cf0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLSegregatedBiHeap integrity check: passes when not set up; range and terminator sane, no list loops (Floyd), chains in use, address chain and free list linked back and ordered</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02488f40</code></td>
+<td style="text-align: right;" data-label="Size">586</td>
+<td data-label="Name"><code>engine_segregated_bi_heap_free_top_02488f40</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLSegregatedBiHeap BackFree: the free with only the top chain searched; own report lines and message</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02489340</code></td>
+<td style="text-align: right;" data-label="Size">482</td>
+<td data-label="Name"><code>engine_segregated_regular_heap_initialize_02489340</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLSegregatedRegularHeap set-up: hash table from the allocator (vtable +0x50); descriptor pool (0x66 per 0x1028 chunk); one free block over the 16-aligned range; end descriptor in the heap</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02489530</code></td>
+<td style="text-align: right;" data-label="Size">234</td>
+<td data-label="Name"><code>engine_segregated_regular_heap_finalize_02489530</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLSegregatedRegularHeap tear-down: counters, end descriptor, lists and table cleared (count all ones); table freed (vtable +0x70); descriptor pool chunks released and forgotten</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02489620</code></td>
+<td style="text-align: right;" data-label="Size">670</td>
+<td data-label="Name"><code>engine_segregated_regular_heap_allocate_02489620</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLSegregatedRegularHeap allocation: first block of the smallest class that surely fits (else first fitting one of its own range class); rest split off</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x024898c0</code></td>
+<td style="text-align: right;" data-label="Size">1112</td>
+<td data-label="Name"><code>engine_segregated_regular_heap_allocate_aligned_024898c0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLSegregatedRegularHeap aligned allocation: worst-case class up to 0x400 alignment; else first block holding the size from an aligned address; front and rest stay free</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02489d20</code></td>
+<td style="text-align: right;" data-label="Size">672</td>
+<td data-label="Name"><code>engine_segregated_regular_heap_allocate_top_02489d20</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLSegregatedRegularHeap top allocation: highest-address fitting free block; the allocation takes its end; the front stays free</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02489fc0</code></td>
+<td style="text-align: right;" data-label="Size">1081</td>
+<td data-label="Name"><code>engine_segregated_regular_heap_allocate_aligned_top_02489fc0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLSegregatedRegularHeap aligned top allocation: highest-address block holding the size aligned; placed at the highest aligned fit; front and tail stay free</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0248a400</code></td>
+<td style="text-align: right;" data-label="Size">688</td>
+<td data-label="Name"><code>engine_segregated_regular_heap_free_0248a400</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLSegregatedRegularHeap free: hash-table lookup (unknown address reported); merges with free neighbours; to the front of its class list</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0248a9f0</code></td>
+<td style="text-align: right;" data-label="Size">159</td>
+<td data-label="Name"><code>engine_small_object_allocator_delete_0248a9f0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLSmallObjectAllocator deleting destructor: every class emptied (chunks released and forgotten), class array freed, operator delete</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0248aa90</code></td>
+<td style="text-align: right;" data-label="Size">160</td>
+<td data-label="Name"><code>engine_small_object_allocator_destroy_0248aa90</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLSmallObjectAllocator destructor: every class emptied (chunks released and forgotten), class array freed and forgotten</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0248ab30</code></td>
+<td style="text-align: right;" data-label="Size">363</td>
+<td data-label="Name"><code>engine_small_object_allocator_delete_locked_0248ab30</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLSmallObjectAllocator deleting destructor, locked variant: classes emptied, array freed, PthreadMutex torn down (errors reported, busy kept), operator delete</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0248adc0</code></td>
+<td style="text-align: right;" data-label="Size">528</td>
+<td data-label="Name"><code>engine_thread_construct_0248adc0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLThread constructor (default stack): start mutex created and locked, condition signal, name (unnamed when null/empty), thread created; failures reported</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0248afe0</code></td>
+<td style="text-align: right;" data-label="Size">540</td>
+<td data-label="Name"><code>engine_thread_construct_with_affinity_0248afe0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLThread constructor with stack size and core mask: same members; thread created with the mask; failures reported</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0248b200</code></td>
+<td style="text-align: right;" data-label="Size">532</td>
+<td data-label="Name"><code>engine_thread_construct_sized_0248b200</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLThread constructor with a stack size: same members; failures reported</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x027ec640</code></td>
+<td style="text-align: right;" data-label="Size">583</td>
+<td data-label="Name"><code>engine_scaleform_heap_bitset_mark_027ec640</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Scaleform page bitset: mark an allocated block (2-bit codes: 1; 2; 3+len-3; 3 3 + 6-bit len-6; 3 3 3 + 32-bit word); last unit 1</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x027ec890</code></td>
+<td style="text-align: right;" data-label="Size">171</td>
+<td data-label="Name"><code>engine_scaleform_heap_bitset_units_027ec890</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Scaleform page bitset: read an allocated block's length from its first codes</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02a279a0</code></td>
+<td style="text-align: right;" data-label="Size">429</td>
+<td data-label="Name"><code>engine_wide_string_assign_from_02a279a0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Wide string assign(source, position, count): out of range past the end; self-assign cuts the tail, wmemmove front; else grow if capacity &lt; length, wmemcpy</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02a27b70</code></td>
+<td style="text-align: right;" data-label="Size">311</td>
+<td data-label="Name"><code>engine_wide_string_grow_02a27b70</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Wide string growth: capacity length/7 or old<em>1.5 (max 0x7ffffffffffffffe); allocate 2</em>cap+2 align 2, transaction on failure; keep chars, free old heap</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02a3ae00</code></td>
+<td style="text-align: right;" data-label="Size">394</td>
+<td data-label="Name"><code>engine_semaphore_wait_02a3ae00</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLSemaphore wait for one unit, forever or up to a timeout; -3 on ETIMEDOUT; ESRCH..EINVAL report chains, unknown errors reported; 0</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02a3b0d0</code></td>
+<td style="text-align: right;" data-label="Size">122</td>
+<td data-label="Name"><code>engine_semaphore_signal_02a3b0d0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLSemaphore signal: EINVAL ignored; ESRCH and other errors reported; 0</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02a3baa0</code></td>
+<td style="text-align: right;" data-label="Size">378</td>
+<td data-label="Name"><code>engine_fast_fixed_allocator_initialize_02a3baa0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLFastFixedAllocator set-up: chunk size rounded up to a power of two, chunks aligned to it; blocks rounded to the alignment (at least 8); reports bad sizes and alignment</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02a3bc40</code></td>
+<td style="text-align: right;" data-label="Size">173</td>
+<td data-label="Name"><code>engine_fast_fixed_allocator_release_02a3bc40</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLFastFixedAllocator destructor body: every chunk of both chunk lists, then the spare chunk, freed to the backing allocator</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x02a44140</code></td>
@@ -642,6 +1339,34 @@ They are helpers of that replacement, not separate functions of the executable.<
 <td data-label="Name"><code>engine_wide_string_destroy</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">WideString destructor; unsigned capacity &gt;=8 frees even null; ignores owns; callback before capacity and size reset and two-byte terminator</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02fa1640</code></td>
+<td style="text-align: right;" data-label="Size">517</td>
+<td data-label="Name"><code>engine_fast_small_object_allocator_construct_02fa1640</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLFastSmallObjectAllocator constructor: size classes from the largest (rounded to the alignment) down by the step, one DLFastFixedAllocator each; bad sizes reported</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02fa1950</code></td>
+<td style="text-align: right;" data-label="Size">552</td>
+<td data-label="Name"><code>engine_fast_small_object_allocator_construct_locked_02fa1950</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLFastSmallObjectAllocator constructor, locked variant: creates its mutex, then the same size classes</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02fa1e20</code></td>
+<td style="text-align: right;" data-label="Size">872</td>
+<td data-label="Name"><code>engine_small_object_allocator_construct_02fa1e20</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLSmallObjectAllocator constructor: size classes from smallest to largest by the granularity, one checked DLFixedAllocator per class in an array from the backing allocator</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02fa22a0</code></td>
+<td style="text-align: right;" data-label="Size">904</td>
+<td data-label="Name"><code>engine_small_object_allocator_construct_locked_02fa22a0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLSmallObjectAllocator constructor, locked variant: creates its recursive mutex, then the same size classes</td>
 </tr>
 </tbody>
 </table></div>

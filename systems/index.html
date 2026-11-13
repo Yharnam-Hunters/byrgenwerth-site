@@ -270,6 +270,14 @@
         
         
         
+        <li><a class="wk-nav-link" href="param/">Parameters</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="menu/">Menu</a></li>
+        
+        
+        
         <li><a class="wk-nav-link" href="render/">Render</a></li>
         
         
@@ -380,11 +388,11 @@
     
     <a class="wk-progress-card" href="../progress/">
       <span class="wk-progress-label">Verified functions</span>
-      <span class="wk-progress-value">21 <small>of 157,757</small></span>
-      <span class="wk-stat-track" role="img" aria-label="0.033 percent of target code bytes verified">
-        <span class="wk-stat-fill" style="width:0.033%"></span>
+      <span class="wk-progress-value">114 <small>of 157,757</small></span>
+      <span class="wk-stat-track" role="img" aria-label="0.0685 percent of target code bytes verified">
+        <span class="wk-stat-fill" style="width:0.0685%"></span>
       </span>
-      <span class="wk-progress-foot">0.033% of code bytes verified · 245 replaced</span>
+      <span class="wk-progress-foot">0.0685% of code bytes verified · 555 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -418,7 +426,7 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 3, 2026 16:59:11 UTC">November 3, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 13, 2026 14:54:55 UTC">November 13, 2026</span></p>
       
       
       <h1 id="systems">Systems</h1>
@@ -492,6 +500,14 @@ reads straight through.</p>
 <td>The rigid-body world, its tables, and the physics-instance constructor</td>
 </tr>
 <tr>
+<td><a href="param/">Parameters</a></td>
+<td>The parameter tables (PARAM files): the solo parameter repository and its row lookups</td>
+</tr>
+<tr>
+<td><a href="menu/">Menu</a></td>
+<td>The game's menus and dialogs: the text input dialog and item dialog list entries</td>
+</tr>
+<tr>
 <td><a href="render/">Render</a></td>
 <td>The render frame update and swap-chain presentation</td>
 </tr>
@@ -522,18 +538,18 @@ reads straight through.</p>
 </tr>
 <tr>
 <td>Replaced</td>
-<td style="text-align: right;">245 (0.16%)</td>
-<td style="text-align: right;">114,180 (0.27%)</td>
+<td style="text-align: right;">555 (0.35%)</td>
+<td style="text-align: right;">218,157 (0.51%)</td>
 </tr>
 <tr>
 <td>Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> (includes <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>)</td>
-<td style="text-align: right;">245 (0.16%)</td>
-<td style="text-align: right;">114,180 (0.27%)</td>
+<td style="text-align: right;">555 (0.35%)</td>
+<td style="text-align: right;">218,157 (0.51%)</td>
 </tr>
 <tr>
 <td>Verified</td>
-<td style="text-align: right;">21 (0.01%)</td>
-<td style="text-align: right;">14,010 (0.03%)</td>
+<td style="text-align: right;">114 (0.07%)</td>
+<td style="text-align: right;">29,116 (0.07%)</td>
 </tr>
 </tbody>
 </table></div>
@@ -554,17 +570,23 @@ reads straight through.</p>
 </tr>
 <tr>
 <td>Replaced, with family members</td>
-<td style="text-align: right;">18,264 (11.58%)</td>
-<td style="text-align: right;">176,606 (0.42%)</td>
+<td style="text-align: right;">18,574 (11.77%)</td>
+<td style="text-align: right;">280,583 (0.66%)</td>
 </tr>
 <tr>
 <td>Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>, with family members</td>
-<td style="text-align: right;">18,264 (11.58%)</td>
-<td style="text-align: right;">176,606 (0.42%)</td>
+<td style="text-align: right;">18,574 (11.77%)</td>
+<td style="text-align: right;">280,583 (0.66%)</td>
+</tr>
+<tr>
+<td>Verified, with family members</td>
+<td style="text-align: right;">18,133 (11.49%)</td>
+<td style="text-align: right;">91,542 (0.22%)</td>
 </tr>
 </tbody>
 </table></div>
 <p>Family members are tiny functions (one to a few bytes each) that share one replacement per family: they add far more to the function count than to the bytes.</p>
+<p>Matching tier: 118 functions compile byte for byte to the original from their own C (clang-3.4.2, every reference checked; <code>symbols/matching.csv</code>). Matching is optional evidence and is not a separate status.</p>
 <div class="wk-table"><table>
 <thead>
 <tr>
@@ -590,7 +612,7 @@ reads straight through.</p>
 <td style="text-align: right;">5</td>
 <td style="text-align: right;">5</td>
 <td style="text-align: right;">5</td>
-<td style="text-align: right;">0</td>
+<td style="text-align: right;">2</td>
 <td style="text-align: right;">413</td>
 </tr>
 <tr>
@@ -611,51 +633,67 @@ reads straight through.</p>
 </tr>
 <tr>
 <td>engine</td>
-<td style="text-align: right;">16</td>
-<td style="text-align: right;">16</td>
-<td style="text-align: right;">16</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">861</td>
+<td style="text-align: right;">114</td>
+<td style="text-align: right;">114</td>
+<td style="text-align: right;">114</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">41,884</td>
 </tr>
 <tr>
 <td>event</td>
 <td style="text-align: right;">2</td>
 <td style="text-align: right;">2</td>
 <td style="text-align: right;">2</td>
-<td style="text-align: right;">1</td>
+<td style="text-align: right;">2</td>
 <td style="text-align: right;">545</td>
 </tr>
 <tr>
 <td>frame_timing</td>
-<td style="text-align: right;">52</td>
-<td style="text-align: right;">51</td>
-<td style="text-align: right;">51</td>
-<td style="text-align: right;">12</td>
-<td style="text-align: right;">15,382</td>
+<td style="text-align: right;">63</td>
+<td style="text-align: right;">62</td>
+<td style="text-align: right;">62</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">16,499</td>
 </tr>
 <tr>
 <td>input</td>
 <td style="text-align: right;">5</td>
 <td style="text-align: right;">5</td>
 <td style="text-align: right;">5</td>
-<td style="text-align: right;">1</td>
+<td style="text-align: right;">2</td>
 <td style="text-align: right;">890</td>
 </tr>
 <tr>
 <td>kernel</td>
-<td style="text-align: right;">14</td>
-<td style="text-align: right;">14</td>
-<td style="text-align: right;">14</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">993</td>
+<td style="text-align: right;">22</td>
+<td style="text-align: right;">22</td>
+<td style="text-align: right;">22</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">1,994</td>
 </tr>
 <tr>
 <td>loading</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">7</td>
+<td style="text-align: right;">42</td>
+<td style="text-align: right;">42</td>
+<td style="text-align: right;">42</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">14,401</td>
+</tr>
+<tr>
+<td>menu</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">6</td>
 <td style="text-align: right;">0</td>
-<td style="text-align: right;">990</td>
+<td style="text-align: right;">1,728</td>
+</tr>
+<tr>
+<td>param</td>
+<td style="text-align: right;">137</td>
+<td style="text-align: right;">137</td>
+<td style="text-align: right;">137</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">43,266</td>
 </tr>
 <tr>
 <td>physics</td>
@@ -667,11 +705,11 @@ reads straight through.</p>
 </tr>
 <tr>
 <td>render</td>
-<td style="text-align: right;">139</td>
-<td style="text-align: right;">139</td>
-<td style="text-align: right;">139</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">67,013</td>
+<td style="text-align: right;">154</td>
+<td style="text-align: right;">154</td>
+<td style="text-align: right;">154</td>
+<td style="text-align: right;">79</td>
+<td style="text-align: right;">69,444</td>
 </tr>
 </tbody>
 </table></div>

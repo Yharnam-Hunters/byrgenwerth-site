@@ -270,6 +270,14 @@
         
         
         
+        <li><a class="wk-nav-link" href="../systems/param/">Parameters</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../systems/menu/">Menu</a></li>
+        
+        
+        
         <li><a class="wk-nav-link" href="../systems/render/">Render</a></li>
         
         
@@ -380,11 +388,11 @@
     
     <a class="wk-progress-card" href="../progress/">
       <span class="wk-progress-label">Verified functions</span>
-      <span class="wk-progress-value">21 <small>of 157,757</small></span>
-      <span class="wk-stat-track" role="img" aria-label="0.033 percent of target code bytes verified">
-        <span class="wk-stat-fill" style="width:0.033%"></span>
+      <span class="wk-progress-value">114 <small>of 157,757</small></span>
+      <span class="wk-stat-track" role="img" aria-label="0.0685 percent of target code bytes verified">
+        <span class="wk-stat-fill" style="width:0.0685%"></span>
       </span>
-      <span class="wk-progress-foot">0.033% of code bytes verified · 245 replaced</span>
+      <span class="wk-progress-foot">0.0685% of code bytes verified · 555 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -418,7 +426,7 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 12, 2026 07:46:38 UTC">November 12, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 13, 2026 14:54:55 UTC">November 13, 2026</span></p>
       
       
       <h1 id="milestones">Milestones</h1>
@@ -427,7 +435,8 @@
 <h2 id="visual-history-frames-from-palebloods-renderer">Visual history: frames from Paleblood's renderer</h2>
 <p>These are the game's own frames, drawn on a PC by Paleblood's <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> and renderer from the
 maintainer's own copy, at full resolution as rendered (1920x1080; one render-target view at
-896x832), oldest first. Select a frame to
+896x832), oldest first. Frames marked <em>debug view</em> show one of the renderer's internal targets, not
+what the game puts on screen. Select a frame to
 see it at full size with its full caption (arrow keys move between frames, Esc closes). Each
 passed the <a href="../MEDIA_POLICY/">media review</a> on its own. Nothing here comes from another project,
 and no extracted game assets appear on this page. <em>Bloodborne</em> and its logos and art are © Sony
@@ -518,6 +527,30 @@ names them. They are not saved boot records.</p>
 <figure class="wk-frame">
 <p><a class="wk-frame-link" href="../assets/media/milestones/2026-11-11-title-continue-from-save.png"><img alt="Bloodborne's title screen with a menu of Continue (highlighted), Load Game, New Game, System and Log In, and &quot;Checking save data...&quot; in the top right corner" decoding="async" height="1080" loading="lazy" src="../assets/media/milestones/2026-11-11-title-continue-from-save.png" width="1920" /></a></p>
 <figcaption><span class="wk-frame-when">12 Nov, ~02:49</span> <span class="wk-frame-what">Continue, from the game's own save (local run)</span><span class="wk-frame-detail">12 November, about 02:49 (local run): the title offers Continue. The game autosaves once the contract is finalised, and this boot started from a copy of that save (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/641">#641</a>, applied from review, merged 03:12), so it goes straight on into the load of Iosefka's Clinic instead of replaying the title, character creation and the contract. That load then needed <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/643">#643</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/645">#645</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/647">#647</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/649">#649</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/653">#653</a> and <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/654">#654</a>; it stops next at tessellation (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/655">#655</a>).</span></figcaption>
+</figure>
+<figure class="wk-frame">
+<p><a class="wk-frame-link" href="../assets/media/milestones/2026-11-12-clinic-load-item-loading-screen.png"><img alt="A loading screen: a dark book page with an item description, &quot;Tomb Mould (1)&quot;, two short lines of text, and a small hunter's mark in the top right corner" decoding="async" height="1080" loading="lazy" src="../assets/media/milestones/2026-11-12-clinic-load-item-loading-screen.png" width="1920" /></a></p>
+<figcaption><span class="wk-frame-when">12 Nov, ~13:46</span> <span class="wk-frame-what">On the way into the clinic (local run)</span><span class="wk-frame-detail">12 November, about 13:46 (local run): the loading screen on the way into Iosefka's Clinic, after Continue from the game's own save, with one of the game's item descriptions. Tessellated and geometry-shader draws had merged that morning (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/663">#663</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/669">#669</a>), and translator pull requests then in review were applied (among <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/684">#684</a> to <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/712">#712</a>, all merged later that day). The load did not finish in this run: the GPU hung under the game's work (see the next frames).</span></figcaption>
+</figure>
+<figure class="wk-frame">
+<p><a class="wk-frame-link" href="../assets/media/milestones/2026-11-12-clinic-first-frame-hud-grey-scene.png"><img alt="The game's HUD over a flat grey-brown screen: health and stamina bars, two item slots with 0, an empty quick slot at the top left, and 300 Blood Echoes and 0 Insight at the top right; no scene is visible" decoding="async" height="1080" loading="lazy" src="../assets/media/milestones/2026-11-12-clinic-first-frame-hud-grey-scene.png" width="1920" /></a></p>
+<figcaption><span class="wk-frame-when">12 Nov, ~15:02</span> <span class="wk-frame-what">The first clinic frame: the HUD over a grey world (local run)</span><span class="wk-frame-detail">12 November, about 15:02 (local run): the first frame in Iosefka's Clinic. The HUD draws, but the world behind it is a flat grey. This run fed the GPU one submission at a time, a local debugging setting, because run normally the boots hung the GPU: the renderer fell so far behind that the game's per-frame GPU memory rings ran out and the game wrote empty pointers into work still to run. That was fixed on merged <code>main</code> by limiting submissions to four buffers ahead (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/743">#743</a>) and by memory range checks that stop by name instead of hanging (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/731">#731</a>).</span></figcaption>
+</figure>
+<figure class="wk-frame">
+<p><a class="wk-frame-link" href="../assets/media/milestones/2026-11-12-clinic-hdr-scene-target-renders.png"><img alt="Debug view: the clinic's operating room seen from behind the hooded hunter, a blood-stained table in front, shelves of bottles, arches and a chandelier; colours dark with a green cast, shown with a debug tone curve" decoding="async" height="1080" loading="lazy" src="../assets/media/milestones/2026-11-12-clinic-hdr-scene-target-renders.png" width="1920" /></a></p>
+<figcaption><span class="wk-frame-when">12 Nov, ~20:59</span> <span class="wk-frame-what">Debug view: the scene in its HDR target (local run)</span><span class="wk-frame-detail">12 November, about 20:59 (local run). <strong>A debug view of an internal render target, not a frame the game shows</strong>: the renderer's own copy of the clinic's high-dynamic-range scene target, written to an image with a debug tone curve. It proved the scene itself draws and is lit; the grey of the frame before was missing post-processing. The cause: the YEBIS middleware's post passes, which tone-map the scene for the screen, use indexed draws written by a GPU-library function the renderer did not observe (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/761">#761</a>).</span></figcaption>
+</figure>
+<figure class="wk-frame">
+<p><a class="wk-frame-link" href="../assets/media/milestones/2026-11-12-clinic-gbuffer-albedo.png"><img alt="Debug view: the clinic's operating room, unlit: flat surface colours only, red-brown blood-stained cloths on the table, bottles and a tray of tools in front, wooden shelves, stone arches and a chandelier behind" decoding="async" height="1080" loading="lazy" src="../assets/media/milestones/2026-11-12-clinic-gbuffer-albedo.png" width="1920" /></a></p>
+<figcaption><span class="wk-frame-when">12 Nov, ~20:59</span> <span class="wk-frame-what">Debug view: the G-buffer's surface colours (local run)</span><span class="wk-frame-detail">Same run. <strong>A debug view of an internal render target</strong>: the G-buffer's albedo target, the surface colour of every pixel before any light is applied, written out by the renderer. The materials and textures of the clinic arrive intact.</span></figcaption>
+</figure>
+<figure class="wk-frame">
+<p><a class="wk-frame-link" href="../assets/media/milestones/2026-11-12-clinic-tonemapped-first-frame.png"><img alt="The clinic's operating room through the game's own post-processing, far too bright: pale washed-out walls and arches, the hooded hunter behind the table, the HUD in the corners" decoding="async" height="1080" loading="lazy" src="../assets/media/milestones/2026-11-12-clinic-tonemapped-first-frame.png" width="1920" /></a></p>
+<figcaption><span class="wk-frame-when">13 Nov, ~00:06</span> <span class="wk-frame-what">Through the game's own post chain, too bright (local run)</span><span class="wk-frame-detail">13 November, about 00:06 (local run): the clinic through the game's own post-processing, with the post chain's draws (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/761">#761</a>), its null image descriptors and compute writes over targets (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/765">#765</a>, both merged on 13 November) and its memory reuse (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/771">#771</a>, then in review, since merged) applied. The picture is about eight times too bright compared with a reference capture of the same scene.</span></figcaption>
+</figure>
+<figure class="wk-frame">
+<p><a class="wk-frame-link" href="../assets/media/milestones/2026-11-13-clinic-lights-tile-scissor-correct-brightness.png"><img alt="The clinic's operating room in dim lamplight: the hooded hunter behind the blood-stained table, shelves of bottles and gothic arches in shadow, a lit wall lamp beside a doorway on the right, and the HUD in the corners" decoding="async" height="1080" loading="lazy" src="../assets/media/milestones/2026-11-13-clinic-lights-tile-scissor-correct-brightness.png" width="1920" /></a></p>
+<figcaption><span class="wk-frame-when">13 Nov, ~07:50</span> <span class="wk-frame-what">Iosefka's Clinic at the right brightness (local run)</span><span class="wk-frame-detail">13 November, about 07:50 (local run): the clinic at the brightness of a reference capture. The game draws each deferred light as a full-screen quad once per 128x128 screen tile, with the tile set as the viewport scissor; the renderer did not apply that scissor, so each tile's draw lit the whole screen. <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/807">#807</a> (then in review, merged 13 November) applies it, together with <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/771">#771</a> (then in review, merged 13 November). The clinic drew at seconds per frame in these runs; on 13 November a local run measured about 6 frames a second (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/830">#830</a>), so it is not playable yet.</span></figcaption>
 </figure>
 </div>
 <p>Later milestones (the first playable scene) are added here as they are reached.</p>

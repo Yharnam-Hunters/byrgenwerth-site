@@ -1,0 +1,1808 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  
+  <meta name="description" content="Notes of Paleblood, a decompilation of Bloodborne (PS4, CUSA03173 v1.09) with its own runtime, one verified function at a time, and an open place to learn how a console game works and how it is reverse engineered">
+  <link rel="canonical" href="https://yharnam-hunters.github.io/byrgenwerth-site/systems/param/">
+  
+  
+  <title>Parameters — Byrgenwerth</title>
+  
+  <script>
+  /* Before first paint: the stored theme, and a flag that JavaScript (wiki.js) will run. */
+  (function () { var d = document.documentElement, t = 'dark';
+    try { t = localStorage.getItem('wk-theme') || 'dark'; } catch (e) {}
+    d.setAttribute('data-theme', t); d.classList.add('wk-js'); }());
+  </script>
+  
+  <link rel="stylesheet" href="../../stylesheets/wiki.css?v=d9646b693b"><link rel="stylesheet" href="../../stylesheets/hunters.css?v=e4f3c59dfb">
+  
+  
+</head>
+<body>
+
+<!-- ── Header: wordmark, section tabs (wide screens), search, theme ── -->
+
+
+<header class="wk-header" id="wk-header">
+  <button class="wk-nav-toggle" id="wk-nav-toggle" aria-label="Open navigation" aria-expanded="false" aria-controls="wk-nav">☰</button>
+  <a class="wk-wordmark" href="/byrgenwerth-site/">Byrgenwerth<small>notes of Paleblood, rebuilding Bloodborne one verified function at a time</small></a>
+
+  <!-- Section tabs (wide screens; the drawer lists the same sections on small ones) -->
+  <nav class="wk-tabs" aria-label="Sections">
+    
+    <a class="wk-tab" href="../..">The Hunt</a>
+    
+    <a class="wk-tab" href="../../great-ones/">Encyclopedia</a>
+    
+    <a class="wk-tab is-active" href="../" aria-current="true">Systems</a>
+    
+    <a class="wk-tab" href="../../ARCHITECTURE/">How It Works</a>
+    
+    <a class="wk-tab" href="../../CONTRIBUTING/">For Hunters</a>
+    
+  </nav>
+
+  <div class="wk-header-right">
+    
+    <div class="wk-searchbox">
+      <input class="wk-search-input" id="wk-q" type="search"
+             placeholder="Search  [/]" autocomplete="off" aria-label="Search">
+      <div class="wk-search-results" id="wk-results" hidden role="listbox"></div>
+    </div>
+    <button class="wk-toggle" id="wk-toggle" title="Toggle theme" aria-label="Toggle dark/light">☀</button>
+  </div>
+</header>
+
+<!-- ── Layout ──────────────────────────────────────────────── -->
+<div class="wk-layout">
+
+  <div class="wk-nav-backdrop" id="wk-nav-backdrop" hidden></div>
+
+  <!-- Left sidebar -->
+  <nav class="wk-nav has-current" id="wk-nav" aria-label="Site navigation">
+    <!-- Menu artwork: credited on the Credits page; provenance and rights notes in the private media review -->
+    <figure class="wk-portal-icon">
+      <a href="/byrgenwerth-site/" aria-label="Byrgenwerth home">
+        <img src="../../assets/media/bloodborne-menu-art.png" width="256" height="256" alt="A lone Bloodborne hunter stands in a rain-darkened Yharnam street beneath the game's gothic architecture.">
+      </a>
+    </figure>
+
+    
+    <section class="wk-nav-section">
+      
+      
+      
+      
+      
+      
+      <p class="wk-nav-heading">The Hunt</p>
+      
+      <ul class="wk-nav-list">
+        
+        
+        <li><a class="wk-nav-link" href="../..">Home</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../devlog/">Devlog</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../progress/">Progress</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../milestones/">Milestones</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../hunters/">The Hunters</a></li>
+        
+        
+      </ul>
+    
+      
+    </section>
+    
+    <section class="wk-nav-section">
+      
+      
+      
+      
+      
+      
+      <p class="wk-nav-heading">Encyclopedia</p>
+      
+      <ul class="wk-nav-list">
+        
+        
+        <li class="wk-nav-group">
+      
+      
+      
+        
+        
+      
+      
+      <a class="wk-nav-subheading" href="../../great-ones/">The Great Ones</a>
+      
+      <ul class="wk-nav-list">
+        
+        
+        <li><a class="wk-nav-link" href="../../great-ones/boss-directory/">Boss Directory</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../great-ones/ai-and-phases/">Boss AI & Phases</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../great-ones/mechanics/">Boss Mechanics</a></li>
+        
+        
+      </ul>
+    </li>
+        
+        
+        
+        <li class="wk-nav-group">
+      
+      
+      
+        
+        
+      
+      
+      <a class="wk-nav-subheading" href="../../beasts-of-yharnam/">Beasts of Yharnam</a>
+      
+      <ul class="wk-nav-list">
+        
+        
+        <li><a class="wk-nav-link" href="../../beasts-of-yharnam/enemy-directory/">Enemy Directory</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../beasts-of-yharnam/ai-and-behavior/">Enemy AI & Behavior</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../beasts-of-yharnam/npcs-and-hunters/">NPCs & Hunters</a></li>
+        
+        
+      </ul>
+    </li>
+        
+        
+        
+        <li class="wk-nav-group">
+      
+      
+      
+        
+        
+      
+      
+      <a class="wk-nav-subheading" href="../../workshop/">The Hunter's Workshop</a>
+      
+      <ul class="wk-nav-list">
+        
+        
+        <li><a class="wk-nav-link" href="../../workshop/combat-damage/">Combat & Damage</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../workshop/weapons-transformations/">Weapons & Transformations</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../workshop/movement-stamina/">Movement & Stamina</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../workshop/hitboxes-collision/">Hitboxes & Collision</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../workshop/stats-progression/">Stats & Progression</a></li>
+        
+        
+      </ul>
+    </li>
+        
+        
+      </ul>
+    
+      
+    </section>
+    
+    <section class="wk-nav-section is-current">
+      
+      
+      
+      
+      
+      
+      <p class="wk-nav-heading">Systems</p>
+      
+      <ul class="wk-nav-list">
+        
+        
+        <li><a class="wk-nav-link" href="../">Overview</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../frame_timing/">Frame timing</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../kernel/">Kernel</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../engine/">Engine</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../event/">Event</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../camera/">Camera</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../input/">Input</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../character/">Character</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../ai/">AI</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../physics/">Physics</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link is-active" href="./" aria-current="page">Parameters</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../menu/">Menu</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../render/">Render</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../loading/">Loading</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../audio/">Audio</a></li>
+        
+        
+      </ul>
+    
+      
+    </section>
+    
+    <section class="wk-nav-section">
+      
+      
+      
+      
+      
+      
+      <p class="wk-nav-heading">How It Works</p>
+      
+      <ul class="wk-nav-list">
+        
+        
+        <li><a class="wk-nav-link" href="../../ARCHITECTURE/">Architecture</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../families/">Function families</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../runtime/">Runtime</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../runtime-syscalls/">Runtime system calls</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../runtime-reference/">Runtime call reference</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../how-the-frame-limiter-works/">The Frame Limiter</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../ADDRESS_MAP/">Address Map</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../target/">Target</a></li>
+        
+        
+      </ul>
+    
+      
+    </section>
+    
+    <section class="wk-nav-section">
+      
+      
+      
+      
+      
+      
+      <p class="wk-nav-heading">For Hunters</p>
+      
+      <ul class="wk-nav-list">
+        
+        
+        <li><a class="wk-nav-link" href="../../CONTRIBUTING/">Contributing</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../QUIRKS/">Ghidra & PS4 Quirks</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../glossary/">Glossary</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../CI_SETUP/">CI Setup</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../credits/">Credits</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../MEDIA_POLICY/">Evidence & Media Review</a></li>
+        
+        
+      </ul>
+    
+      
+    </section>
+    
+
+    <!-- Progress card: every value from docs/data/progress.json (hooks/progress_extra.py) -->
+    
+    
+    <a class="wk-progress-card" href="../../progress/">
+      <span class="wk-progress-label">Verified functions</span>
+      <span class="wk-progress-value">114 <small>of 157,757</small></span>
+      <span class="wk-stat-track" role="img" aria-label="0.0685 percent of target code bytes verified">
+        <span class="wk-stat-fill" style="width:0.0685%"></span>
+      </span>
+      <span class="wk-progress-foot">0.0685% of code bytes verified · 555 replaced</span>
+      <span class="wk-progress-more">Full progress →</span>
+    </a>
+    
+  </nav>
+
+  <!-- Main content -->
+  <main class="wk-main">
+    <div class="wk-article">
+
+      
+      
+      
+      
+      
+      <nav class="wk-toc" id="wk-toc" aria-label="On this page">
+        <div class="wk-toc-header"><b>On this page</b></div>
+        <ol class="wk-toc-list" id="wk-toc-list">
+          
+          <li><a href="#summary" class="wk-toc-link">Summary</a></li>
+          
+          <li><a href="#key-functions" class="wk-toc-link">Key functions</a></li>
+          
+          <li><a href="#structs-and-globals" class="wk-toc-link">Structs and globals</a></li>
+          
+          <li><a href="#patch-points" class="wk-toc-link">Patch points</a></li>
+          
+          <li><a href="#open-questions" class="wk-toc-link">Open questions</a></li>
+          
+        </ol>
+      </nav>
+      
+      
+      
+
+      <div class="wk-article-body">
+      
+      
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 13, 2026 14:54:55 UTC">November 13, 2026</span></p>
+      
+      
+      <h1 id="parameters">Parameters</h1>
+<p class="wk-lede">Most of Bloodborne's numbers are not in its code. Weapon damage and scaling, armor, items, the effects of consumables and blood gems, enemy stats and AI tuning, item drops, shop stock, the lamps you warp between, and the colors and layout of menus all live in parameter tables: PARAM files the game loads. The code asks a table for a row by its id and reads fields from that row. This page covers the part of the game that holds those tables and answers those questions. It does not describe what the tables contain, which is game data.</p>
+
+<div class="wk-glance">
+<p><span class="wk-label">At a glance</span></p>
+<dl>
+<dt>Scope</dt>
+<dd>Paleblood's <code>game/param/</code>: the solo parameter repository, the per-table row lookups, the equipment, menu, map and return-point lookups, row names and rows by position, table walks, the attack and behavior pairs, gem searches and character creation's face tables.</dd>
+<dt>Verified</dt>
+<dd>Every <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> lookup is <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr> against the original on invented tables. None is <code>verified</code> yet: none has been checked on frames recorded from a real game run.</dd>
+<dt>Open</dt>
+<dd>The <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> that reads the files and builds their search index; most header words; why the row-name lookups exist in the retail build.</dd>
+</dl>
+</div>
+<h2 id="summary">Summary</h2>
+<h3 id="the-solo-parameter-repository">The solo parameter repository</h3>
+<p>All the tables a single-player game needs are kept in one object, the <strong>SoloParamRepository</strong>,
+a singleton (<code>0x05940340</code>). It has one slot per table type, 62 types in all. A slot records
+whether its table is loaded, and points through a resource holder to the loaded file.</p>
+<p>Every lookup first asks the repository for its table. A missing repository is reported with the
+engine's singleton check (see <a href="../engine/">Engine</a>) and then read anyway, as the original does.
+A slot that is not loaded gives "no row".</p>
+<p>The 62 types, in slot order (the names are the modding community's names for these tables):</p>
+<div class="wk-table"><table>
+<thead>
+<tr>
+<th style="text-align: right;">Slot</th>
+<th>Table</th>
+<th style="text-align: right;">Slot</th>
+<th>Table</th>
+<th style="text-align: right;">Slot</th>
+<th>Table</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">0</td>
+<td>EquipParamWeapon</td>
+<td style="text-align: right;">21</td>
+<td>CharaInitParam</td>
+<td style="text-align: right;">42</td>
+<td>GemGenParam</td>
+</tr>
+<tr>
+<td style="text-align: right;">1</td>
+<td>EquipParamProtector</td>
+<td style="text-align: right;">22</td>
+<td>EquipMtrlSetParam</td>
+<td style="text-align: right;">43</td>
+<td>GemeffectParam</td>
+</tr>
+<tr>
+<td style="text-align: right;">2</td>
+<td>EquipParamAccessory</td>
+<td style="text-align: right;">23</td>
+<td>FaceGenParam</td>
+<td style="text-align: right;">44</td>
+<td>GemCategoryParam</td>
+</tr>
+<tr>
+<td style="text-align: right;">3</td>
+<td>EquipParamGoods</td>
+<td style="text-align: right;">24</td>
+<td>FaceParam</td>
+<td style="text-align: right;">45</td>
+<td>GemDropDopingParam</td>
+</tr>
+<tr>
+<td style="text-align: right;">4</td>
+<td>ReinforceParamWeapon</td>
+<td style="text-align: right;">25</td>
+<td>FaceRangeParam</td>
+<td style="text-align: right;">46</td>
+<td>GemDropModifyParam</td>
+</tr>
+<tr>
+<td style="text-align: right;">5</td>
+<td>ReinforceParamProtector</td>
+<td style="text-align: right;">26</td>
+<td>RagdollParam</td>
+<td style="text-align: right;">47</td>
+<td>ResidentFxParam</td>
+</tr>
+<tr>
+<td style="text-align: right;">6</td>
+<td>NpcParam</td>
+<td style="text-align: right;">27</td>
+<td>ShopLineupParam</td>
+<td style="text-align: right;">48</td>
+<td>AiSoundParam</td>
+</tr>
+<tr>
+<td style="text-align: right;">7</td>
+<td>AtkParam_Npc</td>
+<td style="text-align: right;">28</td>
+<td>QwcChange</td>
+<td style="text-align: right;">49</td>
+<td>GameMapParam</td>
+</tr>
+<tr>
+<td style="text-align: right;">8</td>
+<td>AtkParam_Pc</td>
+<td style="text-align: right;">29</td>
+<td>QwcJudge</td>
+<td style="text-align: right;">50</td>
+<td>ReturnPointParam</td>
+</tr>
+<tr>
+<td style="text-align: right;">9</td>
+<td>NpcThinkParam</td>
+<td style="text-align: right;">30</td>
+<td>GameAreaParam</td>
+<td style="text-align: right;">51</td>
+<td>ItemLotParam_Lvdep</td>
+</tr>
+<tr>
+<td style="text-align: right;">10</td>
+<td>ObjectParam</td>
+<td style="text-align: right;">31</td>
+<td>SkeletonParam</td>
+<td style="text-align: right;">52</td>
+<td>HolygrailExParam</td>
+</tr>
+<tr>
+<td style="text-align: right;">11</td>
+<td>Bullet</td>
+<td style="text-align: right;">32</td>
+<td>CalcCorrectGraph</td>
+<td style="text-align: right;">53</td>
+<td>DungeonFeatureParam</td>
+</tr>
+<tr>
+<td style="text-align: right;">12</td>
+<td>BehaviorParam</td>
+<td style="text-align: right;">33</td>
+<td>LockCamParam</td>
+<td style="text-align: right;">54</td>
+<td>DungeonSubFeatLotParam</td>
+</tr>
+<tr>
+<td style="text-align: right;">13</td>
+<td>BehaviorParam_PC</td>
+<td style="text-align: right;">34</td>
+<td>ObjActParam</td>
+<td style="text-align: right;">55</td>
+<td>RitualRequiredMatParam</td>
+</tr>
+<tr>
+<td style="text-align: right;">14</td>
+<td>Magic</td>
+<td style="text-align: right;">35</td>
+<td>HitMtrlParam</td>
+<td style="text-align: right;">56</td>
+<td>CharMakeMenuTopParam</td>
+</tr>
+<tr>
+<td style="text-align: right;">15</td>
+<td>SpEffectParam</td>
+<td style="text-align: right;">36</td>
+<td>KnockBackParam</td>
+<td style="text-align: right;">57</td>
+<td>CharMakeMenuListItemParam</td>
+</tr>
+<tr>
+<td style="text-align: right;">16</td>
+<td>SpEffectVfxParam</td>
+<td style="text-align: right;">37</td>
+<td>Wind</td>
+<td style="text-align: right;">58</td>
+<td>NewMenuColorTableParam</td>
+</tr>
+<tr>
+<td style="text-align: right;">17</td>
+<td>TalkParam</td>
+<td style="text-align: right;">38</td>
+<td>DecalParam</td>
+<td style="text-align: right;">59</td>
+<td>MenuPropertySpecParam</td>
+</tr>
+<tr>
+<td style="text-align: right;">18</td>
+<td>MenuColorTableParam</td>
+<td style="text-align: right;">39</td>
+<td>ActionButtonParam</td>
+<td style="text-align: right;">60</td>
+<td>MenuPropertyLayoutParam</td>
+</tr>
+<tr>
+<td style="text-align: right;">19</td>
+<td>ItemLotParam</td>
+<td style="text-align: right;">40</td>
+<td>WeaponGenParam</td>
+<td style="text-align: right;">61</td>
+<td>MenuValueTableParam</td>
+</tr>
+<tr>
+<td style="text-align: right;">20</td>
+<td>MoveParam</td>
+<td style="text-align: right;">41</td>
+<td>ProtectorGenParam</td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+</tbody>
+</table></div>
+<p>Chalice dungeons have their own tables (HolygrailEx, DungeonFeature, DungeonSubFeatLot,
+RitualRequiredMat, and the Gem tables for blood gems), and so does character creation
+(CharMakeMenuTop and CharMakeMenuListItem).</p>
+<h3 id="inside-a-param-file">Inside a PARAM file</h3>
+<p>A PARAM file is a header, a list of <strong>row descriptors</strong>, and then the rows' data and names.
+Bloodborne's files follow the layout the modding community documents for FromSoftware's games:</p>
+<ul>
+<li>The header holds the row count (16 bits), a data version (16 bits), and a format byte with a
+  flags byte after it.</li>
+<li>Format 2 files have a 48-byte header followed by 12-byte descriptors (row id, data offset,
+  name offset). Later formats have a 64-byte header, and from format 4 on a flag switches to
+  24-byte descriptors with 64-bit offsets.</li>
+<li>Offsets count from the start of the header. A name offset of 0 means the row has no name.</li>
+</ul>
+<h3 id="the-search-index">The search index</h3>
+<p>The game does not search the descriptors directly. Each loaded file is followed by a <strong>search
+index</strong>: (row id, row number) pairs sorted by id, placed at the file's size rounded up to a
+multiple of 16. The size is the word at <code>-0x10</code> from the header. Every lookup by id is a binary
+search of this index, with ids compared as unsigned numbers. The code that loads the files and
+builds the index is not <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> yet.</p>
+<h3 id="how-the-game-asks-for-rows">How the game asks for rows</h3>
+<p>The game has a separate compiled copy of each lookup for each table type that needs it. They are
+all built from a few templates, and Paleblood's replacements share one implementation of each.</p>
+<ul>
+<li><strong>Row by id.</strong> It returns the id asked for and the row, or no row. A negative id returns at
+  once, without touching the repository. Most types use this plain form
+  (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/687">#687</a>); GemGenParam has two identical
+  copies. A few copies add something:<ul>
+<li>SpEffectParam and TalkParam also return the table's data version.</li>
+<li>NpcThinkParam stores two extra words beside the result, unread.</li>
+<li>ActionButtonParam and ReturnPointParam fill a result that starts <code>+0x8</code> into the object they
+  are given (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/697">#697</a>).</li>
+<li>ItemLotParam gives no row unless the table's data version is 2 or later (#697).</li>
+<li>DungeonFeatureParam copies a header word (<code>+0x06</code>, meaning unknown) to a global on every
+  search, found or not (#697).</li>
+<li>NpcParam also returns that header word and the data version, and reports a table of version
+  2 or older through the engine's error report, then searches it anyway
+  (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/714">#714</a>).</li>
+</ul>
+</li>
+<li><strong>Equipment</strong> (#697). The last two decimal digits of a weapon or armor id are its reinforcement
+  level. The lookup finds the base item's row (the id rounded down to a multiple of 100), then the
+  ReinforceParam row for the item's reinforcement type plus the level. Without a base row it still
+  asks the reinforcement table, for id -1.</li>
+<li><strong>Runs of rows</strong> (#697). Character creation's list items and some menu tables are read as
+  consecutive ids: the lookup returns the first row and how many rows follow it without a gap. The
+  NewMenuColorTableParam run falls back to 16 rows built into the executable when the table has none.</li>
+<li><strong>A built-in fallback</strong> (#697). The menu property lookup uses the table's row when there is one,
+  otherwise the built-in row with that id, otherwise the first of 13 rows compiled into the
+  executable.</li>
+<li><strong>Row names</strong> (#714). A row can carry a name (an editor's label, kept as text after the rows).
+  Ten table types have a lookup that returns it, or nothing; GemGenParam again has two copies.
+  Unlike the data lookups, this one checks the index's row number against the row count.</li>
+<li><strong>Row by position</strong> (#714). CharaInitParam, EquipParamGoods, Magic and MenuColorTableParam can be
+  read in file order: row <em>n</em> with its id, or id -1 when the table is shorter.</li>
+<li><strong>Maps and lamps</strong> (#714).<ul>
+<li>GameMapParam, a map's lighting set-up, is found by the map's number. A map named
+  <code>mAA_BB_CC_DD</code> is row <code>AABBCCDD</code>, and maps without their own row use row 0.</li>
+<li>ReturnPointParam lists the return points: the lamps players warp between and revive at. It
+  is searched row by row, in file order: the warp-menu slot of a lamp, the lamp in a warp-menu
+  slot, or every lamp with a warp-menu slot in one map area and block.</li>
+</ul>
+</li>
+<li><strong>Walking a table</strong> (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/730">#730</a>). The equipment and item tables (weapons, attire, badges, items)
+  have a row count, the id after or before a given id (rows are sorted by id, so this steps through
+  the table; a negative id starts at the first or last row) and a list of every row id. The badge
+  list leaves out rows with a negative value in one field, whose meaning is unknown.</li>
+<li><strong>Filtered walks</strong> (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/823">#823</a>). The attire table can be stepped through among rows with a given
+  byte at <code>+0xd2</code> only, and the weapon and attire "version" lists add, after each row's id, one id
+  per upgrade level the row lists. Weapons can also be stepped through until one with a given
+  property bit, and three set checks (goods, attire, weapons) build a small cache of set numbers on
+  their first call.</li>
+<li><strong>Pairs of tables</strong> (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/733">#733</a>). The attack lookup picks AtkParam_Npc or AtkParam_Pc, and the
+  behavior lookup BehaviorParam or BehaviorParam_PC, by a 0/1 argument.</li>
+<li><strong>Searches by content</strong> (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/733">#733</a>). The gem effect for a group at a level (the highest rank up
+  to the level among rows whose level range holds it), GemGenParam row numbers by id range, and
+  GemCategoryParam rows by one of two fields. After loading, the chalice weapon and attire
+  generation tables are fixed up in place: an entry index above 63 is marked as none.</li>
+<li><strong>Special cases</strong> (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/823">#823</a>). GameAreaParam ids 2900100 to 2900799 all read row 2900100.
+  ItemLotParam_Lvdep picks, in an id's group of 100, the last consecutive row within the group's
+  first id plus a level. The lock-on camera's largest distance (LockCamParam <code>+0x10</code>) falls back to
+  row 0, then to a value the camera object keeps.</li>
+<li><strong>Character creation's face</strong> (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/724">#724</a>). The FaceGenParam row the creation screen builds (50
+  geometry and 50 texture sliders, eight parts each with a colour, decal placement) and the FaceParam
+  presets (body proportions, age, gender, caricature, asymmetry) are edited in place by setters. The
+  originals never handle a missing row (they search forever or write through a null row); the
+  replacements stop by name there.</li>
+</ul>
+<details class="evidence">
+<summary>How the lookups were <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></summary>
+<p>Each replacement is readable C++ in <code>game/param/</code> and passes <code>verify.py</code> against the original
+on invented tables built by the fixtures beside it (synthetic cases, never game files). They
+are recorded as <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr> in <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/687">#687</a>,
+<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/697">#697</a>,
+<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/714">#714</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/724">#724</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/730">#730</a>,
+<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/733">#733</a> and <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/823">#823</a>. None has been checked on frames
+recorded from a real game run, so none is <code>verified</code>. The row-name lookups did not run in the
+coverage boots #714 describes.</p>
+</details>
+<h2 id="key-functions">Key functions</h2>
+<div class="wk-table is-stack"><table class="wk-stack">
+<thead>
+<tr>
+<th>Address</th>
+<th style="text-align: right;">Size</th>
+<th>Name</th>
+<th>Status</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td data-label="Address"><code>0x018e4110</code></td>
+<td style="text-align: right;" data-label="Size">432</td>
+<td data-label="Name"><code>param_apply_char_make_face</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Character creation: writes the face being built (sliders; parts/colors/decal for a version 4 table) into a FaceGenParam row</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x01c92e90</code></td>
+<td style="text-align: right;" data-label="Size">372</td>
+<td data-label="Name"><code>param_lock_cam_range</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository LockCamParam (type 33) float at row+0x10 for an id (searched unsigned), else row 0's, else the float at owner+0x2924</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x01f82cc0</code></td>
+<td style="text-align: right;" data-label="Size">457</td>
+<td data-label="Name"><code>param_find_rows_new_menu_color_table</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">NewMenuColorTableParam run of consecutive ids from an id: first row (a built-in default row when none) and count</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x01f83130</code></td>
+<td style="text-align: right;" data-label="Size">457</td>
+<td data-label="Name"><code>param_find_rows_char_make_menu_list_item</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Character creation menu list items: first CharMakeMenuListItemParam row of an id and the count of rows with consecutive ids after it</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0204a2c0</code></td>
+<td style="text-align: right;" data-label="Size">155</td>
+<td data-label="Name"><code>param_table_view</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository fills a table view object (vtable 0x05749140 and the table of a type or null); returns it</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x020648f0</code></td>
+<td style="text-align: right;" data-label="Size">272</td>
+<td data-label="Name"><code>param_menu_property_layout_row</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository MenuPropertyLayoutParam (type 60) row of an id (searched unsigned) or null</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0206ddd0</code></td>
+<td style="text-align: right;" data-label="Size">547</td>
+<td data-label="Name"><code>param_find_rows_menu_value_table</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">MenuValueTableParam run of consecutive ids from an id: first row and count; fetches the table again for every id</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0206ecc0</code></td>
+<td style="text-align: right;" data-label="Size">313</td>
+<td data-label="Name"><code>param_menu_property_spec</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">MenuPropertySpecParam row of an id; else the built-in row (13 at 0x05528730) with that id; else the first built-in row</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02311c80</code></td>
+<td style="text-align: right;" data-label="Size">283</td>
+<td data-label="Name"><code>param_find_row_equip_param_accessory</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository row lookup for EquipParamAccessory (type 2): binary search of the <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> index by id; writes id and row data pointer (null if none)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02311da0</code></td>
+<td style="text-align: right;" data-label="Size">284</td>
+<td data-label="Name"><code>param_row_name_equip_param_accessory</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository row name lookup for EquipParamAccessory (type 2): name of the row with the id a lookup result holds (index row number checked against the row count); null if none or unnamed</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02312070</code></td>
+<td style="text-align: right;" data-label="Size">309</td>
+<td data-label="Name"><code>param_next_row_id_equip_param_accessory</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository id of the row after id in EquipParamAccessory (type 2) file order; negative id: first row; -1 when none</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x023121b0</code></td>
+<td style="text-align: right;" data-label="Size">341</td>
+<td data-label="Name"><code>param_previous_row_id_equip_param_accessory</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository id of the row before id in EquipParamAccessory (type 2) file order; negative id: last row; -1 when none</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02312370</code></td>
+<td style="text-align: right;" data-label="Size">402</td>
+<td data-label="Name"><code>param_list_listed_ids_equip_param_accessory</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository as list_row_ids_equip_param_accessory but skips rows whose int16 at +0x26 is negative</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02312520</code></td>
+<td style="text-align: right;" data-label="Size">390</td>
+<td data-label="Name"><code>param_list_row_ids_equip_param_accessory</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository empties an id array and appends every EquipParamAccessory (type 2) row id in file order; returns the count</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x023128a0</code></td>
+<td style="text-align: right;" data-label="Size">284</td>
+<td data-label="Name"><code>param_find_row_action_button</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository row lookup for ActionButtonParam (type 39): binary search of the <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> index by id; writes id and row data pointer (null if none)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02312b60</code></td>
+<td style="text-align: right;" data-label="Size">283</td>
+<td data-label="Name"><code>param_find_row_ai_sound</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository row lookup for AiSoundParam (type 48): binary search of the <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> index by id; writes id and row data pointer (null if none)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02312fd0</code></td>
+<td style="text-align: right;" data-label="Size">310</td>
+<td data-label="Name"><code>param_find_row_atk_param</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository AtkParam row lookup (user 0: AtkParam_Npc type 7; 1: AtkParam_Pc type 8; args out/user/id); stores the user beside the result</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x023133c0</code></td>
+<td style="text-align: right;" data-label="Size">310</td>
+<td data-label="Name"><code>param_find_row_behavior_param</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository BehaviorParam row lookup (user 0: BehaviorParam type 12; 1: BehaviorParam_PC type 13; args out/id/user; a negative user gives no row)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02314860</code></td>
+<td style="text-align: right;" data-label="Size">283</td>
+<td data-label="Name"><code>param_find_row_bullet</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository row lookup for Bullet (type 11): binary search of the <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> index by id; writes id and row data pointer (null if none)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02314b60</code></td>
+<td style="text-align: right;" data-label="Size">283</td>
+<td data-label="Name"><code>param_find_row_calc_correct_graph</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository row lookup for CalcCorrectGraph (type 32): binary search of the <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> index by id; writes id and row data pointer (null if none)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02314e20</code></td>
+<td style="text-align: right;" data-label="Size">283</td>
+<td data-label="Name"><code>param_find_row_chara_init</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository row lookup for CharaInitParam (type 21): binary search of the <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> index by id; writes id and row data pointer (null if none)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02314f40</code></td>
+<td style="text-align: right;" data-label="Size">278</td>
+<td data-label="Name"><code>param_row_at_chara_init</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository row-at accessor for CharaInitParam (type 21): id and data of row number n (id -1; null past the count or when not loaded)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02315060</code></td>
+<td style="text-align: right;" data-label="Size">96</td>
+<td data-label="Name"><code>param_row_count_chara_init</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository row count of CharaInitParam (type 21); 0 when not loaded</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x023150d0</code></td>
+<td style="text-align: right;" data-label="Size">284</td>
+<td data-label="Name"><code>param_row_name_chara_init</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository row name lookup for CharaInitParam (type 21): name of the row with the id a lookup result holds (index row number checked against the row count); null if none or unnamed</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x023155c0</code></td>
+<td style="text-align: right;" data-label="Size">283</td>
+<td data-label="Name"><code>param_find_row_decal</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository row lookup for DecalParam (type 38): binary search of the <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> index by id; writes id and row data pointer (null if none)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x023167f0</code></td>
+<td style="text-align: right;" data-label="Size">288</td>
+<td data-label="Name"><code>param_find_row_dungeon_feature</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DungeonFeatureParam row lookup (type 53): as the other row lookups; each search also stores the header word 0x06 at 0x05992cb0</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02316c70</code></td>
+<td style="text-align: right;" data-label="Size">283</td>
+<td data-label="Name"><code>param_find_row_dungeon_sub_feat_lot</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository row lookup for DungeonSubFeatLotParam (type 54): binary search of the <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> index by id; writes id and row data pointer (null if none)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02317560</code></td>
+<td style="text-align: right;" data-label="Size">547</td>
+<td data-label="Name"><code>param_find_row_face_gen</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">FaceGenParam row of an id plus a copy of its 50 geometry and 50 texture sliders (zeros without a row)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02317790</code></td>
+<td style="text-align: right;" data-label="Size">103</td>
+<td data-label="Name"><code>param_face_gen_is_current</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Whether FaceGenParam is loaded and of data version 4</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02317800</code></td>
+<td style="text-align: right;" data-label="Size">284</td>
+<td data-label="Name"><code>param_row_name_face_gen</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository row name lookup for FaceGenParam (type 23): name of the row with the id a lookup result holds (index row number checked against the row count); null if none or unnamed</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02317ad0</code></td>
+<td style="text-align: right;" data-label="Size">260</td>
+<td data-label="Name"><code>param_face_gen_set_geometry</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Character creation: sets FaceGenParam faceGeoData[index] (index &lt;= 49) of a row</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02317be0</code></td>
+<td style="text-align: right;" data-label="Size">261</td>
+<td data-label="Name"><code>param_face_gen_set_texture</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Character creation: sets FaceGenParam faceTexData[index] (index &lt;= 49) of a row</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02317cf0</code></td>
+<td style="text-align: right;" data-label="Size">1384</td>
+<td data-label="Name"><code>param_face_gen_set_part</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Character creation: sets the parts id of FaceGenParam part 0..7 (face/hair/eyes/eyebrow/beard/accessories/decal)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02318280</code></td>
+<td style="text-align: right;" data-label="Size">1543</td>
+<td data-label="Name"><code>param_face_gen_set_part_color</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Character creation: sets color channel 0..2 of FaceGenParam part 0..7</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x023188b0</code></td>
+<td style="text-align: right;" data-label="Size">317</td>
+<td data-label="Name"><code>param_face_gen_set_decal</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Character creation: copies the 4 decal placement bytes into a FaceGenParam row</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x023189f0</code></td>
+<td style="text-align: right;" data-label="Size">242</td>
+<td data-label="Name"><code>param_face_gen_set_hair_parts_id</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Sets FaceGenParam hairPartsId of a row</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02318af0</code></td>
+<td style="text-align: right;" data-label="Size">242</td>
+<td data-label="Name"><code>param_face_gen_set_hair_red</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Sets FaceGenParam hairColor_R of a row</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02318bf0</code></td>
+<td style="text-align: right;" data-label="Size">242</td>
+<td data-label="Name"><code>param_face_gen_set_hair_green</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Sets FaceGenParam hairColor_G of a row</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02318cf0</code></td>
+<td style="text-align: right;" data-label="Size">242</td>
+<td data-label="Name"><code>param_face_gen_set_hair_blue</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Sets FaceGenParam hairColor_B of a row</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02318df0</code></td>
+<td style="text-align: right;" data-label="Size">242</td>
+<td data-label="Name"><code>param_face_gen_set_left_eye_red</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Sets FaceGenParam eyeLColor_R of a row</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02318ef0</code></td>
+<td style="text-align: right;" data-label="Size">242</td>
+<td data-label="Name"><code>param_face_gen_set_left_eye_green</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Sets FaceGenParam eyeLColor_G of a row</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02318ff0</code></td>
+<td style="text-align: right;" data-label="Size">242</td>
+<td data-label="Name"><code>param_face_gen_set_left_eye_blue</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Sets FaceGenParam eyeLColor_B of a row</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x023192d0</code></td>
+<td style="text-align: right;" data-label="Size">283</td>
+<td data-label="Name"><code>param_find_row_face</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository row lookup for FaceParam (type 24): binary search of the <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> index by id; writes id and row data pointer (null if none)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x023193f0</code></td>
+<td style="text-align: right;" data-label="Size">103</td>
+<td data-label="Name"><code>param_face_is_current</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Whether FaceParam is loaded and of data version 4</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0231a340</code></td>
+<td style="text-align: right;" data-label="Size">305</td>
+<td data-label="Name"><code>param_face_set_decal</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Copies the 4 decal placement bytes into a FaceParam row</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0231a480</code></td>
+<td style="text-align: right;" data-label="Size">320</td>
+<td data-label="Name"><code>param_face_set_body_scale</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Sets FaceParam body scale[index] (head/breast/abdomen/arm/leg)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0231a5e0</code></td>
+<td style="text-align: right;" data-label="Size">242</td>
+<td data-label="Name"><code>param_face_set_age</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Sets FaceParam age of a row</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0231a6e0</code></td>
+<td style="text-align: right;" data-label="Size">242</td>
+<td data-label="Name"><code>param_face_set_gender</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Sets FaceParam gender of a row</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0231a7e0</code></td>
+<td style="text-align: right;" data-label="Size">242</td>
+<td data-label="Name"><code>param_face_set_caricature_geometry</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Sets FaceParam caricatureGeometry of a row</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0231a8e0</code></td>
+<td style="text-align: right;" data-label="Size">242</td>
+<td data-label="Name"><code>param_face_set_caricature_texture</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Sets FaceParam caricatureTexture of a row</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0231a9e0</code></td>
+<td style="text-align: right;" data-label="Size">261</td>
+<td data-label="Name"><code>param_face_set_geometry</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Sets FaceParam faceGeoData[index] (index &lt;= 60)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0231aaf0</code></td>
+<td style="text-align: right;" data-label="Size">261</td>
+<td data-label="Name"><code>param_face_set_texture</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Sets FaceParam faceTexData[index] (index &lt;= 35)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0231ac00</code></td>
+<td style="text-align: right;" data-label="Size">280</td>
+<td data-label="Name"><code>param_face_set_asymmetry</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Sets FaceParam faceGeoAsymData[index] (index &lt;= 25) when the table is version 4</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0231ad20</code></td>
+<td style="text-align: right;" data-label="Size">53</td>
+<td data-label="Name"><code>param_check_repository_for_id</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository an accessor reduced to its singleton check: reports a missing repository for id &gt;= 0</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0231af40</code></td>
+<td style="text-align: right;" data-label="Size">283</td>
+<td data-label="Name"><code>param_find_row_face_range</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository row lookup for FaceRangeParam (type 25): binary search of the <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> index by id; writes id and row data pointer (null if none)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0231b4c0</code></td>
+<td style="text-align: right;" data-label="Size">414</td>
+<td data-label="Name"><code>param_find_row_game_area</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository GameAreaParam (type 30) row lookup; ids 2900100-2900799 all read row 2900100</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0231be50</code></td>
+<td style="text-align: right;" data-label="Size">443</td>
+<td data-label="Name"><code>param_find_row_game_map</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">GameMapParam row of a packed map id mAA_BB_CC_DD (row id AABBCCDD); falls back to row 0; id -1 for no map</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0231c1e0</code></td>
+<td style="text-align: right;" data-label="Size">283</td>
+<td data-label="Name"><code>param_find_row_gem_category</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository row lookup for GemCategoryParam (type 44): binary search of the <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> index by id; writes id and row data pointer (null if none)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0231c380</code></td>
+<td style="text-align: right;" data-label="Size">366</td>
+<td data-label="Name"><code>param_list_gem_category_by_selector_0c</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository appends the GemCategoryParam (type 44) row lookup of every row whose int32 at +0x0c matches</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0231c510</code></td>
+<td style="text-align: right;" data-label="Size">366</td>
+<td data-label="Name"><code>param_list_gem_category_by_selector_08</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository appends the GemCategoryParam (type 44) row lookup of every row whose int32 at +0x08 matches</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0231ca40</code></td>
+<td style="text-align: right;" data-label="Size">283</td>
+<td data-label="Name"><code>param_find_row_gem_drop_doping</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository row lookup for GemDropDopingParam (type 45): binary search of the <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> index by id; writes id and row data pointer (null if none)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0231cd30</code></td>
+<td style="text-align: right;" data-label="Size">283</td>
+<td data-label="Name"><code>param_find_row_gem_drop_modify</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository row lookup for GemDropModifyParam (type 46): binary search of the <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> index by id; writes id and row data pointer (null if none)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0231d0f0</code></td>
+<td style="text-align: right;" data-label="Size">283</td>
+<td data-label="Name"><code>param_find_row_gem_effect</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository row lookup for GemeffectParam (type 43): binary search of the <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> index by id; writes id and row data pointer (null if none)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0231d210</code></td>
+<td style="text-align: right;" data-label="Size">284</td>
+<td data-label="Name"><code>param_row_name_gem_effect</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository row name lookup for GemeffectParam (type 43): name of the row with the id a lookup result holds (index row number checked against the row count); null if none or unnamed</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0231d330</code></td>
+<td style="text-align: right;" data-label="Size">329</td>
+<td data-label="Name"><code>param_gem_effect_for_level</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository GemeffectParam (type 43): id of the row of a group whose level range holds the level with the highest rank up to the level; -1 when none</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0231d630</code></td>
+<td style="text-align: right;" data-label="Size">283</td>
+<td data-label="Name"><code>param_find_row_gem_gen</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository row lookup for GemGenParam (type 42): binary search of the <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> index by id; writes id and row data pointer (null if none)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0231d750</code></td>
+<td style="text-align: right;" data-label="Size">284</td>
+<td data-label="Name"><code>param_row_name_gem_gen</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository row name lookup for GemGenParam (type 42): name of the row with the id a lookup result holds (index row number checked against the row count); null if none or unnamed</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0231da10</code></td>
+<td style="text-align: right;" data-label="Size">209</td>
+<td data-label="Name"><code>param_gem_gen_first_row_from</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository GemGenParam (type 42): number of the first row whose id is at least id; -1 when none</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0231daf0</code></td>
+<td style="text-align: right;" data-label="Size">213</td>
+<td data-label="Name"><code>param_gem_gen_last_row_to</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository GemGenParam (type 42): number of the last row whose id is at most id; -1 when none</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0231dbe0</code></td>
+<td style="text-align: right;" data-label="Size">184</td>
+<td data-label="Name"><code>param_gem_gen_row_id</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository GemGenParam (type 42): id of row number n (unchecked against the count); -1 for a negative n or no table</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0231de40</code></td>
+<td style="text-align: right;" data-label="Size">283</td>
+<td data-label="Name"><code>param_find_row_gem_gen_2</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository row lookup for GemGenParam (type 42): binary search of the <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> index by id; writes id and row data pointer (null if none)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0231df60</code></td>
+<td style="text-align: right;" data-label="Size">284</td>
+<td data-label="Name"><code>param_row_name_gem_gen_2</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository row name lookup for GemGenParam (type 42): name of the row with the id a lookup result holds (index row number checked against the row count); null if none or unnamed</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0231e3d0</code></td>
+<td style="text-align: right;" data-label="Size">283</td>
+<td data-label="Name"><code>param_find_row_equip_param_goods</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository row lookup for EquipParamGoods (type 3): binary search of the <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> index by id; writes id and row data pointer (null if none)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0231e4f0</code></td>
+<td style="text-align: right;" data-label="Size">278</td>
+<td data-label="Name"><code>param_row_at_equip_param_goods</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository row-at accessor for EquipParamGoods (type 3): id and data of row number n (id -1; null past the count or when not loaded)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0231e610</code></td>
+<td style="text-align: right;" data-label="Size">96</td>
+<td data-label="Name"><code>param_row_count_equip_param_goods</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository row count of EquipParamGoods (type 3); 0 when not loaded</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0231e680</code></td>
+<td style="text-align: right;" data-label="Size">284</td>
+<td data-label="Name"><code>param_row_name_equip_param_goods</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository row name lookup for EquipParamGoods (type 3): name of the row with the id a lookup result holds (index row number checked against the row count); null if none or unnamed</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0231ebb0</code></td>
+<td style="text-align: right;" data-label="Size">309</td>
+<td data-label="Name"><code>param_next_row_id_equip_param_goods</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository id of the row after id in EquipParamGoods (type 3) file order; negative id: first row; -1 when none</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0231ecf0</code></td>
+<td style="text-align: right;" data-label="Size">341</td>
+<td data-label="Name"><code>param_previous_row_id_equip_param_goods</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository id of the row before id in EquipParamGoods (type 3) file order; negative id: last row; -1 when none</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0231eec0</code></td>
+<td style="text-align: right;" data-label="Size">518</td>
+<td data-label="Name"><code>param_check_set_equip_param_goods</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">EquipParamGoods set check: cache (70 ids/sets of +0x32 built once) marks the looked-up id in a bit set; returns its set when all other members are marked else -1</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0231f0e0</code></td>
+<td style="text-align: right;" data-label="Size">390</td>
+<td data-label="Name"><code>param_list_row_ids_equip_param_goods</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository empties an id array and appends every EquipParamGoods (type 3) row id in file order; returns the count</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0231f460</code></td>
+<td style="text-align: right;" data-label="Size">283</td>
+<td data-label="Name"><code>param_find_row_hit_mtrl</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository row lookup for HitMtrlParam (type 35): binary search of the <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> index by id; writes id and row data pointer (null if none)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0231f720</code></td>
+<td style="text-align: right;" data-label="Size">283</td>
+<td data-label="Name"><code>param_find_row_holygrail_ex</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository row lookup for HolygrailExParam (type 52): binary search of the <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> index by id; writes id and row data pointer (null if none)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0231f840</code></td>
+<td style="text-align: right;" data-label="Size">284</td>
+<td data-label="Name"><code>param_row_name_holygrail_ex</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository row name lookup for HolygrailExParam (type 52): name of the row with the id a lookup result holds (index row number checked against the row count); null if none or unnamed</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0231ff00</code></td>
+<td style="text-align: right;" data-label="Size">96</td>
+<td data-label="Name"><code>param_row_count_holygrail_ex</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository row count of HolygrailExParam (type 52); 0 when not loaded</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0231ff70</code></td>
+<td style="text-align: right;" data-label="Size">168</td>
+<td data-label="Name"><code>param_holygrail_ex_row_number</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository HolygrailExParam (type 52): index row number of a lookup id; -1 when none</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02320020</code></td>
+<td style="text-align: right;" data-label="Size">212</td>
+<td data-label="Name"><code>param_find_row_number_holygrail_ex</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository HolygrailExParam (type 52): row number n looked up again by its id</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x023202a0</code></td>
+<td style="text-align: right;" data-label="Size">442</td>
+<td data-label="Name"><code>param_find_row_item_lot_lvdep</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository ItemLotParam_Lvdep (type 51): from the id's group (id/100*100) the last consecutive row with id &lt;= group + level</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02320640</code></td>
+<td style="text-align: right;" data-label="Size">285</td>
+<td data-label="Name"><code>param_find_row_item_lot</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">ItemLotParam row lookup (type 19): as the other row lookups; but only for tables of data version 2 or later</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02320dd0</code></td>
+<td style="text-align: right;" data-label="Size">283</td>
+<td data-label="Name"><code>param_find_row_knock_back</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository row lookup for KnockBackParam (type 36): binary search of the <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> index by id; writes id and row data pointer (null if none)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x023210e0</code></td>
+<td style="text-align: right;" data-label="Size">283</td>
+<td data-label="Name"><code>param_find_row_magic</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository row lookup for Magic (type 14): binary search of the <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> index by id; writes id and row data pointer (null if none)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02321200</code></td>
+<td style="text-align: right;" data-label="Size">278</td>
+<td data-label="Name"><code>param_row_at_magic</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository row-at accessor for Magic (type 14): id and data of row number n (id -1; null past the count or when not loaded)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02321320</code></td>
+<td style="text-align: right;" data-label="Size">96</td>
+<td data-label="Name"><code>param_row_count_magic</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository row count of Magic (type 14); 0 when not loaded</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02321680</code></td>
+<td style="text-align: right;" data-label="Size">302</td>
+<td data-label="Name"><code>param_next_row_id_magic</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository id of the row after id in Magic (type 14) file order; negative id: first row; -1 when none</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x023217c0</code></td>
+<td style="text-align: right;" data-label="Size">341</td>
+<td data-label="Name"><code>param_previous_row_id_magic</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository id of the row before id in Magic (type 14) file order; negative id: last row; -1 when none</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02321ac0</code></td>
+<td style="text-align: right;" data-label="Size">283</td>
+<td data-label="Name"><code>param_find_row_menu_color_table</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository row lookup for MenuColorTableParam (type 18): binary search of the <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> index by id; writes id and row data pointer (null if none)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02321be0</code></td>
+<td style="text-align: right;" data-label="Size">278</td>
+<td data-label="Name"><code>param_row_at_menu_color_table</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository row-at accessor for MenuColorTableParam (type 18): id and data of row number n (id -1; null past the count or when not loaded)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02321ea0</code></td>
+<td style="text-align: right;" data-label="Size">283</td>
+<td data-label="Name"><code>param_find_row_move</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository row lookup for MoveParam (type 20): binary search of the <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> index by id; writes id and row data pointer (null if none)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02322260</code></td>
+<td style="text-align: right;" data-label="Size">283</td>
+<td data-label="Name"><code>param_find_row_equip_mtrl_set</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository row lookup for EquipMtrlSetParam (type 22): binary search of the <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> index by id; writes id and row data pointer (null if none)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x023226c0</code></td>
+<td style="text-align: right;" data-label="Size">343</td>
+<td data-label="Name"><code>param_find_row_npc</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository row lookup for NpcParam (type 6): also returns header word 0x06 and the data version; reports versions 2 and older (fatal_error) and searches anyway</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02322b40</code></td>
+<td style="text-align: right;" data-label="Size">283</td>
+<td data-label="Name"><code>param_find_row_npc_think</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository row lookup for NpcThinkParam (type 9): binary search of the <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> index by id; writes id and row data pointer (null if none)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02323290</code></td>
+<td style="text-align: right;" data-label="Size">283</td>
+<td data-label="Name"><code>param_find_row_object</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository row lookup for ObjectParam (type 10): binary search of the <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> index by id; writes id and row data pointer (null if none)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x023235b0</code></td>
+<td style="text-align: right;" data-label="Size">231</td>
+<td data-label="Name"><code>param_clamp_protector_gen_indexes</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository ProtectorGenParam (type 41) after loading: marks entry indexes above 63 as none (0x80000000) in place</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02323840</code></td>
+<td style="text-align: right;" data-label="Size">394</td>
+<td data-label="Name"><code>param_find_row_equip_param_protector</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">EquipParamProtector lookup: row of the id rounded down to 100; then ReinforceParamProtector row for id%100 + reinforce type (s16 at +0xc8)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x023239d0</code></td>
+<td style="text-align: right;" data-label="Size">284</td>
+<td data-label="Name"><code>param_row_name_equip_param_protector</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository row name lookup for EquipParamProtector (type 1): name of the row with the id a lookup result holds (index row number checked against the row count); null if none or unnamed</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02324fa0</code></td>
+<td style="text-align: right;" data-label="Size">309</td>
+<td data-label="Name"><code>param_next_row_id_equip_param_protector</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository id of the row after id in EquipParamProtector (type 1) file order; negative id: first row; -1 when none</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x023250e0</code></td>
+<td style="text-align: right;" data-label="Size">341</td>
+<td data-label="Name"><code>param_previous_row_id_equip_param_protector</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository id of the row before id in EquipParamProtector (type 1) file order; negative id: last row; -1 when none</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02325240</code></td>
+<td style="text-align: right;" data-label="Size">366</td>
+<td data-label="Name"><code>param_next_matching_id_equip_param_protector</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository next EquipParamProtector (type 1) row after id whose byte +0xd2 equals value; missing or negative id scans from row 0</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x023253c0</code></td>
+<td style="text-align: right;" data-label="Size">354</td>
+<td data-label="Name"><code>param_previous_matching_id_equip_param_protector</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository previous EquipParamProtector row before id whose byte +0xd2 equals value; negative id: from the last row</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x023255c0</code></td>
+<td style="text-align: right;" data-label="Size">80</td>
+<td data-label="Name"><code>param_clear_id_list_equip_param_protector</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository id list with its walk compiled away: empties the array, requires the repository, returns the count</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02325620</code></td>
+<td style="text-align: right;" data-label="Size">477</td>
+<td data-label="Name"><code>param_list_versions_equip_param_protector</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository every EquipParamProtector id plus one id per leading non-negative reinforcement entry at +0x40 (up to 15); returns the count</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02325820</code></td>
+<td style="text-align: right;" data-label="Size">390</td>
+<td data-label="Name"><code>param_list_row_ids_equip_param_protector</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository empties an id array and appends every EquipParamProtector (type 1) row id in file order; returns the count</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x023259c0</code></td>
+<td style="text-align: right;" data-label="Size">518</td>
+<td data-label="Name"><code>param_check_set_equip_param_protector</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">EquipParamProtector set check: cache of 50 (set +0xd8) built once; marks the lookup base id; set read at the row +0xca; set when all other members marked else -1</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02326200</code></td>
+<td style="text-align: right;" data-label="Size">283</td>
+<td data-label="Name"><code>param_find_row_reinforce_param_protector</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository row lookup for ReinforceParamProtector (type 5): binary search of the <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> index by id; writes id and row data pointer (null if none)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x023264c0</code></td>
+<td style="text-align: right;" data-label="Size">283</td>
+<td data-label="Name"><code>param_find_row_ragdoll</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository row lookup for RagdollParam (type 26): binary search of the <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> index by id; writes id and row data pointer (null if none)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02326780</code></td>
+<td style="text-align: right;" data-label="Size">311</td>
+<td data-label="Name"><code>param_find_row_resident_fx</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository ResidentFxParam (type 47) row lookup that also returns the index row number and the table</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02326b40</code></td>
+<td style="text-align: right;" data-label="Size">284</td>
+<td data-label="Name"><code>param_find_row_return_point</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository row lookup for ReturnPointParam (type 50): binary search of the <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> index by id; writes id and row data pointer (null if none)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02326c60</code></td>
+<td style="text-align: right;" data-label="Size">238</td>
+<td data-label="Name"><code>param_return_point_warp_chair</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">ReturnPointParam scan: warp chair number of the first row with an entity id; or -1</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02326d60</code></td>
+<td style="text-align: right;" data-label="Size">241</td>
+<td data-label="Name"><code>param_return_point_entity</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">ReturnPointParam scan: entity id of the first row with a warp chair number; or -1</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02326e60</code></td>
+<td style="text-align: right;" data-label="Size">271</td>
+<td data-label="Name"><code>param_return_points_of_map</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">ReturnPointParam scan: pushes the entity id of every row of an area/block with a warp chair onto an id array</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02327120</code></td>
+<td style="text-align: right;" data-label="Size">283</td>
+<td data-label="Name"><code>param_find_row_ritual_required_mat</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository row lookup for RitualRequiredMatParam (type 55): binary search of the <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> index by id; writes id and row data pointer (null if none)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02327450</code></td>
+<td style="text-align: right;" data-label="Size">283</td>
+<td data-label="Name"><code>param_find_row_shop_lineup</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository row lookup for ShopLineupParam (type 27): binary search of the <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> index by id; writes id and row data pointer (null if none)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02327880</code></td>
+<td style="text-align: right;" data-label="Size">283</td>
+<td data-label="Name"><code>param_find_row_skeleton</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository row lookup for SkeletonParam (type 31): binary search of the <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> index by id; writes id and row data pointer (null if none)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02328aa0</code></td>
+<td style="text-align: right;" data-label="Size">283</td>
+<td data-label="Name"><code>param_find_row_sp_effect</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository row lookup for SpEffectParam (type 15): binary search of the <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> index by id; writes id and row data pointer (null if none)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02328f90</code></td>
+<td style="text-align: right;" data-label="Size">283</td>
+<td data-label="Name"><code>param_find_row_obj_act</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository row lookup for ObjActParam (type 34): binary search of the <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> index by id; writes id and row data pointer (null if none)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02329250</code></td>
+<td style="text-align: right;" data-label="Size">283</td>
+<td data-label="Name"><code>param_find_row_talk</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository row lookup for TalkParam (type 17): binary search of the <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> index by id; writes id and row data pointer (null if none)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02329510</code></td>
+<td style="text-align: right;" data-label="Size">283</td>
+<td data-label="Name"><code>param_find_row_weapon_gen</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository row lookup for WeaponGenParam (type 40): binary search of the <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> index by id; writes id and row data pointer (null if none)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02329630</code></td>
+<td style="text-align: right;" data-label="Size">284</td>
+<td data-label="Name"><code>param_row_name_weapon_gen</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository row name lookup for WeaponGenParam (type 40): name of the row with the id a lookup result holds (index row number checked against the row count); null if none or unnamed</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02329810</code></td>
+<td style="text-align: right;" data-label="Size">231</td>
+<td data-label="Name"><code>param_clamp_weapon_gen_indexes</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository WeaponGenParam (type 40) after loading: marks entry indexes above 63 as none (0x80000000) in place</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02329aa0</code></td>
+<td style="text-align: right;" data-label="Size">378</td>
+<td data-label="Name"><code>param_find_row_equip_param_weapon</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">EquipParamWeapon lookup: row of the id rounded down to 100; then ReinforceParamWeapon row for id%100 + reinforce type (s16 at +0xd6)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02329c20</code></td>
+<td style="text-align: right;" data-label="Size">268</td>
+<td data-label="Name"><code>param_row_name_equip_param_weapon</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository row name lookup for EquipParamWeapon (type 0): name of the row with the id a lookup result holds (index row number checked against the row count); null if none or unnamed</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0232b6d0</code></td>
+<td style="text-align: right;" data-label="Size">619</td>
+<td data-label="Name"><code>param_next_weapon_id_with_flag</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository EquipParamWeapon step: from the id move step rows on until the weapon lookup row has flag bit mode (+0x100); other modes stop at once; negative id -&gt; first row</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0232b950</code></td>
+<td style="text-align: right;" data-label="Size">679</td>
+<td data-label="Name"><code>param_previous_weapon_id_with_flag</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository EquipParamWeapon step back: from the id move step rows back until the weapon lookup row has flag bit mode (+0x100); other modes stop at once; negative id -&gt; last row</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0232bc80</code></td>
+<td style="text-align: right;" data-label="Size">80</td>
+<td data-label="Name"><code>param_clear_id_list_equip_param_weapon</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository id list with its walk compiled away: empties the array, requires the repository, returns the count</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0232bce0</code></td>
+<td style="text-align: right;" data-label="Size">599</td>
+<td data-label="Name"><code>param_check_set_equip_param_weapon</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">EquipParamWeapon set check: cache of 50 ids that are multiples of 100000 (set +0xd8) built once; base id rounded to 100000; set when all other members marked else -1</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0232bf50</code></td>
+<td style="text-align: right;" data-label="Size">411</td>
+<td data-label="Name"><code>param_list_row_ids_equip_param_weapon</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository every EquipParamWeapon (type 0) row id; with the flag, rows whose int at +0x4 is -1 are skipped</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0232c110</code></td>
+<td style="text-align: right;" data-label="Size">481</td>
+<td data-label="Name"><code>param_list_versions_equip_param_weapon</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository EquipParamWeapon rows whose byte +0xe2 equals value: id plus one per leading non-negative entry at +0x60 (up to 15)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0232c930</code></td>
+<td style="text-align: right;" data-label="Size">283</td>
+<td data-label="Name"><code>param_find_row_reinforce_param_weapon</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SoloParamRepository row lookup for ReinforceParamWeapon (type 4): binary search of the <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> index by id; writes id and row data pointer (null if none)</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="structs-and-globals">Structs and globals</h2>
+<p><strong>SoloParamRepository</strong> (<code>0x05940340</code>): the table slots start at <code>+0x70</code>, one per type.</p>
+<div class="wk-table"><table>
+<thead>
+<tr>
+<th>Offset</th>
+<th>Field of a slot</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>+0x0</code></td>
+<td>loaded flag (zero until the table is loaded)</td>
+</tr>
+<tr>
+<td><code>+0x8</code></td>
+<td>resource holder; its file is at holder <code>+0x70</code>, and the table header at file <code>+0x70</code></td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>PARAM header</strong> (only the fields the lookups read)</p>
+<div class="wk-table"><table>
+<thead>
+<tr>
+<th>Offset</th>
+<th>Field</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>+0x06</code></td>
+<td>header word, meaning unknown (NpcParam and DungeonFeatureParam pass it on)</td>
+</tr>
+<tr>
+<td><code>+0x08</code></td>
+<td>data version</td>
+</tr>
+<tr>
+<td><code>+0x0a</code></td>
+<td>row count</td>
+</tr>
+<tr>
+<td><code>+0x2d</code></td>
+<td>format</td>
+</tr>
+<tr>
+<td><code>+0x2e</code></td>
+<td>format flags (<code>0x2</code>: 64-bit offsets, from format 4 on)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>A lookup's result</strong>: the id at <code>+0x0</code>, the row at <code>+0x8</code>; the four bytes between are left as
+they were.</p>
+<p><strong>Globals</strong>: the built-in menu property rows (<code>0x05528730</code>), the built-in NewMenuColorTableParam
+rows (<code>0x055286e0</code>), and where the DungeonFeatureParam lookup copies its header word
+(<code>0x05992cb0</code>).</p>
+<h2 id="patch-points">Patch points</h2>
+<p>No patch points are recorded for these functions.</p>
+<h2 id="open-questions">Open questions</h2>
+<ul>
+<li>The <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> that reads each PARAM file and builds its search index is not <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> yet.</li>
+<li>What the header words at <code>+0x06</code> mean, and why the NpcParam and DungeonFeatureParam lookups pass
+  them on.</li>
+<li>Why the row-name lookups exist in the retail build: they did not run in the coverage boots.</li>
+<li>Most of the header (beyond the row count, data version and format) is unknown.</li>
+</ul>
+<p>Row layouts and field names come from the modding community's published parameter definitions;
+they are cited as facts, not copied code.</p>
+      
+      </div>
+
+    </div>
+    <footer class="wk-footer">
+      <p class="wk-footer-motto">Fear the old blood</p>
+      <p>Made by people who love Bloodborne, so that it can be studied, preserved and played
+      natively, one verified function at a time.</p>
+      <p>A fan project. Not affiliated with or endorsed by Sony Interactive Entertainment or
+      FromSoftware. No game files are shared here: bring your own copy.</p>
+    </footer>
+  </main>
+
+</div>
+
+
+<!-- Back to top -->
+<button class="wk-top" id="wk-top" title="Back to top" aria-label="Scroll to top">↑</button>
+
+
+<script>
+/* Page settings for wiki.js. The drawer query matches the drawer breakpoint in wiki.css. */
+window.WK = {base: "../..", searchIndex: "../../search/search_index.json",
+             drawerQuery: window.matchMedia('(max-width: 900px)')};
+</script>
+<script src="../../javascripts/wiki.js?v=c570fe17af" defer></script><script src="../../javascripts/hunters.js?v=28a0e867eb" defer></script><script src="../../search/main.js" defer></script>
+</body>
+</html>

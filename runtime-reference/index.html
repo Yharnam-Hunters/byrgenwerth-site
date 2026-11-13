@@ -270,6 +270,14 @@
         
         
         
+        <li><a class="wk-nav-link" href="../systems/param/">Parameters</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../systems/menu/">Menu</a></li>
+        
+        
+        
         <li><a class="wk-nav-link" href="../systems/render/">Render</a></li>
         
         
@@ -380,11 +388,11 @@
     
     <a class="wk-progress-card" href="../progress/">
       <span class="wk-progress-label">Verified functions</span>
-      <span class="wk-progress-value">21 <small>of 157,757</small></span>
-      <span class="wk-stat-track" role="img" aria-label="0.033 percent of target code bytes verified">
-        <span class="wk-stat-fill" style="width:0.033%"></span>
+      <span class="wk-progress-value">114 <small>of 157,757</small></span>
+      <span class="wk-stat-track" role="img" aria-label="0.0685 percent of target code bytes verified">
+        <span class="wk-stat-fill" style="width:0.0685%"></span>
       </span>
-      <span class="wk-progress-foot">0.033% of code bytes verified · 245 replaced</span>
+      <span class="wk-progress-foot">0.0685% of code bytes verified · 555 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -554,6 +562,8 @@
           <li><a href="#module-tls-__tls_get_addr" class="wk-toc-link">Module TLS (__tls_get_addr)</a></li>
           
           <li><a href="#references" class="wk-toc-link">References</a></li>
+          
+          <li><a href="#occlusion-query-counts-gnm-a-stand-in" class="wk-toc-link">Occlusion query counts (Gnm, a stand-in)</a></li>
           
         </ol>
       </nav>
@@ -3269,6 +3279,16 @@ metadata.</p>
 <li><a href="https://github.com/OpenOrbis/OpenOrbis-PS4-Toolchain/blob/master/include/orbis/_types/pthread.h">OpenOrbis <code>include/orbis/_types/pthread.h</code></a> - the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> homebrew SDK's <code>ORBIS_PTHREAD_CREATE_*</code> values, which follow FreeBSD's</li>
 <li>FreeBSD 9.0 <a href="https://man.freebsd.org/cgi/man.cgi?query=mkdir&amp;sektion=2&amp;manpath=FreeBSD+9.0-RELEASE"><code>mkdir(2)</code></a>, <a href="https://man.freebsd.org/cgi/man.cgi?query=rmdir&amp;sektion=2&amp;manpath=FreeBSD+9.0-RELEASE"><code>rmdir(2)</code></a>, <a href="https://man.freebsd.org/cgi/man.cgi?query=unlink&amp;sektion=2&amp;manpath=FreeBSD+9.0-RELEASE"><code>unlink(2)</code></a> and <a href="https://man.freebsd.org/cgi/man.cgi?query=unlink&amp;sektion=2">current <code>unlink(2)</code></a>; FreeBSD <a href="https://cgit.freebsd.org/src/tree/sys/kern/vfs_syscalls.c?h=stable/9"><code>vfs_syscalls.c</code></a> (stable/9 and main: <code>kern_mkdirat</code> and its mode, <code>kern_rmdirat</code>/<code>kern_frmdirat</code>, <code>kern_unlinkat</code>/<code>kern_funlinkat</code> and <code>EPERM</code> for a directory) and <a href="https://cgit.freebsd.org/src/tree/sys/kern/vfs_lookup.c?h=stable/9"><code>vfs_lookup.c</code></a> (stable/9 and main: the read-only checks and the <code>.</code> check, and their order); <a href="https://github.com/OpenOrbis/OpenOrbis-PS4-Toolchain/blob/master/include/orbis/libkernel.h">OpenOrbis <code>libkernel.h</code></a> and <a href="https://github.com/OpenOrbis/OpenOrbis-PS4-Toolchain/blob/master/include/orbis/_types/kernel.h"><code>_types/kernel.h</code></a> (<code>OrbisKernelMode</code>) for the shapes</li>
 </ul>
+<h2 id="occlusion-query-counts-gnm-a-stand-in">Occlusion query counts (Gnm, a stand-in)</h2>
+<p>The game's occlusion queries reach the command processor as <code>EVENT_WRITE</code> packets with the <code>ZPASS_DONE</code>
+index: <code>PIXEL_PIPE_STAT_CONTROL</code> before each dump, then <code>PIXEL_PIPE_STAT_DUMP</code> with an address, where the
+GPU stores each of its 8 depth blocks' running count of samples that passed the depth test (a 64-bit begin
+and end pair per block, bit 63 the valid bit; the game sums end - begin). <code>runtime/syslib/gnm.c</code> skips the
+control event and, for a dump, stores an invented running count (0x10000 more per dump, the same in every
+block, valid bit set), so <strong>every query reads visible</strong>. This is a stand-in, not the GPU's behavior: real
+counts need Vulkan occlusion queries over the draws between two dumps, copied into the game's 8-block
+layout (follow-up). Until then, anything the game decides from visibility (flares, culling of hidden
+objects) behaves as if everything were visible.</p>
       
       </div>
 

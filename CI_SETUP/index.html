@@ -270,6 +270,14 @@
         
         
         
+        <li><a class="wk-nav-link" href="../systems/param/">Parameters</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../systems/menu/">Menu</a></li>
+        
+        
+        
         <li><a class="wk-nav-link" href="../systems/render/">Render</a></li>
         
         
@@ -380,11 +388,11 @@
     
     <a class="wk-progress-card" href="../progress/">
       <span class="wk-progress-label">Verified functions</span>
-      <span class="wk-progress-value">21 <small>of 157,757</small></span>
-      <span class="wk-stat-track" role="img" aria-label="0.033 percent of target code bytes verified">
-        <span class="wk-stat-fill" style="width:0.033%"></span>
+      <span class="wk-progress-value">114 <small>of 157,757</small></span>
+      <span class="wk-stat-track" role="img" aria-label="0.0685 percent of target code bytes verified">
+        <span class="wk-stat-fill" style="width:0.0685%"></span>
       </span>
-      <span class="wk-progress-foot">0.033% of code bytes verified · 245 replaced</span>
+      <span class="wk-progress-foot">0.0685% of code bytes verified · 555 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -420,7 +428,7 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 28, 2026 05:15:03 UTC">October 28, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 13, 2026 14:54:55 UTC">November 13, 2026</span></p>
       
       
       <h1 id="ci-setup">CI Setup</h1>
@@ -455,7 +463,7 @@
 </tr>
 <tr>
 <td><strong>policy</strong></td>
-<td>No game data, valid function tables, README progress, readable code, pre-commit <abbr title="14-byte jumps written over the start of original functions, sending their callers to the replacements.">hooks</abbr>.</td>
+<td>No game data, valid function tables, generated progress text, readable code, pre-commit <abbr title="14-byte jumps written over the start of original functions, sending their callers to the replacements.">hooks</abbr>.</td>
 </tr>
 <tr>
 <td><strong>session report</strong></td>
@@ -467,8 +475,8 @@
 <summary>What each job does in full</summary>
 <ul>
 <li><strong>build (gcc)</strong> and <strong>build (clang)</strong> — install the pinned optional Capstone dependency, configure and build with CMake, run the <code>syslib</code> CTest (the RT_SYSLIB unit test), then run the remaining CTest suite. The workflow also runs the <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr>/instruction-trace and differential-engine Python suites with each compiler and its built <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr>. It includes <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr>-table and <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> tests, the plug-in contract test, synthetic executable-memory <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> tests, and synthetic tracing, CFG, and mutation regressions. These tests do not run the full game-run scaffold or establish native game-run equivalence.</li>
-<li><strong>policy</strong> — rejects anything that looks like game data; validates the function tables; checks that <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> and tools name nothing specific to the game; checks that the README progress matches <code>tools/progress.py</code>; runs the readable-code check (addresses, raw offsets, magic numbers, and recording code); and exercises the pre-commit <abbr title="14-byte jumps written over the start of original functions, sending their callers to the replacements.">hooks</abbr>.</li>
-<li><strong>session report</strong> — on pull requests, CI selects the concise report for <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>-only changes, the documentation report, or the full decompilation/mixed report from changed file paths. Unknown code paths fail closed to the full report. Runtime changes cannot downgrade a mixed PR. The build and policy jobs still apply to every path. These four checks are required by Paleblood's current <code>main</code> branch protection.</li>
+<li><strong>policy</strong> — rejects anything that looks like game data; validates the function tables; checks that <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> and tools name nothing specific to the game; checks generated progress text: on a pull request only the generated lines it changes must be current (<code>progress.py --check-touched</code>), since progress is regenerated on <code>main</code> by one pull request on <code>auto/regenerate-progress</code>, and the full freshness check runs on that pull request and in the <code>progress.yml</code> workflow on every push to <code>main</code> (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/711">#711</a>); runs the readable-code check (addresses, raw offsets, magic numbers, and recording code); and exercises the pre-commit <abbr title="14-byte jumps written over the start of original functions, sending their callers to the replacements.">hooks</abbr>.</li>
+<li><strong>session report</strong> — on pull requests, CI selects the concise report for <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>-only changes, the documentation report, or the full decompilation/mixed report from changed file paths. Unknown code paths fail closed to the full report. Runtime changes cannot downgrade a mixed PR. The build and policy jobs still apply to every path. These four checks are required by Paleblood's current <code>main</code> branch protection, and since <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/744">#744</a> they are the only checks the merge queue runs. The advisory <code>combined</code> workflow runs apart, on pull requests only, pairing each with at most four open pull requests that touch the same files or directories (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/752">#752</a>).</li>
 </ul>
 </details>
 <h2 id="readability-and-independent-review">Readability and independent review</h2>

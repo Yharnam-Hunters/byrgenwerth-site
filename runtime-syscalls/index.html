@@ -270,6 +270,14 @@
         
         
         
+        <li><a class="wk-nav-link" href="../systems/param/">Parameters</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../systems/menu/">Menu</a></li>
+        
+        
+        
         <li><a class="wk-nav-link" href="../systems/render/">Render</a></li>
         
         
@@ -380,11 +388,11 @@
     
     <a class="wk-progress-card" href="../progress/">
       <span class="wk-progress-label">Verified functions</span>
-      <span class="wk-progress-value">21 <small>of 157,757</small></span>
-      <span class="wk-stat-track" role="img" aria-label="0.033 percent of target code bytes verified">
-        <span class="wk-stat-fill" style="width:0.033%"></span>
+      <span class="wk-progress-value">114 <small>of 157,757</small></span>
+      <span class="wk-stat-track" role="img" aria-label="0.0685 percent of target code bytes verified">
+        <span class="wk-stat-fill" style="width:0.0685%"></span>
       </span>
-      <span class="wk-progress-foot">0.033% of code bytes verified · 245 replaced</span>
+      <span class="wk-progress-foot">0.0685% of code bytes verified · 555 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -464,22 +472,8 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 12, 2026 07:49:24 UTC">November 12, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 13, 2026 14:54:55 UTC">November 13, 2026</span></p>
       
-      
-      
-      <aside class="wk-freshness" role="note">
-        <p><b>Not yet updated for 1 merged change.</b>
-        This page was last checked against Paleblood
-        <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/d7495b796745e8bbb2790e72cbe83348742536e0"><code>d7495b7</code></a>;
-        these pull requests changed what it describes since:</p>
-        <ul>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/663">#663</a> renderer: tessellated draws (local and hull passes, a Vulkan tessellation pipeline)</li>
-          
-          
-        </ul>
-      </aside>
       
       <h1 id="runtime-system-call-notes">Runtime system-call notes</h1>
 <p class="wk-lede">What each runtime system call is for, what it must do, what the game was seen to do with it, and how Paleblood's runtime answers.</p>
@@ -2096,7 +2090,7 @@ pending counts are still not modelled.</p>
 <tr>
 <td data-label="Call"><code>sceGnmDingDong</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--implemented">implemented</span></td>
-<td data-label="What the runtime does">Until <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/606">#606</a> (11 November) it completed submitted compute work at once (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/302">#302</a>): no shaders ran, but each job's "work done" value was written and the queue freed. Now each buffer the ring points to goes to the renderer like a graphics buffer: with the display on its dispatches run on the GPU in submission order, with the graphics work, and its "work done" values are written after them; with the display off they are written at once, as before. Since <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/470">#470</a> the renderer takes each buffer's recorded calls and drops them, so their shader bindings cannot leak into a later graphics buffer in the same memory.</td>
+<td data-label="What the runtime does">Until <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/606">#606</a> (11 November) it completed submitted compute work at once (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/302">#302</a>): no shaders ran, but each job's "work done" value was written and the queue freed. Now each buffer the ring points to goes to the renderer like a graphics buffer: with the display on its dispatches run on the GPU in submission order, with the graphics work, and its "work done" values are written after them; with the display off they are written at once, as before. Since <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/470">#470</a> the renderer takes each buffer's recorded calls and drops them, so their shader bindings cannot leak into a later graphics buffer in the same memory. Since <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/820">#820</a> (13 November) the renderer is told which queue each buffer came from, and each queue keeps its own compute shader and user data, as each GPU queue keeps its own registers: the game's compute buffers that start a new ring chunk dispatch without binding a shader and rely on the one their own queue bound last.</td>
 </tr>
 </tbody>
 </table></div>
@@ -2137,10 +2131,19 @@ with the drawing work around them, each a step on the renderer's thread:
 - <strong>Indirect dispatches</strong> (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/649">#649</a>): <code>SET_BASE</code> and <code>DISPATCH_INDIRECT</code>; the GPU reads the
   workgroup counts from memory when the dispatch runs, so earlier GPU work may have written them.
 - <strong><code>DMA_DATA</code> copies and fills</strong> (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/653">#653</a>) between memory, the packet's own value and the GPU's
-  64 KB global data share, which the engine uses for per-slot counters. Shader instructions that use
-  the global data share are not translated yet.</p>
-<p>Each still stops by name on a form it does not handle, such as register writes or a GDS store at the
-end of the shaders.</p>
+  64 KB global data share, which the engine uses for per-slot counters. Since
+  <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/684">#684</a> (12 November) the shaders reach the
+  same memory too: <code>ds_append</code> and <code>ds_consume</code> move its counters on the GPU.
+- <strong>Occlusion counts, a stand-in</strong> (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/689">#689</a>,
+  found entering Iosefka's Clinic). The game's occlusion queries ask each of the GPU's 8 depth blocks
+  to store its running count of samples that passed the depth test (<code>EVENT_WRITE</code> with
+  <code>PIXEL_PIPE_STAT_DUMP</code>), before and after the draws they measure. The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> counts no samples
+  yet: each dump stores an invented count that grows every time, so <strong>every query reads visible</strong>.
+  That is not the GPU's behaviour; anything the game decides from visibility (flares, hiding objects
+  behind walls) acts as if everything were visible until real counts are made with Vulkan occlusion
+  queries (a follow-up).</p>
+<p>Each still stops by name on a form it does not handle, such as register writes, a GDS store at the
+end of the shaders or another event that writes memory.</p>
 <p><strong>The renderer alongside it.</strong> The drawing itself does not happen here. When the game binds a
 shader through <code>sceGnmSetVsShader</code>, <code>sceGnmSetPsShader</code> or <code>sceGnmSetCsShader</code>, the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> also
 hands the shader's registers to Paleblood's renderer (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/412">#412</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/418">#418</a>), and the

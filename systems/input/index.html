@@ -270,6 +270,14 @@
         
         
         
+        <li><a class="wk-nav-link" href="../param/">Parameters</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../menu/">Menu</a></li>
+        
+        
+        
         <li><a class="wk-nav-link" href="../render/">Render</a></li>
         
         
@@ -380,11 +388,11 @@
     
     <a class="wk-progress-card" href="../../progress/">
       <span class="wk-progress-label">Verified functions</span>
-      <span class="wk-progress-value">21 <small>of 157,757</small></span>
-      <span class="wk-stat-track" role="img" aria-label="0.033 percent of target code bytes verified">
-        <span class="wk-stat-fill" style="width:0.033%"></span>
+      <span class="wk-progress-value">114 <small>of 157,757</small></span>
+      <span class="wk-stat-track" role="img" aria-label="0.0685 percent of target code bytes verified">
+        <span class="wk-stat-fill" style="width:0.0685%"></span>
       </span>
-      <span class="wk-progress-foot">0.033% of code bytes verified · 245 replaced</span>
+      <span class="wk-progress-foot">0.0685% of code bytes verified · 555 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -539,35 +547,35 @@ them. They are <abbr title="A replaced function that matches the original on eve
 <td style="text-align: right;" data-label="Size">426</td>
 <td data-label="Name"><code>input_pad_step_01972900</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--verified"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></span></td>
-<td data-label="Notes">FD4PadManager map: marks two entries, advances an owner by the frame-time step (patched to 1/15 or 1/240 s; the advance branch is idle in the clinic)</td>
+<td data-label="Notes">FD4PadManager map: marks two entries; advances an owner by the frame-time step (patched to 1/15 or 1/240 s; the advance branch is idle in the clinic)</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x02a8bf30</code></td>
 <td style="text-align: right;" data-label="Size">108</td>
 <td data-label="Name"><code>input_mouse_b_open_for_initial_user</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
-<td data-label="Notes">Second mouse device class's open: initial user, close a positive handle at +0x128, sceMouseOpen(user, 0, 0, null); true when the new handle is positive</td>
+<td data-label="Notes">Second mouse device class's open: initial user; close a positive handle at +0x128; sceMouseOpen(user; 0; 0; null); true when the new handle is positive</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x02a8c210</code></td>
 <td style="text-align: right;" data-label="Size">164</td>
 <td data-label="Name"><code>input_mouse_construct</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
-<td data-label="Notes">Mouse device constructor: base ctor with the third argument, vtable 0x056b7d00, clear 0x140..0x177, load sysmodule 0xa9, sceMouseInit, open via slot 32; handle 0 on any failure</td>
+<td data-label="Notes">Mouse device constructor: base ctor with the third argument; vtable 0x056b7d00; clear 0x140..0x177; load sysmodule 0xa9; sceMouseInit; open via slot 32; handle 0 on any failure</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x02a8c420</code></td>
 <td style="text-align: right;" data-label="Size">108</td>
 <td data-label="Name"><code>input_initialize_mouse_for_initial_user</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
-<td data-label="Notes">Initializes or reinitializes mouse input for the initial user, closing a previous connection if necessary.</td>
+<td data-label="Notes">Initializes or reinitializes mouse input for the initial user; closing a previous connection if necessary.</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x02a9c790</code></td>
 <td style="text-align: right;" data-label="Size">84</td>
 <td data-label="Name"><code>input_pad_set_vibration</code></td>
-<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
-<td data-label="Notes">scePadSetVibration on the pad's handle (+0x8) if open (+0xc): large motor from the third argument, small from the second; true on success</td>
+<td data-label="Status"><span class="wk-badge wk-badge--verified"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></span></td>
+<td data-label="Notes">scePadSetVibration on the pad's handle (+0x8) if open (+0xc): large motor from the third argument; small from the second; true on success</td>
 </tr>
 </tbody>
 </table></div>

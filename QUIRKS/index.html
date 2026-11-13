@@ -270,6 +270,14 @@
         
         
         
+        <li><a class="wk-nav-link" href="../systems/param/">Parameters</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../systems/menu/">Menu</a></li>
+        
+        
+        
         <li><a class="wk-nav-link" href="../systems/render/">Render</a></li>
         
         
@@ -380,11 +388,11 @@
     
     <a class="wk-progress-card" href="../progress/">
       <span class="wk-progress-label">Verified functions</span>
-      <span class="wk-progress-value">21 <small>of 157,757</small></span>
-      <span class="wk-stat-track" role="img" aria-label="0.033 percent of target code bytes verified">
-        <span class="wk-stat-fill" style="width:0.033%"></span>
+      <span class="wk-progress-value">114 <small>of 157,757</small></span>
+      <span class="wk-stat-track" role="img" aria-label="0.0685 percent of target code bytes verified">
+        <span class="wk-stat-fill" style="width:0.0685%"></span>
       </span>
-      <span class="wk-progress-foot">0.033% of code bytes verified · 245 replaced</span>
+      <span class="wk-progress-foot">0.0685% of code bytes verified · 555 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -424,6 +432,8 @@
           <li><a href="#replay-overlapping-community-patch-writes-in-order" class="wk-toc-link">Replay overlapping community patch writes in order</a></li>
           
           <li><a href="#unknown-fmod-thread-names-do-not-initialize-the-affinity-output" class="wk-toc-link">Unknown FMOD thread names do not initialize the affinity output</a></li>
+          
+          <li><a href="#face-table-setters-assume-the-row-exists" class="wk-toc-link">Face table setters assume the row exists</a></li>
           
         </ol>
       </nav>
@@ -642,6 +652,21 @@ The caller at <code>0x01118420</code> accepts a name argument; it does not estab
 one the lookup recognizes. The creation wrapper remains original until this path's contract
 is established. Adding a default affinity mask would invent behavior; testing only recognized
 names would leave this path unresolved.</p>
+<h2 id="face-table-setters-assume-the-row-exists">Face table setters assume the row exists</h2>
+<p>The FaceGenParam and FaceParam setters that character creation uses (<code>game/param/face_params.cpp</code>)
+never handle an id the table has no row for. Most of them (<code>0x02317ad0</code>, <code>0x02317be0</code>,
+<code>0x02317cf0</code>, the seven hair and left eye setters <code>0x023189f0</code>..<code>0x02318ff0</code>, <code>0x0231a5e0</code>..
+<code>0x0231a8e0</code>, <code>0x0231a9e0</code>, <code>0x0231aaf0</code>, <code>0x0231ac00</code>) inline the index's binary search with no
+low-above-high exit, so a missing id never returns; an entry with a negative row number is used as
+a huge unsigned offset. The part color setter <code>0x02318280</code>, both decal setters (<code>0x023188b0</code>,
+<code>0x0231a340</code>) and the body scale setter <code>0x0231a480</code> do bound the search, but then write the field
+at its offset from a null row (the body scale setter only for an index below 5: it checks the index
+after the search). The face apply function <code>0x018e4110</code> looks the row up first (<code>0x02317560</code>)
+and returns without one; the setters' other callers have not been checked.</p>
+<p>The replacements stop the process by name there (<code>engine::stop</code>, <code>game/engine/stop.h</code>, which
+reaches the boot <abbr title="tools/harness.py: maps the executable with Paleblood's loader and runs the original function and its replacement natively on the same inputs, outside the game.">harness</abbr>'s <code>rt_fatal</code>) rather than writing nothing: quietly skipping the write would
+hide a caller that passes a bad id. Verification cannot compare these paths (the original hangs or
+faults), so no case covers them.</p>
       
       </div>
 

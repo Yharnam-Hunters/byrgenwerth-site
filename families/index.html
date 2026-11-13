@@ -270,6 +270,14 @@
         
         
         
+        <li><a class="wk-nav-link" href="../systems/param/">Parameters</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../systems/menu/">Menu</a></li>
+        
+        
+        
         <li><a class="wk-nav-link" href="../systems/render/">Render</a></li>
         
         
@@ -380,11 +388,11 @@
     
     <a class="wk-progress-card" href="../progress/">
       <span class="wk-progress-label">Verified functions</span>
-      <span class="wk-progress-value">21 <small>of 157,757</small></span>
-      <span class="wk-stat-track" role="img" aria-label="0.033 percent of target code bytes verified">
-        <span class="wk-stat-fill" style="width:0.033%"></span>
+      <span class="wk-progress-value">114 <small>of 157,757</small></span>
+      <span class="wk-stat-track" role="img" aria-label="0.0685 percent of target code bytes verified">
+        <span class="wk-stat-fill" style="width:0.0685%"></span>
       </span>
-      <span class="wk-progress-foot">0.033% of code bytes verified · 245 replaced</span>
+      <span class="wk-progress-foot">0.0685% of code bytes verified · 555 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -422,7 +430,7 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 10, 2026 23:54:47 UTC">November 10, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 13, 2026 14:54:55 UTC">November 13, 2026</span></p>
       
       
       <h1 id="function-families">Function families</h1>
@@ -434,7 +442,7 @@
 <dt>What</dt>
 <dd>Empty methods, functions that return 0 or a fixed number, getters and setters of one field: each family is one exact byte shape, and every function with exactly that shape is a member.</dd>
 <dt>Proof</dt>
-<dd>Every member runs its <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr> on the original and on the replacement, compared as strictly as any hand-written function, and deliberately wrong versions must fail. Members are <em><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></em>: no in-game recording has reached them yet.</dd>
+<dd>Every member runs its <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr> on the original and on the replacement, compared as strictly as any hand-written function, and deliberately wrong versions must fail. Since 12 November members are also <em><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></em> by byte-exact matching: each member compiles byte for byte from the family's own source, and an independent family review approves it (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/688">#688</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/691">#691</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/703">#703</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/725">#725</a>).</dd>
 <dt>Honest numbers</dt>
 <dd>Members are a large share of the functions but a very small share of the code's bytes (the table below). Most of the game's code is still ahead.</dd>
 <dt>Source</dt>
@@ -475,8 +483,15 @@ argument at a probe buffer, and compare all writable memory afterwards. On a sam
 least one per parameter value, every listed wrong version (a mutant) must fail, and for a
 parameterized family so must the replacement for a neighbouring value. A run with any failure or
 surviving mutant records nothing.</p>
-<p>Members become <em><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></em> only the way any function does: with in-game recordings and an
-independent review. Until recordings reach them, they stay <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr>.</p>
+<p>Members become <em><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></em> the way any function does: a current edge result, current in-game
+recordings <strong>or</strong> a current byte-exact match with every reference checked, and an approved
+independent review. Recordings cannot reach most members: the recorder's <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> needs room to move a
+function's first instructions, and a member is one to six bytes followed by padding. So members take
+the matching path: <code>tools/match.py family</code> compares every member with the family's generated
+matching source and records the result per member, the family's independent review approves each
+member, and <code>tools/promote.py --families</code> moves each member with all three to <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/688">#688</a>).
+On 12 November that <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> 4,426 field getters and setters (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/691">#691</a>), 3,777 constant getters and
+member addresses (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/703">#703</a>) and 9,816 empty, zero and identity functions (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/725">#725</a>).</p>
 <h2 id="the-families-in-counts-and-bytes">The families, in counts and bytes</h2>
 <!-- Generated by tools/sync_progress.py from symbols/families.csv and symbols/families/ in Paleblood main. -->
 
@@ -498,7 +513,7 @@ independent review. Until recordings reach them, they stay <abbr title="A replac
 <td style="text-align: right;">5,040</td>
 <td style="text-align: right;">5,040</td>
 <td style="text-align: right;">5,040</td>
-<td style="text-align: right;">0</td>
+<td style="text-align: right;">5,040</td>
 </tr>
 <tr>
 <td><code>returns_zero</code></td>
@@ -506,7 +521,7 @@ independent review. Until recordings reach them, they stay <abbr title="A replac
 <td style="text-align: right;">4,480</td>
 <td style="text-align: right;">13,440</td>
 <td style="text-align: right;">4,480</td>
-<td style="text-align: right;">0</td>
+<td style="text-align: right;">4,480</td>
 </tr>
 <tr>
 <td><code>returns_constant</code></td>
@@ -514,7 +529,7 @@ independent review. Until recordings reach them, they stay <abbr title="A replac
 <td style="text-align: right;">2,537</td>
 <td style="text-align: right;">15,222</td>
 <td style="text-align: right;">2,537</td>
-<td style="text-align: right;">0</td>
+<td style="text-align: right;">2,537</td>
 </tr>
 <tr>
 <td><code>reads_qword_field</code></td>
@@ -522,7 +537,7 @@ independent review. Until recordings reach them, they stay <abbr title="A replac
 <td style="text-align: right;">3,337</td>
 <td style="text-align: right;">16,685</td>
 <td style="text-align: right;">3,337</td>
-<td style="text-align: right;">0</td>
+<td style="text-align: right;">3,337</td>
 </tr>
 <tr>
 <td><code>reads_dword_field</code></td>
@@ -530,7 +545,7 @@ independent review. Until recordings reach them, they stay <abbr title="A replac
 <td style="text-align: right;">575</td>
 <td style="text-align: right;">2,300</td>
 <td style="text-align: right;">575</td>
-<td style="text-align: right;">0</td>
+<td style="text-align: right;">575</td>
 </tr>
 <tr>
 <td><code>reads_word_field</code></td>
@@ -538,7 +553,7 @@ independent review. Until recordings reach them, they stay <abbr title="A replac
 <td style="text-align: right;">60</td>
 <td style="text-align: right;">300</td>
 <td style="text-align: right;">60</td>
-<td style="text-align: right;">0</td>
+<td style="text-align: right;">60</td>
 </tr>
 <tr>
 <td><code>reads_byte_field</code></td>
@@ -546,7 +561,7 @@ independent review. Until recordings reach them, they stay <abbr title="A replac
 <td style="text-align: right;">22</td>
 <td style="text-align: right;">110</td>
 <td style="text-align: right;">22</td>
-<td style="text-align: right;">0</td>
+<td style="text-align: right;">22</td>
 </tr>
 <tr>
 <td><code>field_address</code></td>
@@ -554,7 +569,7 @@ independent review. Until recordings reach them, they stay <abbr title="A replac
 <td style="text-align: right;">1,240</td>
 <td style="text-align: right;">6,200</td>
 <td style="text-align: right;">1,240</td>
-<td style="text-align: right;">0</td>
+<td style="text-align: right;">1,240</td>
 </tr>
 <tr>
 <td><code>reads_first_qword</code></td>
@@ -562,7 +577,7 @@ independent review. Until recordings reach them, they stay <abbr title="A replac
 <td style="text-align: right;">42</td>
 <td style="text-align: right;">168</td>
 <td style="text-align: right;">42</td>
-<td style="text-align: right;">0</td>
+<td style="text-align: right;">42</td>
 </tr>
 <tr>
 <td><code>reads_first_dword</code></td>
@@ -570,7 +585,7 @@ independent review. Until recordings reach them, they stay <abbr title="A replac
 <td style="text-align: right;">29</td>
 <td style="text-align: right;">87</td>
 <td style="text-align: right;">29</td>
-<td style="text-align: right;">0</td>
+<td style="text-align: right;">29</td>
 </tr>
 <tr>
 <td><code>writes_qword_field</code></td>
@@ -578,7 +593,7 @@ independent review. Until recordings reach them, they stay <abbr title="A replac
 <td style="text-align: right;">109</td>
 <td style="text-align: right;">545</td>
 <td style="text-align: right;">109</td>
-<td style="text-align: right;">0</td>
+<td style="text-align: right;">109</td>
 </tr>
 <tr>
 <td><code>writes_dword_field</code></td>
@@ -586,7 +601,7 @@ independent review. Until recordings reach them, they stay <abbr title="A replac
 <td style="text-align: right;">153</td>
 <td style="text-align: right;">612</td>
 <td style="text-align: right;">153</td>
-<td style="text-align: right;">0</td>
+<td style="text-align: right;">153</td>
 </tr>
 <tr>
 <td><code>writes_word_field</code></td>
@@ -594,7 +609,7 @@ independent review. Until recordings reach them, they stay <abbr title="A replac
 <td style="text-align: right;">10</td>
 <td style="text-align: right;">50</td>
 <td style="text-align: right;">10</td>
-<td style="text-align: right;">0</td>
+<td style="text-align: right;">10</td>
 </tr>
 <tr>
 <td><code>writes_byte_field</code></td>
@@ -602,7 +617,7 @@ independent review. Until recordings reach them, they stay <abbr title="A replac
 <td style="text-align: right;">61</td>
 <td style="text-align: right;">305</td>
 <td style="text-align: right;">61</td>
-<td style="text-align: right;">0</td>
+<td style="text-align: right;">61</td>
 </tr>
 <tr>
 <td><code>writes_first_qword</code></td>
@@ -610,7 +625,7 @@ independent review. Until recordings reach them, they stay <abbr title="A replac
 <td style="text-align: right;">23</td>
 <td style="text-align: right;">92</td>
 <td style="text-align: right;">23</td>
-<td style="text-align: right;">0</td>
+<td style="text-align: right;">23</td>
 </tr>
 <tr>
 <td><code>writes_first_dword</code></td>
@@ -618,7 +633,7 @@ independent review. Until recordings reach them, they stay <abbr title="A replac
 <td style="text-align: right;">5</td>
 <td style="text-align: right;">15</td>
 <td style="text-align: right;">5</td>
-<td style="text-align: right;">0</td>
+<td style="text-align: right;">5</td>
 </tr>
 <tr>
 <td><code>returns_first_argument</code></td>
@@ -626,7 +641,7 @@ independent review. Until recordings reach them, they stay <abbr title="A replac
 <td style="text-align: right;">169</td>
 <td style="text-align: right;">676</td>
 <td style="text-align: right;">169</td>
-<td style="text-align: right;">0</td>
+<td style="text-align: right;">169</td>
 </tr>
 <tr>
 <td><code>returns_second_argument</code></td>
@@ -634,7 +649,7 @@ independent review. Until recordings reach them, they stay <abbr title="A replac
 <td style="text-align: right;">56</td>
 <td style="text-align: right;">224</td>
 <td style="text-align: right;">56</td>
-<td style="text-align: right;">0</td>
+<td style="text-align: right;">56</td>
 </tr>
 <tr>
 <td><code>returns_float_zero</code></td>
@@ -642,7 +657,7 @@ independent review. Until recordings reach them, they stay <abbr title="A replac
 <td style="text-align: right;">71</td>
 <td style="text-align: right;">355</td>
 <td style="text-align: right;">71</td>
-<td style="text-align: right;">0</td>
+<td style="text-align: right;">71</td>
 </tr>
 </tbody>
 </table></div>
@@ -674,7 +689,8 @@ independent review. Until recordings reach them, they stay <abbr title="A replac
 </table></div>
 <p>The table is generated from Paleblood's member tables each time the wiki syncs. The site's
 <a href="../progress/">progress page</a> shows the hand-written function table first and then the totals with
-family members added, in both functions and bytes, as Paleblood's README does.</p>
+family members added, in both functions and bytes, as Paleblood's STATUS.md and
+<a href="https://yharnam-hunters.github.io/Paleblood/progress.html">progress page</a> do.</p>
 <h2 id="what-the-families-do-not-tell-you">What the families do not tell you</h2>
 <ul>
 <li><strong>How much of the game is done.</strong> Read the bytes column: the shapes are tiny, so even every
