@@ -388,11 +388,11 @@
     
     <a class="wk-progress-card" href="../../progress/">
       <span class="wk-progress-label">Verified functions</span>
-      <span class="wk-progress-value">118 <small>of 157,757</small></span>
-      <span class="wk-stat-track" role="img" aria-label="0.0727 percent of target code bytes verified">
-        <span class="wk-stat-fill" style="width:0.0727%"></span>
+      <span class="wk-progress-value">126 <small>of 157,757</small></span>
+      <span class="wk-stat-track" role="img" aria-label="0.0775 percent of target code bytes verified">
+        <span class="wk-stat-fill" style="width:0.0775%"></span>
       </span>
-      <span class="wk-progress-foot">0.0727% of code bytes verified · 627 replaced</span>
+      <span class="wk-progress-foot">0.0775% of code bytes verified · 748 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -432,6 +432,20 @@
       
       <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 28, 2026 05:15:03 UTC">October 28, 2026</span></p>
       
+      
+      
+      <aside class="wk-freshness" role="note">
+        <p><b>Not yet updated for 1 merged change.</b>
+        This page was last checked against Paleblood
+        <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/cf669283bed4b9a9f36e72ef1ebe28bf037d1a6f"><code>cf66928</code></a>;
+        these pull requests changed what it describes since:</p>
+        <ul>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/930">#930</a> physics: replace the instance's id reserve, controller and body set constructors</li>
+          
+          
+        </ul>
+      </aside>
       
       <h1 id="physics">Physics</h1>
 <p class="wk-lede">The game's rigid bodies live in one physics world: shared tables of bodies, motions and constraints that other objects index into, and listeners that hear when a body changes.</p>
@@ -529,11 +543,32 @@ reproduce the exact instructions: the truncation works on the float's bits, not 
 </thead>
 <tbody>
 <tr>
+<td data-label="Address"><code>0x00ae3fc0</code></td>
+<td style="text-align: right;" data-label="Size">280</td>
+<td data-label="Name"><code>physics_controller_construct_00ae3fc0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Controller: base constructor, vtable, three empty hkArrays (+0x40, +0xc0, +0xd0), +0x68/+0x70 cleared, setup 0x00ae40e0; the 0x30-byte parameter block appended (reserved on the shape heap if needed)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x00ae8700</code></td>
+<td style="text-align: right;" data-label="Size">414</td>
+<td data-label="Name"><code>physics_body_set_construct_00ae8700</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Body set: base constructor 0x00f359c0 with all seven arguments, vtable, a reference to the source shape set (+0x78), the source 32-bit indices (+0x80) copied into a shape heap buffer</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x01c0c2b0</code></td>
 <td style="text-align: right;" data-label="Size">3222</td>
 <td data-label="Name"><code>physics_instance_construct_01c0c2b0</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--verified"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></span></td>
 <td data-label="Notes">physics instance constructor over a body set: back-links; shape copy; controller (step 1/30 s; 60 FPS patches 1/60); motion rescale; listeners</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02bc1ca0</code></td>
+<td style="text-align: right;" data-label="Size">218</td>
+<td data-label="Name"><code>physics_ids_reserve_02bc1ca0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Grow a 32-bit id vector to a capacity: 4-aligned buffer from its heap (+0x20), ids copied, old buffer freed; a null buffer goes through the transaction failure report and is kept</td>
 </tr>
 </tbody>
 </table></div>

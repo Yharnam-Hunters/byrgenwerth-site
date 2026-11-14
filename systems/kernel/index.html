@@ -388,11 +388,11 @@
     
     <a class="wk-progress-card" href="../../progress/">
       <span class="wk-progress-label">Verified functions</span>
-      <span class="wk-progress-value">118 <small>of 157,757</small></span>
-      <span class="wk-stat-track" role="img" aria-label="0.0727 percent of target code bytes verified">
-        <span class="wk-stat-fill" style="width:0.0727%"></span>
+      <span class="wk-progress-value">126 <small>of 157,757</small></span>
+      <span class="wk-stat-track" role="img" aria-label="0.0775 percent of target code bytes verified">
+        <span class="wk-stat-fill" style="width:0.0775%"></span>
       </span>
-      <span class="wk-progress-foot">0.0727% of code bytes verified · 627 replaced</span>
+      <span class="wk-progress-foot">0.0775% of code bytes verified · 748 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -435,11 +435,15 @@
       
       
       <aside class="wk-freshness" role="note">
-        <p><b>Not yet updated for 2 merged changes.</b>
+        <p><b>Not yet updated for 4 merged changes.</b>
         This page was last checked against Paleblood
         <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/cf669283bed4b9a9f36e72ef1ebe28bf037d1a6f"><code>cf66928</code></a>;
         these pull requests changed what it describes since:</p>
         <ul>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/912">#912</a> verification: edge rows for 65 edge-verified functions</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/889">#889</a> kernel, frame_timing: replace the memory pool free (0x011ab3a0) and config_get_int (0x024eba00)</li>
           
           <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/740">#740</a> kernel: replace the engine's PthreadMutex.cpp (init, destroy, lock, try lock, unlock)</li>
           
@@ -685,6 +689,13 @@ ignore the result.</p>
 <td data-label="Name"><code>kernel_semaphore_signal</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--verified"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></span></td>
 <td data-label="Notes">Signal one unit using the full opaque handle including null; preserve kernel writes and translate every nonzero low32 result to 0x21</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x011ab3a0</code></td>
+<td style="text-align: right;" data-label="Size">260</td>
+<td data-label="Name"><code>kernel_memory_pool_free_011ab3a0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Memory pool free: lazy static lock; header/page/heap size off the counters; callback, page release or heap free; page pools repeat on the context pool</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x0247ecb0</code></td>

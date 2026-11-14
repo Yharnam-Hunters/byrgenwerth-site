@@ -6,6 +6,11 @@
  "CONTRIBUTING.md": {
   "behind": [
    {
+    "commit": "b05f357e16b6",
+    "pr": 943,
+    "title": "verification: require a current edge row for edge-verified functions"
+   },
+   {
     "commit": "55d9ed3aa24b",
     "pr": 868,
     "title": "docs: regenerate progress"
@@ -19,6 +24,31 @@
  },
  "how-the-frame-limiter-works.md": {
   "behind": [
+   {
+    "commit": "84ad6a249fe2",
+    "pr": 952,
+    "title": "frame_timing: carry FFwLo's server-mode pass-on and gate creation helpers"
+   },
+   {
+    "commit": "4f8e3e5ec4b0",
+    "pr": 835,
+    "title": "frame_timing: replace pass_on_in_local_mode (0x02265170) and lookup_session_object (0x02265290)"
+   },
+   {
+    "commit": "7d087c32a861",
+    "pr": 834,
+    "title": "frame_timing: replace pass_handle_on, pass_handle_on_with_items and append_slot_item (0x01e9cb80, 0x01e9cd20, 0x01e9d960)"
+   },
+   {
+    "commit": "c4d44e36ed20",
+    "pr": 889,
+    "title": "kernel, frame_timing: replace the memory pool free (0x011ab3a0) and config_get_int (0x024eba00)"
+   },
+   {
+    "commit": "36b968988ef8",
+    "pr": 886,
+    "title": "frame_timing: replace gate_state_query and step_machine_count_step (0x01ea5570, 0x01ec3000)"
+   },
    {
     "commit": "e655a3b5be58",
     "pr": 795,
@@ -37,6 +67,61 @@
  },
  "runtime.md": {
   "behind": [
+   {
+    "commit": "a7fff00b41a6",
+    "pr": 962,
+    "title": "loading: carry evill33t's canonical Darwin guest TLS for disk opens (#762)"
+   },
+   {
+    "commit": "d875e5c99fc9",
+    "pr": 949,
+    "title": "renderer: the least recently used shader gives its entry when all 1024 are kept"
+   },
+   {
+    "commit": "84f43aa901e4",
+    "pr": 945,
+    "title": "Keep geometry writer provenance in renderer documentation"
+   },
+   {
+    "commit": "e8cdaba2c234",
+    "pr": 917,
+    "title": "renderer: a depth target sampled as an image is copied on the GPU"
+   },
+   {
+    "commit": "6c9efc155269",
+    "pr": 932,
+    "title": "renderer: the least recently used pipeline gives its place when all are kept"
+   },
+   {
+    "commit": "fcba82fba069",
+    "pr": 926,
+    "title": "renderer: images copied from a target stay loaded after its write-back"
+   },
+   {
+    "commit": "f639bf831edf",
+    "pr": 916,
+    "title": "renderer: a compute fill of a render target runs on its image"
+   },
+   {
+    "commit": "f87ab62efe91",
+    "pr": 914,
+    "title": "renderer: observers report a packet in the chunk it lands in"
+   },
+   {
+    "commit": "3c210e1eb699",
+    "pr": 909,
+    "title": "renderer: shaders and pipelines are found through buckets"
+   },
+   {
+    "commit": "0d2845ec0c7a",
+    "pr": 908,
+    "title": "tools: boot.py --clip records silent clips; docs: enemy debug overlay design"
+   },
+   {
+    "commit": "6d2713085257",
+    "pr": 723,
+    "title": "metal: upload CPU frames and present through CAMetalLayer"
+   },
    {
     "commit": "7fdebd38da71",
     "pr": 890,
@@ -81,7 +166,43 @@
   "reviewed": "cf669283bed4b9a9f36e72ef1ebe28bf037d1a6f"
  },
  "systems/ai.md": {
-  "behind": [],
+  "behind": [
+   {
+    "commit": "6e5f7d3d4bc5",
+    "pr": 961,
+    "title": "ai: target-list edge case one float step inside half a metre"
+   },
+   {
+    "commit": "5538980c39c6",
+    "pr": 951,
+    "title": "ai: target list edge cases; verify ai_target_list_mark_main_matches"
+   },
+   {
+    "commit": "9c2866950f3a",
+    "pr": 936,
+    "title": "ai: perception (IsVisibleTarget, IsInsideTargetEx, target speed record) as readable C++"
+   },
+   {
+    "commit": "f8dcfcf63025",
+    "pr": 920,
+    "title": "ai: per-frame AI character queries and target matching (9 functions)"
+   },
+   {
+    "commit": "f13994d2ec58",
+    "pr": 911,
+    "title": "ai: AI script bindings (think timers, numbers, target state, random, stats) as readable C++"
+   },
+   {
+    "commit": "75559413e2b7",
+    "pr": 815,
+    "title": "ai: debug_draw_axes and the draw-layer colour callback as readable C++"
+   },
+   {
+    "commit": "d02aed3b2433",
+    "pr": 885,
+    "title": "ai: the world debug draw and the entity face point as readable C++"
+   }
+  ],
   "reviewed": "cf669283bed4b9a9f36e72ef1ebe28bf037d1a6f"
  },
  "systems/audio.md": {
@@ -89,15 +210,67 @@
   "reviewed": "cf669283bed4b9a9f36e72ef1ebe28bf037d1a6f"
  },
  "systems/camera.md": {
-  "behind": [],
+  "behind": [
+   {
+    "commit": "d511724b854f",
+    "pr": 839,
+    "title": "camera: transform_matrix and axis_angle_quaternion as readable C++"
+   }
+  ],
   "reviewed": "cf669283bed4b9a9f36e72ef1ebe28bf037d1a6f"
  },
  "systems/character.md": {
-  "behind": [],
+  "behind": [
+   {
+    "commit": "9245b64a5f3c",
+    "pr": 884,
+    "title": "Replace the four character module updates (0x01e59250, 0x01e5c440, 0x01e4a490, 0x01cd92b0)"
+   }
+  ],
   "reviewed": "cf669283bed4b9a9f36e72ef1ebe28bf037d1a6f"
  },
  "systems/engine.md": {
   "behind": [
+   {
+    "commit": "d8823b03282a",
+    "pr": 963,
+    "title": "engine: verify the regular heap's aligned allocation"
+   },
+   {
+    "commit": "49af63da12a2",
+    "pr": 938,
+    "title": "engine, loading: carry FFwLo's mutex and loading list replacements (#900, #904)"
+   },
+   {
+    "commit": "0999a1158181",
+    "pr": 931,
+    "title": "engine: narrow and wide string assign from counted text (0x02a2d8e0, 0x02a2a310)"
+   },
+   {
+    "commit": "9687380e8d88",
+    "pr": 933,
+    "title": "engine: Scaleform heap large-block allocation (0x0233c660) and page release (0x0233be70)"
+   },
+   {
+    "commit": "d511724b854f",
+    "pr": 839,
+    "title": "camera: transform_matrix and axis_angle_quaternion as readable C++"
+   },
+   {
+    "commit": "b5519073e09a",
+    "pr": 891,
+    "title": "engine: replace the wide string constructor (0x02bc0e00) and the byte array assign (0x02b4d100)"
+   },
+   {
+    "commit": "d02aed3b2433",
+    "pr": 885,
+    "title": "ai: the world debug draw and the entity face point as readable C++"
+   },
+   {
+    "commit": "8acb3e3bf80b",
+    "pr": 906,
+    "title": "loading: three resources that keep a copy of a loaded file"
+   },
    {
     "commit": "961c63bcf055",
     "pr": 760,
@@ -138,6 +311,31 @@
  "systems/frame_timing.md": {
   "behind": [
    {
+    "commit": "84ad6a249fe2",
+    "pr": 952,
+    "title": "frame_timing: carry FFwLo's server-mode pass-on and gate creation helpers"
+   },
+   {
+    "commit": "4f8e3e5ec4b0",
+    "pr": 835,
+    "title": "frame_timing: replace pass_on_in_local_mode (0x02265170) and lookup_session_object (0x02265290)"
+   },
+   {
+    "commit": "7d087c32a861",
+    "pr": 834,
+    "title": "frame_timing: replace pass_handle_on, pass_handle_on_with_items and append_slot_item (0x01e9cb80, 0x01e9cd20, 0x01e9d960)"
+   },
+   {
+    "commit": "c4d44e36ed20",
+    "pr": 889,
+    "title": "kernel, frame_timing: replace the memory pool free (0x011ab3a0) and config_get_int (0x024eba00)"
+   },
+   {
+    "commit": "36b968988ef8",
+    "pr": 886,
+    "title": "frame_timing: replace gate_state_query and step_machine_count_step (0x01ea5570, 0x01ec3000)"
+   },
+   {
     "commit": "e655a3b5be58",
     "pr": 795,
     "title": "frame_timing: replace the task manager's helpers (6 functions)"
@@ -151,6 +349,16 @@
  },
  "systems/kernel.md": {
   "behind": [
+   {
+    "commit": "3d15a9e46a8d",
+    "pr": 912,
+    "title": "verification: edge rows for 65 edge-verified functions"
+   },
+   {
+    "commit": "c4d44e36ed20",
+    "pr": 889,
+    "title": "kernel, frame_timing: replace the memory pool free (0x011ab3a0) and config_get_int (0x024eba00)"
+   },
    {
     "commit": "d5d694aab686",
     "pr": 740,
@@ -166,6 +374,31 @@
  },
  "systems/loading.md": {
   "behind": [
+   {
+    "commit": "a7fff00b41a6",
+    "pr": 962,
+    "title": "loading: carry evill33t's canonical Darwin guest TLS for disk opens (#762)"
+   },
+   {
+    "commit": "49af63da12a2",
+    "pr": 938,
+    "title": "engine, loading: carry FFwLo's mutex and loading list replacements (#900, #904)"
+   },
+   {
+    "commit": "a8f8b6ffb949",
+    "pr": 791,
+    "title": "loading: replace five queue helpers (headed free, tagged string release, resource handle, transfer task cancel)"
+   },
+   {
+    "commit": "d7af3ce65c3c",
+    "pr": 903,
+    "title": "loading: replace five load result helpers as readable C++"
+   },
+   {
+    "commit": "8acb3e3bf80b",
+    "pr": 906,
+    "title": "loading: three resources that keep a copy of a loaded file"
+   },
    {
     "commit": "97f76a208572",
     "pr": 741,
@@ -185,7 +418,13 @@
   "reviewed": "cf669283bed4b9a9f36e72ef1ebe28bf037d1a6f"
  },
  "systems/menu.md": {
-  "behind": [],
+  "behind": [
+   {
+    "commit": "4dada44249d6",
+    "pr": 923,
+    "title": "menu: ten pieces of the game's Scaleform code as readable C++"
+   }
+  ],
   "reviewed": "cf669283bed4b9a9f36e72ef1ebe28bf037d1a6f"
  },
  "systems/param.md": {
@@ -193,11 +432,67 @@
   "reviewed": "cf669283bed4b9a9f36e72ef1ebe28bf037d1a6f"
  },
  "systems/physics.md": {
-  "behind": [],
+  "behind": [
+   {
+    "commit": "d1766227fbd6",
+    "pr": 930,
+    "title": "physics: replace the instance's id reserve, controller and body set constructors"
+   }
+  ],
   "reviewed": "cf669283bed4b9a9f36e72ef1ebe28bf037d1a6f"
  },
  "systems/render.md": {
   "behind": [
+   {
+    "commit": "23760594e77e",
+    "pr": 956,
+    "title": "render: carry evill33t's local shader packet wrapper"
+   },
+   {
+    "commit": "335b81e4b20b",
+    "pr": 947,
+    "title": "render: carry evill33t's five shader and register packet writers (#860, #865, #882, #888, #901)"
+   },
+   {
+    "commit": "875e3995f375",
+    "pr": 856,
+    "title": "render: replace the primitive-ID enable register writer"
+   },
+   {
+    "commit": "73c87cb55e21",
+    "pr": 848,
+    "title": "render: replace the dispatch draw-index register writer"
+   },
+   {
+    "commit": "fc89c005bbc0",
+    "pr": 844,
+    "title": "render: replace the instance step-rate packet writer"
+   },
+   {
+    "commit": "3baa66ad6fe8",
+    "pr": 922,
+    "title": "render: replace hull shader update wrapper"
+   },
+   {
+    "commit": "630e2fce125d",
+    "pr": 871,
+    "title": "render: replace the DB_RENDER_OVERRIDE packet setter"
+   },
+   {
+    "commit": "6ae5b898c532",
+    "pr": 853,
+    "title": "render: replace the border-color base register writer"
+   },
+   {
+    "commit": "5e03a5b90705",
+    "pr": 840,
+    "title": "render: replace the vertex reuse packet writer"
+   },
+   {
+    "commit": "f87ab62efe91",
+    "pr": 914,
+    "title": "renderer: observers report a packet in the chunk it lands in"
+   },
    {
     "commit": "24491e12a07d",
     "pr": 880,

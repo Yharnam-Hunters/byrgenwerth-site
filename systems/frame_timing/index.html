@@ -388,11 +388,11 @@
     
     <a class="wk-progress-card" href="../../progress/">
       <span class="wk-progress-label">Verified functions</span>
-      <span class="wk-progress-value">118 <small>of 157,757</small></span>
-      <span class="wk-stat-track" role="img" aria-label="0.0727 percent of target code bytes verified">
-        <span class="wk-stat-fill" style="width:0.0727%"></span>
+      <span class="wk-progress-value">126 <small>of 157,757</small></span>
+      <span class="wk-stat-track" role="img" aria-label="0.0775 percent of target code bytes verified">
+        <span class="wk-stat-fill" style="width:0.0775%"></span>
       </span>
-      <span class="wk-progress-foot">0.0727% of code bytes verified · 627 replaced</span>
+      <span class="wk-progress-foot">0.0775% of code bytes verified · 748 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -437,11 +437,21 @@
       
       
       <aside class="wk-freshness" role="note">
-        <p><b>Not yet updated for 1 merged change.</b>
+        <p><b>Not yet updated for 6 merged changes.</b>
         This page was last checked against Paleblood
         <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/cf669283bed4b9a9f36e72ef1ebe28bf037d1a6f"><code>cf66928</code></a>;
         these pull requests changed what it describes since:</p>
         <ul>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/952">#952</a> frame_timing: carry FFwLo's server-mode pass-on and gate creation helpers</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/835">#835</a> frame_timing: replace pass_on_in_local_mode (0x02265170) and lookup_session_object (0x02265290)</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/834">#834</a> frame_timing: replace pass_handle_on, pass_handle_on_with_items and append_slot_item (0x01e9cb80, 0x01e9cd20, 0x01e9d960)</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/889">#889</a> kernel, frame_timing: replace the memory pool free (0x011ab3a0) and config_get_int (0x024eba00)</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/886">#886</a> frame_timing: replace gate_state_query and step_machine_count_step (0x01ea5570, 0x01ec3000)</li>
           
           <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/795">#795</a> frame_timing: replace the task manager's helpers (6 functions)</li>
           
@@ -968,6 +978,27 @@ fills four 32-bit words from a 32-bit seed with a 64-bit linear congruential ste
 <td data-label="Notes">When the profiling switch at 0x058b8718 is set, gives each of the ten stopwatches at 0x058b86c0 its end-of-frame tick (0x014486d0) in order</td>
 </tr>
 <tr>
+<td data-label="Address"><code>0x01e9cb80</code></td>
+<td style="text-align: right;" data-label="Size">390</td>
+<td data-label="Name"><code>frame_timing_pass_handle_on_01e9cb80</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">With a handle: copies its object items (+0x70) into a new list on the heap at 0x05940428; passes the handle and list to 0x022658b0; frees the list. False without a handle</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x01e9cd20</code></td>
+<td style="text-align: right;" data-label="Size">397</td>
+<td data-label="Name"><code>frame_timing_pass_handle_on_with_items_01e9cd20</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">As 0x01e9cb80, but passes the caller list to 0x022658b0; the list it builds from the handle object is only freed. False without a handle</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x01e9d960</code></td>
+<td style="text-align: right;" data-label="Size">271</td>
+<td data-label="Name"><code>frame_timing_append_slot_item_01e9d960</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">push_back of a 12-byte item: grows a full list by half (at least one) through 0x01e9da70; an item inside the list is copied by index after growth</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x01ea47a0</code></td>
 <td style="text-align: right;" data-label="Size">611</td>
 <td data-label="Name"><code>frame_timing_gate_create_handle</code></td>
@@ -994,6 +1025,13 @@ fills four 32-bit words from a 32-bit seed with a 64-bit linear congruential ste
 <td data-label="Name"><code>frame_timing_gate_owner_check</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">owner check of the Chalice Dungeon gate state: idle in mode 1; FrpgNetMan flags and an id allow it; keeps the object for the id as its handle; then request 6</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x01ea5570</code></td>
+<td style="text-align: right;" data-label="Size">233</td>
+<td data-label="Name"><code>frame_timing_gate_state_query_01ea5570</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Whether the Chalice Dungeon gate state allows a ritual reset: idle in mode 2; or idle in mode 3 with FrpgNetMan bytes allowing it and no handle or one whose +0x10c bit 0 is clear</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x01ea5670</code></td>
@@ -1064,6 +1102,13 @@ fills four 32-bit words from a 32-bit seed with a 64-bit linear congruential ste
 <td data-label="Name"><code>frame_timing_dungeon_gate_on_event_3000</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">SprjDungeonGateIns handler of event 3000: when idle; request 10 and advance the gate state one fixed step</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x01ec3000</code></td>
+<td style="text-align: right;" data-label="Size">235</td>
+<td data-label="Name"><code>frame_timing_step_machine_count_step_01ec3000</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Gate step machine: counts a step (+0x54); when the step after the current one (+0x50) is 27 or more (unsigned) formats a wide debug message on the default heap and passes it on</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x01ec3ef0</code></td>
@@ -1164,6 +1209,41 @@ fills four 32-bit words from a 32-bit seed with a 64-bit linear congruential ste
 <td data-label="Notes">state method: advance the owner one fixed step while busy (1/30 s; 1/60 s in the 60 FPS patches) (the Chalice Dungeon gate's state; at +0x108 in SprjDungeonGateIns; not reached by the routes yet)</td>
 </tr>
 <tr>
+<td data-label="Address"><code>0x02265170</code></td>
+<td style="text-align: right;" data-label="Size">243</td>
+<td data-label="Name"><code>frame_timing_pass_on_in_local_mode_02265170</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Gate handle pass-on in the local modes: when FrpgNetMan's four bytes allow it, a request from its object at +0xca8 gets the handle and kind (0x02269d40); else the handle's +0x11c/+0x120 are set to 2</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02265290</code></td>
+<td style="text-align: right;" data-label="Size">470</td>
+<td data-label="Name"><code>frame_timing_lookup_session_object_02265290</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Finds the entry for an id in FrpgNetMan's object's list (else allocates, builds and appends one), gives it to a new request and stores it with a reference; null when FrpgNetMan's bytes refuse</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02265580</code></td>
+<td style="text-align: right;" data-label="Size">563</td>
+<td data-label="Name"><code>frame_timing_create_handle_from_levels_02265580</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">When FrpgNetMan allows: makes a date-stamped handle (0x130 bytes), lists it at FrpgNetMan+0xca8, starts a new entry with it and the four flag levels, returns a reference; else null</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02265960</code></td>
+<td style="text-align: right;" data-label="Size">116</td>
+<td data-label="Name"><code>frame_timing_pass_on_in_server_mode_02265960</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Gate handle pass-on in the server modes: when the handle is set, makes a request from FrpgNetMan's object at +0xca8 (0x02264640) and gives it the handle and kind (0x02269e30); false otherwise</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0231fbc0</code></td>
+<td style="text-align: right;" data-label="Size">371</td>
+<td data-label="Name"><code>frame_timing_fill_creation_part1_0231fbc0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Packs a decimal number (the record word at +0x18, or one built from its +2 value and +5 count when negative) as four two-digit bytes; all ones without a record</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x02418d20</code></td>
 <td style="text-align: right;" data-label="Size">467</td>
 <td data-label="Name"><code>frame_timing_frame_step</code></td>
@@ -1204,6 +1284,13 @@ fills four 32-bit words from a 32-bit seed with a 64-bit linear congruential ste
 <td data-label="Name"><code>frame_timing_job_wait</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">Poll a job's state until finished (2); sleeping 1 ms in the kernel between polls</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x024eba00</code></td>
+<td style="text-align: right;" data-label="Size">328</td>
+<td data-label="Name"><code>frame_timing_config_get_int_024eba00</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Config map lookup (fallback when missing); copy the value, expand each reference marker, return the low 32 bits of a base-10 wcstol; free a heap copy</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x024f8110</code></td>

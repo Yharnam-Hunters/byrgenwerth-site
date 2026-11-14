@@ -388,11 +388,11 @@
     
     <a class="wk-progress-card" href="../../progress/">
       <span class="wk-progress-label">Verified functions</span>
-      <span class="wk-progress-value">118 <small>of 157,757</small></span>
-      <span class="wk-stat-track" role="img" aria-label="0.0727 percent of target code bytes verified">
-        <span class="wk-stat-fill" style="width:0.0727%"></span>
+      <span class="wk-progress-value">126 <small>of 157,757</small></span>
+      <span class="wk-stat-track" role="img" aria-label="0.0775 percent of target code bytes verified">
+        <span class="wk-stat-fill" style="width:0.0775%"></span>
       </span>
-      <span class="wk-progress-foot">0.0727% of code bytes verified · 627 replaced</span>
+      <span class="wk-progress-foot">0.0775% of code bytes verified · 748 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -435,21 +435,29 @@
       
       
       <aside class="wk-freshness" role="note">
-        <p><b>Not yet updated for 4 merged changes.</b>
+        <p><b>Not yet updated for 14 merged changes.</b>
         This page was last checked against Paleblood
         <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/cf669283bed4b9a9f36e72ef1ebe28bf037d1a6f"><code>cf66928</code></a>;
         these pull requests changed what it describes since:</p>
         <ul>
           
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/880">#880</a> render: replace the pending command submission (0x02aafa00)</li>
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/956">#956</a> render: carry evill33t's local shader packet wrapper</li>
           
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/777">#777</a> render: replace the shader register packet writers</li>
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/947">#947</a> render: carry evill33t's five shader and register packet writers (#860, #865, #882, #888, #901)</li>
           
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/789">#789</a> render: replace the swap-chain setup object creation</li>
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/856">#856</a> render: replace the primitive-ID enable register writer</li>
           
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/811">#811</a> render: replace the two resource info finish steps</li>
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/848">#848</a> render: replace the dispatch draw-index register writer</li>
           
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/844">#844</a> render: replace the instance step-rate packet writer</li>
           
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/922">#922</a> render: replace hull shader update wrapper</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/871">#871</a> render: replace the DB_RENDER_OVERRIDE packet setter</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/853">#853</a> render: replace the border-color base register writer</li>
+          
+          <li>and 6 more</li>
         </ul>
       </aside>
       
@@ -977,11 +985,46 @@ frames. #279, #286 and #287 were brought up to date with <code>main</code> from 
 <td data-label="Notes">Emit DRAW_INDEX_AUTO and a query-selected THREAD_TRACE_MARKER event or NOP. Reload flags and cursor after overlapping packet stores before selecting and publishing the trailing packet.</td>
 </tr>
 <tr>
+<td data-label="Address"><code>0x014749c0</code></td>
+<td style="text-align: right;" data-label="Size">97</td>
+<td data-label="Name"><code>render_set_gds_oa</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Writes a five-word SET_UCONFIG_REG packet with full DWORD GDS_OA_CNTL and cleared counter and address; byte-result callback admission; publishes the live cursor after all stores</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x01474a30</code></td>
+<td style="text-align: right;" data-label="Size">86</td>
+<td data-label="Name"><code>render_set_dispatch_draw_index</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Write the unmasked VGT_DISPATCH_DRAW_INDEX DWORD after three-word admission; publish from the captured cursor after the packet stores.</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x01474f30</code></td>
+<td style="text-align: right;" data-label="Size">92</td>
+<td data-label="Name"><code>render_set_vertex_reuse</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Write VGT_REUSE_OFF as the input byte XOR 1; reserve three DWORDs and publish from the captured cursor after ordered stores.</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x01474f90</code></td>
+<td style="text-align: right;" data-label="Size">99</td>
+<td data-label="Name"><code>render_set_instance_step_rates</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Write two unmasked VGT_INSTANCE_STEP_RATE DWORDs after four-word admission, then advance the live cursor after the packet stores.</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x01475000</code></td>
 <td style="text-align: right;" data-label="Size">397</td>
 <td data-label="Name"><code>render_emit_shader_link_words</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--verified"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></span></td>
 <td data-label="Notes">Write SPI_PS_INPUT_CNTL entries from last word to first to preserve overlapping reads; retain the unmasked count shift for zero and oversized counts.</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x01475210</code></td>
+<td style="text-align: right;" data-label="Size">93</td>
+<td data-label="Name"><code>render_set_db_render_override</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Writes DB_RENDER_OVERRIDE with input DWORD masked by 0xf8000040; byte-result callback admission and cursor redirection; publishes the captured cursor after all stores</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x01475370</code></td>
@@ -1010,6 +1053,62 @@ frames. #279, #286 and #287 were brought up to date with <code>main</code> from 
 <td data-label="Name"><code>render_emit_set_vs_shader_01475480</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">Packet writer: reserves 29 words (space callback when short); sceGnmSetVsShader with the shader modifier; cursor advanced only on success</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x014754f0</code></td>
+<td style="text-align: right;" data-label="Size">98</td>
+<td data-label="Name"><code>render_update_vs_shader</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Reserves 29 words with byte-result callback admission; forwards opaque registers and full DWORD modifier to sceGnmUpdateVsShader; advances the live cursor by 116 bytes only on a zero DWORD result</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x01475560</code></td>
+<td style="text-align: right;" data-label="Size">98</td>
+<td data-label="Name"><code>render_set_es_shader</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Reserves 20 words with byte-result callback admission; forwards opaque registers and full DWORD modifier to sceGnmSetEsShader; advances the live cursor by 80 bytes only on a zero DWORD result</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x014755d0</code></td>
+<td style="text-align: right;" data-label="Size">98</td>
+<td data-label="Name"><code>render_set_hs_shader</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Reserve 30 DWORDs; read configuration DWORD after callback admission; forward opaque registers to sceGnmSetHsShader; zero low-DWORD result adds 120 to live cursor; AL admits without retry</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x01475640</code></td>
+<td style="text-align: right;" data-label="Size">98</td>
+<td data-label="Name"><code>render_update_hs_shader</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Reserve 30 DWORDs; read configuration DWORD after callback admission; forward opaque registers to sceGnmUpdateHsShader; zero low-DWORD result adds 120 to live cursor; AL admits without retry</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x014757d0</code></td>
+<td style="text-align: right;" data-label="Size">98</td>
+<td data-label="Name"><code>render_set_ls_shader</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Reserve 23 DWORDs; forward opaque registers and DWORD modifier to sceGnmSetLsShader; zero low-DWORD result adds 92 to live cursor; AL callback admission reloads without capacity retry</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x01475840</code></td>
+<td style="text-align: right;" data-label="Size">83</td>
+<td data-label="Name"><code>render_set_compute_shader</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Reserves 25 words through byte-result capacity admission; forwards the opaque register block to sceGnmSetCsShader; advances the live cursor by 100 bytes only when the low DWORD result is zero</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x014758a0</code></td>
+<td style="text-align: right;" data-label="Size">90</td>
+<td data-label="Name"><code>render_set_border_color_base</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Write GPU address bits 8-39 to TA_BC_BASE_ADDR after three-word admission; discard low and upper address bits and publish from the captured cursor.</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x01475900</code></td>
+<td style="text-align: right;" data-label="Size">89</td>
+<td data-label="Name"><code>render_set_primitive_id_enable</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Write the complete input byte to VGT_PRIMITIVEID_EN after three-word admission; preserve noncanonical byte values and publish from the captured cursor.</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x01475da0</code></td>

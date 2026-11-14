@@ -388,11 +388,11 @@
     
     <a class="wk-progress-card" href="../../progress/">
       <span class="wk-progress-label">Verified functions</span>
-      <span class="wk-progress-value">118 <small>of 157,757</small></span>
-      <span class="wk-stat-track" role="img" aria-label="0.0727 percent of target code bytes verified">
-        <span class="wk-stat-fill" style="width:0.0727%"></span>
+      <span class="wk-progress-value">126 <small>of 157,757</small></span>
+      <span class="wk-stat-track" role="img" aria-label="0.0775 percent of target code bytes verified">
+        <span class="wk-stat-fill" style="width:0.0775%"></span>
       </span>
-      <span class="wk-progress-foot">0.0727% of code bytes verified · 627 replaced</span>
+      <span class="wk-progress-foot">0.0775% of code bytes verified · 748 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -432,6 +432,20 @@
       
       <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 13, 2026 14:54:55 UTC">November 13, 2026</span></p>
       
+      
+      
+      <aside class="wk-freshness" role="note">
+        <p><b>Not yet updated for 1 merged change.</b>
+        This page was last checked against Paleblood
+        <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/cf669283bed4b9a9f36e72ef1ebe28bf037d1a6f"><code>cf66928</code></a>;
+        these pull requests changed what it describes since:</p>
+        <ul>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/923">#923</a> menu: ten pieces of the game's Scaleform code as readable C++</li>
+          
+          
+        </ul>
+      </aside>
       
       <h1 id="menu">Menu</h1>
 <p class="wk-lede">The game's menus and dialogs: so far the text input dialog behind the system keyboard, and two item dialogs' list entries.</p>
@@ -512,6 +526,76 @@ recorded from a real game run, so none is <code>verified</code>.</p>
 <td data-label="Name"><code>menu_gaitem_status_entry_copy</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">GaitemStatusDialog list entry copy of entries[index] (0x90 B: two words and wide strings, a ref-counted pointer at +0x80 (count +8 up), a byte)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x023411d0</code></td>
+<td style="text-align: right;" data-label="Size">116</td>
+<td data-label="Name"><code>menu_heap_adapter_free_023411d0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Scaleform heap adapter free (vtable 0x057ab400): null kept; else DLNew release (thread release heap or the owner heap)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02341330</code></td>
+<td style="text-align: right;" data-label="Size">188</td>
+<td data-label="Name"><code>menu_heap_adapter_reallocate_02341330</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Scaleform heap adapter reallocate: same size returns the buffer; else allocate from heaps[index] and copy the smaller size; DLNew release of the old one</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x023548d0</code></td>
+<td style="text-align: right;" data-label="Size">162</td>
+<td data-label="Name"><code>menu_movie_screen_close_023548d0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">movie screen close: with the menu state flush the SprjScaleform player (if any) and close the movie; then queue the request</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02354d90</code></td>
+<td style="text-align: right;" data-label="Size">213</td>
+<td data-label="Name"><code>menu_movie_screen_step_02354d90</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">movie screen step: the player step up to twice (+0xd0 counts tries); no player or a failed step marks the menu state and closes the movie; queue the request</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02360d80</code></td>
+<td style="text-align: right;" data-label="Size">168</td>
+<td data-label="Name"><code>menu_tex_repository_require_02360d80</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">ScaleformTexRepository: a missing key gets a texture from the owner source (+0x940; vtable slot 0x130)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02363c00</code></td>
+<td style="text-align: right;" data-label="Size">128</td>
+<td data-label="Name"><code>menu_work_holder_destroy_02363c00</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">work holder destructor (vtable 0x05756bd0): base vtable; one user less (last sets the signal at +0x10); one reference less</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02363d20</code></td>
+<td style="text-align: right;" data-label="Size">128</td>
+<td data-label="Name"><code>menu_work_holder_destroy_02363d20</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">work holder destructor (vtable 0x05756c00): the same code as 0x02363c00</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02387050</code></td>
+<td style="text-align: right;" data-label="Size">144</td>
+<td data-label="Name"><code>menu_file_set_loader_wait_02387050</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">file set <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> step: copy the sizes of the loaded files (state 4); one still loading stops it; then the next step and step done</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02387650</code></td>
+<td style="text-align: right;" data-label="Size">164</td>
+<td data-label="Name"><code>menu_file_set_loader_build_02387650</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">file set <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> step: build from the first and third files with the name; 0 declined (+0x19a); other than 1 failed (+0x15b); next step and step done</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0238a210</code></td>
+<td style="text-align: right;" data-label="Size">166</td>
+<td data-label="Name"><code>menu_named_resource_release_0238a210</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">named resource release when held: handle released; registry entry found by the wide name and released; name emptied; loaded cleared</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x02415fe0</code></td>

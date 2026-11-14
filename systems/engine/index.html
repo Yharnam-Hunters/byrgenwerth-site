@@ -388,11 +388,11 @@
     
     <a class="wk-progress-card" href="../../progress/">
       <span class="wk-progress-label">Verified functions</span>
-      <span class="wk-progress-value">118 <small>of 157,757</small></span>
-      <span class="wk-stat-track" role="img" aria-label="0.0727 percent of target code bytes verified">
-        <span class="wk-stat-fill" style="width:0.0727%"></span>
+      <span class="wk-progress-value">126 <small>of 157,757</small></span>
+      <span class="wk-stat-track" role="img" aria-label="0.0775 percent of target code bytes verified">
+        <span class="wk-stat-fill" style="width:0.0775%"></span>
       </span>
-      <span class="wk-progress-foot">0.0727% of code bytes verified · 627 replaced</span>
+      <span class="wk-progress-foot">0.0775% of code bytes verified · 748 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -429,25 +429,29 @@
       
       
       <aside class="wk-freshness" role="note">
-        <p><b>Not yet updated for 6 merged changes.</b>
+        <p><b>Not yet updated for 14 merged changes.</b>
         This page was last checked against Paleblood
         <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/cf669283bed4b9a9f36e72ef1ebe28bf037d1a6f"><code>cf66928</code></a>;
         these pull requests changed what it describes since:</p>
         <ul>
           
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/760">#760</a> engine: replace the wide string's assign from counted text (on #737)</li>
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/963">#963</a> engine: verify the regular heap's aligned allocation</li>
           
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/767">#767</a> engine: replace the debug print</li>
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/938">#938</a> engine, loading: carry FFwLo's mutex and loading list replacements (#900, #904)</li>
           
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/867">#867</a> engine: DLFormat integer conversion and format entry points</li>
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/931">#931</a> engine: narrow and wide string assign from counted text (0x02a2d8e0, 0x02a2a310)</li>
           
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/763">#763</a> engine: replace the red-black tree's insert fix-up and remove</li>
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/933">#933</a> engine: Scaleform heap large-block allocation (0x0233c660) and page release (0x0233be70)</li>
           
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/826">#826</a> engine: text encoding conversions and DLFormat's %s conversion</li>
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/839">#839</a> camera: transform_matrix and axis_angle_quaternion as readable C++</li>
           
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/755">#755</a> engine: replace the heap manager's locked regular heap set-up</li>
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/891">#891</a> engine: replace the wide string constructor (0x02bc0e00) and the byte array assign (0x02b4d100)</li>
           
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/885">#885</a> ai: the world debug draw and the entity face point as readable C++</li>
           
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/906">#906</a> loading: three resources that keep a copy of a loaded file</li>
+          
+          <li>and 6 more</li>
         </ul>
       </aside>
       
@@ -735,11 +739,39 @@ They are helpers of that replacement, not separate functions of the executable.<
 <td data-label="Notes">Scaleform in-place small-block resize: shrink binning the end (joined with a free next block); grow from a free next block within the page half; bin unlink moves the head to prev</td>
 </tr>
 <tr>
+<td data-label="Address"><code>0x0233bbe0</code></td>
+<td style="text-align: right;" data-label="Size">313</td>
+<td data-label="Name"><code>engine_scaleform_heap_add_page_0233bbe0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Scaleform engine page add: limit handler asked when a page would pass the limit; under the page-manager lock a page gets its table location, goes to the bins and the page ring; retry set</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0233bd20</code></td>
+<td style="text-align: right;" data-label="Size">326</td>
+<td data-label="Name"><code>engine_scaleform_heap_add_page_locked_0233bd20</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Scaleform engine page add for a caller holding the page-manager lock (released around the limit handler); otherwise as 0x0233bbe0</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0233be70</code></td>
+<td style="text-align: right;" data-label="Size">548</td>
+<td data-label="Name"><code>engine_scaleform_heap_release_page_0233be70</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Scaleform heap: releases an empty page (low byte of arg 3: caller holds the page manager lock). Bins, engine ring, headers cleared, memory freed, descriptor to the spare ring</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x0233c0a0</code></td>
 <td style="text-align: right;" data-label="Size">167</td>
 <td data-label="Name"><code>engine_scaleform_heap_free_0233c0a0</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">Scaleform engine free: bins free; used bytes down; header counts down (the last decides); page released at zero; count down</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0233c660</code></td>
+<td style="text-align: right;" data-label="Size">528</td>
+<td data-label="Name"><code>engine_scaleform_heap_allocate_large_0233c660</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Scaleform heap: large block (request rounded to 8, node after it) from the arena allocator; limit handler first; node into the page manager tree; reports and counts it; retry flag</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x0233c870</code></td>
@@ -754,6 +786,13 @@ They are helpers of that replacement, not separate functions of the executable.<
 <td data-label="Name"><code>engine_scaleform_heap_allocate_aligned_0233ca70</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">Scaleform engine aligned allocation: &lt;= 0x200 from the bins (alignment &gt;= 16) with page-add retries; larger (&gt;= 8-aligned and long; rounded to 8) to the large allocation (locked unless held)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0233d140</code></td>
+<td style="text-align: right;" data-label="Size">347</td>
+<td data-label="Name"><code>engine_scaleform_heap_reallocate_small_moving_0233d140</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Scaleform small-block move: engine allocation (0 on failure); copies min(old bitset length, reported length); frees the old block as the engine free does</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x0233d750</code></td>
@@ -1095,7 +1134,7 @@ They are helpers of that replacement, not separate functions of the executable.<
 <td data-label="Address"><code>0x02485730</code></td>
 <td style="text-align: right;" data-label="Size">356</td>
 <td data-label="Name"><code>engine_regular_heap_allocate_02485730</code></td>
-<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Status"><span class="wk-badge wk-badge--verified"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></span></td>
 <td data-label="Notes">DLRegularHeap allocation: first block of the lowest non-empty larger list, else first fit in the own list; rest split off into its list</td>
 </tr>
 <tr>
@@ -1109,7 +1148,7 @@ They are helpers of that replacement, not separate functions of the executable.<
 <td data-label="Address"><code>0x02485a60</code></td>
 <td style="text-align: right;" data-label="Size">748</td>
 <td data-label="Name"><code>engine_regular_heap_allocate_aligned_02485a60</code></td>
-<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Status"><span class="wk-badge wk-badge--verified"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></span></td>
 <td data-label="Notes">DLRegularHeap aligned allocation: power of two; up to 16 the plain one; below 0x400 lowest list above the worst case; else first aligned fit; front and rest stay free</td>
 </tr>
 <tr>
@@ -1491,11 +1530,39 @@ They are helpers of that replacement, not separate functions of the executable.<
 <td data-label="Notes">Wide string growth: capacity length/7 or old<em>1.5 (max 0x7ffffffffffffffe); allocate 2</em>cap+2 align 2, transaction on failure; keep chars, free old heap</td>
 </tr>
 <tr>
+<td data-label="Address"><code>0x02a2a310</code></td>
+<td style="text-align: right;" data-label="Size">477</td>
+<td data-label="Name"><code>engine_wide_string_assign_02a2a310</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Wide string assign from counted text: text inside its own characters keeps that part (cut the tail, wmemmove the front); else too long throws, grow 0x02a2a500 if needed, wmemcpy</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x02a2a720</code></td>
 <td style="text-align: right;" data-label="Size">477</td>
 <td data-label="Name"><code>engine_wide_string_assign_counted_02a2a720</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">Wide string assign from counted text: text inside the string is the assign from part of itself (inlined); otherwise too long throws, grow if needed, copy</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02a2d8e0</code></td>
+<td style="text-align: right;" data-label="Size">452</td>
+<td data-label="Name"><code>engine_narrow_string_assign_02a2d8e0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Narrow string assign from counted text: text inside its own characters keeps that part (cut the tail, memmove the front); else count ~0 throws, grow 0x02a2dac0 if needed, memcpy</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02a3a840</code></td>
+<td style="text-align: right;" data-label="Size">19</td>
+<td data-label="Name"><code>engine_mutex_construct_02a3a840</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Engine mutex constructor (the print lock base): its vtable 0x056b5b70 and a cleared initialized flag; the handle is left as it was</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02a3a920</code></td>
+<td style="text-align: right;" data-label="Size">49</td>
+<td data-label="Name"><code>engine_mutex_initialize_02a3a920</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Engine mutex initialize: asks the vtable; else the PthreadMutex initialize (0x02483fe0) on the handle; a nonzero result is returned and the flag stays as it was</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x02a3ae00</code></td>
@@ -1531,6 +1598,20 @@ They are helpers of that replacement, not separate functions of the executable.<
 <td data-label="Name"><code>engine_wide_string_destroy</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">WideString destructor; unsigned capacity &gt;=8 frees even null; ignores owns; callback before capacity and size reset and two-byte terminator</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02b4d100</code></td>
+<td style="text-align: right;" data-label="Size">477</td>
+<td data-label="Name"><code>engine_byte_array_assign_02b4d100</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Engine byte array copy assign: self no-op; slot 0x10 queries; empty source empties; memmove over the size or within capacity (rest constructed); else free, allocate exact (align 1), copy</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02bc0e00</code></td>
+<td style="text-align: right;" data-label="Size">196</td>
+<td data-label="Name"><code>engine_wide_string_construct_02bc0e00</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Wide string from null-terminated text: default allocator (created on first use), container heap check, empty inline string, counted assign 0x02a2a720 with wcslen (0 for empty)</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x02fa1640</code></td>

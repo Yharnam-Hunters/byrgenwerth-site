@@ -388,11 +388,11 @@
     
     <a class="wk-progress-card" href="../../progress/">
       <span class="wk-progress-label">Verified functions</span>
-      <span class="wk-progress-value">118 <small>of 157,757</small></span>
-      <span class="wk-stat-track" role="img" aria-label="0.0727 percent of target code bytes verified">
-        <span class="wk-stat-fill" style="width:0.0727%"></span>
+      <span class="wk-progress-value">126 <small>of 157,757</small></span>
+      <span class="wk-stat-track" role="img" aria-label="0.0775 percent of target code bytes verified">
+        <span class="wk-stat-fill" style="width:0.0775%"></span>
       </span>
-      <span class="wk-progress-foot">0.0727% of code bytes verified · 627 replaced</span>
+      <span class="wk-progress-foot">0.0775% of code bytes verified · 748 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -432,6 +432,20 @@
       
       <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 10, 2026 20:41:05 UTC">November 10, 2026</span></p>
       
+      
+      
+      <aside class="wk-freshness" role="note">
+        <p><b>Not yet updated for 1 merged change.</b>
+        This page was last checked against Paleblood
+        <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/cf669283bed4b9a9f36e72ef1ebe28bf037d1a6f"><code>cf66928</code></a>;
+        these pull requests changed what it describes since:</p>
+        <ul>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/839">#839</a> camera: transform_matrix and axis_angle_quaternion as readable C++</li>
+          
+          
+        </ul>
+      </aside>
       
       <h1 id="camera">Camera</h1>
 <p class="wk-lede">The follow camera: how it turns the stick, the character's movement and a lock-on target into a camera position each frame, how it keeps out of walls, and where its field of view comes from.</p>
@@ -564,6 +578,20 @@ it stored last time instead of computing a meaningless one.</p>
 </tr>
 </thead>
 <tbody>
+<tr>
+<td data-label="Address"><code>0x0083d4d0</code></td>
+<td style="text-align: right;" data-label="Size">237</td>
+<td data-label="Name"><code>camera_transform_matrix_0083d4d0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">4x4 transform from position, rotation quaternion and per-axis scale: quaternion rows times the diagonal scale, position last, affine w lanes</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x00848e80</code></td>
+<td style="text-align: right;" data-label="Size">354</td>
+<td data-label="Name"><code>camera_axis_angle_quaternion_00848e80</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Quaternion (axis * sin(angle/2), cos(angle/2)) from the octant sine/cosine polynomial, clamped to 1 (NaN angle gives 1)</td>
+</tr>
 <tr>
 <td data-label="Address"><code>0x0183ac60</code></td>
 <td style="text-align: right;" data-label="Size">20077</td>

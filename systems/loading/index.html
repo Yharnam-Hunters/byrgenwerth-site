@@ -388,11 +388,11 @@
     
     <a class="wk-progress-card" href="../../progress/">
       <span class="wk-progress-label">Verified functions</span>
-      <span class="wk-progress-value">118 <small>of 157,757</small></span>
-      <span class="wk-stat-track" role="img" aria-label="0.0727 percent of target code bytes verified">
-        <span class="wk-stat-fill" style="width:0.0727%"></span>
+      <span class="wk-progress-value">126 <small>of 157,757</small></span>
+      <span class="wk-stat-track" role="img" aria-label="0.0775 percent of target code bytes verified">
+        <span class="wk-stat-fill" style="width:0.0775%"></span>
       </span>
-      <span class="wk-progress-foot">0.0727% of code bytes verified · 627 replaced</span>
+      <span class="wk-progress-foot">0.0775% of code bytes verified · 748 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -435,11 +435,21 @@
       
       
       <aside class="wk-freshness" role="note">
-        <p><b>Not yet updated for 3 merged changes.</b>
+        <p><b>Not yet updated for 8 merged changes.</b>
         This page was last checked against Paleblood
         <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/cf669283bed4b9a9f36e72ef1ebe28bf037d1a6f"><code>cf66928</code></a>;
         these pull requests changed what it describes since:</p>
         <ul>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/962">#962</a> loading: carry evill33t's canonical Darwin guest TLS for disk opens (#762)</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/938">#938</a> engine, loading: carry FFwLo's mutex and loading list replacements (#900, #904)</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/791">#791</a> loading: replace five queue helpers (headed free, tagged string release, resource handle, transfer task cancel)</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/903">#903</a> loading: replace five load result helpers as readable C++</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/906">#906</a> loading: three resources that keep a copy of a loaded file</li>
           
           <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/741">#741</a> loading: replace the resource info's reference count and drop</li>
           
@@ -590,6 +600,20 @@ are reached in coverage boots to character creation:</p>
 <td data-label="Notes">fopen the tagged path with rb/r+b/wb/w+b/ab/a+b from mode bits at +0x28; rewind; map errno (fetched per check) to 0x1001-0x1004; zero +0x30</td>
 </tr>
 <tr>
+<td data-label="Address"><code>0x00829a90</code></td>
+<td style="text-align: right;" data-label="Size">33</td>
+<td data-label="Name"><code>loading_allocator_free_headed_00829a90</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Frees a block with a 16-byte header before its data: clears the header word, sized free of header and size+0x10 (32-bit); null ignored</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x00836840</code></td>
+<td style="text-align: right;" data-label="Size">70</td>
+<td data-label="Name"><code>loading_tagged_string_release_00836840</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tagged string word: below 2 left alone; odd frees word-1 through the thread allocator (0x00829a90); then cleared</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x0084d5a0</code></td>
 <td style="text-align: right;" data-label="Size">158</td>
 <td data-label="Name"><code>loading_fios_directory_delete</code></td>
@@ -609,6 +633,90 @@ are reached in coverage boots to character creation:</p>
 <td data-label="Name"><code>loading_fios_open_file_read</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">sceFiosFHOpenSync to read; on success a 0x18-byte file object (vtable 0x055c2190) open when the handle is not negative</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0237e640</code></td>
+<td style="text-align: right;" data-label="Size">129</td>
+<td data-label="Name"><code>loading_file_copy_construct_0237e640</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">constructor: resource base with the resource heap and no copy (class a; vtable 0x057acc60)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0237e6d0</code></td>
+<td style="text-align: right;" data-label="Size">162</td>
+<td data-label="Name"><code>loading_file_copy_delete_0237e6d0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">deleting destructor (class a)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0237e780</code></td>
+<td style="text-align: right;" data-label="Size">154</td>
+<td data-label="Name"><code>loading_file_copy_destroy_0237e780</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">destructor: free the file copy through DLNew release then the resource base (class a)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0237e820</code></td>
+<td style="text-align: right;" data-label="Size">342</td>
+<td data-label="Name"><code>loading_file_copy_copy_file_0237e820</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">vtable slot 7: copy the loaded file bytes into a buffer of its own while holding the file (class a)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0237f3f0</code></td>
+<td style="text-align: right;" data-label="Size">129</td>
+<td data-label="Name"><code>loading_file_copy_construct_0237f3f0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">constructor: resource base with the resource heap and no copy (class b; vtable 0x057acd50)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0237f480</code></td>
+<td style="text-align: right;" data-label="Size">162</td>
+<td data-label="Name"><code>loading_file_copy_delete_0237f480</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">deleting destructor (class b)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0237f530</code></td>
+<td style="text-align: right;" data-label="Size">154</td>
+<td data-label="Name"><code>loading_file_copy_destroy_0237f530</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">destructor: free the file copy through DLNew release then the resource base (class b)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0237f5d0</code></td>
+<td style="text-align: right;" data-label="Size">342</td>
+<td data-label="Name"><code>loading_file_copy_copy_file_0237f5d0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">vtable slot 7: copy the loaded file bytes into a buffer of its own while holding the file (class b)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x023801a0</code></td>
+<td style="text-align: right;" data-label="Size">129</td>
+<td data-label="Name"><code>loading_file_copy_construct_023801a0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">constructor: resource base with the resource heap and no copy (class c; vtable 0x057ace40)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02380230</code></td>
+<td style="text-align: right;" data-label="Size">162</td>
+<td data-label="Name"><code>loading_file_copy_delete_02380230</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">deleting destructor (class c)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x023802e0</code></td>
+<td style="text-align: right;" data-label="Size">154</td>
+<td data-label="Name"><code>loading_file_copy_destroy_023802e0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">destructor: free the file copy through DLNew release then the resource base (class c)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02380380</code></td>
+<td style="text-align: right;" data-label="Size">342</td>
+<td data-label="Name"><code>loading_file_copy_copy_file_02380380</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">vtable slot 7: copy the loaded file bytes into a buffer of its own while holding the file (class c)</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x0246cf50</code></td>
@@ -667,6 +775,48 @@ are reached in coverage boots to character creation:</p>
 <td data-label="Notes">mount table reallocate to exact capacity: copy entries; destroy old (heap text freed); free old buffer; failed allocation: transaction jump or report</td>
 </tr>
 <tr>
+<td data-label="Address"><code>0x02479710</code></td>
+<td style="text-align: right;" data-label="Size">156</td>
+<td data-label="Name"><code>loading_owned_object_release_02479710</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Releases the two parts a transfer task owns at +0x90 (+0x10 then +0x08): slot +0xb0, then destroy and free through its allocator; clears the slot</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x024bcfa0</code></td>
+<td style="text-align: right;" data-label="Size">49</td>
+<td data-label="Name"><code>loading_result_construct_024bcfa0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Load result base constructor: vtable, four request words, code and word</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x024bcfe0</code></td>
+<td style="text-align: right;" data-label="Size">89</td>
+<td data-label="Name"><code>loading_result_copy_024bcfe0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Load result base copy constructor: vtable, request words cleared then copied, code and word</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x024bd310</code></td>
+<td style="text-align: right;" data-label="Size">65</td>
+<td data-label="Name"><code>loading_resource_handle_assign_024bd310</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Resource handle assignment: unless the infos match, drops the old info reference, takes the source info and adds a reference; returns the handle</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x024bd470</code></td>
+<td style="text-align: right;" data-label="Size">28</td>
+<td data-label="Name"><code>loading_resource_handle_construct_024bd470</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Base resource handle constructor: stores its vtable and the info, takes a reference (0x02a3a300) when the info is not null</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x024bd4c0</code></td>
+<td style="text-align: right;" data-label="Size">25</td>
+<td data-label="Name"><code>loading_resource_handle_destroy_024bd4c0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Base resource handle destructor: stores its vtable, releases the info (0x024bd930) when not null</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x024bd930</code></td>
 <td style="text-align: right;" data-label="Size">249</td>
 <td data-label="Name"><code>loading_resource_info_release_024bd930</code></td>
@@ -700,6 +850,13 @@ are reached in coverage boots to character creation:</p>
 <td data-label="Name"><code>loading_resource_manager_release_024c1530</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">DLResourceManagerImpl release of an info: initialized assert; without flag 0x40 leave the file queue and set the signal; under the lock mark released (0x80) and hand to 0x024c3260</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x024c1630</code></td>
+<td style="text-align: right;" data-label="Size">298</td>
+<td data-label="Name"><code>loading_resource_manager_find_info_024c1630</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">DLResourceManagerImpl: last to first slot whose words match request words 3,1,2 and whose name matches word 0 by low bytes through _Getptolower; its info, else null</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x024c3260</code></td>
@@ -770,6 +927,13 @@ are reached in coverage boots to character creation:</p>
 <td data-label="Name"><code>loading_transfer_task_initialize_024dd540</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">TransferTask initialize: clear state; keep manager/info/word; heap by disk device location; claim info; ready</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x024dd8a0</code></td>
+<td style="text-align: right;" data-label="Size">40</td>
+<td data-label="Name"><code>loading_transfer_task_cancel_024dd8a0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Atomically sets bit 0 (and bit 1 with the flag) of the state at +0x160 unless bit 2 is set; returns true</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x024dde50</code></td>
@@ -898,6 +1062,13 @@ are reached in coverage boots to character creation:</p>
 <td data-label="Notes">load event queue: under its lock append a finished entry (request words code word + info handle)</td>
 </tr>
 <tr>
+<td data-label="Address"><code>0x02a6b340</code></td>
+<td style="text-align: right;" data-label="Size">218</td>
+<td data-label="Name"><code>loading_transfer_task_list_push_back_02a6b340</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Transfer task pointer array push_back: grow to 1.5x when full (0x02a6b420), re-find an inside item, store unless no buffer, end += 8</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x02a6b520</code></td>
 <td style="text-align: right;" data-label="Size">395</td>
 <td data-label="Name"><code>loading_file_load_slots_construct_02a6b520</code></td>
@@ -910,6 +1081,13 @@ are reached in coverage boots to character creation:</p>
 <td data-label="Name"><code>loading_load_event_array_reallocate_02a6bc50</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">load event array reallocate to exact capacity: copy events; destroy old (base vtable; data freed; three strings released); free old buffer</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02a6c690</code></td>
+<td style="text-align: right;" data-label="Size">218</td>
+<td data-label="Name"><code>loading_request_pointer_array_push_back_02a6c690</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Stream queue request pointer array push_back: grow to 1.5x when full (0x02a6f3d0), re-find an inside item, store unless no buffer, end += 8</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x02a6cd90</code></td>
@@ -980,6 +1158,13 @@ are reached in coverage boots to character creation:</p>
 <td data-label="Name"><code>loading_finished_entry_destroy_02aa4b40</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">finished entry destructor: drop the handle then the result base</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02aa4b90</code></td>
+<td style="text-align: right;" data-label="Size">42</td>
+<td data-label="Name"><code>loading_finished_entry_assign_02aa4b90</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Finished entry assignment: result base assign (0x024bd080) then resource handle assign; returns the entry</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x02e67d20</code></td>
