@@ -1,0 +1,841 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <!-- No site icon yet: an empty one stops browsers requesting /favicon.ico from the domain root (a 404). -->
+  <link rel="icon" href="data:,">
+  
+  <meta name="description" content="Notes of Paleblood, a decompilation of Bloodborne (PS4, CUSA03173 v1.09) with its own runtime, one verified function at a time, and an open place to learn how a console game works and how it is reverse engineered">
+  <link rel="canonical" href="https://yharnam-hunters.github.io/byrgenwerth-site/hunters/FFwLo/">
+  
+  
+  <title>FFwLo — Byrgenwerth</title>
+  
+  <script>
+  /* Before first paint: the stored theme, and a flag that JavaScript (wiki.js) will run. */
+  (function () { var d = document.documentElement, t = 'dark';
+    try { t = localStorage.getItem('wk-theme') || 'dark'; } catch (e) {}
+    d.setAttribute('data-theme', t); d.classList.add('wk-js'); }());
+  </script>
+  
+  <link rel="stylesheet" href="../../stylesheets/wiki.css?v=d9646b693b"><link rel="stylesheet" href="../../stylesheets/hunters.css?v=e4f3c59dfb"><link rel="stylesheet" href="../../stylesheets/enemy.css?v=bb5d79dddf">
+  
+  
+</head>
+<body>
+
+<!-- ── Header: wordmark, section tabs (wide screens), search, theme ── -->
+
+
+<header class="wk-header" id="wk-header">
+  <button class="wk-nav-toggle" id="wk-nav-toggle" aria-label="Open navigation" aria-expanded="false" aria-controls="wk-nav">☰</button>
+  <a class="wk-wordmark" href="/byrgenwerth-site/">Byrgenwerth<small>notes of Paleblood, rebuilding Bloodborne one verified function at a time</small></a>
+
+  <!-- Section tabs (wide screens; the drawer lists the same sections on small ones) -->
+  <nav class="wk-tabs" aria-label="Sections">
+    
+    <a class="wk-tab" href="../..">The Hunt</a>
+    
+    <a class="wk-tab" href="../../great-ones/">Encyclopedia</a>
+    
+    <a class="wk-tab" href="../../systems/">Systems</a>
+    
+    <a class="wk-tab" href="../../ARCHITECTURE/">How It Works</a>
+    
+    <a class="wk-tab" href="../../CONTRIBUTING/">For Hunters</a>
+    
+  </nav>
+
+  <div class="wk-header-right">
+    
+    <div class="wk-searchbox">
+      <input class="wk-search-input" id="wk-q" type="search"
+             placeholder="Search  [/]" autocomplete="off" aria-label="Search">
+      <div class="wk-search-results" id="wk-results" hidden role="listbox"></div>
+    </div>
+    <button class="wk-toggle" id="wk-toggle" title="Toggle theme" aria-label="Toggle dark/light">☀</button>
+  </div>
+</header>
+
+<!-- ── Layout ──────────────────────────────────────────────── -->
+<div class="wk-layout">
+
+  <div class="wk-nav-backdrop" id="wk-nav-backdrop" hidden></div>
+
+  <!-- Left sidebar -->
+  <nav class="wk-nav" id="wk-nav" aria-label="Site navigation">
+    <!-- Menu artwork: credited on the Credits page; provenance and rights notes in the private media review -->
+    <figure class="wk-portal-icon">
+      <a href="/byrgenwerth-site/" aria-label="Byrgenwerth home">
+        <img src="../../assets/media/bloodborne-menu-art.png" width="256" height="256" alt="A lone Bloodborne hunter stands in a rain-darkened Yharnam street beneath the game's gothic architecture.">
+      </a>
+    </figure>
+
+    
+    <section class="wk-nav-section">
+      
+      
+      
+      
+      
+      
+      <p class="wk-nav-heading">The Hunt</p>
+      
+      <ul class="wk-nav-list">
+        
+        
+        <li><a class="wk-nav-link" href="../..">Home</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../devlog/">Devlog</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../progress/">Progress</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../milestones/">Milestones</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../">The Hunters</a></li>
+        
+        
+      </ul>
+    
+      
+    </section>
+    
+    <section class="wk-nav-section">
+      
+      
+      
+      
+      
+      
+      <p class="wk-nav-heading">Encyclopedia</p>
+      
+      <ul class="wk-nav-list">
+        
+        
+        <li class="wk-nav-group">
+      
+      
+      
+        
+        
+      
+      
+      <a class="wk-nav-subheading" href="../../great-ones/">The Great Ones</a>
+      
+      <ul class="wk-nav-list">
+        
+        
+        <li><a class="wk-nav-link" href="../../great-ones/boss-directory/">Boss Directory</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../great-ones/ai-and-phases/">Boss AI & Phases</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../great-ones/mechanics/">Boss Mechanics</a></li>
+        
+        
+      </ul>
+    </li>
+        
+        
+        
+        <li class="wk-nav-group">
+      
+      
+      
+        
+        
+      
+      
+      <a class="wk-nav-subheading" href="../../beasts-of-yharnam/">Beasts of Yharnam</a>
+      
+      <ul class="wk-nav-list">
+        
+        
+        <li><a class="wk-nav-link" href="../../beasts-of-yharnam/enemy-directory/">Enemy Directory</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../beasts-of-yharnam/enemies/clinic-beast/">The Clinic Beast</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../beasts-of-yharnam/ai-and-behavior/">How Enemy AI Works</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../beasts-of-yharnam/npcs-and-hunters/">NPCs & Hunters</a></li>
+        
+        
+      </ul>
+    </li>
+        
+        
+        
+        <li class="wk-nav-group">
+      
+      
+      
+        
+        
+      
+      
+      <a class="wk-nav-subheading" href="../../workshop/">The Hunter's Workshop</a>
+      
+      <ul class="wk-nav-list">
+        
+        
+        <li><a class="wk-nav-link" href="../../workshop/combat-damage/">Combat & Damage</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../workshop/weapons-transformations/">Weapons & Transformations</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../workshop/movement-stamina/">Movement & Stamina</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../workshop/hitboxes-collision/">Hitboxes & Collision</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../workshop/stats-progression/">Stats & Progression</a></li>
+        
+        
+      </ul>
+    </li>
+        
+        
+      </ul>
+    
+      
+    </section>
+    
+    <section class="wk-nav-section">
+      
+      
+      
+      
+      
+      
+      <p class="wk-nav-heading">Systems</p>
+      
+      <ul class="wk-nav-list">
+        
+        
+        <li><a class="wk-nav-link" href="../../systems/">Overview</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../systems/frame_timing/">Frame timing</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../systems/kernel/">Kernel</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../systems/engine/">Engine</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../systems/event/">Event</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../systems/camera/">Camera</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../systems/input/">Input</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../systems/character/">Character</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../systems/ai/">AI</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../systems/physics/">Physics</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../systems/param/">Parameters</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../systems/menu/">Menu</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../systems/render/">Render</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../systems/loading/">Loading</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../systems/audio/">Audio</a></li>
+        
+        
+      </ul>
+    
+      
+    </section>
+    
+    <section class="wk-nav-section">
+      
+      
+      
+      
+      
+      
+      <p class="wk-nav-heading">How It Works</p>
+      
+      <ul class="wk-nav-list">
+        
+        
+        <li><a class="wk-nav-link" href="../../ARCHITECTURE/">Architecture</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../families/">Function families</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../runtime/">Runtime</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../runtime-syscalls/">Runtime system calls</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../runtime-reference/">Runtime call reference</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../how-the-frame-limiter-works/">The Frame Limiter</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../ADDRESS_MAP/">Address Map</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../target/">Target</a></li>
+        
+        
+      </ul>
+    
+      
+    </section>
+    
+    <section class="wk-nav-section">
+      
+      
+      
+      
+      
+      
+      <p class="wk-nav-heading">For Hunters</p>
+      
+      <ul class="wk-nav-list">
+        
+        
+        <li><a class="wk-nav-link" href="../../CONTRIBUTING/">Contributing</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../QUIRKS/">Ghidra & PS4 Quirks</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../glossary/">Glossary</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../CI_SETUP/">CI Setup</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../credits/">Credits</a></li>
+        
+        
+        
+        <li><a class="wk-nav-link" href="../../MEDIA_POLICY/">Evidence & Media Review</a></li>
+        
+        
+      </ul>
+    
+      
+    </section>
+    
+
+    <!-- Progress card: every value from docs/data/progress.json (hooks/progress_extra.py) -->
+    
+    
+    <a class="wk-progress-card" href="../../progress/">
+      <span class="wk-progress-label">Verified functions</span>
+      <span class="wk-progress-value">173 <small>of 157,757</small></span>
+      <span class="wk-stat-track" role="img" aria-label="0.1057 percent of target code bytes verified">
+        <span class="wk-stat-fill" style="width:0.1057%"></span>
+      </span>
+      <span class="wk-progress-foot">0.1057% of code bytes verified · 850 replaced</span>
+      <span class="wk-progress-more">Full progress →</span>
+    </a>
+    
+  </nav>
+
+  <!-- Main content -->
+  <main class="wk-main">
+    <div class="wk-article">
+
+      
+      
+      
+      
+      
+      <nav class="wk-toc" id="wk-toc" aria-label="On this page">
+        <div class="wk-toc-header"><b>On this page</b></div>
+        <ol class="wk-toc-list" id="wk-toc-list">
+          
+          <li><a href="#completed-hunts" class="wk-toc-link">Completed Hunts</a></li>
+          
+          <li><a href="#hunts-in-progress" class="wk-toc-link">Hunts in Progress</a></li>
+          
+          <li><a href="#research-and-discoveries" class="wk-toc-link">Research and Discoveries</a></li>
+          
+          <li><a href="#fellow-hunters" class="wk-toc-link">Fellow Hunters</a></li>
+          
+          <li><a href="#contribution-timeline" class="wk-toc-link">Contribution Timeline</a></li>
+          
+          <li><a href="#related-devlogs" class="wk-toc-link">Related Devlogs</a></li>
+          
+        </ol>
+      </nav>
+      
+      
+      
+
+      <div class="wk-article-body">
+      
+      
+      
+      <h1 id="ffwlo">FFwLo</h1>
+<div class="hunter-profile-header"><span class="hunter-avatar" aria-hidden="true"><svg viewBox="0 0 80 80" focusable="false"><circle cx="40" cy="27" r="14"/><path d="M12 76c0-34 56-34 56 0z"/></svg><img src="https://avatars.githubusercontent.com/u/144929092?v=4" alt="" loading="lazy" width="80" height="80" referrerpolicy="no-referrer"></span><div><p>decompilation, documentation, project contributions, runtime, tooling</p><p><a href="https://github.com/FFwLo">@FFwLo on GitHub</a></p></div></div>
+
+<h2 id="completed-hunts">Completed Hunts</h2>
+<ol class="hunter-history">
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1077">engine: carry the 8-byte array reserve copies (#1058)</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1062">engine: carry the list, 8-byte and 32-bit array push_back copies (FFwLo #1047, #1049, #1050)</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1039">engine: replace the wide string&#x27;s assign of a repeated character</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1032">frame_timing: replace giving the gate&#x27;s handle to a pass-on request</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1009">engine: replace Havok&#x27;s array reserve and reserve more and the FD4 handle refresh</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1013">param, engine: replace the id array push_back family</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1012">frame_timing: replace the task batch take and the lane sync signal</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1016">frame_timing, loading: replace the generator&#x27;s calls and the headed allocate (carry of #1002)</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1007">render, loading: replace the parameter set&#x27;s set and clear, result assign and release at quit</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/986">menu: replace the scaleform glue registry find/release, handle release and queue</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/996">camera: replace the quaternion rotation rows, rows3 multiply and affine finish</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/991">loading: replace the resource base&#x27;s constructor and destructor and add_reference</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/989">engine: replace the block pool&#x27;s allocate and free and thread_create</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/978">frame_timing: replace the stopwatch frame end, item update and listener list prepare</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/979">menu: replace Dantelion&#x27;s text dialog status, open, take_text and set_up</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/973">frame_timing: replace the worker lane&#x27;s start, run and finish</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/972">ai: replace the group reset and the debug display&#x27;s set position, flush and end</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/969">render: replace the list splice, object update and initial level copy</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/965">Replace throw_event and part_0x10_update with readable C++</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/968">loading: replace the disk file device instance and locate, and the load request assign</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/796">physics: replace the instance constructor&#x27;s six helpers</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/822">frame_timing, engine: replace the task queue refill (task_wake_flagged) and allocator_of</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/938">engine, loading: carry FFwLo&#x27;s mutex and loading list replacements (#900, #904)</a><span class="hunter-meta"> · merged · decompilation</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/952">frame_timing: carry FFwLo&#x27;s server-mode pass-on and gate creation helpers</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/791">loading: replace five queue helpers (headed free, tagged string release, resource handle, transfer task cancel)</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/930">physics: replace the instance&#x27;s id reserve, controller and body set constructors</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/931">engine: narrow and wide string assign from counted text (0x02a2d8e0, 0x02a2a310)</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/933">engine: Scaleform heap large-block allocation (0x0233c660) and page release (0x0233be70)</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/835">frame_timing: replace pass_on_in_local_mode (0x02265170) and lookup_session_object (0x02265290)</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/834">frame_timing: replace pass_handle_on, pass_handle_on_with_items and append_slot_item (0x01e9cb80, 0x01e9cd20, 0x01e9d960)</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/839">camera: transform_matrix and axis_angle_quaternion as readable C++</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/815">ai: debug_draw_axes and the draw-layer colour callback as readable C++</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/891">engine: replace the wide string constructor (0x02bc0e00) and the byte array assign (0x02b4d100)</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/889">kernel, frame_timing: replace the memory pool free (0x011ab3a0) and config_get_int (0x024eba00)</a><span class="hunter-meta"> · merged · runtime</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/886">frame_timing: replace gate_state_query and step_machine_count_step (0x01ea5570, 0x01ec3000)</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/885">ai: the world debug draw and the entity face point as readable C++</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/884">Replace the four character module updates (0x01e59250, 0x01e5c440, 0x01e4a490, 0x01cd92b0)</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/903">loading: replace five load result helpers as readable C++</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/741">loading: replace the resource info&#x27;s reference count and drop</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/880">render: replace the pending command submission (0x02aafa00)</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/777">render: replace the shader register packet writers</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/760">engine: replace the wide string&#x27;s assign from counted text (on #737)</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/767">engine: replace the debug print</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/740">kernel: replace the engine&#x27;s PthreadMutex.cpp (init, destroy, lock, try lock, unlock)</a><span class="hunter-meta"> · merged · runtime</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/789">render: replace the swap-chain setup object creation</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/763">engine: replace the red-black tree&#x27;s insert fix-up and remove</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/811">render: replace the two resource info finish steps</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/795">frame_timing: replace the task manager&#x27;s helpers (6 functions)</a><span class="hunter-meta"> · merged · decompilation</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/755">engine: replace the heap manager&#x27;s locked regular heap set-up</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/745">kernel: replace the engine&#x27;s read-write lock (DLReadWriteLock)</a><span class="hunter-meta"> · merged · runtime</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/734">symbols: independent review of four loading functions</a><span class="hunter-meta"> · merged · decompilation</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/814">frame_timing: replace the task manager&#x27;s worker steps and task item clear</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/758">engine: replace the heap manager&#x27;s area registration</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/748">kernel: replace the engine&#x27;s light mutex (DLLightMutex)</a><span class="hunter-meta"> · merged · runtime</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/784">render: replace the swap-chain resource info queries</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/737">engine: the wide string&#x27;s assign from part and its growth</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/719">tooling: capture_loop finds each function&#x27;s own edge cases</a><span class="hunter-meta"> · merged · decompilation, tooling</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/770">render: replace the shader preparation packets</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/769">render: replace the shader packet writers</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/779">render: replace the record selector translations</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/790">frame_timing: random generator seed (0x024f8110)</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/792">render: model wind fractal noise (0x02a85e30), harness float arguments xmm2-xmm7</a><span class="hunter-meta"> · merged · tooling</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/794">render: replace the shader upload manager&#x27;s block allocator</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/793">frame_timing: replace the per-frame task&#x27;s five helpers (profiling stopwatches, item and listener lists)</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/729">capture: replay recorded buffers at their origin</a><span class="hunter-meta"> · merged · project contributions</span></li>
+</ol>
+
+<h2 id="hunts-in-progress">Hunts in Progress</h2>
+<ol class="hunter-history">
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1099">engine: relative-shape families, and the static wide string initializer copies as one (439)</a><span class="hunter-meta"> · open · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1096">engine: replace the other 94 copies of the 8-byte array reserve</a><span class="hunter-meta"> · open · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/881">docs: regenerate progress</a><span class="hunter-meta"> · open · documentation</span></li>
+</ol>
+
+<h2 id="research-and-discoveries">Research and Discoveries</h2>
+<ol class="hunter-history">
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/1045">Claim: the 8-byte engine array reserve family (253 copies)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/1044">Claim: 14 more copies of the 32-bit id array push_back</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/1043">Claim + question: the 2,156 other copies of the static wide string initializer (0x0217ffb0)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/1040">Claim: the 8-byte array push_back family (178 copies)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/1036#issuecomment-6877213713">Technical discussion: Claim: the engine list push_back family (30 copies)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/1036">Claim: the engine list push_back family (30 copies)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/1033">Claim: the wide string&#x27;s assign of a repeated character (0x02a2a650)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/1029">Claim: give the gate&#x27;s handle to a pass-on request (server and local)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1009#issuecomment-6876685398">Technical discussion: engine: replace Havok&#x27;s array reserve and reserve more and the FD4 handle refresh</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/1011">Claim: the id array push_back family (four copies)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1002#issuecomment-6874907876">Technical discussion: frame_timing, loading: replace the generator&#x27;s calls and the headed allocate</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/1010">Claim: the worker lane&#x27;s batch take and sync signal</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/1008">Claim: Havok&#x27;s array reserve and reserve more and the FD4 handle refresh</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/1005">Claim: the parameter set&#x27;s set and clear, result assign and the device&#x27;s release at quit</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/986#issuecomment-6873881914">Technical discussion: menu: replace the scaleform glue registry find/release, handle release and queue</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/998">Claim: the generator&#x27;s buffer size, fill and refresh and the headed allocate</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/986#issuecomment-6873289484">Technical discussion: menu: replace the scaleform glue registry find/release, handle release and queue</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/978#issuecomment-6873289125">Technical discussion: frame_timing: replace the stopwatch frame end, item update and listener list prepare</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/993">Claim: camera math quaternion rotation rows, rows3 multiply, affine finish (0x00829b00, 0x0084b9d0, 0x0083b7e0)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/990">Claim: resource base constructor/destructor and resource info add reference (0x013e6ff0, 0x013e7090, 0x02a3a300)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/986#issuecomment-6872602729">Technical discussion: menu: replace the scaleform glue registry find/release, handle release and queue</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/987">Claim: engine block pool allocate/free and thread_create (0x02a3b8b0, 0x02a3b9b0, 0x02a3b4d0)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/980">Claim: Scaleform glue registry find/release, handle release and queue (0x013a2a00, 0x013a33c0, 0x01401720, 0x0233ef00)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/977">Claim: Dantelion text dialog status/open/take_text/set_up (0x02d03420, 0x02d03450, 0x02d03490, 0x02d03500)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/965#issuecomment-6871799588">Technical discussion: Replace throw_event and part_0x10_update with readable C++</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/974">Claim: frame timing stopwatch_frame_end (0x014486d0), item_update (0x013d4810), listener_list_prepare (0x013dab20)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/966">Claim: frame timing worker lane steps (0x01467500, 0x01467300, 0x01467530, 0x014675a0)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/796#issuecomment-6871032745">Technical discussion: physics: replace the instance constructor&#x27;s six helpers</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/822#issuecomment-6870892163">Technical discussion: frame_timing, engine: replace the task queue refill (task_wake_flagged) and allocator_of</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/944">Claim: render list splice 02379d60, object update 02373850, initial level copy 014a3410</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/942">Claim: ai_group_reset, ai_debug_end, ai_debug_flush, ai_debug_set_position</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/941">Claim: disk file device instance/locate and load request assign (0x0246be70, 0x0246e3d0, 0x024be630)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/940">Claim: frame timing fill_creation_part1 (0x0231fbc0) and create_handle_from_levels (0x02265580)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/939">Claim: throw_event 0x01e19e20 and part_0x10_update 0x013d5440</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/796#issuecomment-6867622901">Technical discussion: physics: replace the instance constructor&#x27;s six helpers</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/822#issuecomment-6867621268">Technical discussion: frame_timing, engine: replace the task queue refill (task_wake_flagged) and allocator_of</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/930#issuecomment-6867619515">Technical discussion: physics: replace the instance&#x27;s id reserve, controller and body set constructors</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/931#issuecomment-6867617914">Technical discussion: engine: narrow and wide string assign from counted text (0x02a2d8e0, 0x02a2a310)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/791#issuecomment-6867342063">Technical discussion: loading: replace five queue helpers (headed free, tagged string release, resource handle, transfer task cancel)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/900#issuecomment-6867198547">Technical discussion: engine: replace the engine mutex constructor and initialize</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/904#issuecomment-6867196638">Technical discussion: loading: transfer task list and request array push_back, resource manager find info</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/836#issuecomment-6866797754">Technical discussion: engine: Scaleform heap page add (0x0233bbe0, 0x0233bd20) and small-block moving reallocation (0x0233d140)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/816#issuecomment-6866629912">Technical discussion: frame_timing: replace pass_on_in_server_mode (0x02265960)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/835#issuecomment-6866629421">Technical discussion: frame_timing: replace pass_on_in_local_mode (0x02265170) and lookup_session_object (0x02265290)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/834#issuecomment-6866629050">Technical discussion: frame_timing: replace pass_handle_on, pass_handle_on_with_items and append_slot_item (0x01e9cb80, 0x01e9cd20, 0x01e9d960)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/897">Claim: loading result helpers (0x024bcfa0, 0x024bcfe0, 0x02aa4b90, 0x024bd310, 0x02479710)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/895">Claim: Scaleform heap large-block allocation (0x0233c660) and page release (0x0233be70)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/894">Claim: engine mutex constructor and initialize (0x02a3a840, 0x02a3a920)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/893">Claim: physics instance ids_reserve, controller_construct, body_set_construct</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/892">Claim: narrow and wide string assign (0x02a2d8e0, 0x02a2a310)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/791#issuecomment-6860782481">Technical discussion: loading: replace five queue helpers (headed free, tagged string release, resource handle, transfer task cancel)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/741#issuecomment-6860512651">Technical discussion: loading: replace the resource info&#x27;s reference count and drop</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/879">Claim: kernel memory pool free (0x011ab3a0) and config_get_int (0x024eba00)</a><span class="hunter-meta"> · research · runtime</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/878">Claim: engine wide string construct (0x02bc0e00) and byte array assign (0x02b4d100)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/877">Claim: camera axis_angle_quaternion (0x00848e80) and transform_matrix (0x0083d4d0)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/876">Claim: render submit pending commands (0x02aafa00)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/875">Claim: frame_timing gate_state_query and step_machine_count_step (0x01ea5570, 0x01ec3000)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/873">Claim: ai_draw_world (0x021d6ea0) and ai_entity_point (0x029ae440)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/872">Claim: character module updates (0x01e59250, 0x01e5c440, 0x01e4a490, 0x01cd92b0)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/741#issuecomment-6858768742">Technical discussion: loading: replace the resource info&#x27;s reference count and drop</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/777#issuecomment-6858733205">Technical discussion: render: replace the shader register packet writers</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/760#issuecomment-6858732563">Technical discussion: engine: replace the wide string&#x27;s assign from counted text (on #737)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/740#issuecomment-6858732045">Technical discussion: kernel: replace the engine&#x27;s PthreadMutex.cpp (init, destroy, lock, try lock, unlock)</a><span class="hunter-meta"> · research · runtime</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/791#issuecomment-6858731460">Technical discussion: loading: replace five queue helpers (headed free, tagged string release, resource handle, transfer task cancel)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/789#issuecomment-6858730830">Technical discussion: render: replace the swap-chain setup object creation</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/821">Claim: frame_timing task queue refill (0x0143ed00) and allocator_of (0x0247b720)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/819">Claim: Scaleform heap engine page add (0x0233bbe0, 0x0233bd20) and small-block moving reallocation (0x0233d140)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/818">Claim: frame_timing pass_on_in_local_mode (0x02265170) and lookup_session_object (0x02265290)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/817">Claim: frame_timing pass_handle_on, pass_handle_on_with_items, append_slot_item (0x01e9cb80, 0x01e9cd20, 0x01e9d960)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/813">Claim: frame_timing pass_on_in_server_mode (0x02265960)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/810">Claim: AI debug_draw_axes (0x0135d810) and ai_draw_callback (0x02232a60)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/777#issuecomment-6848450891">Technical discussion: render: replace the shader register packet writers</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/809">Claim: render resource info finish steps (0x02ab1930, 0x02ab18c0)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/808">Claim: frame_timing task manager workers (0x0143de20, 0x0143deb0, 0x0143df10, 0x0143e030, 0x0143ec40)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/763#issuecomment-6846918039">Technical discussion: engine: replace the red-black tree&#x27;s insert fix-up and remove</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/788">Claim: render model wind fractal noise (0x02a85e30)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/787">Claim: frame_timing random generator seed (0x024f8110)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/786">Claim: swap-chain setup object creation (0x0247c4e0)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/785">Claim: physics instance constructor helpers (0x00ae6dc0, 0x0083d6d0, 0x00ac46a0, 0x00ae6180, 0x00ac5e00, 0x00ae6d00)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/783">Claim: frame-timing task helpers (0x01456eb0, 0x01456ed0, 0x01456ef0, 0x01456c80, 0x013daac0)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/782">Claim: frame timing task manager helpers (0x01389df0, 0x01389e10, 0x0143d7c0, 0x0143f720, 0x0143c360, 0x0143c450)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/781">Claim: render shader upload block allocator (0x02aa9d50, 0x02aa9db0, 0x02aaa860)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/780">Claim: loading queue helpers (allocator_free_headed, tagged_string_release, resource handle construct/destroy, transfer_task_cancel)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/778">Claim: swap-chain resource info queries (0x02abaef0, 0x02abb4b0, 0x02abad70, 0x02abadd0)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/776">Claim: record selector translations (0x02ab7720, 0x02ab78a0)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/775">Claim: shader register packet writers (0x01476030, 0x014761a0-0x01476420)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-12</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/768">Claim: render shader preparation packets (0x01475e10, 0x01477f40)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-12</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/766">Claim: render shader packet writers (0x014753c0, 0x01475420, 0x01475480)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-12</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/764">Claim: engine debug print (0x024df920, 0x024dfb30)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-12</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/759">Claim: engine red-black tree insert fix-up and remove (0x024f8350, 0x024f8460)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-12</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/757">Claim: engine wide string assign from counted text (0x02a2a720)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-12</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/756">Claim: engine heap manager area registration (0x0247c000)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-12</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/753">Claim: engine locked regular heap (0x0247c590, 0x0247c5e0)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-12</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/746">Claim: engine DLLightMutex (0x0247ecb0-0x0247f070)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-12</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/742">Claim: engine DLReadWriteLock (0x0247f180-0x0247f710)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-12</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/739">Claim: resource info reference count (0x02a3a1b0, 0x02a3a2a0)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-12</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/738">Claim: engine PthreadMutex.cpp (0x02483fe0, 0x024840b0, 0x02484110, 0x024841d0, 0x02484290)</a><span class="hunter-meta"> · research · runtime</span></li>
+<li><time>2026-11-12</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/736">claim: engine: wide string assign from part and growth (0x02a279a0, 0x02a27b70)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-12</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/729#issuecomment-6833074004">Technical discussion: capture: replay recorded buffers at their origin</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-12</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/720">bug: recorder misses heap list-head reads; heap cases fault on both sides</a><span class="hunter-meta"> · research · project contributions</span></li>
+</ol>
+
+<h2 id="fellow-hunters">Fellow Hunters</h2>
+<p class="hunter-meta">No qualifying public records in this category.</p>
+
+<h2 id="contribution-timeline">Contribution Timeline</h2>
+<ol class="hunter-history">
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1099">engine: relative-shape families, and the static wide string initializer copies as one (439)</a><span class="hunter-meta"> · open · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1096">engine: replace the other 94 copies of the 8-byte array reserve</a><span class="hunter-meta"> · open · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1077">engine: carry the 8-byte array reserve copies (#1058)</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1058">engine: replace 159 copies of the 8-byte array reserve</a><span class="hunter-meta"> · closed · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1062">engine: carry the list, 8-byte and 32-bit array push_back copies (FFwLo #1047, #1049, #1050)</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1050">engine: replace 14 more copies of the 32-bit id array push_back</a><span class="hunter-meta"> · closed · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1049">engine: replace the 8-byte array push_back family (178 copies)</a><span class="hunter-meta"> · closed · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1047">engine: replace the list insert and push_back family (40 copies)</a><span class="hunter-meta"> · closed · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1039">engine: replace the wide string&#x27;s assign of a repeated character</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1032">frame_timing: replace giving the gate&#x27;s handle to a pass-on request</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/1045">Claim: the 8-byte engine array reserve family (253 copies)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/1044">Claim: 14 more copies of the 32-bit id array push_back</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/1043">Claim + question: the 2,156 other copies of the static wide string initializer (0x0217ffb0)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/1040">Claim: the 8-byte array push_back family (178 copies)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/1036#issuecomment-6877213713">Technical discussion: Claim: the engine list push_back family (30 copies)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1009">engine: replace Havok&#x27;s array reserve and reserve more and the FD4 handle refresh</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/1036">Claim: the engine list push_back family (30 copies)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/1033">Claim: the wide string&#x27;s assign of a repeated character (0x02a2a650)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/1029">Claim: give the gate&#x27;s handle to a pass-on request (server and local)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1009#issuecomment-6876685398">Technical discussion: engine: replace Havok&#x27;s array reserve and reserve more and the FD4 handle refresh</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1013">param, engine: replace the id array push_back family</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1012">frame_timing: replace the task batch take and the lane sync signal</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1002">frame_timing, loading: replace the generator&#x27;s calls and the headed allocate</a><span class="hunter-meta"> · closed · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1016">frame_timing, loading: replace the generator&#x27;s calls and the headed allocate (carry of #1002)</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1007">render, loading: replace the parameter set&#x27;s set and clear, result assign and release at quit</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/1011">Claim: the id array push_back family (four copies)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1002#issuecomment-6874907876">Technical discussion: frame_timing, loading: replace the generator&#x27;s calls and the headed allocate</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/1010">Claim: the worker lane&#x27;s batch take and sync signal</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/1008">Claim: Havok&#x27;s array reserve and reserve more and the FD4 handle refresh</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/1005">Claim: the parameter set&#x27;s set and clear, result assign and the device&#x27;s release at quit</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/986">menu: replace the scaleform glue registry find/release, handle release and queue</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/996">camera: replace the quaternion rotation rows, rows3 multiply and affine finish</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/991">loading: replace the resource base&#x27;s constructor and destructor and add_reference</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/986#issuecomment-6873881914">Technical discussion: menu: replace the scaleform glue registry find/release, handle release and queue</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/989">engine: replace the block pool&#x27;s allocate and free and thread_create</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/978">frame_timing: replace the stopwatch frame end, item update and listener list prepare</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/998">Claim: the generator&#x27;s buffer size, fill and refresh and the headed allocate</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/986#issuecomment-6873289484">Technical discussion: menu: replace the scaleform glue registry find/release, handle release and queue</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/978#issuecomment-6873289125">Technical discussion: frame_timing: replace the stopwatch frame end, item update and listener list prepare</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/979">menu: replace Dantelion&#x27;s text dialog status, open, take_text and set_up</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/993">Claim: camera math quaternion rotation rows, rows3 multiply, affine finish (0x00829b00, 0x0084b9d0, 0x0083b7e0)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/990">Claim: resource base constructor/destructor and resource info add reference (0x013e6ff0, 0x013e7090, 0x02a3a300)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/986#issuecomment-6872602729">Technical discussion: menu: replace the scaleform glue registry find/release, handle release and queue</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/973">frame_timing: replace the worker lane&#x27;s start, run and finish</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/987">Claim: engine block pool allocate/free and thread_create (0x02a3b8b0, 0x02a3b9b0, 0x02a3b4d0)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/972">ai: replace the group reset and the debug display&#x27;s set position, flush and end</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/969">render: replace the list splice, object update and initial level copy</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/965">Replace throw_event and part_0x10_update with readable C++</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/980">Claim: Scaleform glue registry find/release, handle release and queue (0x013a2a00, 0x013a33c0, 0x01401720, 0x0233ef00)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/977">Claim: Dantelion text dialog status/open/take_text/set_up (0x02d03420, 0x02d03450, 0x02d03490, 0x02d03500)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/965#issuecomment-6871799588">Technical discussion: Replace throw_event and part_0x10_update with readable C++</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/968">loading: replace the disk file device instance and locate, and the load request assign</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/974">Claim: frame timing stopwatch_frame_end (0x014486d0), item_update (0x013d4810), listener_list_prepare (0x013dab20)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/796">physics: replace the instance constructor&#x27;s six helpers</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/822">frame_timing, engine: replace the task queue refill (task_wake_flagged) and allocator_of</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/966">Claim: frame timing worker lane steps (0x01467500, 0x01467300, 0x01467530, 0x014675a0)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/796#issuecomment-6871032745">Technical discussion: physics: replace the instance constructor&#x27;s six helpers</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/822#issuecomment-6870892163">Technical discussion: frame_timing, engine: replace the task queue refill (task_wake_flagged) and allocator_of</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/904">loading: transfer task list and request array push_back, resource manager find info</a><span class="hunter-meta"> · closed · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/900">engine: replace the engine mutex constructor and initialize</a><span class="hunter-meta"> · closed · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/938">engine, loading: carry FFwLo&#x27;s mutex and loading list replacements (#900, #904)</a><span class="hunter-meta"> · merged · decompilation</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/946">frame_timing: replace fill_creation_part1 and create_handle_from_levels</a><span class="hunter-meta"> · closed · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/816">frame_timing: replace pass_on_in_server_mode (0x02265960)</a><span class="hunter-meta"> · closed · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/952">frame_timing: carry FFwLo&#x27;s server-mode pass-on and gate creation helpers</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/791">loading: replace five queue helpers (headed free, tagged string release, resource handle, transfer task cancel)</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/930">physics: replace the instance&#x27;s id reserve, controller and body set constructors</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/931">engine: narrow and wide string assign from counted text (0x02a2d8e0, 0x02a2a310)</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/836">engine: Scaleform heap page add (0x0233bbe0, 0x0233bd20) and small-block moving reallocation (0x0233d140)</a><span class="hunter-meta"> · closed · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/933">engine: Scaleform heap large-block allocation (0x0233c660) and page release (0x0233be70)</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-14</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/835">frame_timing: replace pass_on_in_local_mode (0x02265170) and lookup_session_object (0x02265290)</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/834">frame_timing: replace pass_handle_on, pass_handle_on_with_items and append_slot_item (0x01e9cb80, 0x01e9cd20, 0x01e9d960)</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/944">Claim: render list splice 02379d60, object update 02373850, initial level copy 014a3410</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/942">Claim: ai_group_reset, ai_debug_end, ai_debug_flush, ai_debug_set_position</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/941">Claim: disk file device instance/locate and load request assign (0x0246be70, 0x0246e3d0, 0x024be630)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/940">Claim: frame timing fill_creation_part1 (0x0231fbc0) and create_handle_from_levels (0x02265580)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/939">Claim: throw_event 0x01e19e20 and part_0x10_update 0x013d5440</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/796#issuecomment-6867622901">Technical discussion: physics: replace the instance constructor&#x27;s six helpers</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/822#issuecomment-6867621268">Technical discussion: frame_timing, engine: replace the task queue refill (task_wake_flagged) and allocator_of</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/930#issuecomment-6867619515">Technical discussion: physics: replace the instance&#x27;s id reserve, controller and body set constructors</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/931#issuecomment-6867617914">Technical discussion: engine: narrow and wide string assign from counted text (0x02a2d8e0, 0x02a2a310)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/791#issuecomment-6867342063">Technical discussion: loading: replace five queue helpers (headed free, tagged string release, resource handle, transfer task cancel)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/900#issuecomment-6867198547">Technical discussion: engine: replace the engine mutex constructor and initialize</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/904#issuecomment-6867196638">Technical discussion: loading: transfer task list and request array push_back, resource manager find info</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/836#issuecomment-6866797754">Technical discussion: engine: Scaleform heap page add (0x0233bbe0, 0x0233bd20) and small-block moving reallocation (0x0233d140)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/816#issuecomment-6866629912">Technical discussion: frame_timing: replace pass_on_in_server_mode (0x02265960)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/835#issuecomment-6866629421">Technical discussion: frame_timing: replace pass_on_in_local_mode (0x02265170) and lookup_session_object (0x02265290)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/834#issuecomment-6866629050">Technical discussion: frame_timing: replace pass_handle_on, pass_handle_on_with_items and append_slot_item (0x01e9cb80, 0x01e9cd20, 0x01e9d960)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/839">camera: transform_matrix and axis_angle_quaternion as readable C++</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/815">ai: debug_draw_axes and the draw-layer colour callback as readable C++</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/891">engine: replace the wide string constructor (0x02bc0e00) and the byte array assign (0x02b4d100)</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/889">kernel, frame_timing: replace the memory pool free (0x011ab3a0) and config_get_int (0x024eba00)</a><span class="hunter-meta"> · merged · runtime</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/886">frame_timing: replace gate_state_query and step_machine_count_step (0x01ea5570, 0x01ec3000)</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/885">ai: the world debug draw and the entity face point as readable C++</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/884">Replace the four character module updates (0x01e59250, 0x01e5c440, 0x01e4a490, 0x01cd92b0)</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/903">loading: replace five load result helpers as readable C++</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/741">loading: replace the resource info&#x27;s reference count and drop</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/897">Claim: loading result helpers (0x024bcfa0, 0x024bcfe0, 0x02aa4b90, 0x024bd310, 0x02479710)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/895">Claim: Scaleform heap large-block allocation (0x0233c660) and page release (0x0233be70)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/894">Claim: engine mutex constructor and initialize (0x02a3a840, 0x02a3a920)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/893">Claim: physics instance ids_reserve, controller_construct, body_set_construct</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/892">Claim: narrow and wide string assign (0x02a2d8e0, 0x02a2a310)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/791#issuecomment-6860782481">Technical discussion: loading: replace five queue helpers (headed free, tagged string release, resource handle, transfer task cancel)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/741#issuecomment-6860512651">Technical discussion: loading: replace the resource info&#x27;s reference count and drop</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/880">render: replace the pending command submission (0x02aafa00)</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/777">render: replace the shader register packet writers</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/760">engine: replace the wide string&#x27;s assign from counted text (on #737)</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/767">engine: replace the debug print</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/740">kernel: replace the engine&#x27;s PthreadMutex.cpp (init, destroy, lock, try lock, unlock)</a><span class="hunter-meta"> · merged · runtime</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/881">docs: regenerate progress</a><span class="hunter-meta"> · open · documentation</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/789">render: replace the swap-chain setup object creation</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/879">Claim: kernel memory pool free (0x011ab3a0) and config_get_int (0x024eba00)</a><span class="hunter-meta"> · research · runtime</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/878">Claim: engine wide string construct (0x02bc0e00) and byte array assign (0x02b4d100)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/877">Claim: camera axis_angle_quaternion (0x00848e80) and transform_matrix (0x0083d4d0)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/876">Claim: render submit pending commands (0x02aafa00)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/875">Claim: frame_timing gate_state_query and step_machine_count_step (0x01ea5570, 0x01ec3000)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/873">Claim: ai_draw_world (0x021d6ea0) and ai_entity_point (0x029ae440)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/872">Claim: character module updates (0x01e59250, 0x01e5c440, 0x01e4a490, 0x01cd92b0)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/741#issuecomment-6858768742">Technical discussion: loading: replace the resource info&#x27;s reference count and drop</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/777#issuecomment-6858733205">Technical discussion: render: replace the shader register packet writers</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/760#issuecomment-6858732563">Technical discussion: engine: replace the wide string&#x27;s assign from counted text (on #737)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/740#issuecomment-6858732045">Technical discussion: kernel: replace the engine&#x27;s PthreadMutex.cpp (init, destroy, lock, try lock, unlock)</a><span class="hunter-meta"> · research · runtime</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/791#issuecomment-6858731460">Technical discussion: loading: replace five queue helpers (headed free, tagged string release, resource handle, transfer task cancel)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/789#issuecomment-6858730830">Technical discussion: render: replace the swap-chain setup object creation</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/763">engine: replace the red-black tree&#x27;s insert fix-up and remove</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/811">render: replace the two resource info finish steps</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/795">frame_timing: replace the task manager&#x27;s helpers (6 functions)</a><span class="hunter-meta"> · merged · decompilation</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/755">engine: replace the heap manager&#x27;s locked regular heap set-up</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/745">kernel: replace the engine&#x27;s read-write lock (DLReadWriteLock)</a><span class="hunter-meta"> · merged · runtime</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/734">symbols: independent review of four loading functions</a><span class="hunter-meta"> · merged · decompilation</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/814">frame_timing: replace the task manager&#x27;s worker steps and task item clear</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/758">engine: replace the heap manager&#x27;s area registration</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/748">kernel: replace the engine&#x27;s light mutex (DLLightMutex)</a><span class="hunter-meta"> · merged · runtime</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/784">render: replace the swap-chain resource info queries</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/737">engine: the wide string&#x27;s assign from part and its growth</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/719">tooling: capture_loop finds each function&#x27;s own edge cases</a><span class="hunter-meta"> · merged · decompilation, tooling</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/770">render: replace the shader preparation packets</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/769">render: replace the shader packet writers</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/779">render: replace the record selector translations</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/790">frame_timing: random generator seed (0x024f8110)</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/792">render: model wind fractal noise (0x02a85e30), harness float arguments xmm2-xmm7</a><span class="hunter-meta"> · merged · tooling</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/821">Claim: frame_timing task queue refill (0x0143ed00) and allocator_of (0x0247b720)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/819">Claim: Scaleform heap engine page add (0x0233bbe0, 0x0233bd20) and small-block moving reallocation (0x0233d140)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/794">render: replace the shader upload manager&#x27;s block allocator</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/818">Claim: frame_timing pass_on_in_local_mode (0x02265170) and lookup_session_object (0x02265290)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/817">Claim: frame_timing pass_handle_on, pass_handle_on_with_items, append_slot_item (0x01e9cb80, 0x01e9cd20, 0x01e9d960)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/813">Claim: frame_timing pass_on_in_server_mode (0x02265960)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/810">Claim: AI debug_draw_axes (0x0135d810) and ai_draw_callback (0x02232a60)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/777#issuecomment-6848450891">Technical discussion: render: replace the shader register packet writers</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/809">Claim: render resource info finish steps (0x02ab1930, 0x02ab18c0)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/793">frame_timing: replace the per-frame task&#x27;s five helpers (profiling stopwatches, item and listener lists)</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/808">Claim: frame_timing task manager workers (0x0143de20, 0x0143deb0, 0x0143df10, 0x0143e030, 0x0143ec40)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/763#issuecomment-6846918039">Technical discussion: engine: replace the red-black tree&#x27;s insert fix-up and remove</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/729">capture: replay recorded buffers at their origin</a><span class="hunter-meta"> · merged · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/788">Claim: render model wind fractal noise (0x02a85e30)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/787">Claim: frame_timing random generator seed (0x024f8110)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/786">Claim: swap-chain setup object creation (0x0247c4e0)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/785">Claim: physics instance constructor helpers (0x00ae6dc0, 0x0083d6d0, 0x00ac46a0, 0x00ae6180, 0x00ac5e00, 0x00ae6d00)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/783">Claim: frame-timing task helpers (0x01456eb0, 0x01456ed0, 0x01456ef0, 0x01456c80, 0x013daac0)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/782">Claim: frame timing task manager helpers (0x01389df0, 0x01389e10, 0x0143d7c0, 0x0143f720, 0x0143c360, 0x0143c450)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/781">Claim: render shader upload block allocator (0x02aa9d50, 0x02aa9db0, 0x02aaa860)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/780">Claim: loading queue helpers (allocator_free_headed, tagged_string_release, resource handle construct/destroy, transfer_task_cancel)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/778">Claim: swap-chain resource info queries (0x02abaef0, 0x02abb4b0, 0x02abad70, 0x02abadd0)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/776">Claim: record selector translations (0x02ab7720, 0x02ab78a0)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-13</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/775">Claim: shader register packet writers (0x01476030, 0x014761a0-0x01476420)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-12</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/768">Claim: render shader preparation packets (0x01475e10, 0x01477f40)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-12</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/766">Claim: render shader packet writers (0x014753c0, 0x01475420, 0x01475480)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-12</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/764">Claim: engine debug print (0x024df920, 0x024dfb30)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-12</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/759">Claim: engine red-black tree insert fix-up and remove (0x024f8350, 0x024f8460)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-12</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/757">Claim: engine wide string assign from counted text (0x02a2a720)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-12</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/756">Claim: engine heap manager area registration (0x0247c000)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-12</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/753">Claim: engine locked regular heap (0x0247c590, 0x0247c5e0)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-12</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/746">Claim: engine DLLightMutex (0x0247ecb0-0x0247f070)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-12</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/742">Claim: engine DLReadWriteLock (0x0247f180-0x0247f710)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-12</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/739">Claim: resource info reference count (0x02a3a1b0, 0x02a3a2a0)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-12</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/738">Claim: engine PthreadMutex.cpp (0x02483fe0, 0x024840b0, 0x02484110, 0x024841d0, 0x02484290)</a><span class="hunter-meta"> · research · runtime</span></li>
+<li><time>2026-11-12</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/736">claim: engine: wide string assign from part and growth (0x02a279a0, 0x02a27b70)</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-12</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/729#issuecomment-6833074004">Technical discussion: capture: replay recorded buffers at their origin</a><span class="hunter-meta"> · research · project contributions</span></li>
+<li><time>2026-11-12</time> <a href="https://github.com/Yharnam-Hunters/Paleblood/issues/720">bug: recorder misses heap list-head reads; heap cases fault on both sides</a><span class="hunter-meta"> · research · project contributions</span></li>
+</ol>
+
+<h2 id="related-devlogs">Related Devlogs</h2>
+<ul><li><a href="/byrgenwerth-site/devlog/2026/11/09/week-of-9-november-2026-past-the-title-through-character-creation-into-the-clinic/">Week of 9 November 2026: past the title, through character creation, into the clinic</a></li></ul>
+
+<p><a href="/byrgenwerth-site/hunters/">← All Hunters</a></p>
+      
+      </div>
+
+    </div>
+    <footer class="wk-footer">
+      <p class="wk-footer-motto">Fear the old blood</p>
+      <p>Made by people who love Bloodborne, so that it can be studied, preserved and played
+      natively, one verified function at a time.</p>
+      <p>A fan project. Not affiliated with or endorsed by Sony Interactive Entertainment or
+      FromSoftware. No game files are shared here: bring your own copy.</p>
+    </footer>
+  </main>
+
+</div>
+
+
+<!-- Back to top -->
+<button class="wk-top" id="wk-top" title="Back to top" aria-label="Scroll to top">↑</button>
+
+
+<script>
+/* Page settings for wiki.js. The drawer query matches the drawer breakpoint in wiki.css. */
+window.WK = {base: "../..", searchIndex: "../../search/search_index.json",
+             drawerQuery: window.matchMedia('(max-width: 900px)')};
+</script>
+<script src="../../javascripts/wiki.js?v=c570fe17af" defer></script><script src="../../javascripts/hunters.js?v=28a0e867eb" defer></script><script src="../../javascripts/enemy.js?v=e8213ed0e8" defer></script>
+</body>
+</html>
