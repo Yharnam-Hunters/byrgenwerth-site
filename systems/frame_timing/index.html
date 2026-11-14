@@ -388,11 +388,11 @@
     
     <a class="wk-progress-card" href="../../progress/">
       <span class="wk-progress-label">Verified functions</span>
-      <span class="wk-progress-value">143 <small>of 157,757</small></span>
-      <span class="wk-stat-track" role="img" aria-label="0.0845 percent of target code bytes verified">
-        <span class="wk-stat-fill" style="width:0.0845%"></span>
+      <span class="wk-progress-value">173 <small>of 157,757</small></span>
+      <span class="wk-stat-track" role="img" aria-label="0.1057 percent of target code bytes verified">
+        <span class="wk-stat-fill" style="width:0.1057%"></span>
       </span>
-      <span class="wk-progress-foot">0.0845% of code bytes verified · 824 replaced</span>
+      <span class="wk-progress-foot">0.1057% of code bytes verified · 850 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -437,11 +437,19 @@
       
       
       <aside class="wk-freshness" role="note">
-        <p><b>Not yet updated for 11 merged changes.</b>
+        <p><b>Not yet updated for 15 merged changes.</b>
         This page was last checked against Paleblood
         <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/cf669283bed4b9a9f36e72ef1ebe28bf037d1a6f"><code>cf66928</code></a>;
         these pull requests changed what it describes since:</p>
         <ul>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1063">#1063</a> input, frame_timing: the key mapper's lookups, the key assign's held query and the listener takes</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1032">#1032</a> frame_timing: replace giving the gate's handle to a pass-on request</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1012">#1012</a> frame_timing: replace the task batch take and the lane sync signal</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1016">#1016</a> frame_timing, loading: replace the generator's calls and the headed allocate (carry of #1002)</li>
           
           <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/978">#978</a> frame_timing: replace the stopwatch frame end, item update and listener list prepare</li>
           
@@ -451,15 +459,7 @@
           
           <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/965">#965</a> Replace throw_event and part_0x10_update with readable C++</li>
           
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/822">#822</a> frame_timing, engine: replace the task queue refill (task_wake_flagged) and allocator_of</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/952">#952</a> frame_timing: carry FFwLo's server-mode pass-on and gate creation helpers</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/835">#835</a> frame_timing: replace pass_on_in_local_mode (0x02265170) and lookup_session_object (0x02265290)</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/834">#834</a> frame_timing: replace pass_handle_on, pass_handle_on_with_items and append_slot_item (0x01e9cb80, 0x01e9cd20, 0x01e9d960)</li>
-          
-          <li>and 3 more</li>
+          <li>and 7 more</li>
         </ul>
       </aside>
       
@@ -779,6 +779,27 @@ fills four 32-bit words from a 32-bit seed with a 64-bit linear congruential ste
 <td data-label="Notes">Sleep milliseconds through POSIX usleep (32-bit multiply wraps); ignore its result and return true</td>
 </tr>
 <tr>
+<td data-label="Address"><code>0x00b68770</code></td>
+<td style="text-align: right;" data-label="Size">60</td>
+<td data-label="Name"><code>frame_timing_generator_buffer_size_00b68770</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Generator: the buffer size for a number of entries, from the generator's layout (0x00b685f0; its flag is not used)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x00b69450</code></td>
+<td style="text-align: right;" data-label="Size">120</td>
+<td data-label="Name"><code>frame_timing_generator_fill_00b69450</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Generator: clears the pending flag of the kind-1 nodes each binding's group lists, then fills the buffer (0x00b694d0, same arguments)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x00b6a030</code></td>
+<td style="text-align: right;" data-label="Size">216</td>
+<td data-label="Name"><code>frame_timing_generator_refresh_00b6a030</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Generator: hands each binding group's short records to their targets' slot 7 and long records to slot 5, with the data after each index</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x01088550</code></td>
 <td style="text-align: right;" data-label="Size">83</td>
 <td data-label="Name"><code>frame_timing_time_of_day_ticks</code></td>
@@ -810,7 +831,7 @@ fills four 32-bit words from a 32-bit seed with a 64-bit linear congruential ste
 <td data-label="Address"><code>0x01381580</code></td>
 <td style="text-align: right;" data-label="Size">139</td>
 <td data-label="Name"><code>frame_timing_task_manager_add_01381580</code></td>
-<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Status"><span class="wk-badge wk-badge--verified"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></span></td>
 <td data-label="Notes">Task add: with both wait objects set: state 2 and hand to 0x013e7170; else group in bits 2-4 of +0x79, queue (manager+0xd8)[group] add, optional order after</td>
 </tr>
 <tr>
@@ -831,7 +852,7 @@ fills four 32-bit words from a 32-bit seed with a 64-bit linear congruential ste
 <td data-label="Address"><code>0x013894f0</code></td>
 <td style="text-align: right;" data-label="Size">108</td>
 <td data-label="Name"><code>frame_timing_task_debug_menu_add_013894f0</code></td>
-<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Status"><span class="wk-badge wk-badge--verified"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></span></td>
 <td data-label="Notes">Adds the "Task" debug menu node once (+0x58) and its settings node with the +0x39 switch; the final call (task manager +0x30, node) goes to an empty leaf</td>
 </tr>
 <tr>
@@ -877,6 +898,20 @@ fills four 32-bit words from a 32-bit seed with a 64-bit linear congruential ste
 <td data-label="Notes">Per-frame task part +0x10: for seconds &gt; 0 steps the source, flags an idle generator, then fills an output buffer (switch on) or steps into a freed scratch buffer</td>
 </tr>
 <tr>
+<td data-label="Address"><code>0x013d6880</code></td>
+<td style="text-align: right;" data-label="Size">41</td>
+<td data-label="Name"><code>frame_timing_listener_take_owner_013d6880</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Listener and its list's owner: with an owner and no binding at +0x50, stores what its vtable slot 6 gives</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x013d68b0</code></td>
+<td style="text-align: right;" data-label="Size">105</td>
+<td data-label="Name"><code>frame_timing_listener_take_resource_013d68b0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Listener and a named resource: with the registry and a resource, an empty label (+0x58) takes the text of slot 7's label source (its slot 5); empty text: length 0, no wcslen</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x013daac0</code></td>
 <td style="text-align: right;" data-label="Size">96</td>
 <td data-label="Name"><code>frame_timing_listener_list_notify_013daac0</code></td>
@@ -903,6 +938,13 @@ fills four 32-bit words from a 32-bit seed with a 64-bit linear congruential ste
 <td data-label="Name"><code>frame_timing_task_record_close_0143c450</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">Closes a closing group record (state 4): flags cleared, state idle, no index (-1)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0143d760</code></td>
+<td style="text-align: right;" data-label="Size">82</td>
+<td data-label="Name"><code>frame_timing_task_batch_take_next_0143d760</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Task batch take: empty gives null; else the front task (deque of 2-task blocks, map read through the proxy's container), size-1, front+1 or 0 when emptied</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x0143d7c0</code></td>
@@ -1318,6 +1360,20 @@ fills four 32-bit words from a 32-bit seed with a 64-bit linear congruential ste
 <td data-label="Notes">Gate handle pass-on in the server modes: when the handle is set, makes a request from FrpgNetMan's object at +0xca8 (0x02264640) and gives it the handle and kind (0x02269e30); false otherwise</td>
 </tr>
 <tr>
+<td data-label="Address"><code>0x02269d40</code></td>
+<td style="text-align: right;" data-label="Size">234</td>
+<td data-label="Name"><code>frame_timing_give_handle_to_local_request_02269d40</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Local pass-on request: empty handle false; else holds the handle's object (counted), kind at +0xdc, object's +0x11c/+0x120 = 1, slot 0x38, send 0xc; true</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02269e30</code></td>
+<td style="text-align: right;" data-label="Size">222</td>
+<td data-label="Name"><code>frame_timing_give_handle_to_server_request_02269e30</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Server pass-on request: empty handle false; else holds the handle's object (counted), kind at +0xdc, object's +0x120 = 1, send 0x13; true</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x0231fbc0</code></td>
 <td style="text-align: right;" data-label="Size">371</td>
 <td data-label="Name"><code>frame_timing_fill_creation_part1_0231fbc0</code></td>
@@ -1379,6 +1435,13 @@ fills four 32-bit words from a 32-bit seed with a 64-bit linear congruential ste
 <td data-label="Name"><code>frame_timing_random_generator_seed_024f8110</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">Seeds a 64-bit LCG (x*0x5deece66d+11 mod 2^64) with the 32-bit seed stepped once and writes the high 32 bits of that state and the next three to the four words</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02aa4080</code></td>
+<td style="text-align: right;" data-label="Size">63</td>
+<td data-label="Name"><code>frame_timing_lane_sync_signal_02aa4080</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Lane sync signal: a sync object whose slot 2 says it was not created is reported (fatal error, returns); then its event at +8 is signalled (0x02a3b050)</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x02c6d580</code></td>

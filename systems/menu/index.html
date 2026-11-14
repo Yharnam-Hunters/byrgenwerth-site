@@ -388,11 +388,11 @@
     
     <a class="wk-progress-card" href="../../progress/">
       <span class="wk-progress-label">Verified functions</span>
-      <span class="wk-progress-value">143 <small>of 157,757</small></span>
-      <span class="wk-stat-track" role="img" aria-label="0.0845 percent of target code bytes verified">
-        <span class="wk-stat-fill" style="width:0.0845%"></span>
+      <span class="wk-progress-value">173 <small>of 157,757</small></span>
+      <span class="wk-stat-track" role="img" aria-label="0.1057 percent of target code bytes verified">
+        <span class="wk-stat-fill" style="width:0.1057%"></span>
       </span>
-      <span class="wk-progress-foot">0.0845% of code bytes verified · 824 replaced</span>
+      <span class="wk-progress-foot">0.1057% of code bytes verified · 850 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -435,11 +435,13 @@
       
       
       <aside class="wk-freshness" role="note">
-        <p><b>Not yet updated for 5 merged changes.</b>
+        <p><b>Not yet updated for 6 merged changes.</b>
         This page was last checked against Paleblood
         <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/cf669283bed4b9a9f36e72ef1ebe28bf037d1a6f"><code>cf66928</code></a>;
         these pull requests changed what it describes since:</p>
         <ul>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1024">#1024</a> menu: the item dialogs' fixed vectors get structs; verify the text pair copy</li>
           
           <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/986">#986</a> menu: replace the scaleform glue registry find/release, handle release and queue</li>
           
@@ -546,21 +548,21 @@ recorded from a real game run, so none is <code>verified</code>.</p>
 <td data-label="Address"><code>0x01ed0dd0</code></td>
 <td style="text-align: right;" data-label="Size">203</td>
 <td data-label="Name"><code>menu_gaitem_select_move_cursor_01ed0dd0</code></td>
-<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Status"><span class="wk-badge wk-badge--verified"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></span></td>
 <td data-label="Notes">GaitemSelectDialog cursor move: column +0x84 and list row clamped to the limits (0x01ed11f0, read twice); on change store, list set row, vtable +0x38</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x01ed7950</code></td>
 <td style="text-align: right;" data-label="Size">188</td>
 <td data-label="Name"><code>menu_gaitem_select_text_pair_copy_into_vector_01ed7950</code></td>
-<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Status"><span class="wk-badge wk-badge--verified"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></span></td>
 <td data-label="Notes">GaitemSelectDialog text pair (two narrow strings, 0x70 B) copied into a fixed-vector slot; slot past the in-use count (+0x708) reported, still copied</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x01edc580</code></td>
 <td style="text-align: right;" data-label="Size">197</td>
 <td data-label="Name"><code>menu_gaitem_select_list_set_row_01edc580</code></td>
-<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Status"><span class="wk-badge wk-badge--verified"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></span></td>
 <td data-label="Notes">Item list set row (clamped; -1 when empty), vtable +8 scrollable, then scroll thumb placed and sized from the row and first shown row shares</td>
 </tr>
 <tr>
@@ -595,7 +597,7 @@ recorded from a real game run, so none is <code>verified</code>.</p>
 <td data-label="Address"><code>0x01f2c200</code></td>
 <td style="text-align: right;" data-label="Size">196</td>
 <td data-label="Name"><code>menu_gaitem_status_label_push_back_01f2c200</code></td>
-<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Status"><span class="wk-badge wk-badge--verified"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></span></td>
 <td data-label="Notes">GaitemStatusDialog two-slot label vector push_back (kind byte, word, wide string; count at +0x98); full: reported, still appended</td>
 </tr>
 <tr>

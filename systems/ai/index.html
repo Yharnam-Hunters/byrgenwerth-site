@@ -388,11 +388,11 @@
     
     <a class="wk-progress-card" href="../../progress/">
       <span class="wk-progress-label">Verified functions</span>
-      <span class="wk-progress-value">143 <small>of 157,757</small></span>
-      <span class="wk-stat-track" role="img" aria-label="0.0845 percent of target code bytes verified">
-        <span class="wk-stat-fill" style="width:0.0845%"></span>
+      <span class="wk-progress-value">173 <small>of 157,757</small></span>
+      <span class="wk-stat-track" role="img" aria-label="0.1057 percent of target code bytes verified">
+        <span class="wk-stat-fill" style="width:0.1057%"></span>
       </span>
-      <span class="wk-progress-foot">0.0845% of code bytes verified · 824 replaced</span>
+      <span class="wk-progress-foot">0.1057% of code bytes verified · 850 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -435,11 +435,13 @@
       
       
       <aside class="wk-freshness" role="note">
-        <p><b>Not yet updated for 10 merged changes.</b>
+        <p><b>Not yet updated for 11 merged changes.</b>
         This page was last checked against Paleblood
         <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/cf669283bed4b9a9f36e72ef1ebe28bf037d1a6f"><code>cf66928</code></a>;
         these pull requests changed what it describes since:</p>
         <ul>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/997">#997</a> ai: verify the sight test, target refresh, visible lookup and inside test</li>
           
           <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/999">#999</a> ai: replace the perception update and the current target's handle</li>
           
@@ -455,9 +457,7 @@
           
           <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/920">#920</a> ai: per-frame AI character queries and target matching (9 functions)</li>
           
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/911">#911</a> ai: AI script bindings (think timers, numbers, target state, random, stats) as readable C++</li>
-          
-          <li>and 2 more</li>
+          <li>and 3 more</li>
         </ul>
       </aside>
       
@@ -556,14 +556,14 @@ will be labeled as observations until their implementation is traced.</p>
 <td data-label="Address"><code>0x016243a0</code></td>
 <td style="text-align: right;" data-label="Size">74</td>
 <td data-label="Name"><code>ai_character_negated_third_column</code></td>
-<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Status"><span class="wk-badge wk-badge--verified"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></span></td>
 <td data-label="Notes">AI view slot +0x58: the character transform's third column negated (w 0), zero vector without a character</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x01624760</code></td>
 <td style="text-align: right;" data-label="Size">35</td>
 <td data-label="Name"><code>ai_character_id</code></td>
-<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Status"><span class="wk-badge wk-badge--verified"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></span></td>
 <td data-label="Notes">AI view slot +0x90: the character's id through its vtable slot +0x88, -1 without a character</td>
 </tr>
 <tr>
@@ -619,14 +619,14 @@ will be labeled as observations until their implementation is traced.</p>
 <td data-label="Address"><code>0x01657b80</code></td>
 <td style="text-align: right;" data-label="Size">19</td>
 <td data-label="Name"><code>ai_func_set_timer</code></td>
-<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Status"><span class="wk-badge wk-badge--verified"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></span></td>
 <td data-label="Notes">AI script binding SetTimer: think timer 0..15 (index checked signed, as the original)</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x01657ba0</code></td>
 <td style="text-align: right;" data-label="Size">22</td>
 <td data-label="Name"><code>ai_func_set_number</code></td>
-<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Status"><span class="wk-badge wk-badge--verified"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></span></td>
 <td data-label="Notes">AI script binding SetNumber: think script number 0..63 (index checked unsigned)</td>
 </tr>
 <tr>
@@ -668,21 +668,21 @@ will be labeled as observations until their implementation is traced.</p>
 <td data-label="Address"><code>0x0165aff0</code></td>
 <td style="text-align: right;" data-label="Size">23</td>
 <td data-label="Name"><code>ai_func_get_timer</code></td>
-<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Status"><span class="wk-badge wk-badge--verified"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></span></td>
 <td data-label="Notes">AI script binding GetTimer: think timer 0..15, 0.0 above</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x0165b010</code></td>
 <td style="text-align: right;" data-label="Size">28</td>
 <td data-label="Name"><code>ai_func_is_finish_timer</code></td>
-<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Status"><span class="wk-badge wk-badge--verified"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></span></td>
 <td data-label="Notes">AI script binding IsFinishTimer: think timer &lt;= 0 (true above index 15)</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x0165b030</code></td>
 <td style="text-align: right;" data-label="Size">26</td>
 <td data-label="Name"><code>ai_func_get_number</code></td>
-<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Status"><span class="wk-badge wk-badge--verified"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></span></td>
 <td data-label="Notes">AI script binding GetNumber: think script number 0..63, 0.0 above</td>
 </tr>
 <tr>
@@ -780,14 +780,14 @@ will be labeled as observations until their implementation is traced.</p>
 <td data-label="Address"><code>0x01693850</code></td>
 <td style="text-align: right;" data-label="Size">1175</td>
 <td data-label="Name"><code>ai_is_inside_direction</code></td>
-<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Status"><span class="wk-badge wk-badge--verified"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></span></td>
 <td data-label="Notes">Inside test: 3D distance &lt;= limit and flat angle between direction and target line below half the cone (cos series)</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x0169acf0</code></td>
 <td style="text-align: right;" data-label="Size">114</td>
 <td data-label="Name"><code>ai_character_has_effect_state</code></td>
-<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Status"><span class="wk-badge wk-badge--verified"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></span></td>
 <td data-label="Notes">AI view slot +0x30: an active effect-list entry's row sets state 0x27, 0xb0 or 0xb1 (row bits 0x162:6, 0x162:7, 0x163:0)</td>
 </tr>
 <tr>
@@ -801,7 +801,7 @@ will be labeled as observations until their implementation is traced.</p>
 <td data-label="Address"><code>0x0169af00</code></td>
 <td style="text-align: right;" data-label="Size">126</td>
 <td data-label="Name"><code>ai_character_ready_check</code></td>
-<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Status"><span class="wk-badge wk-badge--verified"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></span></td>
 <td data-label="Notes">AI view slot +0x68: module +0x78 owner: mode word == 1 when queries 0x1a8 yes / 0x1c0 no, else AI state slot != 0xff</td>
 </tr>
 <tr>
@@ -815,7 +815,7 @@ will be labeled as observations until their implementation is traced.</p>
 <td data-label="Address"><code>0x016a52b0</code></td>
 <td style="text-align: right;" data-label="Size">1936</td>
 <td data-label="Name"><code>ai_sight_test</code></td>
-<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Status"><span class="wk-badge wk-badge--verified"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></span></td>
 <td data-label="Notes">Sight test: nose distance at any angle, else eye distance by darkness from a moved-back eye point, begin distance, width/height cone, optional line-of-sight ray (layer 0x29); unseeable flag wins</td>
 </tr>
 <tr>
@@ -843,14 +843,14 @@ will be labeled as observations until their implementation is traced.</p>
 <td data-label="Address"><code>0x016ad400</code></td>
 <td style="text-align: right;" data-label="Size">287</td>
 <td data-label="Name"><code>ai_perception_target_visible</code></td>
-<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Status"><span class="wk-badge wk-badge--verified"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></span></td>
 <td data-label="Notes">Target list: visible flag of the first kind-4 node, else true for kind 5, else the main entry's flag, else true for kind 3 or 11</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x016b2760</code></td>
 <td style="text-align: right;" data-label="Size">512</td>
 <td data-label="Name"><code>ai_target_list_refresh_noticed</code></td>
-<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Status"><span class="wk-badge wk-badge--verified"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></span></td>
 <td data-label="Notes">Target list: refresh the noticed character's entry (clock 0, visible, refreshed bit) or allocate and link a new 0xa0-byte entry; notice record update</td>
 </tr>
 <tr>
@@ -878,7 +878,7 @@ will be labeled as observations until their implementation is traced.</p>
 <td data-label="Address"><code>0x02224090</code></td>
 <td style="text-align: right;" data-label="Size">573</td>
 <td data-label="Name"><code>ai_group_reset_02224090</code></td>
-<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Status"><span class="wk-badge wk-badge--verified"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></span></td>
 <td data-label="Notes">World area debug step: its debug menu entry state machine (+0x18: add, shown, remove, hidden) then, with arg 2, every block stepped (0x02224a60) or its skip flag (+0x9c) cleared</td>
 </tr>
 <tr>
@@ -899,7 +899,7 @@ will be labeled as observations until their implementation is traced.</p>
 <td data-label="Address"><code>0x029ae440</code></td>
 <td style="text-align: right;" data-label="Size">418</td>
 <td data-label="Name"><code>ai_entity_point_029ae440</code></td>
-<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Status"><span class="wk-badge wk-badge--verified"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></span></td>
 <td data-label="Notes">Face point of a nav-mesh-like source: mean of its edges start vertices through the transform at +0x70 (face/edge maps, added faces/edges/vertices), times refined rcpps of the count; writes 16 bytes</td>
 </tr>
 </tbody>

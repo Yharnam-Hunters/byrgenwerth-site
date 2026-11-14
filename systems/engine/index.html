@@ -388,11 +388,11 @@
     
     <a class="wk-progress-card" href="../../progress/">
       <span class="wk-progress-label">Verified functions</span>
-      <span class="wk-progress-value">143 <small>of 157,757</small></span>
-      <span class="wk-stat-track" role="img" aria-label="0.0845 percent of target code bytes verified">
-        <span class="wk-stat-fill" style="width:0.0845%"></span>
+      <span class="wk-progress-value">173 <small>of 157,757</small></span>
+      <span class="wk-stat-track" role="img" aria-label="0.1057 percent of target code bytes verified">
+        <span class="wk-stat-fill" style="width:0.1057%"></span>
       </span>
-      <span class="wk-progress-foot">0.0845% of code bytes verified · 824 replaced</span>
+      <span class="wk-progress-foot">0.1057% of code bytes verified · 850 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -429,11 +429,21 @@
       
       
       <aside class="wk-freshness" role="note">
-        <p><b>Not yet updated for 21 merged changes.</b>
+        <p><b>Not yet updated for 26 merged changes.</b>
         This page was last checked against Paleblood
         <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/cf669283bed4b9a9f36e72ef1ebe28bf037d1a6f"><code>cf66928</code></a>;
         these pull requests changed what it describes since:</p>
         <ul>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1063">#1063</a> input, frame_timing: the key mapper's lookups, the key assign's held query and the listener takes</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1053">#1053</a> verify seven functions with their recordings</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1039">#1039</a> engine: replace the wide string's assign of a repeated character</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1009">#1009</a> engine: replace Havok's array reserve and reserve more and the FD4 handle refresh</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1013">#1013</a> param, engine: replace the id array push_back family</li>
           
           <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/989">#989</a> engine: replace the block pool's allocate and free and thread_create</li>
           
@@ -441,17 +451,7 @@
           
           <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/972">#972</a> ai: replace the group reset and the debug display's set position, flush and end</li>
           
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/967">#967</a> engine, character, menu, loading: thirteen SPRJ and FD4 helpers as readable C++</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/796">#796</a> physics: replace the instance constructor's six helpers</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/822">#822</a> frame_timing, engine: replace the task queue refill (task_wake_flagged) and allocator_of</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/958">#958</a> ai: sight test, sight query reset, target-list refresh (closes #953)</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/963">#963</a> engine: verify the regular heap's aligned allocation</li>
-          
-          <li>and 13 more</li>
+          <li>and 18 more</li>
         </ul>
       </aside>
       
@@ -599,6 +599,20 @@ They are helpers of that replacement, not separate functions of the executable.<
 </thead>
 <tbody>
 <tr>
+<td data-label="Address"><code>0x00819040</code></td>
+<td style="text-align: right;" data-label="Size">190</td>
+<td data-label="Name"><code>engine_hk_array_reserve_00819040</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">hkArray reserve: count*size bytes (32-bit) reallocated (slot 0x30) or allocated and copied; capacity = answered bytes / size; failure: no buffer, 1</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x00819100</code></td>
+<td style="text-align: right;" data-label="Size">169</td>
+<td data-label="Name"><code>engine_hk_array_reserve_more_00819100</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">hkArray reserve more: twice the size (1 when empty) times the element size, reallocated or allocated and copied, unchecked; capacity = bytes / size</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x0111a740</code></td>
 <td style="text-align: right;" data-label="Size">20</td>
 <td data-label="Name"><code>engine_write_stderr</code></td>
@@ -711,6 +725,13 @@ They are helpers of that replacement, not separate functions of the executable.<
 <td data-label="Notes">FD4 handle check: nonzero handle, index &lt;= table's last index (inclusive), entry (0xe0 B) generation byte at +0x2c equals the handle's</td>
 </tr>
 <tr>
+<td data-label="Address"><code>0x013e99b0</code></td>
+<td style="text-align: right;" data-label="Size">126</td>
+<td data-label="Name"><code>engine_fd4_handle_refresh_013e99b0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">FD4 handle refresh: when the reference's handle is valid, copies the table's version (+0x60) and the entry's value into the reference</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x013e9ee0</code></td>
 <td style="text-align: right;" data-label="Size">8</td>
 <td data-label="Name"><code>engine_fd4_handle_is_set_013e9ee0</code></td>
@@ -735,7 +756,7 @@ They are helpers of that replacement, not separate functions of the executable.<
 <td data-label="Address"><code>0x01c44210</code></td>
 <td style="text-align: right;" data-label="Size">212</td>
 <td data-label="Name"><code>engine_obj_ins_set_registration_01c44210</code></td>
-<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Status"><span class="wk-badge wk-badge--verified"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></span></td>
 <td data-label="Notes">ObjInsUpdateHelper: move a registration to a new item in the owner's pointer array (swap-remove the old, append, grow 0x00819100 when full)</td>
 </tr>
 <tr>
@@ -763,7 +784,7 @@ They are helpers of that replacement, not separate functions of the executable.<
 <td data-label="Address"><code>0x0233ab20</code></td>
 <td style="text-align: right;" data-label="Size">680</td>
 <td data-label="Name"><code>engine_scaleform_heap_bin_free_0233ab20</code></td>
-<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Status"><span class="wk-badge wk-badge--verified"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></span></td>
 <td data-label="Notes">Scaleform small-block free: length from the bitset; a free neighbour unit tail-jumps to the merge; else to the head of its bin</td>
 </tr>
 <tr>
@@ -1584,6 +1605,13 @@ They are helpers of that replacement, not separate functions of the executable.<
 <td data-label="Name"><code>engine_wide_string_assign_02a2a310</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">Wide string assign from counted text: text inside its own characters keeps that part (cut the tail, wmemmove the front); else too long throws, grow 0x02a2a500 if needed, wmemcpy</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02a2a650</code></td>
+<td style="text-align: right;" data-label="Size">200</td>
+<td data-label="Name"><code>engine_wide_string_assign_repeated_02a2a650</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Wide string assign of count copies of a character: too long throws; grows (0x02a27b70) when the capacity is smaller, else 0 only empties; fills (1: one store, else wmemset), ends</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x02a2a720</code></td>

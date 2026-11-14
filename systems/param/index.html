@@ -388,11 +388,11 @@
     
     <a class="wk-progress-card" href="../../progress/">
       <span class="wk-progress-label">Verified functions</span>
-      <span class="wk-progress-value">143 <small>of 157,757</small></span>
-      <span class="wk-stat-track" role="img" aria-label="0.0845 percent of target code bytes verified">
-        <span class="wk-stat-fill" style="width:0.0845%"></span>
+      <span class="wk-progress-value">173 <small>of 157,757</small></span>
+      <span class="wk-stat-track" role="img" aria-label="0.1057 percent of target code bytes verified">
+        <span class="wk-stat-fill" style="width:0.1057%"></span>
       </span>
-      <span class="wk-progress-foot">0.0845% of code bytes verified · 824 replaced</span>
+      <span class="wk-progress-foot">0.1057% of code bytes verified · 850 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -432,6 +432,20 @@
       
       <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 13, 2026 14:54:55 UTC">November 13, 2026</span></p>
       
+      
+      
+      <aside class="wk-freshness" role="note">
+        <p><b>Not yet updated for 1 merged change.</b>
+        This page was last checked against Paleblood
+        <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/cf669283bed4b9a9f36e72ef1ebe28bf037d1a6f"><code>cf66928</code></a>;
+        these pull requests changed what it describes since:</p>
+        <ul>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1013">#1013</a> param, engine: replace the id array push_back family</li>
+          
+          
+        </ul>
+      </aside>
       
       <h1 id="parameters">Parameters</h1>
 <p class="wk-lede">Most of Bloodborne's numbers are not in its code. Weapon damage and scaling, armor, items, the effects of consumables and blood gems, enemy stats and AI tuning, item drops, shop stock, the lamps you warp between, and the colors and layout of menus all live in parameter tables: PARAM files the game loads. The code asks a table for a row by its id and reads fields from that row. This page covers the part of the game that holds those tables and answers those questions. It does not describe what the tables contain, which is game data.</p>
@@ -750,11 +764,32 @@ coverage boots #714 describes.</p>
 </thead>
 <tbody>
 <tr>
+<td data-label="Address"><code>0x016da6a0</code></td>
+<td style="text-align: right;" data-label="Size">217</td>
+<td data-label="Name"><code>param_id_array_push_back_copy_016da6a0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Id array (int32) push_back: grow 1.5x when full (0x016da780), re-find an id inside the array, store unless no buffer; the end moves on regardless</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x018e4110</code></td>
 <td style="text-align: right;" data-label="Size">432</td>
 <td data-label="Name"><code>param_apply_char_make_face</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">Character creation: writes the face being built (sliders; parts/colors/decal for a version 4 table) into a FaceGenParam row</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x019f8d70</code></td>
+<td style="text-align: right;" data-label="Size">217</td>
+<td data-label="Name"><code>param_protector_id_array_push_back_019f8d70</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Id array (int32) push_back: grow 1.5x when full (0x02bc1ca0), re-find an id inside the array, store unless no buffer; the end moves on regardless</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x01b0d5f0</code></td>
+<td style="text-align: right;" data-label="Size">217</td>
+<td data-label="Name"><code>param_weapon_id_array_push_back_01b0d5f0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Id array (int32) push_back: grow 1.5x when full (0x016da780), re-find an id inside the array, store unless no buffer; the end moves on regardless</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x01c92e90</code></td>
@@ -1707,6 +1742,13 @@ coverage boots #714 describes.</p>
 <td data-label="Name"><code>param_find_row_reinforce_param_weapon</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">SoloParamRepository row lookup for ReinforceParamWeapon (type 4): binary search of the <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> index by id; writes id and row data pointer (null if none)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02bc1bb0</code></td>
+<td style="text-align: right;" data-label="Size">217</td>
+<td data-label="Name"><code>param_id_array_push_back_02bc1bb0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Id array (int32) push_back: grow 1.5x when full (0x02bc1ca0), re-find an id inside the array, store unless no buffer; the end moves on regardless</td>
 </tr>
 </tbody>
 </table></div>
