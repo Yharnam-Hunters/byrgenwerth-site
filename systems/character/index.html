@@ -394,11 +394,11 @@
     
     <a class="wk-progress-card" href="../../progress/">
       <span class="wk-progress-label">Verified functions</span>
-      <span class="wk-progress-value">173 <small>of 157,757</small></span>
-      <span class="wk-stat-track" role="img" aria-label="0.1057 percent of target code bytes verified">
-        <span class="wk-stat-fill" style="width:0.1057%"></span>
+      <span class="wk-progress-value">176 <small>of 157,757</small></span>
+      <span class="wk-stat-track" role="img" aria-label="0.1113 percent of target code bytes verified">
+        <span class="wk-stat-fill" style="width:0.1113%"></span>
       </span>
-      <span class="wk-progress-foot">0.1057% of code bytes verified · 850 replaced</span>
+      <span class="wk-progress-foot">0.1113% of code bytes verified · 1,248 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -441,11 +441,13 @@
       
       
       <aside class="wk-freshness" role="note">
-        <p><b>Not yet updated for 3 merged changes.</b>
+        <p><b>Not yet updated for 4 merged changes.</b>
         This page was last checked against Paleblood
         <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/cf669283bed4b9a9f36e72ef1ebe28bf037d1a6f"><code>cf66928</code></a>;
         these pull requests changed what it describes since:</p>
         <ul>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1078">#1078</a> character: replace the gaitem manager's free item (bundle 7)</li>
           
           <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/965">#965</a> Replace throw_event and part_0x10_update with readable C++</li>
           
@@ -563,6 +565,13 @@ the other per-frame updates.</p>
 <td data-label="Name"><code>character_counters_refill_01e5c440</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">Stepped module: five counters gain a global per-second rate * frame time each (fractions carried, truncation), clamped to 0..their maximum</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x01e86e60</code></td>
+<td style="text-align: right;" data-label="Size">312</td>
+<td data-label="Name"><code>character_gaitem_free_item_01e86e60</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SprjGaitem manager free item: destroys and frees the slot's item through its owning heap (0x0247b720), gives the slot the next handle generation with no references, pushes the index on the free ring</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x01e88da0</code></td>

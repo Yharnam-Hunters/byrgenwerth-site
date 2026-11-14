@@ -6,6 +6,11 @@
  "CONTRIBUTING.md": {
   "behind": [
    {
+    "commit": "658a5fb8a17d",
+    "pr": 1083,
+    "title": "session report: show quarantined cases instead of refusing them"
+   },
+   {
     "commit": "b05f357e16b6",
     "pr": 943,
     "title": "verification: require a current edge row for edge-verified functions"
@@ -19,7 +24,18 @@
   "reviewed": "cf669283bed4b9a9f36e72ef1ebe28bf037d1a6f"
  },
  "beasts-of-yharnam/enemies/clinic-beast.md": {
-  "behind": [],
+  "behind": [
+   {
+    "commit": "d92dbba0ca67",
+    "pr": 1079,
+    "title": "ai: perception update and debug display move verified"
+   },
+   {
+    "commit": "1c8f32d16501",
+    "pr": 1067,
+    "title": "ai: hearing, the ear's shape (0x0169da30)"
+   }
+  ],
   "reviewed": "628534595723b2f61cea786f6c088f8e68139aa0"
  },
  "families.md": {
@@ -107,7 +123,13 @@
   "reviewed": "cf669283bed4b9a9f36e72ef1ebe28bf037d1a6f"
  },
  "index.md": {
-  "behind": [],
+  "behind": [
+   {
+    "commit": "338bb44cb61d",
+    "pr": 1082,
+    "title": "symbols: boot record on main; the clinic encounter in the status"
+   }
+  ],
   "reviewed": "cf669283bed4b9a9f36e72ef1ebe28bf037d1a6f"
  },
  "runtime-syscalls.md": {
@@ -127,6 +149,21 @@
  },
  "runtime.md": {
   "behind": [
+   {
+    "commit": "47d7cf3cd87e",
+    "pr": 1081,
+    "title": "capture: record any number of hooks (capture boots record nothing since #1062)"
+   },
+   {
+    "commit": "aa24ec2459c0",
+    "pr": 1080,
+    "title": "trace: give xmm2..xmm7 arguments to recorded cases"
+   },
+   {
+    "commit": "0281b312723d",
+    "pr": 1070,
+    "title": "trace: classify vector, x87 and setcc stores as writes"
+   },
    {
     "commit": "628534595723",
     "pr": 1066,
@@ -298,6 +335,16 @@
  "systems/ai.md": {
   "behind": [
    {
+    "commit": "d92dbba0ca67",
+    "pr": 1079,
+    "title": "ai: perception update and debug display move verified"
+   },
+   {
+    "commit": "1c8f32d16501",
+    "pr": 1067,
+    "title": "ai: hearing, the ear's shape (0x0169da30)"
+   },
+   {
     "commit": "8d3931cf8e18",
     "pr": 997,
     "title": "ai: verify the sight test, target refresh, visible lookup and inside test"
@@ -377,6 +424,11 @@
  "systems/character.md": {
   "behind": [
    {
+    "commit": "5871bd98efc0",
+    "pr": 1078,
+    "title": "character: replace the gaitem manager's free item (bundle 7)"
+   },
+   {
     "commit": "5c86494e9803",
     "pr": 965,
     "title": "Replace throw_event and part_0x10_update with readable C++"
@@ -396,6 +448,16 @@
  },
  "systems/engine.md": {
   "behind": [
+   {
+    "commit": "3a64b6997da4",
+    "pr": 1077,
+    "title": "engine: carry the 8-byte array reserve copies (#1058)"
+   },
+   {
+    "commit": "8cb7a74302a4",
+    "pr": 1062,
+    "title": "engine: carry the list, 8-byte and 32-bit array push_back copies (FFwLo #1047, #1049, #1050)"
+   },
    {
     "commit": "aed8fb53fb31",
     "pr": 1063,
@@ -661,6 +723,11 @@
  "systems/loading.md": {
   "behind": [
    {
+    "commit": "ac0cc0e918f8",
+    "pr": 1061,
+    "title": "loading: replace the kernel file write, seek and close"
+   },
+   {
     "commit": "6306b86decb3",
     "pr": 1013,
     "title": "param, engine: replace the id array push_back family"
@@ -800,6 +867,16 @@
  },
  "systems/render.md": {
   "behind": [
+   {
+    "commit": "5d1a61a2246b",
+    "pr": 1071,
+    "title": "render: replace ESGS ring itemsize writer"
+   },
+   {
+    "commit": "82ef47126b05",
+    "pr": 1056,
+    "title": "render: replace geometry shader update wrapper"
+   },
    {
     "commit": "79fdde598df6",
     "pr": 1048,

@@ -394,11 +394,11 @@
     
     <a class="wk-progress-card" href="../../progress/">
       <span class="wk-progress-label">Verified functions</span>
-      <span class="wk-progress-value">173 <small>of 157,757</small></span>
-      <span class="wk-stat-track" role="img" aria-label="0.1057 percent of target code bytes verified">
-        <span class="wk-stat-fill" style="width:0.1057%"></span>
+      <span class="wk-progress-value">176 <small>of 157,757</small></span>
+      <span class="wk-stat-track" role="img" aria-label="0.1113 percent of target code bytes verified">
+        <span class="wk-stat-fill" style="width:0.1113%"></span>
       </span>
-      <span class="wk-progress-foot">0.1057% of code bytes verified · 850 replaced</span>
+      <span class="wk-progress-foot">0.1113% of code bytes verified · 1,248 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -441,11 +441,15 @@
       
       
       <aside class="wk-freshness" role="note">
-        <p><b>Not yet updated for 11 merged changes.</b>
+        <p><b>Not yet updated for 13 merged changes.</b>
         This page was last checked against Paleblood
         <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/cf669283bed4b9a9f36e72ef1ebe28bf037d1a6f"><code>cf66928</code></a>;
         these pull requests changed what it describes since:</p>
         <ul>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1079">#1079</a> ai: perception update and debug display move verified</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1067">#1067</a> ai: hearing, the ear's shape (0x0169da30)</li>
           
           <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/997">#997</a> ai: verify the sight test, target refresh, visible lookup and inside test</li>
           
@@ -459,11 +463,7 @@
           
           <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/951">#951</a> ai: target list edge cases; verify ai_target_list_mark_main_matches</li>
           
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/936">#936</a> ai: perception (IsVisibleTarget, IsInsideTargetEx, target speed record) as readable C++</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/920">#920</a> ai: per-frame AI character queries and target matching (9 functions)</li>
-          
-          <li>and 3 more</li>
+          <li>and 5 more</li>
         </ul>
       </aside>
       
@@ -590,7 +590,7 @@ will be labeled as observations until their implementation is traced.</p>
 <td data-label="Address"><code>0x016334b0</code></td>
 <td style="text-align: right;" data-label="Size">804</td>
 <td data-label="Name"><code>ai_debug_set_position_016334b0</code></td>
-<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Status"><span class="wk-badge wk-badge--verified"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></span></td>
 <td data-label="Notes">Debug display move: stays while a point-gated object is within 1e-4 of the reference; else target=object, point-&gt;previous, finds the point near the object (0x021c97d0) or in the world</td>
 </tr>
 <tr>
@@ -811,6 +811,13 @@ will be labeled as observations until their implementation is traced.</p>
 <td data-label="Notes">AI view slot +0x68: module +0x78 owner: mode word == 1 when queries 0x1a8 yes / 0x1c0 no, else AI state slot != 0xff</td>
 </tr>
 <tr>
+<td data-label="Address"><code>0x0169da30</code></td>
+<td style="text-align: right;" data-label="Size">763</td>
+<td data-label="Name"><code>ai_hearing_in_ear_range</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Hearing: does a sphere around a sound point reach the ear (within the ear height angle: reach plus radius; beyond it: the sphere surface crosses the angle edge segment)</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x0169fad0</code></td>
 <td style="text-align: right;" data-label="Size">155</td>
 <td data-label="Name"><code>ai_character_link_ids</code></td>
@@ -835,7 +842,7 @@ will be labeled as observations until their implementation is traced.</p>
 <td data-label="Address"><code>0x016a85c0</code></td>
 <td style="text-align: right;" data-label="Size">1463</td>
 <td data-label="Name"><code>ai_perception_update</code></td>
-<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Status"><span class="wk-badge wk-badge--verified"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></span></td>
 <td data-label="Notes">Perception update per think: target-list update, then target state and type from the list (kind 4/5 battle, main entry's state, kind 3/11 caution), facing check, force battle</td>
 </tr>
 <tr>
