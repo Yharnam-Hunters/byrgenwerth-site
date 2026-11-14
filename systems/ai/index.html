@@ -17,7 +17,7 @@
     d.setAttribute('data-theme', t); d.classList.add('wk-js'); }());
   </script>
   
-  <link rel="stylesheet" href="../../stylesheets/wiki.css?v=d9646b693b"><link rel="stylesheet" href="../../stylesheets/hunters.css?v=e4f3c59dfb">
+  <link rel="stylesheet" href="../../stylesheets/wiki.css?v=d9646b693b"><link rel="stylesheet" href="../../stylesheets/hunters.css?v=e4f3c59dfb"><link rel="stylesheet" href="../../stylesheets/enemy.css?v=908a8b7b65">
   
   
 </head>
@@ -165,7 +165,7 @@
         
         
         
-        <li><a class="wk-nav-link" href="../../beasts-of-yharnam/ai-and-behavior/">Enemy AI & Behavior</a></li>
+        <li><a class="wk-nav-link" href="../../beasts-of-yharnam/ai-and-behavior/">How Enemy AI Works</a></li>
         
         
         
@@ -388,11 +388,11 @@
     
     <a class="wk-progress-card" href="../../progress/">
       <span class="wk-progress-label">Verified functions</span>
-      <span class="wk-progress-value">126 <small>of 157,757</small></span>
-      <span class="wk-stat-track" role="img" aria-label="0.0775 percent of target code bytes verified">
-        <span class="wk-stat-fill" style="width:0.0775%"></span>
+      <span class="wk-progress-value">143 <small>of 157,757</small></span>
+      <span class="wk-stat-track" role="img" aria-label="0.0845 percent of target code bytes verified">
+        <span class="wk-stat-fill" style="width:0.0845%"></span>
       </span>
-      <span class="wk-progress-foot">0.0775% of code bytes verified · 748 replaced</span>
+      <span class="wk-progress-foot">0.0845% of code bytes verified · 824 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -435,11 +435,17 @@
       
       
       <aside class="wk-freshness" role="note">
-        <p><b>Not yet updated for 7 merged changes.</b>
+        <p><b>Not yet updated for 10 merged changes.</b>
         This page was last checked against Paleblood
         <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/cf669283bed4b9a9f36e72ef1ebe28bf037d1a6f"><code>cf66928</code></a>;
         these pull requests changed what it describes since:</p>
         <ul>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/999">#999</a> ai: replace the perception update and the current target's handle</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/972">#972</a> ai: replace the group reset and the debug display's set position, flush and end</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/958">#958</a> ai: sight test, sight query reset, target-list refresh (closes #953)</li>
           
           <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/961">#961</a> ai: target-list edge case one float step inside half a metre</li>
           
@@ -451,11 +457,7 @@
           
           <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/911">#911</a> ai: AI script bindings (think timers, numbers, target state, random, stats) as readable C++</li>
           
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/815">#815</a> ai: debug_draw_axes and the draw-layer colour callback as readable C++</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/885">#885</a> ai: the world debug draw and the entity face point as readable C++</li>
-          
-          
+          <li>and 2 more</li>
         </ul>
       </aside>
       
@@ -575,8 +577,29 @@ will be labeled as observations until their implementation is traced.</p>
 <td data-label="Address"><code>0x0162d840</code></td>
 <td style="text-align: right;" data-label="Size">897</td>
 <td data-label="Name"><code>ai_target_speed_record_update</code></td>
-<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Status"><span class="wk-badge wk-badge--verified"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></span></td>
 <td data-label="Notes">Target speed record: 30-sample ring of the followed target's speed along the line to the character, weighted average</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x016334b0</code></td>
+<td style="text-align: right;" data-label="Size">804</td>
+<td data-label="Name"><code>ai_debug_set_position_016334b0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Debug display move: stays while a point-gated object is within 1e-4 of the reference; else target=object, point-&gt;previous, finds the point near the object (0x021c97d0) or in the world</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x01633ac0</code></td>
+<td style="text-align: right;" data-label="Size">734</td>
+<td data-label="Name"><code>ai_debug_flush_01633ac0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Marks (debug flag 2) the objects of the entities the display object links to (+0x150, 0x60 apart): ids copied to a temporary std::list from the default allocator first</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0163bb50</code></td>
+<td style="text-align: right;" data-label="Size">626</td>
+<td data-label="Name"><code>ai_debug_end_0163bb50</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Debug view end of frame: draws its marks (and the world marks) when asked; then the subject bounding box (vtable +0x60) through 0x0135dca0 with the bounds render state</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x01657ac0</code></td>
@@ -589,7 +612,7 @@ will be labeled as observations until their implementation is traced.</p>
 <td data-label="Address"><code>0x01657b20</code></td>
 <td style="text-align: right;" data-label="Size">90</td>
 <td data-label="Name"><code>ai_func_get_random_int</code></td>
-<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Status"><span class="wk-badge wk-badge--verified"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></span></td>
 <td data-label="Notes">AI script binding GetRandam_Int: integer in [min, max] from a 20-bit random fraction (span wraps, truncated)</td>
 </tr>
 <tr>
@@ -666,7 +689,7 @@ will be labeled as observations until their implementation is traced.</p>
 <td data-label="Address"><code>0x0165baf0</code></td>
 <td style="text-align: right;" data-label="Size">22</td>
 <td data-label="Name"><code>ai_func_is_battle_state</code></td>
-<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Status"><span class="wk-badge wk-badge--verified"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></span></td>
 <td data-label="Notes">AI script binding IsBattleState: perception target state == 3 (battle)</td>
 </tr>
 <tr>
@@ -680,14 +703,14 @@ will be labeled as observations until their implementation is traced.</p>
 <td data-label="Address"><code>0x0165bb30</code></td>
 <td style="text-align: right;" data-label="Size">22</td>
 <td data-label="Name"><code>ai_func_is_caution_state</code></td>
-<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Status"><span class="wk-badge wk-badge--verified"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></span></td>
 <td data-label="Notes">AI script binding IsCautionState: perception target state == 1 (caution)</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x0165bb50</code></td>
 <td style="text-align: right;" data-label="Size">22</td>
 <td data-label="Name"><code>ai_func_is_find_state</code></td>
-<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Status"><span class="wk-badge wk-badge--verified"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></span></td>
 <td data-label="Notes">AI script binding IsFindState: perception target state == 2 (find)</td>
 </tr>
 <tr>
@@ -701,7 +724,7 @@ will be labeled as observations until their implementation is traced.</p>
 <td data-label="Address"><code>0x0165bb90</code></td>
 <td style="text-align: right;" data-label="Size">18</td>
 <td data-label="Name"><code>ai_func_get_previous_target_state</code></td>
-<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Status"><span class="wk-badge wk-badge--verified"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></span></td>
 <td data-label="Notes">AI script binding GetPrevTargetState: the perception's target state last frame</td>
 </tr>
 <tr>
@@ -789,11 +812,46 @@ will be labeled as observations until their implementation is traced.</p>
 <td data-label="Notes">The two ids of the character's link (vtable +0x108, +0x1f8) when its partner's link module is active and unblocked; else -1, -1</td>
 </tr>
 <tr>
+<td data-label="Address"><code>0x016a52b0</code></td>
+<td style="text-align: right;" data-label="Size">1936</td>
+<td data-label="Name"><code>ai_sight_test</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Sight test: nose distance at any angle, else eye distance by darkness from a moved-back eye point, begin distance, width/height cone, optional line-of-sight ray (layer 0x29); unseeable flag wins</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x016a5a50</code></td>
+<td style="text-align: right;" data-label="Size">43</td>
+<td data-label="Name"><code>ai_sight_query_reset_target</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Sight query: target half reset (origin, no height or size, visibility 1, light, seeable)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x016a85c0</code></td>
+<td style="text-align: right;" data-label="Size">1463</td>
+<td data-label="Name"><code>ai_perception_update</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Perception update per think: target-list update, then target state and type from the list (kind 4/5 battle, main entry's state, kind 3/11 caution), facing check, force battle</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x016acfa0</code></td>
+<td style="text-align: right;" data-label="Size">384</td>
+<td data-label="Name"><code>ai_perception_current_handle</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--verified"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></span></td>
+<td data-label="Notes">Perception: handle of the current target (kind-4 node, kind-5 node, main entry, kind-3 node), character or place</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x016ad400</code></td>
 <td style="text-align: right;" data-label="Size">287</td>
 <td data-label="Name"><code>ai_perception_target_visible</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">Target list: visible flag of the first kind-4 node, else true for kind 5, else the main entry's flag, else true for kind 3 or 11</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x016b2760</code></td>
+<td style="text-align: right;" data-label="Size">512</td>
+<td data-label="Name"><code>ai_target_list_refresh_noticed</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Target list: refresh the noticed character's entry (clock 0, visible, refreshed bit) or allocate and link a new 0xa0-byte entry; notice record update</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x016b30a0</code></td>
@@ -815,6 +873,13 @@ will be labeled as observations until their implementation is traced.</p>
 <td data-label="Name"><code>ai_draw_world_021d6ea0</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">No-op without the view renderer (+0x8); sets slot state +0x18=2 +0x1c=0 +0x70=3 +0x78=16.0 (dirty 4/8/0x80, +9 bit 1) when they differ, then 0x021d5960 per section of world+0x50 list</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02224090</code></td>
+<td style="text-align: right;" data-label="Size">573</td>
+<td data-label="Name"><code>ai_group_reset_02224090</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">World area debug step: its debug menu entry state machine (+0x18: add, shown, remove, hidden) then, with arg 2, every block stepped (0x02224a60) or its skip flag (+0x9c) cleared</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x0222bc10</code></td>
@@ -936,6 +1001,6 @@ holds elements, and each element holds a list of objects.</p>
 window.WK = {base: "../..", searchIndex: "../../search/search_index.json",
              drawerQuery: window.matchMedia('(max-width: 900px)')};
 </script>
-<script src="../../javascripts/wiki.js?v=c570fe17af" defer></script><script src="../../javascripts/hunters.js?v=28a0e867eb" defer></script><script src="../../search/main.js" defer></script>
+<script src="../../javascripts/wiki.js?v=c570fe17af" defer></script><script src="../../javascripts/hunters.js?v=28a0e867eb" defer></script><script src="../../javascripts/enemy.js?v=446d195843" defer></script><script src="../../search/main.js" defer></script>
 </body>
 </html>

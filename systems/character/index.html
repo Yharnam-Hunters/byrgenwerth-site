@@ -17,7 +17,7 @@
     d.setAttribute('data-theme', t); d.classList.add('wk-js'); }());
   </script>
   
-  <link rel="stylesheet" href="../../stylesheets/wiki.css?v=d9646b693b"><link rel="stylesheet" href="../../stylesheets/hunters.css?v=e4f3c59dfb">
+  <link rel="stylesheet" href="../../stylesheets/wiki.css?v=d9646b693b"><link rel="stylesheet" href="../../stylesheets/hunters.css?v=e4f3c59dfb"><link rel="stylesheet" href="../../stylesheets/enemy.css?v=908a8b7b65">
   
   
 </head>
@@ -165,7 +165,7 @@
         
         
         
-        <li><a class="wk-nav-link" href="../../beasts-of-yharnam/ai-and-behavior/">Enemy AI & Behavior</a></li>
+        <li><a class="wk-nav-link" href="../../beasts-of-yharnam/ai-and-behavior/">How Enemy AI Works</a></li>
         
         
         
@@ -388,11 +388,11 @@
     
     <a class="wk-progress-card" href="../../progress/">
       <span class="wk-progress-label">Verified functions</span>
-      <span class="wk-progress-value">126 <small>of 157,757</small></span>
-      <span class="wk-stat-track" role="img" aria-label="0.0775 percent of target code bytes verified">
-        <span class="wk-stat-fill" style="width:0.0775%"></span>
+      <span class="wk-progress-value">143 <small>of 157,757</small></span>
+      <span class="wk-stat-track" role="img" aria-label="0.0845 percent of target code bytes verified">
+        <span class="wk-stat-fill" style="width:0.0845%"></span>
       </span>
-      <span class="wk-progress-foot">0.0775% of code bytes verified · 748 replaced</span>
+      <span class="wk-progress-foot">0.0845% of code bytes verified · 824 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -435,11 +435,15 @@
       
       
       <aside class="wk-freshness" role="note">
-        <p><b>Not yet updated for 1 merged change.</b>
+        <p><b>Not yet updated for 3 merged changes.</b>
         This page was last checked against Paleblood
         <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/cf669283bed4b9a9f36e72ef1ebe28bf037d1a6f"><code>cf66928</code></a>;
         these pull requests changed what it describes since:</p>
         <ul>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/965">#965</a> Replace throw_event and part_0x10_update with readable C++</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/967">#967</a> engine, character, menu, loading: thirteen SPRJ and FD4 helpers as readable C++</li>
           
           <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/884">#884</a> Replace the four character module updates (0x01e59250, 0x01e5c440, 0x01e4a490, 0x01cd92b0)</li>
           
@@ -527,6 +531,13 @@ the other per-frame updates.</p>
 <td data-label="Notes">Chr +0x1f8 module: if its ready check (0x01cd9390) passes, gives ai_debug_set_position the two positions of the state module; if it still passes, points its two objects at its markers</td>
 </tr>
 <tr>
+<td data-label="Address"><code>0x01e19e20</code></td>
+<td style="text-align: right;" data-label="Size">308</td>
+<td data-label="Name"><code>character_throw_event_01e19e20</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Looks a behavior event up by name and appends {id, 0, 0} to the character graph event ring (grown x2 or to 8 when full); skipped when not ready, unknown or no graph</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x01e4a490</code></td>
 <td style="text-align: right;" data-label="Size">375</td>
 <td data-label="Name"><code>character_state_flags_update_01e4a490</code></td>
@@ -546,6 +557,41 @@ the other per-frame updates.</p>
 <td data-label="Name"><code>character_counters_refill_01e5c440</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">Stepped module: five counters gain a global per-second rate * frame time each (fractions carried, truncation), clamped to 0..their maximum</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x01e88da0</code></td>
+<td style="text-align: right;" data-label="Size">242</td>
+<td data-label="Name"><code>character_gaitem_resolve_handle_01e88da0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--verified"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></span></td>
+<td data-label="Notes">SprjGaitem handle resolve through the manager's index table (slot handle; zero when out of range); reports a missing table / busy / not ready and goes on</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x01e8bae0</code></td>
+<td style="text-align: right;" data-label="Size">132</td>
+<td data-label="Name"><code>character_gaitem_handle_copy_01e8bae0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SprjGaitem handle copy: one more reference on the live slot it names (bit 23 managed, low 16 bits slot index)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x01e8bb70</code></td>
+<td style="text-align: right;" data-label="Size">132</td>
+<td data-label="Name"><code>character_gaitem_handle_copy_01e8bb70</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--verified"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></span></td>
+<td data-label="Notes">SprjGaitem handle copy, second copy of the same code</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x01e8bc00</code></td>
+<td style="text-align: right;" data-label="Size">164</td>
+<td data-label="Name"><code>character_gaitem_handle_release_01e8bc00</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--verified"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></span></td>
+<td data-label="Notes">SprjGaitem handle release: one reference less on its live slot; the last frees the item (0x01e86e60)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x01e8bcb0</code></td>
+<td style="text-align: right;" data-label="Size">202</td>
+<td data-label="Name"><code>character_gaitem_handle_move_assign_01e8bcb0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--verified"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></span></td>
+<td data-label="Notes">SprjGaitem handle move assignment: releases the old handle, takes the source's, clears the source</td>
 </tr>
 </tbody>
 </table></div>
@@ -659,6 +705,6 @@ question.</p>
 window.WK = {base: "../..", searchIndex: "../../search/search_index.json",
              drawerQuery: window.matchMedia('(max-width: 900px)')};
 </script>
-<script src="../../javascripts/wiki.js?v=c570fe17af" defer></script><script src="../../javascripts/hunters.js?v=28a0e867eb" defer></script><script src="../../search/main.js" defer></script>
+<script src="../../javascripts/wiki.js?v=c570fe17af" defer></script><script src="../../javascripts/hunters.js?v=28a0e867eb" defer></script><script src="../../javascripts/enemy.js?v=446d195843" defer></script><script src="../../search/main.js" defer></script>
 </body>
 </html>

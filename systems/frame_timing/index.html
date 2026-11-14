@@ -17,7 +17,7 @@
     d.setAttribute('data-theme', t); d.classList.add('wk-js'); }());
   </script>
   
-  <link rel="stylesheet" href="../../stylesheets/wiki.css?v=d9646b693b"><link rel="stylesheet" href="../../stylesheets/hunters.css?v=e4f3c59dfb">
+  <link rel="stylesheet" href="../../stylesheets/wiki.css?v=d9646b693b"><link rel="stylesheet" href="../../stylesheets/hunters.css?v=e4f3c59dfb"><link rel="stylesheet" href="../../stylesheets/enemy.css?v=908a8b7b65">
   
   
 </head>
@@ -165,7 +165,7 @@
         
         
         
-        <li><a class="wk-nav-link" href="../../beasts-of-yharnam/ai-and-behavior/">Enemy AI & Behavior</a></li>
+        <li><a class="wk-nav-link" href="../../beasts-of-yharnam/ai-and-behavior/">How Enemy AI Works</a></li>
         
         
         
@@ -388,11 +388,11 @@
     
     <a class="wk-progress-card" href="../../progress/">
       <span class="wk-progress-label">Verified functions</span>
-      <span class="wk-progress-value">126 <small>of 157,757</small></span>
-      <span class="wk-stat-track" role="img" aria-label="0.0775 percent of target code bytes verified">
-        <span class="wk-stat-fill" style="width:0.0775%"></span>
+      <span class="wk-progress-value">143 <small>of 157,757</small></span>
+      <span class="wk-stat-track" role="img" aria-label="0.0845 percent of target code bytes verified">
+        <span class="wk-stat-fill" style="width:0.0845%"></span>
       </span>
-      <span class="wk-progress-foot">0.0775% of code bytes verified · 748 replaced</span>
+      <span class="wk-progress-foot">0.0845% of code bytes verified · 824 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -437,11 +437,21 @@
       
       
       <aside class="wk-freshness" role="note">
-        <p><b>Not yet updated for 6 merged changes.</b>
+        <p><b>Not yet updated for 11 merged changes.</b>
         This page was last checked against Paleblood
         <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/cf669283bed4b9a9f36e72ef1ebe28bf037d1a6f"><code>cf66928</code></a>;
         these pull requests changed what it describes since:</p>
         <ul>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/978">#978</a> frame_timing: replace the stopwatch frame end, item update and listener list prepare</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/995">#995</a> engine: key assign queries, task add, item dialog cursor and lists as readable C++</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/973">#973</a> frame_timing: replace the worker lane's start, run and finish</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/965">#965</a> Replace throw_event and part_0x10_update with readable C++</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/822">#822</a> frame_timing, engine: replace the task queue refill (task_wake_flagged) and allocator_of</li>
           
           <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/952">#952</a> frame_timing: carry FFwLo's server-mode pass-on and gate creation helpers</li>
           
@@ -449,13 +459,7 @@
           
           <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/834">#834</a> frame_timing: replace pass_handle_on, pass_handle_on_with_items and append_slot_item (0x01e9cb80, 0x01e9cd20, 0x01e9d960)</li>
           
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/889">#889</a> kernel, frame_timing: replace the memory pool free (0x011ab3a0) and config_get_int (0x024eba00)</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/886">#886</a> frame_timing: replace gate_state_query and step_machine_count_step (0x01ea5570, 0x01ec3000)</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/795">#795</a> frame_timing: replace the task manager's helpers (6 functions)</li>
-          
-          
+          <li>and 3 more</li>
         </ul>
       </aside>
       
@@ -785,7 +789,7 @@ fills four 32-bit words from a 32-bit seed with a 64-bit linear congruential ste
 <td data-label="Address"><code>0x0111a760</code></td>
 <td style="text-align: right;" data-label="Size">131</td>
 <td data-label="Name"><code>frame_timing_get_monotonic_us</code></td>
-<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Status"><span class="wk-badge wk-badge--verified"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></span></td>
 <td data-label="Notes">Microseconds since the shared monotonic clock base; unsigned 32-bit seconds and nanoseconds truncate and wrap; clock failures preserve output and state</td>
 </tr>
 <tr>
@@ -803,6 +807,13 @@ fills four 32-bit words from a 32-bit seed with a 64-bit linear congruential ste
 <td data-label="Notes">Convert milliseconds to microseconds with uint32 wrapping; always call the kernel and discard its result</td>
 </tr>
 <tr>
+<td data-label="Address"><code>0x01381580</code></td>
+<td style="text-align: right;" data-label="Size">139</td>
+<td data-label="Name"><code>frame_timing_task_manager_add_01381580</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Task add: with both wait objects set: state 2 and hand to 0x013e7170; else group in bits 2-4 of +0x79, queue (manager+0xd8)[group] add, optional order after</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x01388c60</code></td>
 <td style="text-align: right;" data-label="Size">16</td>
 <td data-label="Name"><code>frame_timing_task_run_all_01388c60</code></td>
@@ -815,6 +826,13 @@ fills four 32-bit words from a 32-bit seed with a 64-bit linear congruential ste
 <td data-label="Name"><code>frame_timing_task_run_01388c70</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--verified"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></span></td>
 <td data-label="Notes">task manager run: prepare the frame; dispatch through +0x40 (virtual +0x30) with +0x38 set; finish</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x013894f0</code></td>
+<td style="text-align: right;" data-label="Size">108</td>
+<td data-label="Name"><code>frame_timing_task_debug_menu_add_013894f0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Adds the "Task" debug menu node once (+0x58) and its settings node with the +0x39 switch; the final call (task manager +0x30, node) goes to an empty leaf</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x01389df0</code></td>
@@ -845,11 +863,32 @@ fills four 32-bit words from a 32-bit seed with a 64-bit linear congruential ste
 <td data-label="Notes">per-frame task: passes the frame-time descriptor and its seconds to three parts; Uncap FPS++ edits it</td>
 </tr>
 <tr>
+<td data-label="Address"><code>0x013d4810</code></td>
+<td style="text-align: right;" data-label="Size">86</td>
+<td data-label="Name"><code>frame_timing_item_update_013d4810</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Brings the item's group up to date, then switches the item on or off when its requested enabled byte differs; an enabled item is switched on again</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x013d5440</code></td>
+<td style="text-align: right;" data-label="Size">346</td>
+<td data-label="Name"><code>frame_timing_part_0x10_update_013d5440</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Per-frame task part +0x10: for seconds &gt; 0 steps the source, flags an idle generator, then fills an output buffer (switch on) or steps into a freed scratch buffer</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x013daac0</code></td>
 <td style="text-align: right;" data-label="Size">96</td>
 <td data-label="Name"><code>frame_timing_listener_list_notify_013daac0</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">Runs the list preparation 0x013dab20, then passes the frame-time descriptor to each listener (vtable slot 2), re-reading the list after every call</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x013dab20</code></td>
+<td style="text-align: right;" data-label="Size">187</td>
+<td data-label="Name"><code>frame_timing_listener_list_prepare_013dab20</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Hands the list's owner (when set) to every listener, then the resource the named resource registry holds under the list's name</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x0143c360</code></td>
@@ -915,6 +954,13 @@ fills four 32-bit words from a 32-bit seed with a 64-bit linear congruential ste
 <td data-label="Notes">Under the task lock (+0x90): frees the pending items last first and their array via the allocator at +0x80; empties the list; empties +0x70/+0x78 when counted</td>
 </tr>
 <tr>
+<td data-label="Address"><code>0x0143ed00</code></td>
+<td style="text-align: right;" data-label="Size">264</td>
+<td data-label="Name"><code>frame_timing_task_refill_queue_0143ed00</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Under the task lock (+0x90): empties the queue (+0x58 deque) with 0x0143ec40, then pushes every 16-byte item of the list at +0x38/+0x40 onto it (0x02dd7150)</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x0143f720</code></td>
 <td style="text-align: right;" data-label="Size">82</td>
 <td data-label="Name"><code>frame_timing_task_lookup_0143f720</code></td>
@@ -950,6 +996,13 @@ fills four 32-bit words from a 32-bit seed with a 64-bit linear congruential ste
 <td data-label="Notes">Stop a positive stopwatch: add seconds since its start to the totals at +0x3c and +0x54; clear the start</td>
 </tr>
 <tr>
+<td data-label="Address"><code>0x014486d0</code></td>
+<td style="text-align: right;" data-label="Size">111</td>
+<td data-label="Name"><code>frame_timing_stopwatch_frame_end_014486d0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Every 30 frames turns the total seconds and start count into per-frame averages; every frame folds the frame starts and seconds into their peaks</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x01456c80</code></td>
 <td style="text-align: right;" data-label="Size">39</td>
 <td data-label="Name"><code>frame_timing_item_list_update_01456c80</code></td>
@@ -976,6 +1029,34 @@ fills four 32-bit words from a 32-bit seed with a 64-bit linear congruential ste
 <td data-label="Name"><code>frame_timing_profile_frame_end_01456ef0</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">When the profiling switch at 0x058b8718 is set, gives each of the ten stopwatches at 0x058b86c0 its end-of-frame tick (0x014486d0) in order</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x01467300</code></td>
+<td style="text-align: right;" data-label="Size">161</td>
+<td data-label="Name"><code>frame_timing_worker_lane_start_on_thread_01467300</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Unless the batch is null or the lane running or taken: marks it running and keeps the batch; wakes its thread, or in mode 0 runs every task here until empty or stopped</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x01467500</code></td>
+<td style="text-align: right;" data-label="Size">34</td>
+<td data-label="Name"><code>frame_timing_worker_lane_start_on_caller_01467500</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Unless the batch is null or the lane running or taken: marks the lane taken by its caller and running, clears its stop request and keeps the batch</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x01467530</code></td>
+<td style="text-align: right;" data-label="Size">102</td>
+<td data-label="Name"><code>frame_timing_worker_lane_run_01467530</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Runs one task of a taken, running lane with the lane's mode as argument; an empty batch stops the lane running</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x014675a0</code></td>
+<td style="text-align: right;" data-label="Size">27</td>
+<td data-label="Name"><code>frame_timing_worker_lane_finish_014675a0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Gives a taken lane back: clears taken, running, the stop request and the batch</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x01e9cb80</code></td>
@@ -1482,6 +1563,6 @@ differed.</p>
 window.WK = {base: "../..", searchIndex: "../../search/search_index.json",
              drawerQuery: window.matchMedia('(max-width: 900px)')};
 </script>
-<script src="../../javascripts/wiki.js?v=c570fe17af" defer></script><script src="../../javascripts/hunters.js?v=28a0e867eb" defer></script><script src="../../search/main.js" defer></script>
+<script src="../../javascripts/wiki.js?v=c570fe17af" defer></script><script src="../../javascripts/hunters.js?v=28a0e867eb" defer></script><script src="../../javascripts/enemy.js?v=446d195843" defer></script><script src="../../search/main.js" defer></script>
 </body>
 </html>

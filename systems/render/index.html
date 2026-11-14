@@ -17,7 +17,7 @@
     d.setAttribute('data-theme', t); d.classList.add('wk-js'); }());
   </script>
   
-  <link rel="stylesheet" href="../../stylesheets/wiki.css?v=d9646b693b"><link rel="stylesheet" href="../../stylesheets/hunters.css?v=e4f3c59dfb">
+  <link rel="stylesheet" href="../../stylesheets/wiki.css?v=d9646b693b"><link rel="stylesheet" href="../../stylesheets/hunters.css?v=e4f3c59dfb"><link rel="stylesheet" href="../../stylesheets/enemy.css?v=908a8b7b65">
   
   
 </head>
@@ -165,7 +165,7 @@
         
         
         
-        <li><a class="wk-nav-link" href="../../beasts-of-yharnam/ai-and-behavior/">Enemy AI & Behavior</a></li>
+        <li><a class="wk-nav-link" href="../../beasts-of-yharnam/ai-and-behavior/">How Enemy AI Works</a></li>
         
         
         
@@ -388,11 +388,11 @@
     
     <a class="wk-progress-card" href="../../progress/">
       <span class="wk-progress-label">Verified functions</span>
-      <span class="wk-progress-value">126 <small>of 157,757</small></span>
-      <span class="wk-stat-track" role="img" aria-label="0.0775 percent of target code bytes verified">
-        <span class="wk-stat-fill" style="width:0.0775%"></span>
+      <span class="wk-progress-value">143 <small>of 157,757</small></span>
+      <span class="wk-stat-track" role="img" aria-label="0.0845 percent of target code bytes verified">
+        <span class="wk-stat-fill" style="width:0.0845%"></span>
       </span>
-      <span class="wk-progress-foot">0.0775% of code bytes verified · 748 replaced</span>
+      <span class="wk-progress-foot">0.0845% of code bytes verified · 824 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -435,11 +435,15 @@
       
       
       <aside class="wk-freshness" role="note">
-        <p><b>Not yet updated for 14 merged changes.</b>
+        <p><b>Not yet updated for 16 merged changes.</b>
         This page was last checked against Paleblood
         <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/cf669283bed4b9a9f36e72ef1ebe28bf037d1a6f"><code>cf66928</code></a>;
         these pull requests changed what it describes since:</p>
         <ul>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1007">#1007</a> render, loading: replace the parameter set's set and clear, result assign and release at quit</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/969">#969</a> render: replace the list splice, object update and initial level copy</li>
           
           <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/956">#956</a> render: carry evill33t's local shader packet wrapper</li>
           
@@ -453,11 +457,7 @@
           
           <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/922">#922</a> render: replace hull shader update wrapper</li>
           
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/871">#871</a> render: replace the DB_RENDER_OVERRIDE packet setter</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/853">#853</a> render: replace the border-color base register writer</li>
-          
-          <li>and 6 more</li>
+          <li>and 8 more</li>
         </ul>
       </aside>
       
@@ -1566,11 +1566,32 @@ frames. #279, #286 and #287 were brought up to date with <code>main</code> from 
 <td data-label="Notes">Accumulate levels inclusively using partial helper totals even after errors; publish the two QWORD outputs in order.</td>
 </tr>
 <tr>
+<td data-label="Address"><code>0x014a3410</code></td>
+<td style="text-align: right;" data-label="Size">250</td>
+<td data-label="Name"><code>render_copy_initial_level_014a3410</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Render: copies one level of initial data through the box copy, in 4x4 blocks for block-compressed or blocked levels; a null level is refused</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02373850</code></td>
+<td style="text-align: right;" data-label="Size">590</td>
+<td data-label="Name"><code>render_object_update_02373850</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Render: refreshes an object's visible flag (owner query or view masks), then idle/running/finishing life cycle with finish and notify requests; false once done</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x02377bd0</code></td>
 <td style="text-align: right;" data-label="Size">399</td>
 <td data-label="Name"><code>render_frame_update_02377bd0</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--verified"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></span></td>
 <td data-label="Notes">per-frame: ages a list of ref-counted objects; updates RendMan-side child; steps another child by 1/30 s (Uncap: measured frame time)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02379d60</code></td>
+<td style="text-align: right;" data-label="Size">391</td>
+<td data-label="Name"><code>render_list_prepare_02379d60</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Render: engine list splice of another list's range; relinks on one heap (size limit), else inserts each value and erases the range from the other list</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x0247c4e0</code></td>
@@ -2028,6 +2049,20 @@ frames. #279, #286 and #287 were brought up to date with <code>main</code> from 
 <td data-label="Notes">Owned-thread flip polling; source binding and submission; every exit reloads the global guard pointer. Native GPU helper effects remain original Synthetic GCC/Clang edges pass; no recordings.</td>
 </tr>
 <tr>
+<td data-label="Address"><code>0x02c51f60</code></td>
+<td style="text-align: right;" data-label="Size">87</td>
+<td data-label="Name"><code>render_set_parameter_02c51f60</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Parameter set: finds the key among the sorted keys (lower bound) and stores the value beside it when found</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02c51fc0</code></td>
+<td style="text-align: right;" data-label="Size">42</td>
+<td data-label="Name"><code>render_clear_parameter_set_02c51fc0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Parameter set: frees its block of keys and values through its allocator (slot 0x70) and clears the pointer, when there is one</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x02fa6af0</code></td>
 <td style="text-align: right;" data-label="Size">2214</td>
 <td data-label="Name"><code>render_prepare_resource_descriptor</code></td>
@@ -2124,6 +2159,6 @@ the frame update was re-<abbr title="A replaced function that behaved exactly li
 window.WK = {base: "../..", searchIndex: "../../search/search_index.json",
              drawerQuery: window.matchMedia('(max-width: 900px)')};
 </script>
-<script src="../../javascripts/wiki.js?v=c570fe17af" defer></script><script src="../../javascripts/hunters.js?v=28a0e867eb" defer></script><script src="../../search/main.js" defer></script>
+<script src="../../javascripts/wiki.js?v=c570fe17af" defer></script><script src="../../javascripts/hunters.js?v=28a0e867eb" defer></script><script src="../../javascripts/enemy.js?v=446d195843" defer></script><script src="../../search/main.js" defer></script>
 </body>
 </html>

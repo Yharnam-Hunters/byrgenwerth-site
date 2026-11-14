@@ -17,7 +17,7 @@
     d.setAttribute('data-theme', t); d.classList.add('wk-js'); }());
   </script>
   
-  <link rel="stylesheet" href="../../stylesheets/wiki.css?v=d9646b693b"><link rel="stylesheet" href="../../stylesheets/hunters.css?v=e4f3c59dfb">
+  <link rel="stylesheet" href="../../stylesheets/wiki.css?v=d9646b693b"><link rel="stylesheet" href="../../stylesheets/hunters.css?v=e4f3c59dfb"><link rel="stylesheet" href="../../stylesheets/enemy.css?v=908a8b7b65">
   
   
 </head>
@@ -165,7 +165,7 @@
         
         
         
-        <li><a class="wk-nav-link" href="../../beasts-of-yharnam/ai-and-behavior/">Enemy AI & Behavior</a></li>
+        <li><a class="wk-nav-link" href="../../beasts-of-yharnam/ai-and-behavior/">How Enemy AI Works</a></li>
         
         
         
@@ -388,11 +388,11 @@
     
     <a class="wk-progress-card" href="../../progress/">
       <span class="wk-progress-label">Verified functions</span>
-      <span class="wk-progress-value">126 <small>of 157,757</small></span>
-      <span class="wk-stat-track" role="img" aria-label="0.0775 percent of target code bytes verified">
-        <span class="wk-stat-fill" style="width:0.0775%"></span>
+      <span class="wk-progress-value">143 <small>of 157,757</small></span>
+      <span class="wk-stat-track" role="img" aria-label="0.0845 percent of target code bytes verified">
+        <span class="wk-stat-fill" style="width:0.0845%"></span>
       </span>
-      <span class="wk-progress-foot">0.0775% of code bytes verified · 748 replaced</span>
+      <span class="wk-progress-foot">0.0845% of code bytes verified · 824 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -435,11 +435,19 @@
       
       
       <aside class="wk-freshness" role="note">
-        <p><b>Not yet updated for 8 merged changes.</b>
+        <p><b>Not yet updated for 12 merged changes.</b>
         This page was last checked against Paleblood
         <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/cf669283bed4b9a9f36e72ef1ebe28bf037d1a6f"><code>cf66928</code></a>;
         these pull requests changed what it describes since:</p>
         <ul>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1007">#1007</a> render, loading: replace the parameter set's set and clear, result assign and release at quit</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/991">#991</a> loading: replace the resource base's constructor and destructor and add_reference</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/968">#968</a> loading: replace the disk file device instance and locate, and the load request assign</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/967">#967</a> engine, character, menu, loading: thirteen SPRJ and FD4 helpers as readable C++</li>
           
           <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/962">#962</a> loading: carry evill33t's canonical Darwin guest TLS for disk opens (#762)</li>
           
@@ -449,15 +457,7 @@
           
           <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/903">#903</a> loading: replace five load result helpers as readable C++</li>
           
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/906">#906</a> loading: three resources that keep a copy of a loaded file</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/741">#741</a> loading: replace the resource info's reference count and drop</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/869">#869</a> loading: the file load queue's kind 3 and 4 handlers, the manager's removal of a released info, the file task's read start</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/847">#847</a> loading: the file task's read buffer, end and reset; finished entries; the file load queue's dispatch</li>
-          
-          
+          <li>and 4 more</li>
         </ul>
       </aside>
       
@@ -635,6 +635,27 @@ are reached in coverage boots to character creation:</p>
 <td data-label="Notes">sceFiosFHOpenSync to read; on success a 0x18-byte file object (vtable 0x055c2190) open when the handle is not negative</td>
 </tr>
 <tr>
+<td data-label="Address"><code>0x013e68f0</code></td>
+<td style="text-align: right;" data-label="Size">160</td>
+<td data-label="Name"><code>loading_path_table_find_013e68f0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">FD4 hashed table find by path key: hash (x*0x89, ASCII letters folded, backslash as slash) cached in the key, bucket chain at +0x58, compare 0x02db46f0</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x013e6ff0</code></td>
+<td style="text-align: right;" data-label="Size">91</td>
+<td data-label="Name"><code>loading_resource_base_construct_013e6ff0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Resource base: builds the object base with the heap reference, then its vtable, an empty file handle, its state bytes and the heap reference's word</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x013e7090</code></td>
+<td style="text-align: right;" data-label="Size">56</td>
+<td data-label="Name"><code>loading_resource_base_destroy_013e7090</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Resource base: writes its vtable back, lets go of the handle's file, destroys the handle and then the object base</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x0237e640</code></td>
 <td style="text-align: right;" data-label="Size">129</td>
 <td data-label="Name"><code>loading_file_copy_construct_0237e640</code></td>
@@ -719,6 +740,13 @@ are reached in coverage boots to character creation:</p>
 <td data-label="Notes">vtable slot 7: copy the loaded file bytes into a buffer of its own while holding the file (class c)</td>
 </tr>
 <tr>
+<td data-label="Address"><code>0x0246be70</code></td>
+<td style="text-align: right;" data-label="Size">377</td>
+<td data-label="Name"><code>loading_disk_file_device_instance_0246be70</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Ps4DiskFileDevice singleton: under its own light mutex, builds the device in static storage (0x0246bff0) and registers its release at quit (0x024712e0) with the quit query</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x0246cf50</code></td>
 <td style="text-align: right;" data-label="Size">549</td>
 <td data-label="Name"><code>loading_disk_device_resolve_root_0246cf50</code></td>
@@ -738,6 +766,13 @@ are reached in coverage boots to character creation:</p>
 <td data-label="Name"><code>loading_disk_device_open_0246d550</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">Ps4DiskFileDevice open: keep the requested path (thread heap); resolve aliases/roots in rounds; open only if an alias matched; through the named device or each unnamed one; under the device lock</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0246e3d0</code></td>
+<td style="text-align: right;" data-label="Size">573</td>
+<td data-label="Name"><code>loading_disk_file_device_locate_0246e3d0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Where a path is found: resolves a copy of its mount prefixes (rounds or roots only), asks the named device (slot 0x20) or each unnamed one until not 2; under the device lock</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x0246e630</code></td>
@@ -768,6 +803,13 @@ are reached in coverage boots to character creation:</p>
 <td data-label="Notes">mount table push_back: grow 1.5x when full (source inside the table found again); copy name and target; end moves on even without a buffer</td>
 </tr>
 <tr>
+<td data-label="Address"><code>0x024712e0</code></td>
+<td style="text-align: right;" data-label="Size">46</td>
+<td data-label="Name"><code>loading_disk_file_device_release_at_quit_024712e0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Disk file device release at quit: unless the destroyed byte is set, destroys the instance (0x0246caa0), clears the instance pointer and sets the byte to 1</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x024716d0</code></td>
 <td style="text-align: right;" data-label="Size">539</td>
 <td data-label="Name"><code>loading_mount_table_reallocate_024716d0</code></td>
@@ -794,6 +836,13 @@ are reached in coverage boots to character creation:</p>
 <td data-label="Name"><code>loading_result_copy_024bcfe0</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">Load result base copy constructor: vtable, request words cleared then copied, code and word</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x024bd080</code></td>
+<td style="text-align: right;" data-label="Size">50</td>
+<td data-label="Name"><code>loading_result_assign_024bd080</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Result base's copy assignment: the four request words one by one, the code and the word; the vtable and the handle stay. Returns the entry</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x024bd310</code></td>
@@ -836,6 +885,13 @@ are reached in coverage boots to character creation:</p>
 <td data-label="Name"><code>loading_load_request_copy_024be3b0</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">resource load request copy constructor: base vtable; words/bytes copied; name on the request heap; strings/array via 0x024be8e0 then assigned (strings skip self-copy)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x024be630</code></td>
+<td style="text-align: right;" data-label="Size">437</td>
+<td data-label="Name"><code>loading_load_request_assign_024be630</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Load request copy assignment: words, bytes and owns copied; strings assigned unless self-assignment; data array assigned; returns the request</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x024be8e0</code></td>
@@ -976,6 +1032,13 @@ are reached in coverage boots to character creation:</p>
 <td data-label="Name"><code>loading_resource_info_drop_reference_02a3a2a0</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">Dantelion2 DLResourceInfo drop reference: decrement under the info's own engine mutex; a count at zero stays zero</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02a3a300</code></td>
+<td style="text-align: right;" data-label="Size">36</td>
+<td data-label="Name"><code>loading_resource_info_add_reference_02a3a300</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Resource info: adds one to the reference count under the info's own mutex (waiting forever)</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x02a692d0</code></td>
@@ -1274,6 +1337,6 @@ address is mapped to a loading function and its effect is checked against the st
 window.WK = {base: "../..", searchIndex: "../../search/search_index.json",
              drawerQuery: window.matchMedia('(max-width: 900px)')};
 </script>
-<script src="../../javascripts/wiki.js?v=c570fe17af" defer></script><script src="../../javascripts/hunters.js?v=28a0e867eb" defer></script><script src="../../search/main.js" defer></script>
+<script src="../../javascripts/wiki.js?v=c570fe17af" defer></script><script src="../../javascripts/hunters.js?v=28a0e867eb" defer></script><script src="../../javascripts/enemy.js?v=446d195843" defer></script><script src="../../search/main.js" defer></script>
 </body>
 </html>

@@ -25,6 +25,31 @@
  "how-the-frame-limiter-works.md": {
   "behind": [
    {
+    "commit": "7e53f023fc2b",
+    "pr": 978,
+    "title": "frame_timing: replace the stopwatch frame end, item update and listener list prepare"
+   },
+   {
+    "commit": "0fe346ea26f9",
+    "pr": 995,
+    "title": "engine: key assign queries, task add, item dialog cursor and lists as readable C++"
+   },
+   {
+    "commit": "855d3a54c49b",
+    "pr": 973,
+    "title": "frame_timing: replace the worker lane's start, run and finish"
+   },
+   {
+    "commit": "5c86494e9803",
+    "pr": 965,
+    "title": "Replace throw_event and part_0x10_update with readable C++"
+   },
+   {
+    "commit": "beb11e652a61",
+    "pr": 822,
+    "title": "frame_timing, engine: replace the task queue refill (task_wake_flagged) and allocator_of"
+   },
+   {
     "commit": "84ad6a249fe2",
     "pr": 952,
     "title": "frame_timing: carry FFwLo's server-mode pass-on and gate creation helpers"
@@ -62,11 +87,52 @@
   "reviewed": "cf669283bed4b9a9f36e72ef1ebe28bf037d1a6f"
  },
  "runtime-syscalls.md": {
-  "behind": [],
+  "behind": [
+   {
+    "commit": "d9a6ab6b8a97",
+    "pr": 975,
+    "title": "input: closed-loop walks in input scripts"
+   },
+   {
+    "commit": "490b27008d21",
+    "pr": 983,
+    "title": "syslib: the movie player's clock stands still while paused (fixes the avplayer pause flake)"
+   }
+  ],
   "reviewed": "cf669283bed4b9a9f36e72ef1ebe28bf037d1a6f"
  },
  "runtime.md": {
   "behind": [
+   {
+    "commit": "a5f9737404e0",
+    "pr": 1014,
+    "title": "capture: no case when an input changes during the call; triage of the 2026-11-14 capture failures"
+   },
+   {
+    "commit": "38d6eedc5658",
+    "pr": 1003,
+    "title": "capture: trace thread-local storage through the guest thread pointer"
+   },
+   {
+    "commit": "d4c531b193e6",
+    "pr": 1000,
+    "title": "render: 16-bit depth targets are written back and read as 16-bit images"
+   },
+   {
+    "commit": "d9a6ab6b8a97",
+    "pr": 975,
+    "title": "input: closed-loop walks in input scripts"
+   },
+   {
+    "commit": "490b27008d21",
+    "pr": 983,
+    "title": "syslib: the movie player's clock stands still while paused (fixes the avplayer pause flake)"
+   },
+   {
+    "commit": "c4a88416a45f",
+    "pr": 971,
+    "title": "render: draws in a row share a render pass with no barrier between them (+2.45 fps in the clinic)"
+   },
    {
     "commit": "a7fff00b41a6",
     "pr": 962,
@@ -168,6 +234,21 @@
  "systems/ai.md": {
   "behind": [
    {
+    "commit": "f30b08fe601d",
+    "pr": 999,
+    "title": "ai: replace the perception update and the current target's handle"
+   },
+   {
+    "commit": "b920964afd32",
+    "pr": 972,
+    "title": "ai: replace the group reset and the debug display's set position, flush and end"
+   },
+   {
+    "commit": "90c7f39b3fd6",
+    "pr": 958,
+    "title": "ai: sight test, sight query reset, target-list refresh (closes #953)"
+   },
+   {
     "commit": "6e5f7d3d4bc5",
     "pr": 961,
     "title": "ai: target-list edge case one float step inside half a metre"
@@ -212,6 +293,11 @@
  "systems/camera.md": {
   "behind": [
    {
+    "commit": "c404d20089f1",
+    "pr": 996,
+    "title": "camera: replace the quaternion rotation rows, rows3 multiply and affine finish"
+   },
+   {
     "commit": "d511724b854f",
     "pr": 839,
     "title": "camera: transform_matrix and axis_angle_quaternion as readable C++"
@@ -222,6 +308,16 @@
  "systems/character.md": {
   "behind": [
    {
+    "commit": "5c86494e9803",
+    "pr": 965,
+    "title": "Replace throw_event and part_0x10_update with readable C++"
+   },
+   {
+    "commit": "556f39de42fc",
+    "pr": 967,
+    "title": "engine, character, menu, loading: thirteen SPRJ and FD4 helpers as readable C++"
+   },
+   {
     "commit": "9245b64a5f3c",
     "pr": 884,
     "title": "Replace the four character module updates (0x01e59250, 0x01e5c440, 0x01e4a490, 0x01cd92b0)"
@@ -231,6 +327,41 @@
  },
  "systems/engine.md": {
   "behind": [
+   {
+    "commit": "8680de0ccaa8",
+    "pr": 989,
+    "title": "engine: replace the block pool's allocate and free and thread_create"
+   },
+   {
+    "commit": "2ae98ee5028c",
+    "pr": 985,
+    "title": "match: name leaf family members as callees, and match the FD4 handle check"
+   },
+   {
+    "commit": "b920964afd32",
+    "pr": 972,
+    "title": "ai: replace the group reset and the debug display's set position, flush and end"
+   },
+   {
+    "commit": "556f39de42fc",
+    "pr": 967,
+    "title": "engine, character, menu, loading: thirteen SPRJ and FD4 helpers as readable C++"
+   },
+   {
+    "commit": "edfc48849896",
+    "pr": 796,
+    "title": "physics: replace the instance constructor's six helpers"
+   },
+   {
+    "commit": "beb11e652a61",
+    "pr": 822,
+    "title": "frame_timing, engine: replace the task queue refill (task_wake_flagged) and allocator_of"
+   },
+   {
+    "commit": "90c7f39b3fd6",
+    "pr": 958,
+    "title": "ai: sight test, sight query reset, target-list refresh (closes #953)"
+   },
    {
     "commit": "d8823b03282a",
     "pr": 963,
@@ -311,6 +442,31 @@
  "systems/frame_timing.md": {
   "behind": [
    {
+    "commit": "7e53f023fc2b",
+    "pr": 978,
+    "title": "frame_timing: replace the stopwatch frame end, item update and listener list prepare"
+   },
+   {
+    "commit": "0fe346ea26f9",
+    "pr": 995,
+    "title": "engine: key assign queries, task add, item dialog cursor and lists as readable C++"
+   },
+   {
+    "commit": "855d3a54c49b",
+    "pr": 973,
+    "title": "frame_timing: replace the worker lane's start, run and finish"
+   },
+   {
+    "commit": "5c86494e9803",
+    "pr": 965,
+    "title": "Replace throw_event and part_0x10_update with readable C++"
+   },
+   {
+    "commit": "beb11e652a61",
+    "pr": 822,
+    "title": "frame_timing, engine: replace the task queue refill (task_wake_flagged) and allocator_of"
+   },
+   {
     "commit": "84ad6a249fe2",
     "pr": 952,
     "title": "frame_timing: carry FFwLo's server-mode pass-on and gate creation helpers"
@@ -344,7 +500,18 @@
   "reviewed": "cf669283bed4b9a9f36e72ef1ebe28bf037d1a6f"
  },
  "systems/input.md": {
-  "behind": [],
+  "behind": [
+   {
+    "commit": "0fe346ea26f9",
+    "pr": 995,
+    "title": "engine: key assign queries, task add, item dialog cursor and lists as readable C++"
+   },
+   {
+    "commit": "d9a6ab6b8a97",
+    "pr": 975,
+    "title": "input: closed-loop walks in input scripts"
+   }
+  ],
   "reviewed": "cf669283bed4b9a9f36e72ef1ebe28bf037d1a6f"
  },
  "systems/kernel.md": {
@@ -374,6 +541,26 @@
  },
  "systems/loading.md": {
   "behind": [
+   {
+    "commit": "b5fda8c0014e",
+    "pr": 1007,
+    "title": "render, loading: replace the parameter set's set and clear, result assign and release at quit"
+   },
+   {
+    "commit": "1ecf6e84b41d",
+    "pr": 991,
+    "title": "loading: replace the resource base's constructor and destructor and add_reference"
+   },
+   {
+    "commit": "3e7e02d259bc",
+    "pr": 968,
+    "title": "loading: replace the disk file device instance and locate, and the load request assign"
+   },
+   {
+    "commit": "556f39de42fc",
+    "pr": 967,
+    "title": "engine, character, menu, loading: thirteen SPRJ and FD4 helpers as readable C++"
+   },
    {
     "commit": "a7fff00b41a6",
     "pr": 962,
@@ -420,6 +607,26 @@
  "systems/menu.md": {
   "behind": [
    {
+    "commit": "485a8b89ead5",
+    "pr": 986,
+    "title": "menu: replace the scaleform glue registry find/release, handle release and queue"
+   },
+   {
+    "commit": "0fe346ea26f9",
+    "pr": 995,
+    "title": "engine: key assign queries, task add, item dialog cursor and lists as readable C++"
+   },
+   {
+    "commit": "7d71fe85e3ab",
+    "pr": 979,
+    "title": "menu: replace Dantelion's text dialog status, open, take_text and set_up"
+   },
+   {
+    "commit": "556f39de42fc",
+    "pr": 967,
+    "title": "engine, character, menu, loading: thirteen SPRJ and FD4 helpers as readable C++"
+   },
+   {
     "commit": "4dada44249d6",
     "pr": 923,
     "title": "menu: ten pieces of the game's Scaleform code as readable C++"
@@ -434,6 +641,11 @@
  "systems/physics.md": {
   "behind": [
    {
+    "commit": "edfc48849896",
+    "pr": 796,
+    "title": "physics: replace the instance constructor's six helpers"
+   },
+   {
     "commit": "d1766227fbd6",
     "pr": 930,
     "title": "physics: replace the instance's id reserve, controller and body set constructors"
@@ -443,6 +655,16 @@
  },
  "systems/render.md": {
   "behind": [
+   {
+    "commit": "b5fda8c0014e",
+    "pr": 1007,
+    "title": "render, loading: replace the parameter set's set and clear, result assign and release at quit"
+   },
+   {
+    "commit": "47d980182a0a",
+    "pr": 969,
+    "title": "render: replace the list splice, object update and initial level copy"
+   },
    {
     "commit": "23760594e77e",
     "pr": 956,

@@ -17,7 +17,7 @@
     d.setAttribute('data-theme', t); d.classList.add('wk-js'); }());
   </script>
   
-  <link rel="stylesheet" href="../stylesheets/wiki.css?v=d9646b693b"><link rel="stylesheet" href="../stylesheets/hunters.css?v=e4f3c59dfb">
+  <link rel="stylesheet" href="../stylesheets/wiki.css?v=d9646b693b"><link rel="stylesheet" href="../stylesheets/hunters.css?v=e4f3c59dfb"><link rel="stylesheet" href="../stylesheets/enemy.css?v=908a8b7b65">
   
   
 </head>
@@ -165,7 +165,7 @@
         
         
         
-        <li><a class="wk-nav-link" href="../beasts-of-yharnam/ai-and-behavior/">Enemy AI & Behavior</a></li>
+        <li><a class="wk-nav-link" href="../beasts-of-yharnam/ai-and-behavior/">How Enemy AI Works</a></li>
         
         
         
@@ -388,11 +388,11 @@
     
     <a class="wk-progress-card" href="../progress/">
       <span class="wk-progress-label">Verified functions</span>
-      <span class="wk-progress-value">126 <small>of 157,757</small></span>
-      <span class="wk-stat-track" role="img" aria-label="0.0775 percent of target code bytes verified">
-        <span class="wk-stat-fill" style="width:0.0775%"></span>
+      <span class="wk-progress-value">143 <small>of 157,757</small></span>
+      <span class="wk-stat-track" role="img" aria-label="0.0845 percent of target code bytes verified">
+        <span class="wk-stat-fill" style="width:0.0845%"></span>
       </span>
-      <span class="wk-progress-foot">0.0775% of code bytes verified · 748 replaced</span>
+      <span class="wk-progress-foot">0.0845% of code bytes verified · 824 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -1694,6 +1694,37 @@ the pad during an event, so a run's log shows when each press landed. For exampl
 </code></pre></div>
 <p>A malformed event, an unknown control, a hold on the other clock, more than 256 events or a script
 file over 64 KiB is refused before the boot, naming the event.</p>
+<p><strong>Walks: closed-loop driving.</strong> Timed stick presses drift from run to run (a slower frame, a door
+that opens later), so a route walked on a clock ends against a wall. A walk steers instead, from
+where the game says the character is:</p>
+<div class="language-text highlight"><span class="filename">Text Only</span><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1"></a><a href="#__codelineno-2-1"><span class="linenos" data-linenos="1 "></span></a>20:walk -10 4.5 within 1.5 every 6*90    # towards (-10, 4.5) until within 1.5, at most 90 s
+<a id="__codelineno-2-2" name="__codelineno-2-2"></a><a href="#__codelineno-2-2"><span class="linenos" data-linenos="2 "></span></a>+1:cross                                 # 1 s after that walk finished: open the door there
+<a id="__codelineno-2-3" name="__codelineno-2-3"></a><a href="#__codelineno-2-3"><span class="linenos" data-linenos="3 "></span></a>+3:walk -12 0                            # 3 s later, the next leg
+</code></pre></div>
+<ul>
+<li><code>walk X Z [within R] [every N]</code> pushes the left stick at full deflection towards the ground
+  position (X, Z), re-aiming every N presented frames (default 6), until the character is within R
+  (default 1, the game's units). <code>*LIMIT</code> is the walk's time limit (default 60 s or 600 frames); a
+  walk that reaches it gives up and the script goes on.</li>
+<li>Walks run in script order: a walk starts at its <code>WHEN</code>, or when the walk before it finished if
+  that is later. <code>+SECONDS</code> as <code>WHEN</code> counts from the end of the walk before the event, so presses
+  that belong to a place (a door, a lever) follow the walk that leads there.</li>
+<li>The stick is camera-relative and the walk is not told the camera: each aim it compares the
+  stick's direction with the way the character actually moved since the last aim, and corrects
+  for the difference (headings are <code>atan2(dx, dz)</code>, the stick's angle clockwise from up). A walk
+  starts from what the walk before it learned. A
+  character that moved less than 0.2 in an aim is stuck: the walk sidesteps 60, 120, then 180
+  degrees off the target's direction, alternating sides, three aims each, until the character is 1
+  closer to the target than it has been.</li>
+<li>The position comes from the game library: pbboot looks up <code>bbgame_player_position</code> (<code>int
+  (float position[3])</code>, 0 with X, Y, Z or nonzero when there is no character) after loading it,
+  and refuses a script with a walk when the library has none. This game's is
+  <code>game/input/player_position.cpp</code>. While it reports no character, the walk waits with the stick
+  at rest.</li>
+</ul>
+<p>pbboot logs each walk's start, every sidestep, its arrival or giving up, and the character's
+position every tenth aim (<code>pbboot: input script: walk 1: arrived at (-9.42, 4.10), 0.70 from the
+target, at 61.20 s, frame 812</code>), so a route's legs can be tuned from one run's log.</p>
 <p>Fields the executable does not read are left zero. <strong>Not modelled:</strong> motion. The accelerometer
 and gyroscope are not forwarded, because the units and axes the system reports them in are not
 established here (shadPS4 scales SDL's m/s² by 0.098 without a source); acceleration and angular
@@ -3314,6 +3345,6 @@ objects) behaves as if everything were visible.</p>
 window.WK = {base: "..", searchIndex: "../search/search_index.json",
              drawerQuery: window.matchMedia('(max-width: 900px)')};
 </script>
-<script src="../javascripts/wiki.js?v=c570fe17af" defer></script><script src="../javascripts/hunters.js?v=28a0e867eb" defer></script><script src="../search/main.js" defer></script>
+<script src="../javascripts/wiki.js?v=c570fe17af" defer></script><script src="../javascripts/hunters.js?v=28a0e867eb" defer></script><script src="../javascripts/enemy.js?v=446d195843" defer></script><script src="../search/main.js" defer></script>
 </body>
 </html>

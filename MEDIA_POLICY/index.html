@@ -17,7 +17,7 @@
     d.setAttribute('data-theme', t); d.classList.add('wk-js'); }());
   </script>
   
-  <link rel="stylesheet" href="../stylesheets/wiki.css?v=d9646b693b"><link rel="stylesheet" href="../stylesheets/hunters.css?v=e4f3c59dfb">
+  <link rel="stylesheet" href="../stylesheets/wiki.css?v=d9646b693b"><link rel="stylesheet" href="../stylesheets/hunters.css?v=e4f3c59dfb"><link rel="stylesheet" href="../stylesheets/enemy.css?v=908a8b7b65">
   
   
 </head>
@@ -165,7 +165,7 @@
         
         
         
-        <li><a class="wk-nav-link" href="../beasts-of-yharnam/ai-and-behavior/">Enemy AI & Behavior</a></li>
+        <li><a class="wk-nav-link" href="../beasts-of-yharnam/ai-and-behavior/">How Enemy AI Works</a></li>
         
         
         
@@ -388,11 +388,11 @@
     
     <a class="wk-progress-card" href="../progress/">
       <span class="wk-progress-label">Verified functions</span>
-      <span class="wk-progress-value">126 <small>of 157,757</small></span>
-      <span class="wk-stat-track" role="img" aria-label="0.0775 percent of target code bytes verified">
-        <span class="wk-stat-fill" style="width:0.0775%"></span>
+      <span class="wk-progress-value">143 <small>of 157,757</small></span>
+      <span class="wk-stat-track" role="img" aria-label="0.0845 percent of target code bytes verified">
+        <span class="wk-stat-fill" style="width:0.0845%"></span>
       </span>
-      <span class="wk-progress-foot">0.0775% of code bytes verified · 748 replaced</span>
+      <span class="wk-progress-foot">0.0845% of code bytes verified · 824 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -426,7 +426,7 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 13, 2026 14:54:55 UTC">November 13, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 14, 2026 03:54:31 UTC">November 14, 2026</span></p>
       
       
       <h1 id="evidence-media-review">Evidence &amp; Media Review</h1>
@@ -514,6 +514,50 @@ closing an issue is not evidence that game execution advanced.</p>
 <li><strong>Never publish</strong> extracted assets, proprietary <abbr title="Inputs recorded while the game ran, replayed by the harness.">captures</abbr>, bulk game text, secrets, or unsourced material.</li>
 <li><strong>No retired or borrowed images</strong> presented as Paleblood output.</li>
 </ul>
+<h3 id="clips">Clips</h3>
+<p>Enemy pages explain movement, so they may show short clips. The rule for clips (2026-11-13):</p>
+<div class="wk-table"><table>
+<thead>
+<tr>
+<th>Rule</th>
+<th>What it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Our renderer only</td>
+<td>Drawn by Paleblood's own renderer from the maintainer's own copy, with or without its debug overlay. Never footage from another emulator, a console <abbr title="Inputs recorded while the game ran, replayed by the harness.">capture</abbr> or a third-party video.</td>
+</tr>
+<tr>
+<td>Silent</td>
+<td>No audio track at all: game audio is never published. Clips are encoded with no sound, and the policy check refuses a clip that has an audio track.</td>
+</tr>
+<tr>
+<td>Full resolution</td>
+<td>The frames as the renderer drew them, never downscaled.</td>
+</tr>
+<tr>
+<td>Size</td>
+<td>WebM (VP9) or MP4 (H.264), at most 8 MiB per clip, the same cap as a full-resolution frame. Make the clip as short as the point allows; a few seconds usually do.</td>
+</tr>
+<tr>
+<td>One review per clip</td>
+<td>Each clip has its own private media record and a line in the clip allowlist naming that record; the policy check refuses a clip without both.</td>
+</tr>
+<tr>
+<td>Labelled</td>
+<td>The caption says what the clip shows, which run and revision it came from, and that it is an observation of Paleblood's <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>, not proof of a code path. It credits Sony Interactive Entertainment / FromSoftware.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Clips play muted and looped, start only when they scroll into view (never for readers who ask for
+reduced motion), and step frame by frame.</p>
+<h3 id="diagrams-and-test-data">Diagrams and test data</h3>
+<p>Enemy pages draw their timelines, state machines, range maps and attack charts in the browser
+from small data files. Those diagrams are our own work and hold no game imagery. A data file states
+whether it is real (with the functions, revisions and records behind it, and an evidence label on
+each item) or synthetic test data. Synthetic data is only used to test the diagrams and never
+appears on the published site.</p>
 <details class="details">
 <summary>The media rule in full</summary>
 <p>The public documentation site may use an individual image or short clip when it materially helps
@@ -558,6 +602,10 @@ Rules). A media review for this site does not by itself place media in the code 
 <tr>
 <td>Twenty-five frames drawn by Paleblood's renderer (<a href="../milestones/">Milestones</a>), from the first non-black frame to Iosefka's Clinic at the right brightness, two of them debug views of internal render targets</td>
 <td>Our own <abbr title="Inputs recorded while the game ran, replayed by the harness.">captures</abbr>, full resolution (shown small in a grid, opened whole), maintainer-approved 2026-11-06 and 2026-11-10; each reviewed privately; rights holders credited</td>
+</tr>
+<tr>
+<td>Clips</td>
+<td>None published yet; each future clip follows the clip rule above</td>
 </tr>
 <tr>
 <td>Retired gallery</td>
@@ -611,6 +659,6 @@ generated website.</p>
 window.WK = {base: "..", searchIndex: "../search/search_index.json",
              drawerQuery: window.matchMedia('(max-width: 900px)')};
 </script>
-<script src="../javascripts/wiki.js?v=c570fe17af" defer></script><script src="../javascripts/hunters.js?v=28a0e867eb" defer></script><script src="../search/main.js" defer></script>
+<script src="../javascripts/wiki.js?v=c570fe17af" defer></script><script src="../javascripts/hunters.js?v=28a0e867eb" defer></script><script src="../javascripts/enemy.js?v=446d195843" defer></script><script src="../search/main.js" defer></script>
 </body>
 </html>

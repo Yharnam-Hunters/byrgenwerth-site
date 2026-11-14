@@ -17,7 +17,7 @@
     d.setAttribute('data-theme', t); d.classList.add('wk-js'); }());
   </script>
   
-  <link rel="stylesheet" href="../../stylesheets/wiki.css?v=d9646b693b"><link rel="stylesheet" href="../../stylesheets/hunters.css?v=e4f3c59dfb">
+  <link rel="stylesheet" href="../../stylesheets/wiki.css?v=d9646b693b"><link rel="stylesheet" href="../../stylesheets/hunters.css?v=e4f3c59dfb"><link rel="stylesheet" href="../../stylesheets/enemy.css?v=908a8b7b65">
   
   
 </head>
@@ -165,7 +165,7 @@
         
         
         
-        <li><a class="wk-nav-link" href="../../beasts-of-yharnam/ai-and-behavior/">Enemy AI & Behavior</a></li>
+        <li><a class="wk-nav-link" href="../../beasts-of-yharnam/ai-and-behavior/">How Enemy AI Works</a></li>
         
         
         
@@ -388,11 +388,11 @@
     
     <a class="wk-progress-card" href="../../progress/">
       <span class="wk-progress-label">Verified functions</span>
-      <span class="wk-progress-value">126 <small>of 157,757</small></span>
-      <span class="wk-stat-track" role="img" aria-label="0.0775 percent of target code bytes verified">
-        <span class="wk-stat-fill" style="width:0.0775%"></span>
+      <span class="wk-progress-value">143 <small>of 157,757</small></span>
+      <span class="wk-stat-track" role="img" aria-label="0.0845 percent of target code bytes verified">
+        <span class="wk-stat-fill" style="width:0.0845%"></span>
       </span>
-      <span class="wk-progress-foot">0.0775% of code bytes verified · 748 replaced</span>
+      <span class="wk-progress-foot">0.0845% of code bytes verified · 824 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -435,11 +435,19 @@
       
       
       <aside class="wk-freshness" role="note">
-        <p><b>Not yet updated for 1 merged change.</b>
+        <p><b>Not yet updated for 5 merged changes.</b>
         This page was last checked against Paleblood
         <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/cf669283bed4b9a9f36e72ef1ebe28bf037d1a6f"><code>cf66928</code></a>;
         these pull requests changed what it describes since:</p>
         <ul>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/986">#986</a> menu: replace the scaleform glue registry find/release, handle release and queue</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/995">#995</a> engine: key assign queries, task add, item dialog cursor and lists as readable C++</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/979">#979</a> menu: replace Dantelion's text dialog status, open, take_text and set_up</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/967">#967</a> engine, character, menu, loading: thirteen SPRJ and FD4 helpers as readable C++</li>
           
           <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/923">#923</a> menu: ten pieces of the game's Scaleform code as readable C++</li>
           
@@ -514,6 +522,48 @@ recorded from a real game run, so none is <code>verified</code>.</p>
 </thead>
 <tbody>
 <tr>
+<td data-label="Address"><code>0x013a2a00</code></td>
+<td style="text-align: right;" data-label="Size">22</td>
+<td data-label="Name"><code>menu_named_resource_registry_find_013a2a00</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Scaleform glue: while the named resource registry is active and has its table, the table finds the entry by name (0x013abad0); null otherwise</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x013a33c0</code></td>
+<td style="text-align: right;" data-label="Size">25</td>
+<td data-label="Name"><code>menu_named_resource_registry_release_013a33c0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Scaleform glue: while the named resource registry is active and has its table, the table lets go of a non-null entry (0x013abd30)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x01401720</code></td>
+<td style="text-align: right;" data-label="Size">34</td>
+<td data-label="Name"><code>menu_named_resource_handle_release_01401720</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Scaleform glue: a resource handle with an owner is let go of by the owner (vtable slot 16), returning its answer; 0 without an owner</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x01ed0dd0</code></td>
+<td style="text-align: right;" data-label="Size">203</td>
+<td data-label="Name"><code>menu_gaitem_select_move_cursor_01ed0dd0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">GaitemSelectDialog cursor move: column +0x84 and list row clamped to the limits (0x01ed11f0, read twice); on change store, list set row, vtable +0x38</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x01ed7950</code></td>
+<td style="text-align: right;" data-label="Size">188</td>
+<td data-label="Name"><code>menu_gaitem_select_text_pair_copy_into_vector_01ed7950</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">GaitemSelectDialog text pair (two narrow strings, 0x70 B) copied into a fixed-vector slot; slot past the in-use count (+0x708) reported, still copied</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x01edc580</code></td>
+<td style="text-align: right;" data-label="Size">197</td>
+<td data-label="Name"><code>menu_gaitem_select_list_set_row_01edc580</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Item list set row (clamped; -1 when empty), vtable +8 scrollable, then scroll thumb placed and sized from the row and first shown row shares</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x01edf560</code></td>
 <td style="text-align: right;" data-label="Size">254</td>
 <td data-label="Name"><code>menu_gaitem_select_entry_copy_into_pool</code></td>
@@ -521,11 +571,39 @@ recorded from a real game run, so none is <code>verified</code>.</p>
 <td data-label="Notes">GaitemSelectDialog list entry copy into a Dantelion fixed pool slot (0x88 B: int, word, wide string, word, wide string); reports a slot past the in-use count</td>
 </tr>
 <tr>
+<td data-label="Address"><code>0x01ee6080</code></td>
+<td style="text-align: right;" data-label="Size">114</td>
+<td data-label="Name"><code>menu_gaitem_select_direction_keys_20_01ee6080</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--verified"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></span></td>
+<td data-label="Notes">GaitemSelectDialog direction reader: first held of key assign keys 0x20-0x23 gives {x,y} = up/down/left, or right's state byte as x</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x01ee61f0</code></td>
+<td style="text-align: right;" data-label="Size">134</td>
+<td data-label="Name"><code>menu_gaitem_select_direction_keys_24_01ee61f0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--verified"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></span></td>
+<td data-label="Notes">GaitemSelectDialog direction reader of keys 0x24-0x27; without a key assign skips up/down and asks left/right with null</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x01f1bca0</code></td>
 <td style="text-align: right;" data-label="Size">235</td>
 <td data-label="Name"><code>menu_gaitem_status_entry_copy</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">GaitemStatusDialog list entry copy of entries[index] (0x90 B: two words and wide strings, a ref-counted pointer at +0x80 (count +8 up), a byte)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x01f2c200</code></td>
+<td style="text-align: right;" data-label="Size">196</td>
+<td data-label="Name"><code>menu_gaitem_status_label_push_back_01f2c200</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">GaitemStatusDialog two-slot label vector push_back (kind byte, word, wide string; count at +0x98); full: reported, still appended</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0233ef00</code></td>
+<td style="text-align: right;" data-label="Size">175</td>
+<td data-label="Name"><code>menu_sprj_scaleform_queue_0233ef00</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">SprjScaleform: unless told to skip, waits for and drops the pending job and hands the request to the player; then steps the request flags</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x023411d0</code></td>
@@ -625,6 +703,34 @@ recorded from a real game run, so none is <code>verified</code>.</p>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">Text input dialog per-frame poll: takes a finished dialog's text (markup characters swapped for glyphs) and how it ended</td>
 </tr>
+<tr>
+<td data-label="Address"><code>0x02d03420</code></td>
+<td style="text-align: right;" data-label="Size">46</td>
+<td data-label="Name"><code>menu_system_text_dialog_status_02d03420</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Dantelion text dialog: the dialog backend's status while the system dialog is open, -1 otherwise (the backend made on first use)</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02d03450</code></td>
+<td style="text-align: right;" data-label="Size">60</td>
+<td data-label="Name"><code>menu_system_text_dialog_open_02d03450</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Dantelion text dialog: unless open, asks the dialog backend to open the system dialog with the settings and records the answer as the open flag</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02d03490</code></td>
+<td style="text-align: right;" data-label="Size">105</td>
+<td data-label="Name"><code>menu_system_text_dialog_take_text_02d03490</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Dantelion text dialog: once the backend's status is 2 or 3, closes the object and asks the backend for the text; false while closed or running</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02d03500</code></td>
+<td style="text-align: right;" data-label="Size">26</td>
+<td data-label="Name"><code>menu_system_text_dialog_set_up_02d03500</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Dantelion text dialog: unless the system dialog is open, copies the settings into the object (0x02d03520) and returns true</td>
+</tr>
 </tbody>
 </table></div>
 <h2 id="structs-and-globals">Structs and globals</h2>
@@ -665,6 +771,6 @@ reads are the system dialog's status and result calls is inferred from their sig
 window.WK = {base: "../..", searchIndex: "../../search/search_index.json",
              drawerQuery: window.matchMedia('(max-width: 900px)')};
 </script>
-<script src="../../javascripts/wiki.js?v=c570fe17af" defer></script><script src="../../javascripts/hunters.js?v=28a0e867eb" defer></script><script src="../../search/main.js" defer></script>
+<script src="../../javascripts/wiki.js?v=c570fe17af" defer></script><script src="../../javascripts/hunters.js?v=28a0e867eb" defer></script><script src="../../javascripts/enemy.js?v=446d195843" defer></script><script src="../../search/main.js" defer></script>
 </body>
 </html>

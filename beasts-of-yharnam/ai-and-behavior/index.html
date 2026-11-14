@@ -8,7 +8,7 @@
   <link rel="canonical" href="https://yharnam-hunters.github.io/byrgenwerth-site/beasts-of-yharnam/ai-and-behavior/">
   
   
-  <title>Enemy AI & Behavior — Byrgenwerth</title>
+  <title>How Enemy AI Works — Byrgenwerth</title>
   
   <script>
   /* Before first paint: the stored theme, and a flag that JavaScript (wiki.js) will run. */
@@ -17,7 +17,7 @@
     d.setAttribute('data-theme', t); d.classList.add('wk-js'); }());
   </script>
   
-  <link rel="stylesheet" href="../../stylesheets/wiki.css?v=d9646b693b"><link rel="stylesheet" href="../../stylesheets/hunters.css?v=e4f3c59dfb">
+  <link rel="stylesheet" href="../../stylesheets/wiki.css?v=d9646b693b"><link rel="stylesheet" href="../../stylesheets/hunters.css?v=e4f3c59dfb"><link rel="stylesheet" href="../../stylesheets/enemy.css?v=908a8b7b65">
   
   
 </head>
@@ -165,7 +165,7 @@
         
         
         
-        <li><a class="wk-nav-link is-active" href="./" aria-current="page">Enemy AI & Behavior</a></li>
+        <li><a class="wk-nav-link is-active" href="./" aria-current="page">How Enemy AI Works</a></li>
         
         
         
@@ -388,11 +388,11 @@
     
     <a class="wk-progress-card" href="../../progress/">
       <span class="wk-progress-label">Verified functions</span>
-      <span class="wk-progress-value">126 <small>of 157,757</small></span>
-      <span class="wk-stat-track" role="img" aria-label="0.0775 percent of target code bytes verified">
-        <span class="wk-stat-fill" style="width:0.0775%"></span>
+      <span class="wk-progress-value">143 <small>of 157,757</small></span>
+      <span class="wk-stat-track" role="img" aria-label="0.0845 percent of target code bytes verified">
+        <span class="wk-stat-fill" style="width:0.0845%"></span>
       </span>
-      <span class="wk-progress-foot">0.0775% of code bytes verified · 748 replaced</span>
+      <span class="wk-progress-foot">0.0845% of code bytes verified · 824 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -415,6 +415,10 @@
           
           <li><a href="#how-behavior-claims-will-be-supported" class="wk-toc-link">How behavior claims will be supported</a></li>
           
+          <li><a href="#the-questions-every-enemy-page-answers" class="wk-toc-link">The questions every enemy page answers</a></li>
+          
+          <li><a href="#how-an-enemy-page-is-built" class="wk-toc-link">How an enemy page is built</a></li>
+          
         </ol>
       </nav>
       
@@ -424,10 +428,10 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 28, 2026 05:15:03 UTC">October 28, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 14, 2026 03:54:31 UTC">November 14, 2026</span></p>
       
       
-      <h1 id="enemy-ai-behavior">Enemy AI &amp; Behavior</h1>
+      <h1 id="how-enemy-ai-works">How Enemy AI Works</h1>
 <p class="wk-lede">Players can watch an enemy move, react, attack, or return to an earlier behavior. That sequence does not reveal the code that selected it; this page explains what is known and how a behavior claim gets supported.</p>
 
 <div class="wk-glance">
@@ -486,7 +490,75 @@ Keep a reproducible observation separate from an implementation result. A source
 <p>Tests may support equivalence on their cases without proving untested gameplay situations; label
 that scope accurately. Timing and probability claims need measurements or directly <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> logic,
 not a single encounter.</p>
-<p>The <a href="../enemy-directory/">Enemy Directory</a> describes the evidence needed before a profile is added.
+<h2 id="the-questions-every-enemy-page-answers">The questions every enemy page answers</h2>
+<p>This page will become the shared explanation of the machinery all enemies use; each enemy page
+then covers what is particular to that enemy. None of these questions has a traced answer yet.
+Each one lists the evidence that would answer it.</p>
+<div class="wk-table is-stack"><table class="wk-stack">
+<thead>
+<tr>
+<th>Question</th>
+<th>Status</th>
+<th>Evidence that would answer it</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td data-label="Question">How does an enemy notice the player?</td>
+<td data-label="Status"><span class="wk-badge wk-badge--unknown">unknown</span></td>
+<td data-label="Evidence that would answer it">The function that tests the player against the enemy's senses, and the fields it reads</td>
+</tr>
+<tr>
+<td data-label="Question">How does it decide what to do next?</td>
+<td data-label="Status"><span class="wk-badge wk-badge--unknown">unknown</span></td>
+<td data-label="Evidence that would answer it">The update that changes the enemy's state, with each transition's condition</td>
+</tr>
+<tr>
+<td data-label="Question">How does it pick an attack?</td>
+<td data-label="Status"><span class="wk-badge wk-badge--unknown">unknown</span></td>
+<td data-label="Evidence that would answer it">The selection code, and the source of any random number it uses</td>
+</tr>
+<tr>
+<td data-label="Question">When can an attack hit, and when does it stop turning?</td>
+<td data-label="Status"><span class="wk-badge wk-badge--unknown">unknown</span></td>
+<td data-label="Evidence that would answer it">The timing data an attack reads, frame by frame at the game's update rate</td>
+</tr>
+<tr>
+<td data-label="Question">When does it give up and return?</td>
+<td data-label="Status"><span class="wk-badge wk-badge--unknown">unknown</span></td>
+<td data-label="Evidence that would answer it">The distance or time test that ends a chase</td>
+</tr>
+<tr>
+<td data-label="Question">What do enemies share, and what is particular to each?</td>
+<td data-label="Status"><span class="wk-badge wk-badge--unknown">unknown</span></td>
+<td data-label="Evidence that would answer it">The common update every enemy runs, and where an enemy's own code branches off</td>
+</tr>
+</tbody>
+</table></div>
+<p>The shared AI world described above is stepped once a frame by 1/30 s, so frame counts on
+enemy pages are given at 30 frames per second.</p>
+<h2 id="how-an-enemy-page-is-built">How an enemy page is built</h2>
+<p>An enemy gets its own page only once its AI code is decompiled and <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> in merged Paleblood
+source. Each page follows the same order, so pages can be compared:</p>
+<ol>
+<li><strong>Overview</strong>: what the enemy is and where it is met, with a frame drawn by Paleblood's renderer.</li>
+<li><strong>Frame by frame</strong>: one silent clip of an encounter from Paleblood's renderer, beside the
+   same frames drawn with Paleblood's debug overlay (hit shapes, detection cones, the current AI
+   state and the target line, read from the decompiled structures). The clip drives the diagrams
+   below it: an attack timeline whose playhead follows the clip and which moves the clip when
+   scrubbed, a state machine that lights the state the enemy is in, a range map showing where the
+   player is and which ranges are in force, and a chart that lights the attack chosen at each
+   decision. Step frame by frame, slow it down, or loop one phase.</li>
+<li><strong>More behaviour</strong>: further clips of other attacks and reactions.</li>
+<li><strong>Shared rules</strong>: anything the enemy shares with others links to the shared explanation here.</li>
+<li><strong>How it actually works</strong>: in plain words first, then the functions and fields, then the open
+   questions. Every rule carries its label: <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>, inferred, observed or hypothesis.</li>
+<li><strong>Fighting it</strong>: tactics, only where they follow from a mechanic shown above.</li>
+<li><strong>Sources</strong>: functions, pull requests, verification records and media records.</li>
+</ol>
+<p>The diagrams are drawn in the browser from data files that state the evidence behind every item.
+Clips are silent and shown at full resolution; <a href="../../MEDIA_POLICY/">Evidence &amp; Media Review</a> has the
+rules. The <a href="../enemy-directory/">Enemy Directory</a> lists the pages as they appear.
 Related systems include <a href="../../systems/character/">Character</a>, <a href="../../systems/event/">Events</a>, and
 <a href="../../systems/physics/">Physics</a>.</p>
 <details class="caveat">
@@ -562,6 +634,6 @@ Related systems include <a href="../../systems/character/">Character</a>, <a hre
 window.WK = {base: "../..", searchIndex: "../../search/search_index.json",
              drawerQuery: window.matchMedia('(max-width: 900px)')};
 </script>
-<script src="../../javascripts/wiki.js?v=c570fe17af" defer></script><script src="../../javascripts/hunters.js?v=28a0e867eb" defer></script><script src="../../search/main.js" defer></script>
+<script src="../../javascripts/wiki.js?v=c570fe17af" defer></script><script src="../../javascripts/hunters.js?v=28a0e867eb" defer></script><script src="../../javascripts/enemy.js?v=446d195843" defer></script><script src="../../search/main.js" defer></script>
 </body>
 </html>

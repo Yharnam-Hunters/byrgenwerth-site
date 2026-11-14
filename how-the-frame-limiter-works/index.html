@@ -17,7 +17,7 @@
     d.setAttribute('data-theme', t); d.classList.add('wk-js'); }());
   </script>
   
-  <link rel="stylesheet" href="../stylesheets/wiki.css?v=d9646b693b"><link rel="stylesheet" href="../stylesheets/hunters.css?v=e4f3c59dfb">
+  <link rel="stylesheet" href="../stylesheets/wiki.css?v=d9646b693b"><link rel="stylesheet" href="../stylesheets/hunters.css?v=e4f3c59dfb"><link rel="stylesheet" href="../stylesheets/enemy.css?v=908a8b7b65">
   
   
 </head>
@@ -165,7 +165,7 @@
         
         
         
-        <li><a class="wk-nav-link" href="../beasts-of-yharnam/ai-and-behavior/">Enemy AI & Behavior</a></li>
+        <li><a class="wk-nav-link" href="../beasts-of-yharnam/ai-and-behavior/">How Enemy AI Works</a></li>
         
         
         
@@ -388,11 +388,11 @@
     
     <a class="wk-progress-card" href="../progress/">
       <span class="wk-progress-label">Verified functions</span>
-      <span class="wk-progress-value">126 <small>of 157,757</small></span>
-      <span class="wk-stat-track" role="img" aria-label="0.0775 percent of target code bytes verified">
-        <span class="wk-stat-fill" style="width:0.0775%"></span>
+      <span class="wk-progress-value">143 <small>of 157,757</small></span>
+      <span class="wk-stat-track" role="img" aria-label="0.0845 percent of target code bytes verified">
+        <span class="wk-stat-fill" style="width:0.0845%"></span>
       </span>
-      <span class="wk-progress-foot">0.0775% of code bytes verified · 748 replaced</span>
+      <span class="wk-progress-foot">0.0845% of code bytes verified · 824 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -435,11 +435,21 @@
       
       
       <aside class="wk-freshness" role="note">
-        <p><b>Not yet updated for 6 merged changes.</b>
+        <p><b>Not yet updated for 11 merged changes.</b>
         This page was last checked against Paleblood
         <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/cf669283bed4b9a9f36e72ef1ebe28bf037d1a6f"><code>cf66928</code></a>;
         these pull requests changed what it describes since:</p>
         <ul>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/978">#978</a> frame_timing: replace the stopwatch frame end, item update and listener list prepare</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/995">#995</a> engine: key assign queries, task add, item dialog cursor and lists as readable C++</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/973">#973</a> frame_timing: replace the worker lane's start, run and finish</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/965">#965</a> Replace throw_event and part_0x10_update with readable C++</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/822">#822</a> frame_timing, engine: replace the task queue refill (task_wake_flagged) and allocator_of</li>
           
           <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/952">#952</a> frame_timing: carry FFwLo's server-mode pass-on and gate creation helpers</li>
           
@@ -447,13 +457,7 @@
           
           <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/834">#834</a> frame_timing: replace pass_handle_on, pass_handle_on_with_items and append_slot_item (0x01e9cb80, 0x01e9cd20, 0x01e9d960)</li>
           
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/889">#889</a> kernel, frame_timing: replace the memory pool free (0x011ab3a0) and config_get_int (0x024eba00)</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/886">#886</a> frame_timing: replace gate_state_query and step_machine_count_step (0x01ea5570, 0x01ec3000)</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/795">#795</a> frame_timing: replace the task manager's helpers (6 functions)</li>
-          
-          
+          <li>and 3 more</li>
         </ul>
       </aside>
       
@@ -663,6 +667,6 @@ checked against the patch itself.</p>
 window.WK = {base: "..", searchIndex: "../search/search_index.json",
              drawerQuery: window.matchMedia('(max-width: 900px)')};
 </script>
-<script src="../javascripts/wiki.js?v=c570fe17af" defer></script><script src="../javascripts/hunters.js?v=28a0e867eb" defer></script><script src="../search/main.js" defer></script>
+<script src="../javascripts/wiki.js?v=c570fe17af" defer></script><script src="../javascripts/hunters.js?v=28a0e867eb" defer></script><script src="../javascripts/enemy.js?v=446d195843" defer></script><script src="../search/main.js" defer></script>
 </body>
 </html>

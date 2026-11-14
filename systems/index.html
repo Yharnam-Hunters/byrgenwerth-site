@@ -17,7 +17,7 @@
     d.setAttribute('data-theme', t); d.classList.add('wk-js'); }());
   </script>
   
-  <link rel="stylesheet" href="../stylesheets/wiki.css?v=d9646b693b"><link rel="stylesheet" href="../stylesheets/hunters.css?v=e4f3c59dfb">
+  <link rel="stylesheet" href="../stylesheets/wiki.css?v=d9646b693b"><link rel="stylesheet" href="../stylesheets/hunters.css?v=e4f3c59dfb"><link rel="stylesheet" href="../stylesheets/enemy.css?v=908a8b7b65">
   
   
 </head>
@@ -165,7 +165,7 @@
         
         
         
-        <li><a class="wk-nav-link" href="../beasts-of-yharnam/ai-and-behavior/">Enemy AI & Behavior</a></li>
+        <li><a class="wk-nav-link" href="../beasts-of-yharnam/ai-and-behavior/">How Enemy AI Works</a></li>
         
         
         
@@ -388,11 +388,11 @@
     
     <a class="wk-progress-card" href="../progress/">
       <span class="wk-progress-label">Verified functions</span>
-      <span class="wk-progress-value">126 <small>of 157,757</small></span>
-      <span class="wk-stat-track" role="img" aria-label="0.0775 percent of target code bytes verified">
-        <span class="wk-stat-fill" style="width:0.0775%"></span>
+      <span class="wk-progress-value">143 <small>of 157,757</small></span>
+      <span class="wk-stat-track" role="img" aria-label="0.0845 percent of target code bytes verified">
+        <span class="wk-stat-fill" style="width:0.0845%"></span>
       </span>
-      <span class="wk-progress-foot">0.0775% of code bytes verified · 748 replaced</span>
+      <span class="wk-progress-foot">0.0845% of code bytes verified · 824 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -538,18 +538,18 @@ reads straight through.</p>
 </tr>
 <tr>
 <td>Replaced</td>
-<td style="text-align: right;">748 (0.47%)</td>
-<td style="text-align: right;">257,421 (0.61%)</td>
+<td style="text-align: right;">824 (0.52%)</td>
+<td style="text-align: right;">275,231 (0.65%)</td>
 </tr>
 <tr>
 <td>Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> (includes <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>)</td>
-<td style="text-align: right;">748 (0.47%)</td>
-<td style="text-align: right;">257,421 (0.61%)</td>
+<td style="text-align: right;">824 (0.52%)</td>
+<td style="text-align: right;">275,231 (0.65%)</td>
 </tr>
 <tr>
 <td>Verified</td>
-<td style="text-align: right;">126 (0.08%)</td>
-<td style="text-align: right;">32,935 (0.08%)</td>
+<td style="text-align: right;">143 (0.09%)</td>
+<td style="text-align: right;">35,898 (0.08%)</td>
 </tr>
 </tbody>
 </table></div>
@@ -570,23 +570,23 @@ reads straight through.</p>
 </tr>
 <tr>
 <td>Replaced, with family members</td>
-<td style="text-align: right;">18,767 (11.90%)</td>
-<td style="text-align: right;">319,847 (0.75%)</td>
+<td style="text-align: right;">18,843 (11.94%)</td>
+<td style="text-align: right;">337,657 (0.79%)</td>
 </tr>
 <tr>
 <td>Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>, with family members</td>
-<td style="text-align: right;">18,767 (11.90%)</td>
-<td style="text-align: right;">319,847 (0.75%)</td>
+<td style="text-align: right;">18,843 (11.94%)</td>
+<td style="text-align: right;">337,657 (0.79%)</td>
 </tr>
 <tr>
 <td>Verified, with family members</td>
-<td style="text-align: right;">18,145 (11.50%)</td>
-<td style="text-align: right;">95,361 (0.22%)</td>
+<td style="text-align: right;">18,162 (11.51%)</td>
+<td style="text-align: right;">98,324 (0.23%)</td>
 </tr>
 </tbody>
 </table></div>
 <p>Family members are tiny functions (one to a few bytes each) that share one replacement per family: they add far more to the function count than to the bytes.</p>
-<p>Matching tier: 125 functions compile byte for byte to the original from their own C (clang-3.4.2, every reference checked; <code>symbols/matching.csv</code>). Matching is optional evidence and is not a separate status.</p>
+<p>Matching tier: 127 functions compile byte for byte to the original from their own C (clang-3.4.2, every reference checked; <code>symbols/matching.csv</code>). Matching is optional evidence and is not a separate status.</p>
 <div class="wk-table"><table>
 <thead>
 <tr>
@@ -601,11 +601,11 @@ reads straight through.</p>
 <tbody>
 <tr>
 <td>ai</td>
-<td style="text-align: right;">42</td>
-<td style="text-align: right;">42</td>
-<td style="text-align: right;">42</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">8,189</td>
+<td style="text-align: right;">51</td>
+<td style="text-align: right;">51</td>
+<td style="text-align: right;">51</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">15,264</td>
 </tr>
 <tr>
 <td>audio</td>
@@ -617,27 +617,27 @@ reads straight through.</p>
 </tr>
 <tr>
 <td>camera</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">5</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">8</td>
 <td style="text-align: right;">0</td>
-<td style="text-align: right;">20,790</td>
+<td style="text-align: right;">21,151</td>
 </tr>
 <tr>
 <td>character</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">11</td>
 <td style="text-align: right;">5</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">2,331</td>
+<td style="text-align: right;">3,511</td>
 </tr>
 <tr>
 <td>engine</td>
-<td style="text-align: right;">149</td>
-<td style="text-align: right;">149</td>
-<td style="text-align: right;">149</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">53,595</td>
+<td style="text-align: right;">159</td>
+<td style="text-align: right;">158</td>
+<td style="text-align: right;">158</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">55,088</td>
 </tr>
 <tr>
 <td>event</td>
@@ -649,19 +649,19 @@ reads straight through.</p>
 </tr>
 <tr>
 <td>frame_timing</td>
-<td style="text-align: right;">80</td>
-<td style="text-align: right;">79</td>
-<td style="text-align: right;">79</td>
-<td style="text-align: right;">13</td>
-<td style="text-align: right;">20,578</td>
+<td style="text-align: right;">91</td>
+<td style="text-align: right;">90</td>
+<td style="text-align: right;">90</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">22,143</td>
 </tr>
 <tr>
 <td>input</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">5</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">9</td>
 <td style="text-align: right;">2</td>
-<td style="text-align: right;">890</td>
+<td style="text-align: right;">1,738</td>
 </tr>
 <tr>
 <td>kernel</td>
@@ -673,19 +673,19 @@ reads straight through.</p>
 </tr>
 <tr>
 <td>loading</td>
-<td style="text-align: right;">83</td>
-<td style="text-align: right;">83</td>
-<td style="text-align: right;">83</td>
+<td style="text-align: right;">92</td>
+<td style="text-align: right;">92</td>
+<td style="text-align: right;">92</td>
 <td style="text-align: right;">6</td>
-<td style="text-align: right;">22,942</td>
+<td style="text-align: right;">24,768</td>
 </tr>
 <tr>
 <td>menu</td>
-<td style="text-align: right;">16</td>
-<td style="text-align: right;">16</td>
-<td style="text-align: right;">16</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">3,305</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">4,830</td>
 </tr>
 <tr>
 <td>param</td>
@@ -697,19 +697,19 @@ reads straight through.</p>
 </tr>
 <tr>
 <td>physics</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: right;">4</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">10</td>
 <td style="text-align: right;">1</td>
-<td style="text-align: right;">4,134</td>
+<td style="text-align: right;">4,711</td>
 </tr>
 <tr>
 <td>render</td>
-<td style="text-align: right;">177</td>
-<td style="text-align: right;">177</td>
-<td style="text-align: right;">177</td>
+<td style="text-align: right;">182</td>
+<td style="text-align: right;">182</td>
+<td style="text-align: right;">182</td>
 <td style="text-align: right;">79</td>
-<td style="text-align: right;">72,058</td>
+<td style="text-align: right;">73,418</td>
 </tr>
 </tbody>
 </table></div>
@@ -748,6 +748,6 @@ reads straight through.</p>
 window.WK = {base: "..", searchIndex: "../search/search_index.json",
              drawerQuery: window.matchMedia('(max-width: 900px)')};
 </script>
-<script src="../javascripts/wiki.js?v=c570fe17af" defer></script><script src="../javascripts/hunters.js?v=28a0e867eb" defer></script><script src="../search/main.js" defer></script>
+<script src="../javascripts/wiki.js?v=c570fe17af" defer></script><script src="../javascripts/hunters.js?v=28a0e867eb" defer></script><script src="../javascripts/enemy.js?v=446d195843" defer></script><script src="../search/main.js" defer></script>
 </body>
 </html>

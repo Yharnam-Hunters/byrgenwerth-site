@@ -1,0 +1,230 @@
+/* Byrgenwerth: enemy page components (javascripts/enemy.js).
+   A silent clip player with one shared frame clock, and the diagrams that follow it: attack
+   timeline, state machine, range map, attack choice chart. Colours
+   come from the site's tokens (wiki.css), so both themes work; the phase colours below are the
+   only new ones, each with a light-theme value. Narrow screens: every diagram is an SVG with a
+   viewBox, so it scales to the column; controls wrap. */
+
+:root {
+  --en-windup:   var(--wk-gold);
+  --en-active:   #c02a34;
+  --en-recovery: #8fa3c7;
+  --en-tracking: #a993c9;
+  --en-punish:   #7fae8a;
+  --en-synthetic:#d98a3d;
+  --en-cat-1: #d6b26b; --en-cat-2: #c02a34; --en-cat-3: #8fa3c7;
+  --en-cat-4: #7fae8a; --en-cat-5: #a993c9; --en-cat-6: #d9a06b;
+}
+:root[data-theme="light"] {
+  --en-active:   #9b1c24;
+  --en-recovery: #3f5a86;
+  --en-tracking: #5d4a85;
+  --en-punish:   #2f6b45;
+  --en-synthetic:#9a4b12;
+  --en-cat-1: #7f5c1b; --en-cat-2: #9b1c24; --en-cat-3: #3f5a86;
+  --en-cat-4: #2f6b45; --en-cat-5: #5d4a85; --en-cat-6: #8a4a12;
+}
+
+/* Evidence labels added to the badge vocabulary of wiki.css. */
+.wk-badge--hypothesis { --c: var(--en-tracking); }
+.wk-badge--synthetic { --c: var(--en-synthetic); }
+
+/* ── Shared frame ─────────────────────────────────────────────────────────────── */
+.en-widget {
+  margin: 1.4em 0;
+  padding: 14px 16px 12px;
+  background: var(--wk-bg-raised);
+  border: 1px solid var(--wk-line);
+  border-radius: var(--wk-radius);
+}
+.en-widget svg { display: block; width: 100%; height: auto; overflow: visible; touch-action: none; }
+.en-widget svg text { font-family: var(--wk-font-body); fill: var(--wk-text); }
+.en-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 12px; margin-bottom: 8px; }
+.en-title { font-family: var(--wk-font-display); font-size: .74rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--wk-gold); }
+.en-sub { font-size: .84rem; color: var(--wk-text-muted); }
+.en-synthetic-banner {
+  margin: 0 0 10px;
+  padding: 6px 10px;
+  font-size: .82rem;
+  font-weight: 600;
+  color: var(--en-synthetic);
+  border: 1px dashed var(--en-synthetic);
+  border-radius: var(--wk-radius-s);
+  background: repeating-linear-gradient(135deg, transparent 0 8px, color-mix(in srgb, var(--en-synthetic) 9%, transparent) 8px 16px);
+}
+.en-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.en-scroll svg { touch-action: pan-x pan-y; }
+.en-nojs { font-size: .86rem; color: var(--wk-text-faint); font-style: italic; }
+.en-error { color: var(--wk-blood-bright); font-size: .86rem; }
+.en-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 8px; }
+.en-btn, .en-select {
+  min-width: 36px;
+  min-height: 36px;
+  padding: 4px 10px;
+  font: inherit;
+  font-size: .86rem;
+  color: var(--wk-text);
+  background: var(--wk-bg);
+  border: 1px solid var(--wk-line-strong);
+  border-radius: var(--wk-radius-s);
+  cursor: pointer;
+}
+.en-btn:hover, .en-select:hover { background: var(--wk-bg-hover); }
+.en-btn:focus-visible, .en-select:focus-visible, .en-widget [tabindex]:focus-visible { outline: 2px solid var(--wk-gold); outline-offset: 2px; }
+.en-btn[aria-pressed="true"] { border-color: var(--wk-gold); color: var(--wk-gold); }
+.en-readout { font-family: var(--wk-font-mono); font-size: .8rem; color: var(--wk-text-muted); font-variant-numeric: tabular-nums; }
+.en-range { flex: 1 1 100%; width: 100%; accent-color: var(--wk-gold); margin: 6px 0 0; }
+.en-detail { margin-top: 10px; padding: 10px 12px; font-size: .9rem; background: var(--wk-bg); border: 1px solid var(--wk-line); border-radius: var(--wk-radius-s); min-height: 3em; }
+.en-widget .en-detail h4 { margin: 0 0 4px; padding: 0; font-size: .95rem; }
+.en-detail p { margin: 4px 0; }
+.en-detail ul { margin: 4px 0 0; padding-left: 1.2em; }
+.en-linkbtn { padding: 0; font: inherit; color: var(--wk-gold); background: none; border: 0; text-decoration: underline; cursor: pointer; }
+.en-table { margin-top: 8px; font-size: .86rem; }
+.en-table summary { cursor: pointer; color: var(--wk-text-muted); }
+.en-table table { width: 100%; margin-top: 6px; border-collapse: collapse; }
+.en-table th, .en-table td { padding: 4px 6px; text-align: left; border-bottom: 1px solid var(--wk-line); }
+.en-legend { display: flex; flex-wrap: wrap; gap: 6px 14px; margin-top: 8px; font-size: .84rem; }
+.en-legend label, .en-legend span { display: inline-flex; align-items: center; gap: 6px; }
+.en-swatch { width: 12px; height: 12px; border-radius: 3px; flex: none; background: var(--c, var(--wk-text-muted)); }
+
+/* ── Attack timeline ──────────────────────────────────────────────────────────── */
+.en-k-windup   { --c: var(--en-windup); }
+.en-k-active   { --c: var(--en-active); }
+.en-k-recovery { --c: var(--en-recovery); }
+.en-k-tracking { --c: var(--en-tracking); }
+.en-k-tracking-cut { --c: var(--wk-text); }
+.en-k-punish   { --c: var(--en-punish); }
+.en-tl-bar { fill: color-mix(in srgb, var(--c) 70%, transparent); stroke: var(--c); stroke-width: 1; }
+.en-tl-bar.is-current { fill: var(--c); }
+.en-tl-row-label { font-size: 11px; fill: var(--wk-text-muted) !important; }
+.en-tl-grid { stroke: var(--wk-line); stroke-width: 1; }
+.en-tl-grid.is-major { stroke: var(--wk-line-strong); }
+.en-tl-tick { font-size: 10px; fill: var(--wk-text-faint) !important; }
+.en-tl-cut { stroke: var(--c); stroke-width: 2; stroke-dasharray: 3 2; }
+.en-tl-event { fill: var(--wk-text); }
+.en-tl-head { stroke: var(--wk-gold); stroke-width: 2; }
+.en-tl-knob { fill: var(--wk-gold); cursor: ew-resize; }
+.en-tl-bar { cursor: pointer; }
+.en-timeline.is-outside .en-tl-head, .en-timeline.is-outside .en-tl-knob { opacity: .3; }
+.en-tl-now { margin-top: 6px; font-size: .9rem; min-height: 2.6em; }
+
+/* ── State machine ────────────────────────────────────────────────────────────── */
+.en-sm-node .en-sm-box { fill: var(--wk-bg); stroke: var(--wk-line-strong); stroke-width: 1.5; transition: fill var(--wk-dur-fast), stroke var(--wk-dur-fast), opacity var(--wk-dur-fast); }
+.en-sm-node .en-sm-glow { fill: none; stroke: var(--wk-gold); stroke-width: 3; opacity: 0; transition: opacity var(--wk-dur-fast); }
+.en-sm-node.is-current .en-sm-glow { opacity: .9; }
+.en-sm-node.is-current .en-sm-box { fill: color-mix(in srgb, var(--wk-gold) 26%, var(--wk-bg)); stroke: var(--wk-gold); stroke-width: 2.5; }
+.en-sm-node.is-current text { font-weight: 700; }
+.en-sm-node text { font-size: 13px; text-anchor: middle; dominant-baseline: central; pointer-events: none; }
+.en-sm-node { cursor: pointer; outline: none; }
+.en-sm-node:hover .en-sm-box, .en-sm-node:focus-visible .en-sm-box { stroke: var(--wk-gold); }
+.en-sm-node.is-selected .en-sm-box { stroke: var(--wk-text); stroke-width: 2.5; }
+.en-sm-node.is-initial .en-sm-box { stroke-width: 2.5; }
+.en-sm-edge path { fill: none; stroke: var(--wk-text-faint); stroke-width: 1.5; transition: stroke var(--wk-dur-fast), opacity var(--wk-dur-fast); }
+.en-sm-edge .en-sm-hit { stroke: transparent; stroke-width: 14; cursor: pointer; }
+.en-sm-edge text { font-size: 11px; text-anchor: middle; dominant-baseline: central; fill: var(--wk-text-muted) !important; pointer-events: none; }
+.en-sm-edge .en-sm-label-bg { fill: var(--wk-bg-raised); pointer-events: none; }
+.en-sm-edge.is-out path:not(.en-sm-hit) { stroke: var(--wk-gold); stroke-width: 2.2; }
+.en-sm-edge.is-in path:not(.en-sm-hit) { stroke: var(--en-recovery); stroke-width: 2.2; }
+.en-sm-edge.is-selected path:not(.en-sm-hit) { stroke: var(--wk-gold); stroke-width: 3; }
+.en-sm.has-selection .en-sm-node:not(.is-selected):not(.is-near):not(.is-current) .en-sm-box { opacity: .45; }
+.en-sm.has-selection .en-sm-edge:not(.is-out):not(.is-in):not(.is-selected) { opacity: .25; }
+.en-sm-arrow { fill: var(--wk-text-faint); }
+.en-sm-arrow-out { fill: var(--wk-gold); }
+.en-sm-start { fill: var(--wk-text); }
+.en-sm-start-line { stroke: var(--wk-text-faint); stroke-width: 1.5; }
+.en-sm-edge.is-taken path:not(.en-sm-hit) { stroke: var(--wk-gold); stroke-width: 3; stroke-dasharray: 6 3; }
+.en-sm-arrow-taken { fill: var(--wk-gold); }
+.en-sm-now { min-height: 1.6em; margin-bottom: 4px; font-size: .9rem; }
+
+/* ── Range map ────────────────────────────────────────────────────────────────── */
+.en-rm-grid { fill: none; stroke: var(--wk-line); stroke-width: 1; }
+.en-rm-grid-label { font-size: 10px; fill: var(--wk-text-faint) !important; }
+.en-rm-shape { fill: color-mix(in srgb, var(--c) 18%, transparent); stroke: var(--c); stroke-width: 1.5; transition: opacity var(--wk-dur-fast); }
+.en-rm-shape.is-leash { fill: none; stroke-dasharray: 6 4; }
+.en-rm { max-width: 520px; margin: 0 auto; }
+.en-rm-shape.is-hidden { opacity: 0; }
+.en-rm-shape.is-dim { opacity: .28; }
+.en-rm-shape.is-active { stroke-width: 2.5; }
+.en-rm-shape.is-hit { fill: color-mix(in srgb, var(--c) 34%, transparent); stroke-width: 2.5; }
+.en-rm-enemy { fill: var(--wk-blood-bright); stroke: var(--wk-bg); stroke-width: 1.5; }
+.en-rm-home { fill: none; stroke: var(--wk-text-muted); stroke-width: 1.5; }
+.en-rm-probe { fill: var(--wk-gold); stroke: var(--wk-bg); stroke-width: 2; cursor: grab; outline: none; }
+.en-rm-probe:focus-visible { stroke: var(--wk-text); stroke-width: 3; }
+.en-rm-probe-line { stroke: var(--wk-gold); stroke-width: 1; stroke-dasharray: 3 3; }
+.en-rm-c-1 { --c: var(--en-cat-1); } .en-rm-c-2 { --c: var(--en-cat-2); } .en-rm-c-3 { --c: var(--en-cat-3); }
+.en-rm-c-4 { --c: var(--en-cat-4); } .en-rm-c-5 { --c: var(--en-cat-5); } .en-rm-c-6 { --c: var(--en-cat-6); }
+
+/* ── Attack choice chart ──────────────────────────────────────────────────────── */
+.en-ch-seg { fill: var(--c); stroke: var(--wk-bg-raised); stroke-width: 1.5; cursor: pointer; transition: opacity var(--wk-dur-fast); outline: none; }
+.en-ch-seg:focus-visible { stroke: var(--wk-text); stroke-width: 2.5; }
+.en-ch.has-selection .en-ch-seg:not(.is-selected) { opacity: .4; }
+.en-ch.has-choice .en-ch-seg:not(.is-chosen) { opacity: .35; }
+.en-ch-seg.is-chosen { stroke: var(--wk-text); stroke-width: 3; opacity: 1 !important; }
+.en-ch-band.is-chosen { font-weight: 700; fill: var(--wk-gold) !important; }
+.en-ch-band { font-size: 12px; }
+.en-ch-pct { font-size: 11px; fill: var(--wk-bg) !important; text-anchor: middle; dominant-baseline: central; pointer-events: none; font-weight: 600; }
+
+/* ── Transport: the controls every clock shows ─────────────────────────────────── */
+.en-transport { gap: 6px; }
+.en-btn-play { min-width: 56px; font-size: 1rem; }
+.en-btn:disabled { opacity: .45; cursor: default; }
+.en-seg { display: inline-flex; }
+.en-seg .en-btn { border-radius: 0; margin-left: -1px; }
+.en-seg .en-btn:first-child { border-radius: var(--wk-radius-s) 0 0 var(--wk-radius-s); margin-left: 0; }
+.en-seg .en-btn:last-child { border-radius: 0 var(--wk-radius-s) var(--wk-radius-s) 0; }
+.en-chip { margin: 2px 4px 2px 0; padding: 4px 10px; min-height: 32px; font: inherit; font-size: .82rem; color: var(--wk-gold); background: var(--wk-gold-soft); border: 1px solid color-mix(in srgb, var(--wk-gold) 45%, transparent); border-radius: 999px; cursor: pointer; }
+.en-jumps { line-height: 2; }
+.en-hint { margin: 6px 0 0; font-size: .8rem; }
+
+/* ── Silent clip player ───────────────────────────────────────────────────────── */
+.en-clip { margin: 1.4em 0; }
+.en-clip video { display: block; width: 100%; height: auto; background: #000; border: 1px solid var(--wk-line); border-radius: var(--wk-radius-s); }
+.en-clip figcaption { margin-top: 6px; font-size: .86rem; color: var(--wk-text-muted); }
+.en-clip .en-controls { margin-top: 6px; }
+.en-clip:focus-visible { outline: 2px solid var(--wk-gold); outline-offset: 4px; }
+.en-clip video { cursor: pointer; }
+.en-clip-views { display: grid; gap: 6px; grid-template-columns: 1fr; }
+.en-clip-views[data-show="plain"] video[data-view="overlay"],
+.en-clip-views[data-show="overlay"] video[data-view="plain"] { display: none; }
+.en-clip-views[data-show="both"] { grid-template-columns: 1fr 1fr; }
+/* A synced section keeps its clip's videos and controls in view while the diagrams below scroll
+   past (javascripts/enemy.js moves them into .en-clip-stick; the caption stays in place). */
+.en-sync { margin-top: 1em; }
+.en-sync > .en-clip-stick { position: sticky; top: calc(var(--wk-header-h) + 2px); z-index: 4; padding: 6px 8px 8px; margin: 0 -8px; background: var(--wk-bg); border-bottom: 1px solid var(--wk-line); box-shadow: 0 8px 14px -12px rgba(0,0,0,.6); }
+.en-sync > .en-clip-stick video { display: block; width: 100%; height: auto; max-height: 36vh; object-fit: contain; background: #000; border: 1px solid var(--wk-line); border-radius: var(--wk-radius-s); cursor: pointer; }
+.en-sync > .en-clip { margin-top: 6px; }
+.en-clip-full { margin-left: auto; font-size: .82rem; }
+.en-clip.is-linked video { outline: 2px solid var(--wk-gold-soft); }
+
+/* The phone-only controls of the one-row player, and folding the videos away. */
+.en-speed-cycle, .en-view-toggle, .en-ro-short { display: none; }
+.en-clip-fold { font-size: .9rem; }
+.en-sync > .en-clip-stick.is-folded .en-clip-views { display: none; }
+.en-sync > .en-clip-stick.is-folded .en-transport { margin-top: 0; }
+
+@media (max-width: 600px) {
+  .en-widget { padding: 10px 10px 8px; margin-left: -4px; margin-right: -4px; }
+  .en-btn, .en-select { min-height: 44px; min-width: 44px; }
+  .en-sync > .en-clip-stick video { max-height: 20vh; }
+  .en-sync > .en-clip-stick .en-views .en-btn, .en-sync > .en-clip-stick .en-seg .en-btn { padding: 2px 7px; font-size: .8rem; }
+  .en-sync > .en-clip-stick .en-transport { gap: 4px; margin-top: 4px; }
+  .en-sync > .en-clip-stick .en-btn { min-height: 40px; min-width: 40px; padding: 2px 8px; }
+  .en-sync > .en-clip-stick .en-readout { font-size: .72rem; }
+  .en-sync > .en-clip-stick .en-clip-full { display: none; }
+  /* One row: play, step back and forward, speed, loop, overlay, frame, fold. */
+  .en-sync > .en-clip-stick .en-transport { flex-wrap: nowrap; }
+  .en-sync > .en-clip-stick .en-btn-first, .en-sync > .en-clip-stick .en-speeds,
+  .en-sync > .en-clip-stick .en-views, .en-sync > .en-clip-stick .en-ro-long,
+  .en-sync > .en-clip-stick .en-loop-label { display: none; }
+  .en-sync > .en-clip-stick .en-speed-cycle, .en-sync > .en-clip-stick .en-view-toggle { display: inline-flex; align-items: center; justify-content: center; }
+  .en-sync > .en-clip-stick .en-ro-short { display: inline; }
+  .en-sync > .en-clip-stick .en-transport .en-btn { min-width: 36px; padding: 2px 6px; flex: none; }
+  .en-sync > .en-clip-stick .en-transport { gap: 3px; }
+  .en-sync > .en-clip-stick .en-transport .en-view-toggle { padding: 2px 5px; font-size: .78rem; }
+  .en-sync > .en-clip-stick .en-readout { flex: 1 0 auto; white-space: nowrap; text-align: center; }
+  .en-sync > .en-clip-stick .en-clip-fold { flex: none; }
+  .en-sm-edge text { font-size: 13px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .en-sm-node rect, .en-sm-edge path, .en-rm-shape, .en-ch-seg { transition: none; }
+}
