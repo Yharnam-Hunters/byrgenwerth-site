@@ -415,20 +415,34 @@ function clipFor(host, data, frames, fps) {
 /* ── Attack timeline ─────────────────────────────────────────────────────────── */
 /* Phases: windup, active, recovery (the attack's own row), tracking (turns to follow the target),
    punish (an opening for the player), each [start, end) in attack frames; tracking-cut is one
-   frame. An attack's clip.start_frame is the clip frame its frame 0 sits on. */
+   frame. action is a behaviour step that is not part of an attack (feeding, turning, rising),
+   named by its own label. An attack's clip.start_frame is the clip frame its frame 0 sits on.
+   Only the rows the data uses are drawn; a timeline of actions alone is titled "Timeline". */
 var TL_ROWS = [
+  { label: 'Behaviour', kinds: ['action'] },
   { label: 'Attack', kinds: ['windup', 'active', 'recovery'] },
   { label: 'Tracking', kinds: ['tracking', 'tracking-cut'] },
   { label: 'Opening', kinds: ['punish'] }
 ];
 var TL_NAMES = { windup: 'wind-up', active: 'active (can hit)', recovery: 'recovery', tracking: 'tracking',
-                 'tracking-cut': 'tracking stops', punish: 'punish window' };
+                 'tracking-cut': 'tracking stops', punish: 'punish window', action: 'behaviour' };
+var TL_ACTION_COLOURS = 4;
+function phaseName(p) { return p.kind === 'action' && p.label ? p.label : TL_NAMES[p.kind]; }
 
 function initTimeline(host, data) {
-  frame(host, data, 'Attack timeline');
-  var fps = data.fps || 30;
   var attacks = data.attacks || [];
+  var actionsOnly = attacks.every(function (a) {
+    return (a.phases || []).every(function (p) { return p.kind === 'action'; });
+  });
+  frame(host, data, actionsOnly ? 'Timeline' : 'Attack timeline');
+  var fps = data.fps || 30;
   if (!attacks.length) { fail(host, 'no attacks'); return; }
+  var rows = TL_ROWS.filter(function (row) {
+    return attacks.some(function (a) {
+      return (a.phases || []).some(function (p) { return row.kinds.indexOf(p.kind) >= 0; });
+    });
+  });
+  var unitWord = actionsOnly ? 'frame' : 'attack frame';
   var longest = Math.max.apply(null, attacks.map(function (a) { return (a.clip && a.clip.start_frame || 0) + a.frames; }));
   var link = clipFor(host, data, longest, fps);
   var clip = link.clip;
@@ -443,8 +457,9 @@ function initTimeline(host, data) {
     attacks.forEach(function (a, i) { el('option', { value: i }, select, a.name || a.id); });
   }
   var meta = el('span', { 'class': 'en-readout' }, top);
-  var svg = svgEl('svg', { viewBox: '0 0 ' + W + ' ' + (TOP + TL_ROWS.length * ROW + AXIS), role: 'img' }, host);
-  var range = el('input', { type: 'range', 'class': 'en-range', min: 0, step: 1, 'aria-label': 'Attack frame' }, host);
+  var svg = svgEl('svg', { viewBox: '0 0 ' + W + ' ' + (TOP + rows.length * ROW + AXIS), role: 'img' }, host);
+  var range = el('input', { type: 'range', 'class': 'en-range', min: 0, step: 1,
+                            'aria-label': actionsOnly ? 'Frame' : 'Attack frame' }, host);
   if (link.own) controlBar(host, clip);
   var now = el('div', { 'class': 'en-tl-now', 'aria-live': 'polite' }, host);
   var legend = el('div', { 'class': 'en-legend' }, host);
@@ -465,7 +480,7 @@ function initTimeline(host, data) {
     svg.innerHTML = '';
     bars = [];
     svgEl('title', null, svg, (a.name || a.id) + ': ' + a.frames + ' frames at ' + fps + ' frames per second');
-    var bottom = TOP + TL_ROWS.length * ROW;
+    var bottom = TOP + rows.length * ROW;
     var step = a.frames > 120 || W < 520 ? 10 : 5;
     for (var f = 0; f <= a.frames; f += step) {
       var major = f % fps === 0 || f % (step * 2) === 0;
@@ -473,12 +488,17 @@ function initTimeline(host, data) {
       if (major) svgEl('text', { 'class': 'en-tl-tick', x: x(f), y: bottom + 14, 'text-anchor': 'middle' }, svg,
                        f % fps === 0 ? f + ' · ' + (f / fps) + ' s' : String(f));
     }
-    TL_ROWS.forEach(function (row, r) {
+    /* Each action gets the next of a few colours, so neighbouring steps stay apart. */
+    var actions = (a.phases || []).filter(function (p) { return p.kind === 'action'; });
+    function kindClass(p) {
+      return 'en-k-' + p.kind + (p.kind === 'action' ? ' en-k-action-' + (actions.indexOf(p) % TL_ACTION_COLOURS) : '');
+    }
+    rows.forEach(function (row, r) {
       var y = TOP + r * ROW;
       svgEl('text', { 'class': 'en-tl-row-label', x: 0, y: y + ROW / 2 + 4 }, svg, row.label);
       (a.phases || []).forEach(function (p) {
         if (row.kinds.indexOf(p.kind) < 0) return;
-        var g = svgEl('g', { 'class': 'en-k-' + p.kind }, svg);
+        var g = svgEl('g', { 'class': kindClass(p) }, svg);
         if (p.kind === 'tracking-cut') {
           svgEl('line', { 'class': 'en-tl-cut', x1: x(p.frame), x2: x(p.frame), y1: y + 3, y2: y + ROW - 3 }, g);
           bars.push({ p: p, node: null });
@@ -486,12 +506,12 @@ function initTimeline(host, data) {
         }
         var rect = svgEl('rect', { 'class': 'en-tl-bar', x: x(p.start), y: y + 5, width: Math.max(1, x(p.end) - x(p.start)),
                                    height: ROW - 10, rx: 3, tabindex: 0, role: 'button',
-                                   'aria-label': 'Loop ' + TL_NAMES[p.kind] + ', frames ' + p.start + ' to ' + (p.end - 1) }, g);
-        svgEl('title', null, rect, TL_NAMES[p.kind] + ': frames ' + p.start + '–' + (p.end - 1) + ' (tap to loop)');
+                                   'aria-label': 'Loop ' + phaseName(p) + ', frames ' + p.start + ' to ' + (p.end - 1) }, g);
+        svgEl('title', null, rect, phaseName(p) + ': frames ' + p.start + '–' + (p.end - 1) + ' (tap to loop)');
         var loop = function (e) {
           e.stopPropagation();
           if (start() === null) return;
-          clip.setLoop({ start: start() + p.start, end: start() + p.end, label: TL_NAMES[p.kind] });
+          clip.setLoop({ start: start() + p.start, end: start() + p.end, label: phaseName(p) });
         };
         rect.addEventListener('pointerdown', function (e) { e.stopPropagation(); });
         rect.addEventListener('click', loop);
@@ -508,8 +528,14 @@ function initTimeline(host, data) {
     legend.innerHTML = '';
     var kinds = {};
     (a.phases || []).forEach(function (p) { kinds[p.kind] = 1; });
+    (a.phases || []).forEach(function (p) {
+      if (p.kind !== 'action') return;
+      var s = el('span', { 'class': kindClass(p) }, legend);
+      el('span', { 'class': 'en-swatch' }, s);
+      s.appendChild(document.createTextNode(phaseName(p)));
+    });
     Object.keys(TL_NAMES).forEach(function (k) {
-      if (!kinds[k]) return;
+      if (!kinds[k] || k === 'action') return;
       var s = el('span', { 'class': 'en-k-' + k }, legend);
       el('span', { 'class': 'en-swatch' }, s);
       s.appendChild(document.createTextNode(TL_NAMES[k]));
@@ -519,7 +545,7 @@ function initTimeline(host, data) {
       (a.phases || []).map(function (p) {
         var single = p.kind === 'tracking-cut';
         var s0 = start();
-        return [TL_NAMES[p.kind], single ? String(p.frame) : p.start + '–' + (p.end - 1),
+        return [phaseName(p), single ? String(p.frame) : p.start + '–' + (p.end - 1),
                 s0 === null ? '—' : single ? String(s0 + p.frame) : (s0 + p.start) + '–' + (s0 + p.end - 1),
                 single ? '—' : (p.end - p.start) + ' f · ' + seconds(p.end - p.start, fps),
                 badge(evidenceOf(p, data)), p.note || ''];
@@ -545,21 +571,23 @@ function initTimeline(host, data) {
     });
     now.innerHTML = '';
     var line = el('div', { 'class': 'en-readout' }, now,
-                  inside ? 'attack frame ' + f + ' / ' + (a.frames - 1) + ' · ' + seconds(f, fps)
-                         : 'clip frame ' + clipFrame + ': outside this attack');
-    if (start() === null) line.textContent = 'attack frame ' + state.f + ' (this attack is not in the clip)';
+                  inside ? unitWord + ' ' + f + ' / ' + (a.frames - 1) + ' · ' + seconds(f, fps)
+                         : 'clip frame ' + clipFrame + ': outside this ' + (actionsOnly ? 'timeline' : 'attack'));
+    if (start() === null) line.textContent = unitWord + ' ' + state.f + ' (not in the clip)';
     line.setAttribute('aria-hidden', 'true');
     here.forEach(function (p) {
       var row = el('div', null, now);
-      el('strong', null, row, TL_NAMES[p.kind]);
+      el('strong', null, row, phaseName(p));
       row.appendChild(document.createTextNode(' '));
       row.appendChild(badge(evidenceOf(p, data)));
       if (p.note) row.appendChild(document.createTextNode(' ' + p.note));
     });
     (a.events || []).forEach(function (e) { if (inside && e.frame === f) el('div', null, now, '▾ ' + e.label); });
     /* Offer the phase under the playhead to the clip's Loop button. */
-    var body = here.filter(function (p) { return p.kind === 'windup' || p.kind === 'active' || p.kind === 'recovery'; })[0];
-    clip.suggested = body && start() !== null ? { start: start() + body.start, end: start() + body.end, label: TL_NAMES[body.kind] } : null;
+    var body = here.filter(function (p) {
+      return p.kind === 'windup' || p.kind === 'active' || p.kind === 'recovery' || p.kind === 'action';
+    })[0];
+    clip.suggested = body && start() !== null ? { start: start() + body.start, end: start() + body.end, label: phaseName(body) } : null;
   }
   function choose(i) {
     state.index = i;

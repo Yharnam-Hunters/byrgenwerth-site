@@ -1,0 +1,60 @@
+{
+  "schema": "byrgenwerth.enemy.timeline/1",
+  "synthetic": false,
+  "title": "The wake: feeding, turning, rising, read frame by frame from the clip",
+  "fps": 30,
+  "clip": {
+    "player": "clip-clinic-beast"
+  },
+  "attacks": [
+    {
+      "id": "wake",
+      "name": "The wake",
+      "frames": 89,
+      "clip": {
+        "player": "clip-clinic-beast",
+        "start_frame": 0
+      },
+      "phases": [
+        {
+          "kind": "action",
+          "label": "Feeding",
+          "start": 0,
+          "end": 65,
+          "evidence": "observed",
+          "note": "Head down over the body on the floor while the hunter walks up behind it."
+        },
+        {
+          "kind": "action",
+          "label": "Turning",
+          "start": 65,
+          "end": 72,
+          "evidence": "observed",
+          "note": "The head lifts and swings round towards the hunter; the eyes catch the light."
+        },
+        {
+          "kind": "action",
+          "label": "Rising",
+          "start": 72,
+          "end": 89,
+          "evidence": "observed",
+          "note": "It pushes up off the floor and rears to its full height. The run ends a few frames later."
+        }
+      ],
+      "events": [
+        {
+          "frame": 80,
+          "label": "the frame shown at the top of the page"
+        }
+      ]
+    }
+  ],
+  "note": "Boundaries are read by eye, one frame at a time. Each clip frame is one frame the renderer presented; the run was slower than the real game, so read the order of events from the clip, not their duration.",
+  "sources": [
+    {
+      "record": "media review: clinic beast wake clip (2026-11-14)",
+      "revision": "bb1d71b23e7f44774c6251360df88ae1220e279d",
+      "note": "Local Paleblood run of 2026-11-13: main at this revision with PRs #958 and #975 applied (both merged since)."
+    }
+  ]
+}

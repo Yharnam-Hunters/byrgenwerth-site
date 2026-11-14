@@ -1,0 +1,109 @@
+{
+  "schema": "byrgenwerth.enemy.states/1",
+  "synthetic": false,
+  "title": "Alert levels: the target state the beast's scripts read",
+  "states": [
+    {
+      "id": "normal",
+      "label": "Normal",
+      "col": 0,
+      "row": 0,
+      "initial": true,
+      "evidence": "verified",
+      "summary": "Nothing on its target list. The level is worked out again every think, so it falls back here once the list holds nothing that gives a higher level (when entries are dropped is not traced yet).",
+      "source": "ai_perception_update 0x016a85c0; level numbers checked by the verified IsBattleState / IsCautionState / IsFindState bindings"
+    },
+    {
+      "id": "caution",
+      "label": "Caution",
+      "col": 1,
+      "row": 0,
+      "evidence": "verified",
+      "summary": "Level 1. The scripts ask for it with IsCautionState.",
+      "source": "ai_func_is_caution_state 0x0165bb30 (verified)"
+    },
+    {
+      "id": "find",
+      "label": "Find",
+      "col": 1,
+      "row": 1,
+      "evidence": "verified",
+      "summary": "Level 2. The scripts ask for it with IsFindState.",
+      "source": "ai_func_is_find_state 0x0165bb50 (verified)"
+    },
+    {
+      "id": "battle",
+      "label": "Battle",
+      "col": 2,
+      "row": 1,
+      "evidence": "verified",
+      "summary": "Level 3. The scripts ask for it with IsBattleState. For the clinic beast this is the level our reading says makes it get up.",
+      "source": "ai_func_is_battle_state 0x0165baf0 (verified)"
+    }
+  ],
+  "transitions": [
+    {
+      "from": "normal",
+      "to": "caution",
+      "label": "noticed",
+      "evidence": "inferred",
+      "condition": "Something noticed gets a new entry on the target list. Static reading of the routine that fills in a new entry (not replaced yet): it starts at caution or find depending on which sense noticed it.",
+      "source": "ai_target_list_refresh_noticed 0x016b2760 (verified); entry set-up 0x016b2af0 (static reading)"
+    },
+    {
+      "from": "normal",
+      "to": "find",
+      "label": "noticed",
+      "evidence": "inferred",
+      "condition": "As above: which sense gives which starting level is not traced yet.",
+      "source": "ai_target_list_refresh_noticed 0x016b2760 (verified); entry set-up 0x016b2af0 (static reading)"
+    },
+    {
+      "from": "caution",
+      "to": "find",
+      "label": "raised?",
+      "evidence": "unknown",
+      "condition": "How an entry's level rises is in the target-list ageing routine, which has not been read yet.",
+      "source": "0x016b17c0 (not yet read)"
+    },
+    {
+      "from": "find",
+      "to": "battle",
+      "label": "raised?",
+      "evidence": "unknown",
+      "condition": "As above: not traced yet.",
+      "source": "0x016b17c0 (not yet read)"
+    },
+    {
+      "from": "caution",
+      "to": "battle",
+      "label": "forced",
+      "evidence": "inferred",
+      "condition": "A 'force battle' request left in the perception's flags puts the main target's entry straight into battle, once. Replaced in Paleblood and tested on edge cases; who sends the request is not known.",
+      "source": "ai_perception_update 0x016a85c0 (replaced, edge-tested)"
+    }
+  ],
+  "sources": [
+    {
+      "function": "ai_perception_update",
+      "address": "0x016a85c0",
+      "revision": "628534595723b2f61cea786f6c088f8e68139aa0",
+      "pr": "#999",
+      "record": "symbols/verification.csv: edge 802/802"
+    },
+    {
+      "function": "ai_func_is_battle_state, ai_func_is_caution_state, ai_func_is_find_state",
+      "address": "0x0165baf0, 0x0165bb30, 0x0165bb50",
+      "revision": "628534595723b2f61cea786f6c088f8e68139aa0",
+      "pr": "#911, #988",
+      "record": "symbols/reviews.csv: approved (independent AI review session)"
+    },
+    {
+      "function": "ai_target_list_refresh_noticed",
+      "address": "0x016b2760",
+      "revision": "628534595723b2f61cea786f6c088f8e68139aa0",
+      "pr": "#958, #997",
+      "record": "symbols/verification.csv: recorded 6/6, edge 103/103; symbols/reviews.csv: approved (independent AI review session)"
+    }
+  ]
+}
