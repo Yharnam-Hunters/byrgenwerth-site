@@ -107,9 +107,9 @@
  },
  {
   "date": "2026-11-09",
-  "commit": "8b8722d",
-  "verified_bytes": 47296,
-  "verified_functions": 176,
+  "commit": "46c6630",
+  "verified_bytes": 70459,
+  "verified_functions": 285,
   "replaced_bytes": 375064,
   "replaced_functions": 1257,
   "imports_covered": 686,

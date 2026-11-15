@@ -165,6 +165,21 @@
  "runtime.md": {
   "behind": [
    {
+    "commit": "46c6630ab031",
+    "pr": 617,
+    "title": "render: address GFX7 thick volume microtiles"
+   },
+   {
+    "commit": "76848beaf83d",
+    "pr": 1105,
+    "title": "render: keep SET_BASE recorder provenance out of generic source"
+   },
+   {
+    "commit": "fea5530f7c55",
+    "pr": 1118,
+    "title": "verify: a fixed time-stamp counter on both sides of a case"
+   },
+   {
     "commit": "5239bcfd69ba",
     "pr": 603,
     "title": "metal: execute uncompressed depth and stencil draws"
