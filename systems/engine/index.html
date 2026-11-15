@@ -398,7 +398,7 @@
       <span class="wk-stat-track" role="img" aria-label="0.1113 percent of target code bytes verified">
         <span class="wk-stat-fill" style="width:0.1113%"></span>
       </span>
-      <span class="wk-progress-foot">0.1113% of code bytes verified · 1,248 replaced</span>
+      <span class="wk-progress-foot">0.1113% of code bytes verified · 1,257 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -435,11 +435,15 @@
       
       
       <aside class="wk-freshness" role="note">
-        <p><b>Not yet updated for 28 merged changes.</b>
+        <p><b>Not yet updated for 30 merged changes.</b>
         This page was last checked against Paleblood
         <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/cf669283bed4b9a9f36e72ef1ebe28bf037d1a6f"><code>cf66928</code></a>;
         these pull requests changed what it describes since:</p>
         <ul>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1109">#1109</a> ai: goal framework part 1: update-time scheduler reserve and goal registration options</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1084">#1084</a> engine: carry the subtree release of the set of 64-bit keys (#1074)</li>
           
           <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1077">#1077</a> engine: carry the 8-byte array reserve copies (#1058)</li>
           
@@ -453,11 +457,7 @@
           
           <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1009">#1009</a> engine: replace Havok's array reserve and reserve more and the FD4 handle refresh</li>
           
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1013">#1013</a> param, engine: replace the id array push_back family</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/989">#989</a> engine: replace the block pool's allocate and free and thread_create</li>
-          
-          <li>and 20 more</li>
+          <li>and 22 more</li>
         </ul>
       </aside>
       
@@ -2990,6 +2990,13 @@ They are helpers of that replacement, not separate functions of the executable.<
 <td data-label="Name"><code>engine_array64_reserve_02b3ba60</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">Engine array reserve, 8-byte elements: allocates capacity*8 (align 8) from the allocator at +0x20, copies the elements (skipped while the buffer is null), frees the old buffer, sets the three pointers</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02b3bda0</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_set_free_subtree_02b3bda0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Set of 64-bit keys (MSVC std::_Tree::_Erase): free a subtree's nodes through the set's allocator; the right subtree first by recursion; then the node; then on to its left child; a nil node ends it</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x02b4d100</code></td>

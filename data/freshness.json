@@ -26,6 +26,21 @@
  "beasts-of-yharnam/enemies/clinic-beast.md": {
   "behind": [
    {
+    "commit": "8b8722d9ca0b",
+    "pr": 1109,
+    "title": "ai: goal framework part 1: update-time scheduler reserve and goal registration options"
+   },
+   {
+    "commit": "69b0c0e4df49",
+    "pr": 1103,
+    "title": "ai: the sound check (0x0169cef0), edge-verified"
+   },
+   {
+    "commit": "3516d604b5db",
+    "pr": 1089,
+    "title": "ai: the hearing test (0x0169d160), edge-verified"
+   },
+   {
     "commit": "d92dbba0ca67",
     "pr": 1079,
     "title": "ai: perception update and debug display move verified"
@@ -149,6 +164,21 @@
  },
  "runtime.md": {
   "behind": [
+   {
+    "commit": "5239bcfd69ba",
+    "pr": 603,
+    "title": "metal: execute uncompressed depth and stencil draws"
+   },
+   {
+    "commit": "bc5159e33dab",
+    "pr": 601,
+    "title": "render: decode GFX7 depth surface layouts"
+   },
+   {
+    "commit": "1115290b8d34",
+    "pr": 1095,
+    "title": "boot: a capture boot that cannot record fails"
+   },
    {
     "commit": "47d7cf3cd87e",
     "pr": 1081,
@@ -335,6 +365,21 @@
  "systems/ai.md": {
   "behind": [
    {
+    "commit": "8b8722d9ca0b",
+    "pr": 1109,
+    "title": "ai: goal framework part 1: update-time scheduler reserve and goal registration options"
+   },
+   {
+    "commit": "69b0c0e4df49",
+    "pr": 1103,
+    "title": "ai: the sound check (0x0169cef0), edge-verified"
+   },
+   {
+    "commit": "3516d604b5db",
+    "pr": 1089,
+    "title": "ai: the hearing test (0x0169d160), edge-verified"
+   },
+   {
     "commit": "d92dbba0ca67",
     "pr": 1079,
     "title": "ai: perception update and debug display move verified"
@@ -448,6 +493,16 @@
  },
  "systems/engine.md": {
   "behind": [
+   {
+    "commit": "8b8722d9ca0b",
+    "pr": 1109,
+    "title": "ai: goal framework part 1: update-time scheduler reserve and goal registration options"
+   },
+   {
+    "commit": "4bee81f5a704",
+    "pr": 1084,
+    "title": "engine: carry the subtree release of the set of 64-bit keys (#1074)"
+   },
    {
     "commit": "3a64b6997da4",
     "pr": 1077,
@@ -867,6 +922,11 @@
  },
  "systems/render.md": {
   "behind": [
+   {
+    "commit": "60045833f88e",
+    "pr": 1088,
+    "title": "render: replace GS ring size packet writer"
+   },
    {
     "commit": "5d1a61a2246b",
     "pr": 1071,

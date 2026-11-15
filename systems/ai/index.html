@@ -398,7 +398,7 @@
       <span class="wk-stat-track" role="img" aria-label="0.1113 percent of target code bytes verified">
         <span class="wk-stat-fill" style="width:0.1113%"></span>
       </span>
-      <span class="wk-progress-foot">0.1113% of code bytes verified · 1,248 replaced</span>
+      <span class="wk-progress-foot">0.1113% of code bytes verified · 1,257 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -441,11 +441,17 @@
       
       
       <aside class="wk-freshness" role="note">
-        <p><b>Not yet updated for 13 merged changes.</b>
+        <p><b>Not yet updated for 16 merged changes.</b>
         This page was last checked against Paleblood
         <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/cf669283bed4b9a9f36e72ef1ebe28bf037d1a6f"><code>cf66928</code></a>;
         these pull requests changed what it describes since:</p>
         <ul>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1109">#1109</a> ai: goal framework part 1: update-time scheduler reserve and goal registration options</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1103">#1103</a> ai: the sound check (0x0169cef0), edge-verified</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1089">#1089</a> ai: the hearing test (0x0169d160), edge-verified</li>
           
           <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1079">#1079</a> ai: perception update and debug display move verified</li>
           
@@ -457,13 +463,7 @@
           
           <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/972">#972</a> ai: replace the group reset and the debug display's set position, flush and end</li>
           
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/958">#958</a> ai: sight test, sight query reset, target-list refresh (closes #953)</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/961">#961</a> ai: target-list edge case one float step inside half a metre</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/951">#951</a> ai: target list edge cases; verify ai_target_list_mark_main_matches</li>
-          
-          <li>and 5 more</li>
+          <li>and 8 more</li>
         </ul>
       </aside>
       
@@ -741,6 +741,34 @@ will be labeled as observations until their implementation is traced.</p>
 <td data-label="Notes">IsVisibleTarget: stores the player's set entry; selectors -2,-1,20-22,24,25 and points 100-123 are visible, else the current target's visible flag</td>
 </tr>
 <tr>
+<td data-label="Address"><code>0x0167b6b0</code></td>
+<td style="text-align: right;" data-label="Size">93</td>
+<td data-label="Name"><code>ai_func_register_goal_no_update</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">REGISTER_GOAL_NO_UPDATE: sets the no-update option of a goal id's definition</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0167b710</code></td>
+<td style="text-align: right;" data-label="Size">118</td>
+<td data-label="Name"><code>ai_func_register_goal_update_time</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">REGISTER_GOAL_UPDATE_TIME: sets the range of a goal id's script Update interval</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0167b790</code></td>
+<td style="text-align: right;" data-label="Size">93</td>
+<td data-label="Name"><code>ai_func_register_goal_no_interrupt</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">REGISTER_GOAL_NO_INTERUPT: sets the no-interrupt option of a goal id's definition</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0167b7f0</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>ai_func_enable_combo_attack_cancel</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">ENABLE_COMBO_ATK_CANCEL: enables combo attack cancel for a goal id</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x0167f2a0</code></td>
 <td style="text-align: right;" data-label="Size">22</td>
 <td data-label="Name"><code>ai_goal_func_set_timer</code></td>
@@ -811,6 +839,20 @@ will be labeled as observations until their implementation is traced.</p>
 <td data-label="Notes">AI view slot +0x68: module +0x78 owner: mode word == 1 when queries 0x1a8 yes / 0x1c0 no, else AI state slot != 0xff</td>
 </tr>
 <tr>
+<td data-label="Address"><code>0x0169cef0</code></td>
+<td style="text-align: right;" data-label="Size">607</td>
+<td data-label="Name"><code>ai_hearing_check_sound</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Hearing: who made a sound (character or object by handle, or neither) and whether the listener's team hears the maker's; calls the hearing test with the maker's size</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0169d160</code></td>
+<td style="text-align: right;" data-label="Size">2248</td>
+<td data-label="Name"><code>ai_hearing_test</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Hearing: whether the enemy hears one sound (range less the sound-cut distance against the gap; otherwise the ear's reach by width and height angle) and remembers it</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x0169da30</code></td>
 <td style="text-align: right;" data-label="Size">763</td>
 <td data-label="Name"><code>ai_hearing_in_ear_range</code></td>
@@ -823,6 +865,13 @@ will be labeled as observations until their implementation is traced.</p>
 <td data-label="Name"><code>ai_character_link_ids</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--verified"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></span></td>
 <td data-label="Notes">The two ids of the character's link (vtable +0x108, +0x1f8) when its partner's link module is active and unblocked; else -1, -1</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x016a3be0</code></td>
+<td style="text-align: right;" data-label="Size">154</td>
+<td data-label="Name"><code>ai_update_time_scheduler_reserve</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">AI update-time scheduler: books an update in a 100-frame ring, moving it to the first later frame below the per-frame limit</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x016a52b0</code></td>

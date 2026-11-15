@@ -398,7 +398,7 @@
       <span class="wk-stat-track" role="img" aria-label="0.1113 percent of target code bytes verified">
         <span class="wk-stat-fill" style="width:0.1113%"></span>
       </span>
-      <span class="wk-progress-foot">0.1113% of code bytes verified · 1,248 replaced</span>
+      <span class="wk-progress-foot">0.1113% of code bytes verified · 1,257 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -447,11 +447,17 @@
       
       
       <aside class="wk-freshness" role="note">
-        <p><b>Not yet updated for 36 merged changes.</b>
+        <p><b>Not yet updated for 39 merged changes.</b>
         This page was last checked against Paleblood
         <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/cf669283bed4b9a9f36e72ef1ebe28bf037d1a6f"><code>cf66928</code></a>;
         these pull requests changed what it describes since:</p>
         <ul>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/603">#603</a> metal: execute uncompressed depth and stencil draws</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/601">#601</a> render: decode GFX7 depth surface layouts</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1095">#1095</a> boot: a capture boot that cannot record fails</li>
           
           <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1081">#1081</a> capture: record any number of hooks (capture boots record nothing since #1062)</li>
           
@@ -463,13 +469,7 @@
           
           <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1046">#1046</a> capture: traced calls run family members' original code</li>
           
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1035">#1035</a> trace: memory written then changed by another thread, and test's memory operand (disk locate, Scaleform bin free)</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1031">#1031</a> render: an image left to a set-aside target reaches the memory</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1027">#1027</a> render: COLOR_8 UNORM render targets</li>
-          
-          <li>and 28 more</li>
+          <li>and 31 more</li>
         </ul>
       </aside>
       
@@ -938,13 +938,13 @@ Paleblood's function table; see the <a href="../progress/">progress dashboard</a
 </tr>
 <tr>
 <td>Replaced</td>
-<td style="text-align: right;">1,248 (0.79%)</td>
-<td style="text-align: right;">371,310 (0.87%)</td>
+<td style="text-align: right;">1,257 (0.80%)</td>
+<td style="text-align: right;">375,064 (0.88%)</td>
 </tr>
 <tr>
 <td>Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> (includes <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>)</td>
-<td style="text-align: right;">1,248 (0.79%)</td>
-<td style="text-align: right;">371,310 (0.87%)</td>
+<td style="text-align: right;">1,257 (0.80%)</td>
+<td style="text-align: right;">375,064 (0.88%)</td>
 </tr>
 <tr>
 <td>Verified</td>
@@ -970,13 +970,13 @@ Paleblood's function table; see the <a href="../progress/">progress dashboard</a
 </tr>
 <tr>
 <td>Replaced, with family members</td>
-<td style="text-align: right;">19,267 (12.21%)</td>
-<td style="text-align: right;">433,736 (1.02%)</td>
+<td style="text-align: right;">19,276 (12.22%)</td>
+<td style="text-align: right;">437,490 (1.03%)</td>
 </tr>
 <tr>
 <td>Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>, with family members</td>
-<td style="text-align: right;">19,267 (12.21%)</td>
-<td style="text-align: right;">433,736 (1.02%)</td>
+<td style="text-align: right;">19,276 (12.22%)</td>
+<td style="text-align: right;">437,490 (1.03%)</td>
 </tr>
 <tr>
 <td>Verified, with family members</td>
@@ -1001,11 +1001,11 @@ Paleblood's function table; see the <a href="../progress/">progress dashboard</a
 <tbody>
 <tr>
 <td>ai</td>
-<td style="text-align: right;">52</td>
-<td style="text-align: right;">52</td>
-<td style="text-align: right;">52</td>
+<td style="text-align: right;">59</td>
+<td style="text-align: right;">59</td>
+<td style="text-align: right;">59</td>
 <td style="text-align: right;">31</td>
-<td style="text-align: right;">16,027</td>
+<td style="text-align: right;">19,421</td>
 </tr>
 <tr>
 <td>audio</td>
@@ -1033,11 +1033,11 @@ Paleblood's function table; see the <a href="../progress/">progress dashboard</a
 </tr>
 <tr>
 <td>engine</td>
+<td style="text-align: right;">555</td>
 <td style="text-align: right;">554</td>
-<td style="text-align: right;">553</td>
-<td style="text-align: right;">553</td>
+<td style="text-align: right;">554</td>
 <td style="text-align: right;">13</td>
-<td style="text-align: right;">146,581</td>
+<td style="text-align: right;">146,662</td>
 </tr>
 <tr>
 <td>event</td>
@@ -1105,11 +1105,11 @@ Paleblood's function table; see the <a href="../progress/">progress dashboard</a
 </tr>
 <tr>
 <td>render</td>
-<td style="text-align: right;">188</td>
-<td style="text-align: right;">188</td>
-<td style="text-align: right;">188</td>
+<td style="text-align: right;">189</td>
+<td style="text-align: right;">189</td>
+<td style="text-align: right;">189</td>
 <td style="text-align: right;">79</td>
-<td style="text-align: right;">74,054</td>
+<td style="text-align: right;">74,333</td>
 </tr>
 </tbody>
 </table></div>
