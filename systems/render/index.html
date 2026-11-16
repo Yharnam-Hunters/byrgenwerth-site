@@ -398,7 +398,7 @@
       <span class="wk-stat-track" role="img" aria-label="0.1658 percent of target code bytes verified">
         <span class="wk-stat-fill" style="width:0.1658%"></span>
       </span>
-      <span class="wk-progress-foot">0.1658% of code bytes verified · 1,257 replaced</span>
+      <span class="wk-progress-foot">0.1658% of code bytes verified · 1,368 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -441,11 +441,19 @@
       
       
       <aside class="wk-freshness" role="note">
-        <p><b>Not yet updated for 23 merged changes.</b>
+        <p><b>Not yet updated for 27 merged changes.</b>
         This page was last checked against Paleblood
         <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/cf669283bed4b9a9f36e72ef1ebe28bf037d1a6f"><code>cf66928</code></a>;
         these pull requests changed what it describes since:</p>
         <ul>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1130">#1130</a> render: reconstruct YEBIS context factory</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/560">#560</a> render: emit opaque auto draw packets</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1134">#1134</a> render: reconstruct YEBIS interface initializer</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1097">#1097</a> render: emit register-space wait packets</li>
           
           <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1088">#1088</a> render: replace GS ring size packet writer</li>
           
@@ -455,15 +463,7 @@
           
           <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1048">#1048</a> render: replace geometry shader library wrapper</li>
           
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1034">#1034</a> render: replace multi-VGT parameter packet writer</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1026">#1026</a> render: replace GS onchip control packet writer</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1019">#1019</a> render: replace GS mode packet writer</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1007">#1007</a> render, loading: replace the parameter set's set and clear, result assign and release at quit</li>
-          
-          <li>and 15 more</li>
+          <li>and 19 more</li>
         </ul>
       </aside>
       
@@ -802,6 +802,20 @@ frames. #279, #286 and #287 were brought up to date with <code>main</code> from 
 </thead>
 <tbody>
 <tr>
+<td data-label="Address"><code>0x00fb4ac0</code></td>
+<td style="text-align: right;" data-label="Size">89</td>
+<td data-label="Name"><code>render_yebis_context_instantiate</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">YEBIS IPfxContext::Instantiate allocates a context; initializes its base; publishes its vtable then constructs the <abbr title="The PS4's low-level graphics API.">GNM</abbr> shim; returns the allocation pointer</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x00fb6d20</code></td>
+<td style="text-align: right;" data-label="Size">30</td>
+<td data-label="Name"><code>render_yebis_initialize_interface</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Sets the IPfxInterface vtable; initializes the reference count to one; clears the instance pointer</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x00fbc3e0</code></td>
 <td style="text-align: right;" data-label="Size">670</td>
 <td data-label="Name"><code>render_yebis_get_recursive_sample_parameters</code></td>
@@ -991,6 +1005,13 @@ frames. #279, #286 and #287 were brought up to date with <code>main</code> from 
 <td data-label="Notes">Emit DRAW_INDEX_AUTO and a query-selected THREAD_TRACE_MARKER event or NOP. Reload flags and cursor after overlapping packet stores before selecting and publishing the trailing packet.</td>
 </tr>
 <tr>
+<td data-label="Address"><code>0x01474250</code></td>
+<td style="text-align: right;" data-label="Size">157</td>
+<td data-label="Name"><code>render_emit_draw_opaque_auto</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Emit the fixed opaque DRAW_INDEX_AUTO profile and query-selected trace marker or NOP. Preserve live flags and distinct cursor publications under overlapping packet stores.</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x014749c0</code></td>
 <td style="text-align: right;" data-label="Size">97</td>
 <td data-label="Name"><code>render_set_gds_oa</code></td>
@@ -1178,6 +1199,13 @@ frames. #279, #286 and #287 were brought up to date with <code>main</code> from 
 <td data-label="Name"><code>render_emit_shader_preparation_range_01475e10</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">ACQUIRE_MEM packet (7 words) for a memory range: coherence control from the cache actions, targets and top flag; reserve via the space callback</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x01475ec0</code></td>
+<td style="text-align: right;" data-label="Size">135</td>
+<td data-label="Name"><code>render_wait_register</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Emit register-space WAIT_REG_MEM with a low16 address and low3 comparison; preserve full reference and mask then increment the live cursor after seven stores</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x01476030</code></td>

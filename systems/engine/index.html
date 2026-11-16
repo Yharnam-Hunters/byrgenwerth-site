@@ -398,7 +398,7 @@
       <span class="wk-stat-track" role="img" aria-label="0.1658 percent of target code bytes verified">
         <span class="wk-stat-fill" style="width:0.1658%"></span>
       </span>
-      <span class="wk-progress-foot">0.1658% of code bytes verified · 1,257 replaced</span>
+      <span class="wk-progress-foot">0.1658% of code bytes verified · 1,368 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -435,11 +435,13 @@
       
       
       <aside class="wk-freshness" role="note">
-        <p><b>Not yet updated for 30 merged changes.</b>
+        <p><b>Not yet updated for 31 merged changes.</b>
         This page was last checked against Paleblood
         <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/cf669283bed4b9a9f36e72ef1ebe28bf037d1a6f"><code>cf66928</code></a>;
         these pull requests changed what it describes since:</p>
         <ul>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1107">#1107</a> engine: replace the 104 other copies of the tree subtree release</li>
           
           <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1109">#1109</a> ai: goal framework part 1: update-time scheduler reserve and goal registration options</li>
           
@@ -455,9 +457,7 @@
           
           <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1039">#1039</a> engine: replace the wide string's assign of a repeated character</li>
           
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1009">#1009</a> engine: replace Havok's array reserve and reserve more and the FD4 handle refresh</li>
-          
-          <li>and 22 more</li>
+          <li>and 23 more</li>
         </ul>
       </aside>
       
@@ -773,6 +773,13 @@ They are helpers of that replacement, not separate functions of the executable.<
 <td data-label="Notes">Engine array reserve, 8-byte elements: allocates capacity*8 (align 8) from the allocator at +0x20, copies the elements (skipped while the buffer is null), frees the old buffer, sets the three pointers</td>
 </tr>
 <tr>
+<td data-label="Address"><code>0x016b7550</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_016b7550</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x016d1ee0</code></td>
 <td style="text-align: right;" data-label="Size">218</td>
 <td data-label="Name"><code>engine_array64_push_back_016d1ee0</code></td>
@@ -801,6 +808,20 @@ They are helpers of that replacement, not separate functions of the executable.<
 <td data-label="Notes">Engine array reserve, 8-byte elements: allocates capacity*8 (align 8) from the allocator at +0x20, copies the elements (skipped while the buffer is null), frees the old buffer, sets the three pointers</td>
 </tr>
 <tr>
+<td data-label="Address"><code>0x016dfc80</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_016dfc80</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x016dfce0</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_016dfce0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x016e0880</code></td>
 <td style="text-align: right;" data-label="Size">218</td>
 <td data-label="Name"><code>engine_array64_push_back_016e0880</code></td>
@@ -820,6 +841,13 @@ They are helpers of that replacement, not separate functions of the executable.<
 <td data-label="Name"><code>engine_array32_push_back_016e85a0</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">Engine array push_back, 4-byte elements: inside check first; full grows to 1.5x count via 0x016e8680, inside item re-read at its index; stores unless no buffer; end += 4</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x016f1c10</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_016f1c10</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x01727a30</code></td>
@@ -864,6 +892,27 @@ They are helpers of that replacement, not separate functions of the executable.<
 <td data-label="Notes">Engine array reserve, 8-byte elements: allocates capacity*8 (align 8) from the allocator at +0x20, copies the elements (skipped while the buffer is null), frees the old buffer, sets the three pointers</td>
 </tr>
 <tr>
+<td data-label="Address"><code>0x017c4d20</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_017c4d20</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x017c8f00</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_017c8f00</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x017d22c0</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_017d22c0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x017d5790</code></td>
 <td style="text-align: right;" data-label="Size">226</td>
 <td data-label="Name"><code>engine_list64_push_back_017d5790</code></td>
@@ -876,6 +925,13 @@ They are helpers of that replacement, not separate functions of the executable.<
 <td data-label="Name"><code>engine_list32_push_back_017dc0f0</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">Engine list push_back, 32-bit value: node (0x18) from the allocator (slot 0x58, align 8), next = sentinel, prev = last, value; at max size throws; size+1, linked in</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x017dd280</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_017dd280</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x0182fd80</code></td>
@@ -932,6 +988,13 @@ They are helpers of that replacement, not separate functions of the executable.<
 <td data-label="Name"><code>engine_array64_push_back_0187e030</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">Engine array push_back, 8-byte elements: inside check first; full grows to 1.5x count via 0x0187df30, inside item re-read at its index; stores unless no buffer; end += 8</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x018904d0</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_018904d0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x0189a350</code></td>
@@ -1011,6 +1074,13 @@ They are helpers of that replacement, not separate functions of the executable.<
 <td data-label="Notes">Engine list push_back, 64-bit value: node (0x18) from the allocator (slot 0x58, align 8), next = sentinel, prev = last, value; at max size throws; size+1, linked in</td>
 </tr>
 <tr>
+<td data-label="Address"><code>0x01900d00</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_01900d00</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x019048a0</code></td>
 <td style="text-align: right;" data-label="Size">218</td>
 <td data-label="Name"><code>engine_array64_push_back_019048a0</code></td>
@@ -1039,6 +1109,27 @@ They are helpers of that replacement, not separate functions of the executable.<
 <td data-label="Notes">Engine array reserve, 8-byte elements: allocates capacity*8 (align 8) from the allocator at +0x20, copies the elements (skipped while the buffer is null), frees the old buffer, sets the three pointers</td>
 </tr>
 <tr>
+<td data-label="Address"><code>0x01957700</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_01957700</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x01957760</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_01957760</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x01964c70</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_01964c70</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x019851b0</code></td>
 <td style="text-align: right;" data-label="Size">226</td>
 <td data-label="Name"><code>engine_list64_push_back_019851b0</code></td>
@@ -1053,11 +1144,25 @@ They are helpers of that replacement, not separate functions of the executable.<
 <td data-label="Notes">MapInsUpdateHelper: set update request bit 4, queue the instance id once (queued byte bit 0); a full queue is reported and pushed anyway</td>
 </tr>
 <tr>
+<td data-label="Address"><code>0x01995650</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_01995650</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x019a7090</code></td>
 <td style="text-align: right;" data-label="Size">115</td>
 <td data-label="Name"><code>engine_obj_ins_request_update_019a7090</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--verified"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></span></td>
 <td data-label="Notes">ObjInsUpdateHelper: step part +0x210, set request 0x20, queue the id once (flag 0x1000); full queue: reported, then the flags reloaded, / 0x1000, id pushed</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x019b7410</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_019b7410</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x01b0d510</code></td>
@@ -1086,6 +1191,13 @@ They are helpers of that replacement, not separate functions of the executable.<
 <td data-label="Name"><code>engine_list64_push_back_01b91b30</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">Engine list push_back, 64-bit value: node (0x18) from the allocator (slot 0x58, align 8), next = sentinel, prev = last, value; at max size throws; size+1, linked in</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x01bd2650</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_01bd2650</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x01c15110</code></td>
@@ -1144,6 +1256,48 @@ They are helpers of that replacement, not separate functions of the executable.<
 <td data-label="Notes">Engine array reserve, 8-byte elements: allocates capacity*8 (align 8) from the allocator at +0x20, copies the elements (skipped while the buffer is null), frees the old buffer, sets the three pointers</td>
 </tr>
 <tr>
+<td data-label="Address"><code>0x01c6d380</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_01c6d380</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x01c6d3e0</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_01c6d3e0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x01c7cab0</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_01c7cab0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x01c7cb10</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_01c7cb10</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x01c7cb70</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_01c7cb70</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x01c93820</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_01c93820</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x01ceb3b0</code></td>
 <td style="text-align: right;" data-label="Size">218</td>
 <td data-label="Name"><code>engine_array64_push_back_01ceb3b0</code></td>
@@ -1156,6 +1310,69 @@ They are helpers of that replacement, not separate functions of the executable.<
 <td data-label="Name"><code>engine_array64_reserve_01ceb6a0</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">Engine array reserve, 8-byte elements: allocates capacity*8 (align 8) from the allocator at +0x20, copies the elements (skipped while the buffer is null), frees the old buffer, sets the three pointers</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x01db3a20</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_01db3a20</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x01db3de0</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_01db3de0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x01dcfbf0</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_01dcfbf0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x01dcfc50</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_01dcfc50</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x01e20ec0</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_01e20ec0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x01e20f20</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_01e20f20</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x01e20f80</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_01e20f80</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x01e20fe0</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_01e20fe0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x01e21040</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_01e21040</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x01e77890</code></td>
@@ -1179,6 +1396,13 @@ They are helpers of that replacement, not separate functions of the executable.<
 <td data-label="Notes">Engine array push_back, 8-byte elements: inside check first; full grows to 1.5x count via 0x01e8d280, inside item re-read at its index; stores unless no buffer; end += 8</td>
 </tr>
 <tr>
+<td data-label="Address"><code>0x01ea2860</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_01ea2860</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x01efddb0</code></td>
 <td style="text-align: right;" data-label="Size">217</td>
 <td data-label="Name"><code>engine_array32_push_back_01efddb0</code></td>
@@ -1186,11 +1410,39 @@ They are helpers of that replacement, not separate functions of the executable.<
 <td data-label="Notes">Engine array push_back, 4-byte elements: inside check first; full grows to 1.5x count via 0x01effa90, inside item re-read at its index; stores unless no buffer; end += 4</td>
 </tr>
 <tr>
+<td data-label="Address"><code>0x020b7160</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_020b7160</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x020c4700</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_020c4700</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x020f01b0</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_020f01b0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x020f0380</code></td>
 <td style="text-align: right;" data-label="Size">226</td>
 <td data-label="Name"><code>engine_list64_push_back_020f0380</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">Engine list push_back, 64-bit value: node (0x18) from the allocator (slot 0x58, align 8), next = sentinel, prev = last, value; at max size throws; size+1, linked in</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x020f2e20</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_020f2e20</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x020f2ff0</code></td>
@@ -1212,6 +1464,13 @@ They are helpers of that replacement, not separate functions of the executable.<
 <td data-label="Name"><code>engine_list64_push_back_02105de0</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">Engine list push_back, 64-bit value: node (0x18) from the allocator (slot 0x58, align 8), next = sentinel, prev = last, value; at max size throws; size+1, linked in</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02112df0</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_02112df0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x0215ea10</code></td>
@@ -1240,6 +1499,13 @@ They are helpers of that replacement, not separate functions of the executable.<
 <td data-label="Name"><code>engine_list64_push_back_0219fff0</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">Engine list push_back, 64-bit value: node (0x18) from the allocator (slot 0x58, align 8), next = sentinel, prev = last, value; at max size throws; size+1, linked in</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x021d4ee0</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_021d4ee0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x02222210</code></td>
@@ -1340,6 +1606,20 @@ They are helpers of that replacement, not separate functions of the executable.<
 <td data-label="Notes">Engine array push_back, 8-byte elements: inside check first; full grows to 1.5x count via 0x022b0720, inside item re-read at its index; stores unless no buffer; end += 8</td>
 </tr>
 <tr>
+<td data-label="Address"><code>0x022ae740</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_022ae740</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x022aee90</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_022aee90</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x022b03e0</code></td>
 <td style="text-align: right;" data-label="Size">251</td>
 <td data-label="Name"><code>engine_array64_reserve_022b03e0</code></td>
@@ -1359,6 +1639,27 @@ They are helpers of that replacement, not separate functions of the executable.<
 <td data-label="Name"><code>engine_list64_insert_022cdba0</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">Engine list insert, 64-bit value: node (0x18) from the allocator (slot 0x58, align 8), next = where, prev = where-&gt;prev, value; at max size throws; size+1, linked in</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x023261a0</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_023261a0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0232c8d0</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_0232c8d0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0232f6d0</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_0232f6d0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x023392d0</code></td>
@@ -1473,11 +1774,46 @@ They are helpers of that replacement, not separate functions of the executable.<
 <td data-label="Notes">Scaleform merge of a freed block with free neighbours (previous through its tail copy); joined block to the head of the joined length's bin</td>
 </tr>
 <tr>
+<td data-label="Address"><code>0x02366060</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_02366060</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x023660c0</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_023660c0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0236f1f0</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_0236f1f0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x02379f00</code></td>
 <td style="text-align: right;" data-label="Size">225</td>
 <td data-label="Name"><code>engine_list64_insert_02379f00</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">Engine list insert, 64-bit value: node (0x18) from the allocator (slot 0x58, align 8), next = where, prev = where-&gt;prev, value; at max size throws; size+1, linked in</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0237d410</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_0237d410</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0237dda0</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_0237dda0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x02390550</code></td>
@@ -1501,11 +1837,25 @@ They are helpers of that replacement, not separate functions of the executable.<
 <td data-label="Notes">Engine list push_back, 32-bit value: node (0x18) from the allocator (slot 0x58, align 8), next = sentinel, prev = last, value; at max size throws; size+1, linked in</td>
 </tr>
 <tr>
+<td data-label="Address"><code>0x023fa1b0</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_023fa1b0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x02432780</code></td>
 <td style="text-align: right;" data-label="Size">226</td>
 <td data-label="Name"><code>engine_list64_push_back_02432780</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">Engine list push_back, 64-bit value: node (0x18) from the allocator (slot 0x58, align 8), next = sentinel, prev = last, value; at max size throws; size+1, linked in</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02455e80</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_02455e80</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x02463460</code></td>
@@ -2096,6 +2446,34 @@ They are helpers of that replacement, not separate functions of the executable.<
 <td data-label="Notes">DLThread constructor with a stack size: same members; failures reported</td>
 </tr>
 <tr>
+<td data-label="Address"><code>0x0248fa70</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_0248fa70</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02492ad0</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_02492ad0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x024a8360</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_024a8360</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x024d3200</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_024d3200</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x024df920</code></td>
 <td style="text-align: right;" data-label="Size">524</td>
 <td data-label="Name"><code>engine_debug_print_024df920</code></td>
@@ -2271,6 +2649,27 @@ They are helpers of that replacement, not separate functions of the executable.<
 <td data-label="Notes">Engine array reserve, 8-byte elements: allocates capacity*8 (align 8) from the allocator at +0x20, copies the elements (skipped while the buffer is null), frees the old buffer, sets the three pointers</td>
 </tr>
 <tr>
+<td data-label="Address"><code>0x02500e20</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_02500e20</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02537970</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_02537970</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x025379d0</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_025379d0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x0254d640</code></td>
 <td style="text-align: right;" data-label="Size">218</td>
 <td data-label="Name"><code>engine_array64_push_back_0254d640</code></td>
@@ -2290,6 +2689,13 @@ They are helpers of that replacement, not separate functions of the executable.<
 <td data-label="Name"><code>engine_array64_reserve_02559480</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">Engine array reserve, 8-byte elements: allocates capacity*8 (align 8) from the allocator at +0x20, copies the elements (skipped while the buffer is null), frees the old buffer, sets the three pointers</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0255af40</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_0255af40</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x025c4550</code></td>
@@ -2320,6 +2726,20 @@ They are helpers of that replacement, not separate functions of the executable.<
 <td data-label="Notes">Engine array reserve, 8-byte elements: allocates capacity*8 (align 8) from the allocator at +0x20, copies the elements (skipped while the buffer is null), frees the old buffer, sets the three pointers</td>
 </tr>
 <tr>
+<td data-label="Address"><code>0x02622d30</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_02622d30</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0265c090</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_0265c090</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x0265c0f0</code></td>
 <td style="text-align: right;" data-label="Size">218</td>
 <td data-label="Name"><code>engine_array64_push_back_0265c0f0</code></td>
@@ -2339,6 +2759,13 @@ They are helpers of that replacement, not separate functions of the executable.<
 <td data-label="Name"><code>engine_array64_push_back_0265c860</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--verified"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></span></td>
 <td data-label="Notes">Engine array push_back, 8-byte elements: inside check first; full grows to 1.5x count via 0x0265e210, inside item re-read at its index; stores unless no buffer; end += 8</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0265d100</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_0265d100</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x0265e210</code></td>
@@ -2390,6 +2817,13 @@ They are helpers of that replacement, not separate functions of the executable.<
 <td data-label="Notes">Engine array reserve, 8-byte elements: allocates capacity*8 (align 8) from the allocator at +0x20, copies the elements (skipped while the buffer is null), frees the old buffer, sets the three pointers</td>
 </tr>
 <tr>
+<td data-label="Address"><code>0x0268d060</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_0268d060</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x026bc560</code></td>
 <td style="text-align: right;" data-label="Size">218</td>
 <td data-label="Name"><code>engine_array64_push_back_026bc560</code></td>
@@ -2416,6 +2850,13 @@ They are helpers of that replacement, not separate functions of the executable.<
 <td data-label="Name"><code>engine_array64_reserve_026c08c0</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">Engine array reserve, 8-byte elements: allocates capacity*8 (align 8) from the allocator at +0x20, copies the elements (skipped while the buffer is null), frees the old buffer, sets the three pointers</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x026f4500</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_026f4500</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x026f47c0</code></td>
@@ -2472,6 +2913,34 @@ They are helpers of that replacement, not separate functions of the executable.<
 <td data-label="Name"><code>engine_array64_reserve_027077a0</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">Engine array reserve, 8-byte elements: allocates capacity*8 (align 8) from the allocator at +0x20, copies the elements (skipped while the buffer is null), frees the old buffer, sets the three pointers</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0277bd00</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_0277bd00</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0277bd60</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_0277bd60</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0277c950</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_0277c950</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0277d500</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_0277d500</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x027ec640</code></td>
@@ -2614,6 +3083,34 @@ They are helpers of that replacement, not separate functions of the executable.<
 <td data-label="Notes">Engine array reserve, 8-byte elements: allocates capacity*8 (align 8) from the allocator at +0x20, copies the elements (skipped while the buffer is null), frees the old buffer, sets the three pointers</td>
 </tr>
 <tr>
+<td data-label="Address"><code>0x02a4f1b0</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_02a4f1b0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02a50620</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_02a50620</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02a50680</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_02a50680</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02a506e0</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_02a506e0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x02a6b1a0</code></td>
 <td style="text-align: right;" data-label="Size">231</td>
 <td data-label="Name"><code>engine_list_push_back_constructed_02a6b1a0</code></td>
@@ -2647,6 +3144,20 @@ They are helpers of that replacement, not separate functions of the executable.<
 <td data-label="Name"><code>engine_array64_reserve_02a6f3d0</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">Engine array reserve, 8-byte elements: allocates capacity*8 (align 8) from the allocator at +0x20, copies the elements (skipped while the buffer is null), frees the old buffer, sets the three pointers</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02a73900</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_02a73900</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02a74300</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_02a74300</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x02a76110</code></td>
@@ -2887,6 +3398,13 @@ They are helpers of that replacement, not separate functions of the executable.<
 <td data-label="Notes">Engine list push_back, value built by its copy constructor (0x010d5310): node (0x18) from the allocator (slot 0x58, align 8), linked as the other copies; at max size throws</td>
 </tr>
 <tr>
+<td data-label="Address"><code>0x02b30bf0</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_02b30bf0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x02b30c50</code></td>
 <td style="text-align: right;" data-label="Size">251</td>
 <td data-label="Name"><code>engine_array64_reserve_02b30c50</code></td>
@@ -3090,6 +3608,13 @@ They are helpers of that replacement, not separate functions of the executable.<
 <td data-label="Notes">Engine array push_back, 8-byte elements: inside check first; full grows to 1.5x count via 0x02bbb730, inside item re-read at its index; stores unless no buffer; end += 8</td>
 </tr>
 <tr>
+<td data-label="Address"><code>0x02bbb6c0</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_02bbb6c0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x02bbb730</code></td>
 <td style="text-align: right;" data-label="Size">251</td>
 <td data-label="Name"><code>engine_array64_reserve_02bbb730</code></td>
@@ -3200,6 +3725,13 @@ They are helpers of that replacement, not separate functions of the executable.<
 <td data-label="Name"><code>engine_array64_reserve_02bc73d0</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">Engine array reserve, 8-byte elements: allocates capacity*8 (align 8) from the allocator at +0x20, copies the elements (skipped while the buffer is null), frees the old buffer, sets the three pointers</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02bc9ea0</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_02bc9ea0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x02bca980</code></td>
@@ -3326,6 +3858,27 @@ They are helpers of that replacement, not separate functions of the executable.<
 <td data-label="Name"><code>engine_array64_reserve_02be1af0</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">Engine array reserve, 8-byte elements: allocates capacity*8 (align 8) from the allocator at +0x20, copies the elements (skipped while the buffer is null), frees the old buffer, sets the three pointers</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02be6b80</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_02be6b80</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02beec40</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_02beec40</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02bef8f0</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_02bef8f0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x02bf2ee0</code></td>
@@ -3503,6 +4056,20 @@ They are helpers of that replacement, not separate functions of the executable.<
 <td data-label="Notes">Engine array push_back, 4-byte elements: inside check first; full grows to 1.5x count via 0x02c26a50, inside item re-read at its index; stores unless no buffer; end += 4</td>
 </tr>
 <tr>
+<td data-label="Address"><code>0x02c26b50</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_02c26b50</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02c27500</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_02c27500</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x02c2abc0</code></td>
 <td style="text-align: right;" data-label="Size">217</td>
 <td data-label="Name"><code>engine_array32_push_back_02c2abc0</code></td>
@@ -3620,6 +4187,13 @@ They are helpers of that replacement, not separate functions of the executable.<
 <td data-label="Name"><code>engine_array64_reserve_02d2a2f0</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">Engine array reserve, 8-byte elements: allocates capacity*8 (align 8) from the allocator at +0x20, copies the elements (skipped while the buffer is null), frees the old buffer, sets the three pointers</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02d2c540</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_02d2c540</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x02d2ccf0</code></td>
@@ -3769,6 +4343,20 @@ They are helpers of that replacement, not separate functions of the executable.<
 <td data-label="Notes">Engine array reserve, 8-byte elements: allocates capacity*8 (align 8) from the allocator at +0x20, copies the elements (skipped while the buffer is null), frees the old buffer, sets the three pointers</td>
 </tr>
 <tr>
+<td data-label="Address"><code>0x02d65fa0</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_02d65fa0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02d67d90</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_02d67d90</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x02d68440</code></td>
 <td style="text-align: right;" data-label="Size">218</td>
 <td data-label="Name"><code>engine_array64_push_back_02d68440</code></td>
@@ -3881,6 +4469,55 @@ They are helpers of that replacement, not separate functions of the executable.<
 <td data-label="Notes">Engine array push_back, 4-byte elements: inside check first; full grows to 1.5x count via 0x02d75ce0, inside item re-read at its index; stores unless no buffer; end += 4</td>
 </tr>
 <tr>
+<td data-label="Address"><code>0x02d75dc0</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_02d75dc0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02d78fc0</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_02d78fc0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02d79a20</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_02d79a20</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02d7a4f0</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_02d7a4f0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02d83c30</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_02d83c30</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02d84600</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_02d84600</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02d852f0</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_02d852f0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x02d92bb0</code></td>
 <td style="text-align: right;" data-label="Size">218</td>
 <td data-label="Name"><code>engine_array64_push_back_02d92bb0</code></td>
@@ -3895,11 +4532,25 @@ They are helpers of that replacement, not separate functions of the executable.<
 <td data-label="Notes">Engine array reserve, 8-byte elements: allocates capacity*8 (align 8) from the allocator at +0x20, copies the elements (skipped while the buffer is null), frees the old buffer, sets the three pointers</td>
 </tr>
 <tr>
+<td data-label="Address"><code>0x02da03d0</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_02da03d0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x02da1630</code></td>
 <td style="text-align: right;" data-label="Size">231</td>
 <td data-label="Name"><code>engine_list_push_back_constructed_02da1630</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">Engine list push_back, value built by its copy constructor (0x02d9fcf0): node (0x80) from the allocator (slot 0x58, align 8), linked as the other copies; at max size throws</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02daa780</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_02daa780</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x02dab230</code></td>
@@ -3958,6 +4609,27 @@ They are helpers of that replacement, not separate functions of the executable.<
 <td data-label="Notes">Engine array reserve, 8-byte elements: allocates capacity*8 (align 8) from the allocator at +0x20, copies the elements (skipped while the buffer is null), frees the old buffer, sets the three pointers</td>
 </tr>
 <tr>
+<td data-label="Address"><code>0x02db1dc0</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_02db1dc0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02db1e20</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_02db1e20</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02db4240</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_02db4240</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x02db5020</code></td>
 <td style="text-align: right;" data-label="Size">218</td>
 <td data-label="Name"><code>engine_array64_push_back_02db5020</code></td>
@@ -4007,6 +4679,20 @@ They are helpers of that replacement, not separate functions of the executable.<
 <td data-label="Notes">Engine array reserve, 8-byte elements: allocates capacity*8 (align 8) from the allocator at +0x20, copies the elements (skipped while the buffer is null), frees the old buffer, sets the three pointers</td>
 </tr>
 <tr>
+<td data-label="Address"><code>0x02dbb9b0</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_02dbb9b0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02dbd250</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_02dbd250</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x02dc1f10</code></td>
 <td style="text-align: right;" data-label="Size">218</td>
 <td data-label="Name"><code>engine_array64_push_back_02dc1f10</code></td>
@@ -4040,6 +4726,13 @@ They are helpers of that replacement, not separate functions of the executable.<
 <td data-label="Name"><code>engine_array64_reserve_02dce2f0</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">Engine array reserve, 8-byte elements: allocates capacity*8 (align 8) from the allocator at +0x20, copies the elements (skipped while the buffer is null), frees the old buffer, sets the three pointers</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02dcf0b0</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_02dcf0b0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x02dcf190</code></td>
@@ -4161,6 +4854,13 @@ They are helpers of that replacement, not separate functions of the executable.<
 <td data-label="Notes">Engine array reserve, 8-byte elements: allocates capacity*8 (align 8) from the allocator at +0x20, copies the elements (skipped while the buffer is null), frees the old buffer, sets the three pointers</td>
 </tr>
 <tr>
+<td data-label="Address"><code>0x02dd88f0</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_02dd88f0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x02dd9440</code></td>
 <td style="text-align: right;" data-label="Size">218</td>
 <td data-label="Name"><code>engine_array64_push_back_02dd9440</code></td>
@@ -4222,6 +4922,13 @@ They are helpers of that replacement, not separate functions of the executable.<
 <td data-label="Name"><code>engine_array64_push_back_02ddd710</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">Engine array push_back, 8-byte elements: inside check first; full grows to 1.5x count via 0x02dddf20, inside item re-read at its index; stores unless no buffer; end += 8</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02ddef00</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_02ddef00</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x02ddef60</code></td>
@@ -4299,6 +5006,13 @@ They are helpers of that replacement, not separate functions of the executable.<
 <td data-label="Name"><code>engine_array64_reserve_02de55c0</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">Engine array reserve, 8-byte elements: allocates capacity*8 (align 8) from the allocator at +0x20, copies the elements (skipped while the buffer is null), frees the old buffer, sets the three pointers</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02e5f850</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_02e5f850</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x02e60b70</code></td>
@@ -4434,6 +5148,13 @@ They are helpers of that replacement, not separate functions of the executable.<
 <td data-label="Notes">Engine array reserve, 8-byte elements: allocates capacity*8 (align 8) from the allocator at +0x20, copies the elements (skipped while the buffer is null), frees the old buffer, sets the three pointers</td>
 </tr>
 <tr>
+<td data-label="Address"><code>0x02f0ab00</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_02f0ab00</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x02f6e0e0</code></td>
 <td style="text-align: right;" data-label="Size">218</td>
 <td data-label="Name"><code>engine_array64_push_back_02f6e0e0</code></td>
@@ -4446,6 +5167,13 @@ They are helpers of that replacement, not separate functions of the executable.<
 <td data-label="Name"><code>engine_array64_reserve_02f6e1c0</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">Engine array reserve, 8-byte elements: allocates capacity*8 (align 8) from the allocator at +0x20, copies the elements (skipped while the buffer is null), frees the old buffer, sets the three pointers</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x02f81de0</code></td>
+<td style="text-align: right;" data-label="Size">81</td>
+<td data-label="Name"><code>engine_tree_free_subtree_02f81de0</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Tree subtree release (MSVC std::_Tree::_Erase), same code as 0x02b3bda0: frees the subtree's nodes through the tree's allocator; right subtree by calling itself, then the node, then its left child</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x02f8eda0</code></td>

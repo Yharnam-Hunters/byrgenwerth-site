@@ -398,7 +398,7 @@
       <span class="wk-stat-track" role="img" aria-label="0.1658 percent of target code bytes verified">
         <span class="wk-stat-fill" style="width:0.1658%"></span>
       </span>
-      <span class="wk-progress-foot">0.1658% of code bytes verified · 1,257 replaced</span>
+      <span class="wk-progress-foot">0.1658% of code bytes verified · 1,368 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -438,6 +438,24 @@
       
       <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 6, 2026 21:52:44 UTC">November 6, 2026</span></p>
       
+      
+      
+      <aside class="wk-freshness" role="note">
+        <p><b>Not yet updated for 3 merged changes.</b>
+        This page was last checked against Paleblood
+        <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/cf669283bed4b9a9f36e72ef1ebe28bf037d1a6f"><code>cf66928</code></a>;
+        these pull requests changed what it describes since:</p>
+        <ul>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1132">#1132</a> audio: replace FMOD output thread stop callback</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1101">#1101</a> audio: replace the FMOD output-label callback</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1148">#1148</a> audio: reconstruct FMOD Thread stop helper</li>
+          
+          
+        </ul>
+      </aside>
       
       <h1 id="audio">Audio</h1>
 <p class="wk-lede">The audio system covers sound playback, mixing and music. The game uses the FMOD sound engine; the first of its functions are mapped.</p>
@@ -514,6 +532,13 @@ review approved it. They are <abbr title="A replaced function that matches the o
 </thead>
 <tbody>
 <tr>
+<td data-label="Address"><code>0x011185a0</code></td>
+<td style="text-align: right;" data-label="Size">269</td>
+<td data-label="Name"><code>audio_fmod_stop_thread</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">FMOD Thread stop; signal and wait on semaphores then delete them; notify and release optional storage; return the semaphore helper DWORD status</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x0111a8c0</code></td>
 <td style="text-align: right;" data-label="Size">290</td>
 <td data-label="Name"><code>audio_fmod_thread_affinity_lookup</code></td>
@@ -528,11 +553,25 @@ review approved it. They are <abbr title="A replaced function that matches the o
 <td data-label="Notes">FMOD <abbr title="The PS4's operating system, derived from FreeBSD.">Orbis</abbr> AudioOut descriptor callback installed by 0x0111aed0; optional output receives one driver; return zero</td>
 </tr>
 <tr>
+<td data-label="Address"><code>0x0111b070</code></td>
+<td style="text-align: right;" data-label="Size">58</td>
+<td data-label="Name"><code>audio_fmod_copy_output_label</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">Copy the fixed output label for a positive signed DWORD count; set the final NUL after the counted copy; return zero</td>
+</tr>
+<tr>
 <td data-label="Address"><code>0x0111b0b0</code></td>
 <td style="text-align: right;" data-label="Size">37</td>
 <td data-label="Name"><code>audio_fmod_output_defaults</code></td>
 <td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
 <td data-label="Notes">FMOD output descriptor callback writes 132 then 48000 then 6 to optional outputs; sample-rate and speaker-mode meanings remain hypotheses</td>
+</tr>
+<tr>
+<td data-label="Address"><code>0x0111b1f0</code></td>
+<td style="text-align: right;" data-label="Size">64</td>
+<td data-label="Name"><code>audio_fmod_stop_output_threads</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">FMOD output descriptor callback; stop AudioOut first and mixer only after success; return the Thread helper DWORD status</td>
 </tr>
 <tr>
 <td data-label="Address"><code>0x011c4810</code></td>

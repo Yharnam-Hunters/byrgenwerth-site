@@ -398,7 +398,7 @@
       <span class="wk-stat-track" role="img" aria-label="0.1658 percent of target code bytes verified">
         <span class="wk-stat-fill" style="width:0.1658%"></span>
       </span>
-      <span class="wk-progress-foot">0.1658% of code bytes verified · 1,257 replaced</span>
+      <span class="wk-progress-foot">0.1658% of code bytes verified · 1,368 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -438,6 +438,28 @@
       
       <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 13, 2026 14:54:55 UTC">November 13, 2026</span></p>
       
+      
+      
+      <aside class="wk-freshness" role="note">
+        <p><b>Not yet updated for 5 merged changes.</b>
+        This page was last checked against Paleblood
+        <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/cf669283bed4b9a9f36e72ef1ebe28bf037d1a6f"><code>cf66928</code></a>;
+        these pull requests changed what it describes since:</p>
+        <ul>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1127">#1127</a> leaf: tagging constructors, reads through a pointer and small records as families (163 copies)</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1121">#1121</a> leaf: a sixteen-byte key match and two list walks as families (75 copies)</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1115">#1115</a> leaf: five small fixed-layout families (117 copies)</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1106">#1106</a> leaf: record initializers as a family (528 copies)</li>
+          
+          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1108">#1108</a> leaf: far field getters and setters as families ({d32}, 767 copies)</li>
+          
+          
+        </ul>
+      </aside>
       
       <h1 id="function-families">Function families</h1>
 <p class="wk-lede">Tens of thousands of the game's functions are tiny copies of the same few bytes. A family replaces each such shape once, with one readable body, and proves it on every copy. Families move the function count far more than the byte count, so this page always shows both.</p>
@@ -530,12 +552,44 @@ member addresses (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/703
 <td style="text-align: right;">4,480</td>
 </tr>
 <tr>
+<td><code>zeroes_record_and_stores_first_argument</code></td>
+<td><code>48 c7 46 70 00 00 00 00 48 c7 46 68 00 00 00 00 48 c7 46 60 00 00 00 00 48 c7 46 58 00 00 00 00 48 c7 46 50 00 00 00 00 48 c7 46 48 00 00 00 00 48 c7 46 40 00 00 00 00 48 c7 46 38 00 00 00 00 48 c7 46 30 00 00 00 00 48 c7 46 28 00 00 00 00 48 c7 46 20 00 00 00 00 48 c7 46 18 00 00 00 00 48 c7 46 10 00 00 00 00 48 c7 46 08 00 00 00 00 48 c7 06 00 00 00 00 48 89 7e 78 31 c0 c3</code></td>
+<td style="text-align: right;">528</td>
+<td style="text-align: right;">66,528</td>
+<td style="text-align: right;">528</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
 <td><code>returns_constant</code></td>
 <td><code>b8 {u32} c3</code></td>
 <td style="text-align: right;">2,537</td>
 <td style="text-align: right;">15,222</td>
 <td style="text-align: right;">2,537</td>
 <td style="text-align: right;">2,537</td>
+</tr>
+<tr>
+<td><code>matches_sixteen_byte_key</code></td>
+<td><code>31 c0 83 fa 10 75 25 48 8b 06 48 8b 4e 08 48 8b 77 18 48 3b 4f 20 0f 94 c1 48 85 c0 0f 94 c2 08 ca 48 39 f0 0f 94 c0 20 d0 0f b6 c0 c3</code></td>
+<td style="text-align: right;">43</td>
+<td style="text-align: right;">1,935</td>
+<td style="text-align: right;">43</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td><code>counts_list_nodes</code></td>
+<td><code>48 8b 4f 30 31 c0 48 85 c9 74 10 31 c0 0f 1f 00 ff c0 48 8b 49 10 48 85 c9 75 f5 c3</code></td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">448</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td><code>reads_nth_list_node_dword</code></td>
+<td><code>48 8b 4f 30 31 c0 48 85 c9 74 12 ff c6 0f 1f 00 ff ce 74 0a 48 8b 49 10 48 85 c9 75 f3 c3 8b 41 18 c3</code></td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">544</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">0</td>
 </tr>
 <tr>
 <td><code>reads_qword_field</code></td>
@@ -546,12 +600,28 @@ member addresses (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/703
 <td style="text-align: right;">3,337</td>
 </tr>
 <tr>
+<td><code>reads_far_qword_field</code></td>
+<td><code>48 8b 87 {d32} c3</code></td>
+<td style="text-align: right;">224</td>
+<td style="text-align: right;">1,792</td>
+<td style="text-align: right;">224</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
 <td><code>reads_dword_field</code></td>
 <td><code>8b 47 {d8} c3</code></td>
 <td style="text-align: right;">575</td>
 <td style="text-align: right;">2,300</td>
 <td style="text-align: right;">575</td>
 <td style="text-align: right;">575</td>
+</tr>
+<tr>
+<td><code>reads_far_dword_field</code></td>
+<td><code>8b 87 {d32} c3</code></td>
+<td style="text-align: right;">151</td>
+<td style="text-align: right;">1,057</td>
+<td style="text-align: right;">151</td>
+<td style="text-align: right;">0</td>
 </tr>
 <tr>
 <td><code>reads_word_field</code></td>
@@ -562,6 +632,14 @@ member addresses (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/703
 <td style="text-align: right;">60</td>
 </tr>
 <tr>
+<td><code>reads_far_word_field</code></td>
+<td><code>0f b7 87 {d32} c3</code></td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
 <td><code>reads_byte_field</code></td>
 <td><code>0f b6 47 {d8} c3</code></td>
 <td style="text-align: right;">22</td>
@@ -570,12 +648,28 @@ member addresses (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/703
 <td style="text-align: right;">22</td>
 </tr>
 <tr>
+<td><code>reads_far_byte_field</code></td>
+<td><code>0f b6 87 {d32} c3</code></td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">32</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
 <td><code>field_address</code></td>
 <td><code>48 8d 47 {d8} c3</code></td>
 <td style="text-align: right;">1,240</td>
 <td style="text-align: right;">6,200</td>
 <td style="text-align: right;">1,240</td>
 <td style="text-align: right;">1,240</td>
+</tr>
+<tr>
+<td><code>far_field_address</code></td>
+<td><code>48 8d 87 {d32} c3</code></td>
+<td style="text-align: right;">184</td>
+<td style="text-align: right;">1,472</td>
+<td style="text-align: right;">184</td>
+<td style="text-align: right;">0</td>
 </tr>
 <tr>
 <td><code>reads_first_qword</code></td>
@@ -602,12 +696,28 @@ member addresses (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/703
 <td style="text-align: right;">109</td>
 </tr>
 <tr>
+<td><code>writes_far_qword_field</code></td>
+<td><code>48 89 b7 {d32} c3</code></td>
+<td style="text-align: right;">76</td>
+<td style="text-align: right;">608</td>
+<td style="text-align: right;">76</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
 <td><code>writes_dword_field</code></td>
 <td><code>89 77 {d8} c3</code></td>
 <td style="text-align: right;">153</td>
 <td style="text-align: right;">612</td>
 <td style="text-align: right;">153</td>
 <td style="text-align: right;">153</td>
+</tr>
+<tr>
+<td><code>writes_far_dword_field</code></td>
+<td><code>89 b7 {d32} c3</code></td>
+<td style="text-align: right;">61</td>
+<td style="text-align: right;">427</td>
+<td style="text-align: right;">61</td>
+<td style="text-align: right;">0</td>
 </tr>
 <tr>
 <td><code>writes_word_field</code></td>
@@ -618,12 +728,28 @@ member addresses (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/703
 <td style="text-align: right;">10</td>
 </tr>
 <tr>
+<td><code>writes_far_word_field</code></td>
+<td><code>66 89 b7 {d32} c3</code></td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">40</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
 <td><code>writes_byte_field</code></td>
 <td><code>40 88 77 {d8} c3</code></td>
 <td style="text-align: right;">61</td>
 <td style="text-align: right;">305</td>
 <td style="text-align: right;">61</td>
 <td style="text-align: right;">61</td>
+</tr>
+<tr>
+<td><code>writes_far_byte_field</code></td>
+<td><code>40 88 b7 {d32} c3</code></td>
+<td style="text-align: right;">59</td>
+<td style="text-align: right;">472</td>
+<td style="text-align: right;">59</td>
+<td style="text-align: right;">0</td>
 </tr>
 <tr>
 <td><code>writes_first_qword</code></td>
@@ -650,12 +776,140 @@ member addresses (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/703
 <td style="text-align: right;">169</td>
 </tr>
 <tr>
+<td><code>stores_constant_in_first_dword_returning_object</code></td>
+<td><code>c7 07 {u32} 48 89 f8 c3</code></td>
+<td style="text-align: right;">40</td>
+<td style="text-align: right;">400</td>
+<td style="text-align: right;">40</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td><code>reads_dword_through_pointer_at_8</code></td>
+<td><code>48 8b 47 08 8b 40 {d8} c3</code></td>
+<td style="text-align: right;">17</td>
+<td style="text-align: right;">136</td>
+<td style="text-align: right;">17</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td><code>reads_qword_through_pointer_at_8</code></td>
+<td><code>48 8b 47 08 48 8b 40 {d8} c3</code></td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">108</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td><code>address_through_pointer_at_8</code></td>
+<td><code>48 8b 47 08 48 83 c0 {d8} c3</code></td>
+<td style="text-align: right;">18</td>
+<td style="text-align: right;">162</td>
+<td style="text-align: right;">18</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td><code>returns_all_bits</code></td>
+<td><code>48 c7 c0 ff ff ff ff c3</code></td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">72</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td><code>resets_first_qword_returning_object</code></td>
+<td><code>48 c7 07 00 00 00 00 48 89 f8 c3</code></td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">88</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td><code>adjusts_pointer_at_8_unless_null</code></td>
+<td><code>48 8b 4f 08 31 c0 48 85 c9 74 0a 48 81 c1 d0 00 00 00 48 89 c8 c3</code></td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">330</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td><code>reads_wide_string_text_at_0x30</code></td>
+<td><code>48 8b 47 30 48 83 78 20 08 48 8d 40 08 72 03 48 8b 00 c3</code></td>
+<td style="text-align: right;">18</td>
+<td style="text-align: right;">342</td>
+<td style="text-align: right;">18</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td><code>writes_top_four_bits_of_first_dword</code></td>
+<td><code>b8 ff ff ff 0f 23 07 c1 e6 1c 09 c6 89 37 c3</code></td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">180</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td><code>writes_low_ten_bits_of_first_dword</code></td>
+<td><code>b8 00 fc ff ff 23 07 81 e6 ff 03 00 00 09 c6 89 37 c3</code></td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">126</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td><code>packs_first_dword_from_two_bit_fields</code></td>
+<td><code>81 e6 ff 03 00 00 c1 e2 1c 09 f2 89 17 c3</code></td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">98</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
 <td><code>returns_second_argument</code></td>
 <td><code>48 89 f0 c3</code></td>
 <td style="text-align: right;">56</td>
 <td style="text-align: right;">224</td>
 <td style="text-align: right;">56</td>
 <td style="text-align: right;">56</td>
+</tr>
+<tr>
+<td><code>atomically_increments_dword_at_8</code></td>
+<td><code>b8 01 00 00 00 f0 0f c1 47 08 c3</code></td>
+<td style="text-align: right;">31</td>
+<td style="text-align: right;">341</td>
+<td style="text-align: right;">31</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td><code>reads_pointer_without_low_bit</code></td>
+<td><code>48 8b 47 {d8} 48 83 e0 fe c3</code></td>
+<td style="text-align: right;">41</td>
+<td style="text-align: right;">369</td>
+<td style="text-align: right;">41</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td><code>clears_first_two_qwords</code></td>
+<td><code>48 c7 47 08 00 00 00 00 48 c7 07 00 00 00 00 c3</code></td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">208</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td><code>clears_first_four_qwords</code></td>
+<td><code>48 c7 47 18 00 00 00 00 48 c7 47 10 00 00 00 00 48 c7 47 08 00 00 00 00 48 c7 07 00 00 00 00 c3</code></td>
+<td style="text-align: right;">18</td>
+<td style="text-align: right;">576</td>
+<td style="text-align: right;">18</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td><code>clears_two_qwords_and_a_dword</code></td>
+<td><code>c7 47 10 00 00 00 00 48 c7 47 08 00 00 00 00 48 c7 07 00 00 00 00 c3</code></td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">322</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">0</td>
 </tr>
 <tr>
 <td><code>returns_float_zero</code></td>
@@ -677,19 +931,19 @@ member addresses (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/703
 <tbody>
 <tr>
 <td>Families</td>
-<td style="text-align: right;">19</td>
+<td style="text-align: right;">48</td>
 </tr>
 <tr>
 <td>Members, by count</td>
-<td style="text-align: right;">18,019 (11.42%) of 157,757 functions</td>
+<td style="text-align: right;">19,669 (12.47%) of 157,757 functions</td>
 </tr>
 <tr>
 <td>Members, by bytes</td>
-<td style="text-align: right;">62,426 (0.15%) of 42,487,404 bytes</td>
+<td style="text-align: right;">141,663 (0.33%) of 42,487,404 bytes</td>
 </tr>
 <tr>
 <td>Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> members</td>
-<td style="text-align: right;">18,019</td>
+<td style="text-align: right;">19,669</td>
 </tr>
 </tbody>
 </table></div>

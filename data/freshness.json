@@ -6,6 +6,11 @@
  "CONTRIBUTING.md": {
   "behind": [
    {
+    "commit": "5b1778d07322",
+    "pr": 881,
+    "title": "docs: regenerate progress"
+   },
+   {
     "commit": "658a5fb8a17d",
     "pr": 1083,
     "title": "session report: show quarantined cases instead of refusing them"
@@ -54,7 +59,33 @@
   "reviewed": "628534595723b2f61cea786f6c088f8e68139aa0"
  },
  "families.md": {
-  "behind": [],
+  "behind": [
+   {
+    "commit": "fd325b9007a6",
+    "pr": 1127,
+    "title": "leaf: tagging constructors, reads through a pointer and small records as families (163 copies)"
+   },
+   {
+    "commit": "e5663a069d6d",
+    "pr": 1121,
+    "title": "leaf: a sixteen-byte key match and two list walks as families (75 copies)"
+   },
+   {
+    "commit": "ff9685af581f",
+    "pr": 1115,
+    "title": "leaf: five small fixed-layout families (117 copies)"
+   },
+   {
+    "commit": "ba6783caee0a",
+    "pr": 1106,
+    "title": "leaf: record initializers as a family (528 copies)"
+   },
+   {
+    "commit": "705ae70ed8bf",
+    "pr": 1108,
+    "title": "leaf: far field getters and setters as families ({d32}, 767 copies)"
+   }
+  ],
   "reviewed": "cf669283bed4b9a9f36e72ef1ebe28bf037d1a6f"
  },
  "how-the-frame-limiter-works.md": {
@@ -164,6 +195,21 @@
  },
  "runtime.md": {
   "behind": [
+   {
+    "commit": "d0274206c1ec",
+    "pr": 591,
+    "title": "runtime: execute observation hooks on Darwin x86-64"
+   },
+   {
+    "commit": "c573c87190d6",
+    "pr": 588,
+    "title": "runtime: boot owned guest images on Darwin x86-64"
+   },
+   {
+    "commit": "7aaa43a35c9c",
+    "pr": 1146,
+    "title": "runtime: refuse unsupported fixed-counter interception"
+   },
    {
     "commit": "46c6630ab031",
     "pr": 617,
@@ -463,7 +509,23 @@
   "reviewed": "cf669283bed4b9a9f36e72ef1ebe28bf037d1a6f"
  },
  "systems/audio.md": {
-  "behind": [],
+  "behind": [
+   {
+    "commit": "5e9120f3b8b9",
+    "pr": 1132,
+    "title": "audio: replace FMOD output thread stop callback"
+   },
+   {
+    "commit": "c72410946ead",
+    "pr": 1101,
+    "title": "audio: replace the FMOD output-label callback"
+   },
+   {
+    "commit": "632cb400906c",
+    "pr": 1148,
+    "title": "audio: reconstruct FMOD Thread stop helper"
+   }
+  ],
   "reviewed": "cf669283bed4b9a9f36e72ef1ebe28bf037d1a6f"
  },
  "systems/camera.md": {
@@ -508,6 +570,11 @@
  },
  "systems/engine.md": {
   "behind": [
+   {
+    "commit": "42f298bff028",
+    "pr": 1107,
+    "title": "engine: replace the 104 other copies of the tree subtree release"
+   },
    {
     "commit": "8b8722d9ca0b",
     "pr": 1109,
@@ -937,6 +1004,26 @@
  },
  "systems/render.md": {
   "behind": [
+   {
+    "commit": "c3e9d7fc204d",
+    "pr": 1130,
+    "title": "render: reconstruct YEBIS context factory"
+   },
+   {
+    "commit": "ec9efee52e58",
+    "pr": 560,
+    "title": "render: emit opaque auto draw packets"
+   },
+   {
+    "commit": "21b7bf345d95",
+    "pr": 1134,
+    "title": "render: reconstruct YEBIS interface initializer"
+   },
+   {
+    "commit": "94cb626e462d",
+    "pr": 1097,
+    "title": "render: emit register-space wait packets"
+   },
    {
     "commit": "60045833f88e",
     "pr": 1088,
