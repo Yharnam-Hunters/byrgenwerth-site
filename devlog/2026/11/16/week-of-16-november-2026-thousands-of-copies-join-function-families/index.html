@@ -421,6 +421,8 @@
           
           <li><a href="#decompilation-and-verified-functions" class="wk-toc-link">Decompilation and verified functions</a></li>
           
+          <li><a href="#tooling-and-automation" class="wk-toc-link">Tooling and automation</a></li>
+          
           <li><a href="#documentation-and-website-changes" class="wk-toc-link">Documentation and website changes</a></li>
           
           <li><a href="#blockers-and-next-steps" class="wk-toc-link">Blockers and next steps</a></li>
@@ -448,16 +450,195 @@
 <!-- more -->
 
 <section class="wk-devlog-section" data-section="runtime"><h2 id="runtime-and-boot-progress">Runtime and boot progress</h2>
-<article class="wk-milestone" data-key="w47-runtime"><p><strong>So far this week: no new reach; the clinic's first encounter is still the furthest point (local runs).</strong> <em>Does not advance game execution yet.</em> In local runs from a save at the clinic's start with a scripted controller, the game still runs the clinic's first encounter through to the Hunter's Dream with no stop, at about 11 frames a second against the game's 30 (<a href="../../09/week-of-9-november-2026-through-character-creation-and-the-clinic-to-the-first-beast-and-the-hunters-dream/">last week</a>; <a href="../../../../../runtime/#how-far-a-boot-gets">Runtime</a>). The saved record on merged <code>main</code> (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1082">#1082</a>) is unchanged: first flip, 686 of 686 imports bound. The work this week is the clinic's speed and the rare compute stop early in the clinic walk; nothing of it has merged yet.</p></article></section>
+<article class="wk-milestone" data-key="w47-runtime"><p><strong>So far this week: no new reach; the clinic's first encounter is still the furthest point (local runs).</strong> <em>Does not advance game execution yet.</em> In local runs from a save at the clinic's start with a scripted controller, the game still runs the clinic's first encounter through to the Hunter's Dream with no stop, at about 11 frames a second against the game's 30 (<a href="../../09/week-of-9-november-2026-through-character-creation-and-the-clinic-to-the-first-beast-and-the-hunters-dream/">last week</a>; <a href="../../../../../runtime/#how-far-a-boot-gets">Runtime</a>). The saved record on merged <code>main</code> (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1082">#1082</a>) is unchanged: first flip, 686 of 686 imports bound. The work this week is the clinic's speed and the rare compute stop early in the clinic walk; nothing of it has merged yet.</p></article>
+
+<article class="wk-milestone" data-key="pr-855"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/855">#855</a> metal: retain depth-bounds register state</strong>, by <a href="https://github.com/evill33t">@evill33t</a>. Merged 2026-11-17.</p>
+<ul>
+<li>System calls: Retain independent raw depth-bounds words and refuse enabled bounds before draw effects.</li>
+<li>Tests: 5 synthetic <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> test(s); the effect on the real boot is measured after merge, so this is not a boot result.</li>
+<li>Left unresolved: Active depth-bounds testing remains explicitly unsupported; Exact inactive-value retention has source evidence only; no public readback; No new gameplay or physical-window qualification.</li>
+</ul></article></section>
 <section class="wk-devlog-section" data-section="decompilation"><h2 id="decompilation-and-verified-functions">Decompilation and <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> functions</h2>
 <article class="wk-milestone" data-key="w47-decompilation"><p><strong>So far this week: families of functions that differ only in their addresses.</strong> <em>Decompilation infrastructure; the function count moves much more than the bytes.</em></p>
 <ul>
 <li><a href="https://github.com/FFwLo">@FFwLo</a>'s relative-shape families (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1099">#1099</a>): copies of one function the compiler emitted for different classes, identical except for the addresses they call or read, now share one replacement that is told each copy's addresses. The first is the static wide string initializer (439 copies), and a run of pull requests on it followed: thread allocator, delegate and destructor families (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1138">#1138</a>, 879 copies), seventeen deleting destructor shapes (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1141">#1141</a>, 3,196 copies), a Scaleform destructor and its deleting twin (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1142">#1142</a>), four static vtable setters (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1144">#1144</a>, 1,131 copies), the remaining 8-byte array reallocations (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1145">#1145</a>), fixed slot table fillers (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1147">#1147</a>), the menu's named resource release (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1151">#1151</a>), small member-releasing destructors (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1152">#1152</a>), member-destroying destructors (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1156">#1156</a>, 227 copies) and twelve small relative families (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1155">#1155</a>). With constant field setters (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1112">#1112</a>), float, double and signed field accessors (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1113">#1113</a>) and string writers, toggles and resets (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1135">#1135</a>), the number of families in the merged function table more than tripled since 15 November (<a href="../../../../../families/">Function families</a>).</li>
 <li>Byte-exact matching records for 23 families (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1165">#1165</a>, 1,538 copies). The families added this week are <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> and <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr>, not yet <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>: the <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> count is unchanged at 285 hand-written functions and 18,019 family members (<a href="../../../../../progress/">Progress</a>).</li>
 <li><a href="https://github.com/evill33t">@evill33t</a> initialised FMOD's thread transport fields (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1161">#1161</a>), <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr>.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-1161"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1161">#1161</a> audio: initialize FMOD Thread transport fields</strong>, by <a href="https://github.com/evill33t">@evill33t</a>. Merged 2026-11-16.</p>
+<ul>
+<li>Named: <code>audio_fmod_initialize_thread</code> (<code>0x011183b0</code>).</li>
+<li>Replaced: <code>audio_fmod_initialize_thread</code> (<code>0x011183b0</code>).</li>
+<li>Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>: <code>audio_fmod_initialize_thread</code> (<code>0x011183b0</code>).</li>
+<li>Differential verification: 6 function(s), 504 of 504 cases passed.</li>
+<li>Capture sets used: 1.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-1188"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1188">#1188</a> loading: reconstruct tpfbnd resource constructor</strong>, by <a href="https://github.com/incident201">@incident201</a>. Merged 2026-11-17.</p>
+<ul>
+<li>Named: <code>loading_tpfbnd_resource_construct_0181fb10</code> (<code>0x0181fb10</code>).</li>
+<li>Replaced: <code>loading_tpfbnd_resource_construct_0181fb10</code> (<code>0x0181fb10</code>).</li>
+<li>Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>: <code>loading_tpfbnd_resource_construct_0181fb10</code> (<code>0x0181fb10</code>).</li>
+<li>Differential verification: 1 function(s), 7 of 7 cases passed.</li>
+<li>Capture sets used: 1.</li>
+<li>Findings: All eleven type-correct native controls and a separate relocation control compile and fail behaviorally under GCC and Clang, with clean original/replacement executions and restored-correct 7/7 results; Cross-reference wording now reports observed search results; final replacement source hash is 38f9be136672afff and verification and independent review records are current; Independent review confirmed the original behavior, replacement and matching source, including the RAX return and passing <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr>; The constructor forwards its arguments to the binder resource base and installs and returns the tpfbnd vtable address.</li>
+<li>Open questions: No direct caller or game-run recording has been observed for this function.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-1104"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1104">#1104</a> engine: carry the 7 remaining copies of the 8-byte array reserve (FFwLo #1096)</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-17.</p>
+<ul>
+<li>Named: <code>engine_array64_reserve_017db000</code> (<code>0x017db000</code>); <code>engine_array64_reserve_01922130</code> (<code>0x01922130</code>); <code>engine_array64_reserve_020b71c0</code> (<code>0x020b71c0</code>); <code>engine_array64_reserve_024bcdd0</code> (<code>0x024bcdd0</code>); <code>engine_array64_reserve_024c3160</code> (<code>0x024c3160</code>); <code>engine_array64_reserve_025c7e80</code> (<code>0x025c7e80</code>).</li>
+<li>Replaced: <code>engine_array64_reserve_017db000</code> (<code>0x017db000</code>); <code>engine_array64_reserve_01922130</code> (<code>0x01922130</code>); <code>engine_array64_reserve_020b71c0</code> (<code>0x020b71c0</code>); <code>engine_array64_reserve_024bcdd0</code> (<code>0x024bcdd0</code>); <code>engine_array64_reserve_024c3160</code> (<code>0x024c3160</code>); <code>engine_array64_reserve_025c7e80</code> (<code>0x025c7e80</code>).</li>
+<li>Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>: <code>engine_array64_reserve_017db000</code> (<code>0x017db000</code>); <code>engine_array64_reserve_01922130</code> (<code>0x01922130</code>); <code>engine_array64_reserve_020b71c0</code> (<code>0x020b71c0</code>); <code>engine_array64_reserve_024bcdd0</code> (<code>0x024bcdd0</code>); <code>engine_array64_reserve_024c3160</code> (<code>0x024c3160</code>); <code>engine_array64_reserve_025c7e80</code> (<code>0x025c7e80</code>).</li>
+<li>Differential verification: 7 function(s), 105 of 105 cases passed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-1191"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1191">#1191</a> verify 37 engine heap, allocator, thread and sync functions</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-17.</p>
+<ul>
+<li>Verified: <code>engine_scaleform_heap_reallocate_023392d0</code> (<code>0x023392d0</code>); <code>engine_scaleform_heap_bin_allocate_0233a7f0</code> (<code>0x0233a7f0</code>); <code>engine_scaleform_heap_bin_reallocate_0233b2f0</code> (<code>0x0233b2f0</code>); <code>engine_scaleform_heap_add_page_0233bbe0</code> (<code>0x0233bbe0</code>); <code>engine_scaleform_heap_add_page_locked_0233bd20</code> (<code>0x0233bd20</code>); <code>engine_scaleform_heap_allocate_0233c870</code> (<code>0x0233c870</code>).</li>
+<li>Differential verification: 37 function(s), 12413 of 12413 cases passed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-1192"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1192">#1192</a> ai: goal framework part 2: the AddTopGoal / AddSubGoal script bindings</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-17.</p>
+<ul>
+<li>Named: <code>ai_func_add_top_goal_0</code> (<code>0x01656fc0</code>); <code>ai_func_add_top_goal_1</code> (<code>0x01657040</code>); <code>ai_func_add_top_goal_2</code> (<code>0x016570c0</code>); <code>ai_func_add_top_goal_3</code> (<code>0x01657130</code>); <code>ai_func_add_top_goal_4</code> (<code>0x016571a0</code>); <code>ai_func_add_top_goal_5</code> (<code>0x01657210</code>).</li>
+<li>Replaced: <code>ai_func_add_top_goal_0</code> (<code>0x01656fc0</code>); <code>ai_func_add_top_goal_1</code> (<code>0x01657040</code>); <code>ai_func_add_top_goal_2</code> (<code>0x016570c0</code>); <code>ai_func_add_top_goal_3</code> (<code>0x01657130</code>); <code>ai_func_add_top_goal_4</code> (<code>0x016571a0</code>); <code>ai_func_add_top_goal_5</code> (<code>0x01657210</code>).</li>
+<li>Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>: <code>ai_func_add_top_goal_1</code> (<code>0x01657040</code>); <code>ai_func_add_top_goal_2</code> (<code>0x016570c0</code>); <code>ai_func_add_top_goal_3</code> (<code>0x01657130</code>); <code>ai_func_add_top_goal_4</code> (<code>0x016571a0</code>); <code>ai_func_add_top_goal_7</code> (<code>0x016572e0</code>); <code>ai_goal_func_add_sub_goal_0</code> (<code>0x0167ec30</code>).</li>
+<li>Verified: <code>ai_func_add_top_goal_0</code> (<code>0x01656fc0</code>); <code>ai_func_add_top_goal_5</code> (<code>0x01657210</code>); <code>ai_func_add_top_goal_6</code> (<code>0x01657280</code>); <code>ai_func_register_goal_no_update</code> (<code>0x0167b6b0</code>); <code>ai_func_register_goal_update_time</code> (<code>0x0167b710</code>); <code>ai_func_register_goal_no_interrupt</code> (<code>0x0167b790</code>).</li>
+<li>Differential verification: 33 function(s), 1413 of 1413 cases passed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-1194"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1194">#1194</a> ai: verify the hearing sound check</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-17.</p>
+<ul>
+<li>Verified: <code>ai_hearing_check_sound</code> (<code>0x0169cef0</code>).</li>
+<li>Differential verification: 2 function(s), 3147 of 3147 cases passed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-1193"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1193">#1193</a> verify 26 frame timing functions and 12 param lookups</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-17.</p>
+<ul>
+<li>Verified: <code>frame_timing_generator_buffer_size_00b68770</code> (<code>0x00b68770</code>); <code>frame_timing_sleep_ms</code> (<code>0x0111a880</code>); <code>frame_timing_task_entry_count_01389df0</code> (<code>0x01389df0</code>); <code>frame_timing_task_entry_at_01389e10</code> (<code>0x01389e10</code>); <code>frame_timing_item_update_013d4810</code> (<code>0x013d4810</code>); <code>frame_timing_listener_list_notify_013daac0</code> (<code>0x013daac0</code>).</li>
+<li>Differential verification: 38 function(s), 8918 of 8918 cases passed.</li>
+</ul></article></section>
+<section class="wk-devlog-section" data-section="tooling"><h2 id="tooling-and-automation">Tooling and automation</h2>
+<article class="wk-milestone" data-key="pr-1112"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1112">#1112</a> leaf: constant field setters as families (243 copies)</strong>, by <a href="https://github.com/FFwLo">@FFwLo</a>. Merged 2026-11-16.</p>
+<ul>
+<li>Differential verification: 10 function(s), 729 of 729 cases passed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-1113"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1113">#1113</a> leaf: float, double and signed field accessors as families (150 copies)</strong>, by <a href="https://github.com/FFwLo">@FFwLo</a>. Merged 2026-11-16.</p>
+<ul>
+<li>Differential verification: 5 function(s), 849 of 849 cases passed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-1165"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1165">#1165</a> symbols: byte-exact matching records for 23 families (1,538 copies)</strong>, by <a href="https://github.com/FFwLo">@FFwLo</a>. Merged 2026-11-16.</p>
+<ul>
+<li>No function status changed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-1135"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1135">#1135</a> leaf: string writers, toggles, resets, a tree erase and other virtual-calling records as families (276 copies)</strong>, by <a href="https://github.com/FFwLo">@FFwLo</a>. Merged 2026-11-16.</p>
+<ul>
+<li>Differential verification: 13 function(s), 1638 of 1638 cases passed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-1099"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1099">#1099</a> engine: relative-shape families, and the static wide string initializer copies as one (439)</strong>, by <a href="https://github.com/FFwLo">@FFwLo</a>. Merged 2026-11-16.</p>
+<ul>
+<li>Differential verification: 1 function(s), 13170 of 13170 cases passed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-1138"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1138">#1138</a> engine: thread allocator, delegate and destructor families (879 copies; based on #1099)</strong>, by <a href="https://github.com/FFwLo">@FFwLo</a>. Merged 2026-11-16.</p>
+<ul>
+<li>Differential verification: 9 function(s), 17060 of 17060 cases passed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-1141"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1141">#1141</a> engine: seventeen deleting destructor shapes as families (3,196 copies; based on #1099)</strong>, by <a href="https://github.com/FFwLo">@FFwLo</a>. Merged 2026-11-16.</p>
+<ul>
+<li>Differential verification: 18 function(s), 21602 of 21602 cases passed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-1142"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1142">#1142</a> engine: a scaleform destructor and its deleting twin as families (464 copies; based on #1099)</strong>, by <a href="https://github.com/FFwLo">@FFwLo</a>. Merged 2026-11-16.</p>
+<ul>
+<li>Differential verification: 3 function(s), 15490 of 15490 cases passed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-1144"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1144">#1144</a> engine: four static vtable setters as families (1,131 copies; based on #1099)</strong>, by <a href="https://github.com/FFwLo">@FFwLo</a>. Merged 2026-11-16.</p>
+<ul>
+<li>Differential verification: 5 function(s), 17694 of 17694 cases passed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-1145"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1145">#1145</a> engine: the remaining 8-byte array reallocation copies as a family (87 copies; based on #1099)</strong>, by <a href="https://github.com/FFwLo">@FFwLo</a>. Merged 2026-11-16.</p>
+<ul>
+<li>Differential verification: 2 function(s), 14475 of 14475 cases passed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-1147"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1147">#1147</a> engine: sixteen fixed slot table fillers as families (443 copies; based on #1099)</strong>, by <a href="https://github.com/FFwLo">@FFwLo</a>. Merged 2026-11-16.</p>
+<ul>
+<li>Differential verification: 17 function(s), 14056 of 14056 cases passed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-1151"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1151">#1151</a> menu: the named resource release as two families (82 copies; based on #1099)</strong>, by <a href="https://github.com/FFwLo">@FFwLo</a>. Merged 2026-11-16.</p>
+<ul>
+<li>Differential verification: 3 function(s), 13990 of 13990 cases passed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-1152"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1152">#1152</a> engine: five small member-releasing destructors as families (182 copies; based on #1099)</strong>, by <a href="https://github.com/FFwLo">@FFwLo</a>. Merged 2026-11-16.</p>
+<ul>
+<li>Differential verification: 6 function(s), 13534 of 13534 cases passed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-1155"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1155">#1155</a> engine: twelve small relative families (265 copies; based on #1099)</strong>, by <a href="https://github.com/FFwLo">@FFwLo</a>. Merged 2026-11-16.</p>
+<ul>
+<li>Differential verification: 13 function(s), 13888 of 13888 cases passed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-1156"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1156">#1156</a> engine: member-destroying destructors as families (227 copies; based on #1099)</strong>, by <a href="https://github.com/FFwLo">@FFwLo</a>. Merged 2026-11-17.</p>
+<ul>
+<li>Differential verification: 13 function(s), 13624 of 13624 cases passed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-1157"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1157">#1157</a> engine: a keyed store, an interface query and layout-sized blocks as families (159 copies; based on #1099)</strong>, by <a href="https://github.com/FFwLo">@FFwLo</a>. Merged 2026-11-17.</p>
+<ul>
+<li>Differential verification: 9 function(s), 14226 of 14226 cases passed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-1100"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1100">#1100</a> metal: execute pixel shaders without a color attachment</strong>, by <a href="https://github.com/evill33t">@evill33t</a>. Merged 2026-11-17.</p>
+<ul>
+<li>No function status changed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-1114"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1114">#1114</a> metal: ignore inactive blend state for depth and stencil draws</strong>, by <a href="https://github.com/evill33t">@evill33t</a>. Merged 2026-11-17.</p>
+<ul>
+<li>No function status changed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-1190"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1190">#1190</a> cases: boundary <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr> the promotion reviews asked for</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-17.</p>
+<ul>
+<li>No function status changed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-1195"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1195">#1195</a> verify: start both runs of a case with the same stack bytes</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-17.</p>
+<ul>
+<li>No function status changed.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-1198"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1198">#1198</a> cases: close-status and worst-case-class <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr> from the reviews</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-17.</p>
+<ul>
+<li>No function status changed.</li>
 </ul></article></section>
 <section class="wk-devlog-section" data-section="documentation"><h2 id="documentation-and-website-changes">Documentation and website changes</h2>
-<article class="wk-milestone" data-key="w47-documentation"><p><strong>The wiki brought up to date with the encounter.</strong> <em>Documentation only.</em> The <a href="../../../../../runtime/">Runtime</a>, <a href="../../../../../">Home</a> and <a href="../../../../../milestones/">Milestones</a> pages now show the clinic's first encounter and the Hunter's Dream, the speed work and the recorder fixes, and <a href="../../../../../beasts-of-yharnam/enemies/clinic-beast/">The Clinic Beast</a> gains its first attack (a silent clip and a frame from a Paleblood run), its hearing (<abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr>, from the code and constructed tests) and how it chooses attacks, read from the game's battle script and labelled as not yet confirmed in a Paleblood run. The perception update is <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> there now.</p></article></section>
+<article class="wk-milestone" data-key="w47-documentation"><p><strong>The wiki brought up to date with the encounter.</strong> <em>Documentation only.</em> The <a href="../../../../../runtime/">Runtime</a>, <a href="../../../../../">Home</a> and <a href="../../../../../milestones/">Milestones</a> pages now show the clinic's first encounter and the Hunter's Dream, the speed work and the recorder fixes, and <a href="../../../../../beasts-of-yharnam/enemies/clinic-beast/">The Clinic Beast</a> gains its first attack (a silent clip and a frame from a Paleblood run), its hearing (<abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr>, from the code and constructed tests) and how it chooses attacks, read from the game's battle script and labelled as not yet confirmed in a Paleblood run. The perception update is <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> there now.</p></article>
+
+<article class="wk-milestone" data-key="pr-1184"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1184">#1184</a> docs: bring the scePthreadYield row up to date</strong>, by <a href="https://github.com/EzequielRindello">@EzequielRindello</a>. Merged 2026-11-17.</p>
+<ul>
+<li>Bring the scePthreadYield row up to date with the code since #308: RT_SYSLIB answering 0, why 0 is right whether the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> call is void or int, the 26 <abbr title="eboot.bin, the game's main executable.">eboot</abbr> call sites that ignore the result, and the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr> declaration as the remaining open question.</li>
+<li>Pages: docs/<abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>-syscalls.md.</li>
+</ul></article>
+
+<article class="wk-milestone" data-key="pr-1196"><p><span class="wk-badge wk-badge--merged">merged</span><strong><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1196">#1196</a> docs: system pages describe the work merged up to 5fba104</strong>, by <a href="https://github.com/ThisIsAkill">@ThisIsAkill</a>. Merged 2026-11-17.</p>
+<ul>
+<li>System pages exported from the wiki: the function tables and progress summary follow symbols/ on main 5fba104, and the hand-written text describes the pull requests merged since 13 November (statuses as symbols/ gives them, contributors credited). No code changed.</li>
+<li>Pages: docs/systems/README.md; docs/systems/ai.md; docs/systems/audio.md; docs/systems/camera.md; docs/systems/character.md; docs/systems/engine.md (and 8 more).</li>
+</ul></article></section>
 <section class="wk-devlog-section" data-section="blockers"><h2 id="blockers-and-next-steps">Blockers and next steps</h2>
 <article class="wk-milestone" data-key="w47-blockers"><p><strong>Blockers and next steps.</strong></p>
 <ul>
