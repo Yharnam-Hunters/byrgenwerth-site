@@ -398,7 +398,7 @@
       <span class="wk-stat-track" role="img" aria-label="0.1658 percent of target code bytes verified">
         <span class="wk-stat-fill" style="width:0.1658%"></span>
       </span>
-      <span class="wk-progress-foot">0.1658% of code bytes verified · 1,368 replaced</span>
+      <span class="wk-progress-foot">0.1658% of code bytes verified · 1,369 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -442,36 +442,15 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 14, 2026 18:09:31 UTC">November 14, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 17, 2026 15:03:47 UTC">November 17, 2026</span></p>
       
-      
-      
-      <aside class="wk-freshness" role="note">
-        <p><b>Not yet updated for 5 merged changes.</b>
-        This page was last checked against Paleblood
-        <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/628534595723b2f61cea786f6c088f8e68139aa0"><code>6285345</code></a>;
-        these pull requests changed what it describes since:</p>
-        <ul>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1109">#1109</a> ai: goal framework part 1: update-time scheduler reserve and goal registration options</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1103">#1103</a> ai: the sound check (0x0169cef0), edge-verified</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1089">#1089</a> ai: the hearing test (0x0169d160), edge-verified</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1079">#1079</a> ai: perception update and debug display move verified</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1067">#1067</a> ai: hearing, the ear's shape (0x0169da30)</li>
-          
-          
-        </ul>
-      </aside>
       
       <h1 id="the-clinic-beast">The Clinic Beast</h1>
 <p class="wk-lede">The first enemy a new hunter meets: a beast feeding on a body in the hall below
 the operating room of Iosefka's Clinic. This page explains how it notices you and why it gets up,
-using Paleblood's decompiled code and our own recorded runs. Its attacks will be added once a
-fight has been recorded.</p>
+using Paleblood's decompiled code and our own recorded runs. Paleblood now runs the start of the
+fight too: the beast's first attack lands and the hunter dies. How it chooses its attacks is, for
+now, read from the game's battle script and not yet confirmed in a Paleblood run.</p>
 
 <div class="wk-glance">
 <p><span class="wk-label">At a glance</span></p>
@@ -479,11 +458,11 @@ fight has been recorded.</p>
 <dt>First met</dt>
 <dd>Iosefka's Clinic, in the hall below the operating room, where it feeds beside an arched door. Paleblood runs reach it from a save in the clinic by walking down the stairs.</dd>
 <dt>AI code</dt>
-<dd>The perception code every enemy runs: the sight test <code>ai_sight_test</code> at <code>0x016a52b0</code> and the perception update <code>ai_perception_update</code> at <code>0x016a85c0</code>. Of the 15 functions on this page, 12 are <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> and 3 are <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> and edge-tested at the revision below (<a href="#sources">sources</a>).<!-- number:ok --></dd>
+<dd>The perception code every enemy runs: the sight test <code>ai_sight_test</code> at <code>0x016a52b0</code> and the perception update <code>ai_perception_update</code> at <code>0x016a85c0</code>. Its hearing: the sound check <code>ai_hearing_check_sound</code> at <code>0x0169cef0</code> and the hearing test <code>ai_hearing_test</code> at <code>0x0169d160</code>. Of the 18 functions on this page, 13 are <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> and 5 are <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> and edge-tested at the revision below (<a href="#sources">sources</a>).<!-- number:ok --></dd>
 <dt>Verified at</dt>
-<dd>Paleblood <code>628534595723b2f61cea786f6c088f8e68139aa0</code>: <code>symbols/functions.csv</code>, <code>symbols/verification.csv</code> and <code>symbols/reviews.csv</code>.</dd>
+<dd>Paleblood <code>5fba104352d8093dfc64bf346a97681ad554afea</code>: <code>symbols/functions.csv</code>, <code>symbols/verification.csv</code> and <code>symbols/reviews.csv</code>.</dd>
 <dt>Still open</dt>
-<dd>How it fights. Paleblood's renderer stops a few frames after the beast stands up, so no fight has been recorded yet.</dd>
+<dd>How it picks its attacks in a Paleblood run. Its first attack is recorded (<a href="#attacks">Attacks</a>); the attack choice is read from the game's battle script and has not been watched in a run yet. Its hearing is decompiled but not yet checked against recordings.</dd>
 </dl>
 </div>
 <figure class="en-hero">
@@ -756,6 +735,34 @@ became part of its verification in pull request #997.</p>
 <p class="en-nojs">The interactive range map needs JavaScript. In words: the hunter came from behind and to one side; the beast's checks found nothing at 6.84 m and smelled the hunter at 3.48 m.</p>
 </div>
 
+<h3 id="how-it-hears">How it hears</h3>
+<p><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span> From the code and constructed
+tests only: Paleblood has <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> the hearing code (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1067">#1067</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1089">#1089</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1103">#1103</a>) and checked
+it against the original on 1,642, 561 and 449 constructed cases, but not yet against recordings of
+a real run. Nothing below has been watched happening in a run.</p>
+<p>An enemy does not hear "noise" in general. Every sound the game files near an enemy carries a
+position, a range (how far it carries) and who made it, and the enemy checks each one in two steps.</p>
+<ol>
+<li><strong>May it hear this maker at all?</strong> The sound check (<code>0x0169cef0</code>) looks at who made the sound.
+   A character's sound (the player, another enemy) counts only if that character still exists and
+   the listener's team is allowed to hear the maker's team: the game keeps a table of which teams
+   hear which. Some sounds use the attack tables instead, so they are heard by exactly the teams an
+   attack would hit. A big maker is heard from a little further away, because its body size is
+   passed on. A sound made by an object counts while the object exists.</li>
+<li><strong>Is it close enough?</strong> The hearing test (<code>0x0169d160</code>) takes the sound's range, less a
+   sound-cut distance from the enemy's settings, and compares it with the gap between them: the
+   distance less both bodies' sizes. If the range is larger, the enemy hears it. Otherwise the
+   enemy's ear can reach a little further, but only in the directions its ear covers: a width
+   angle around its facing and a height angle (<code>0x0169da30</code> checks the height). A heard sound's
+   position is remembered unless the enemy already remembers one that is closer.</li>
+</ol>
+<p>Two quirks show in the code. Body sizes widen the ear's cone slightly, because the direction to
+the sound is divided by the gap rather than by the true distance. And for a sound just outside the
+cone, the point on the cone's edge it is checked against gets its height by adding the sound's
+height to the ear's, so it sits higher than the sound.
+<span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></p>
+<p>Whether the clinic beast hears the hunter before it smells them is not known yet: the recordings
+that would show it are the next step.</p>
 <h2 id="why-it-gets-up">Why it gets up</h2>
 <p><span class="wk-badge wk-badge--inferred">inferred</span> Putting the run together with the code,
 the most likely chain is:</p>
@@ -894,12 +901,14 @@ returns the level from the previous think. <code>IsChangeState</code> is true wh
 
 <p>The level is not stored and nudged up step by step. Each think, the perception update works it out
 again from the target list, in a fixed order of precedence.
-<span class="wk-badge wk-badge--inferred">inferred</span> Two special kinds of list entry mean
+<span class="wk-badge wk-badge--verified"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></span> Two special kinds of list entry mean
 battle. Failing those, the main target's own level counts. Failing that, two other special kinds
 mean caution. With nothing on the list, the level is normal. What the special kinds stand for is
 not known yet. The level it replaces becomes the previous level, so <code>IsChangeState</code> is true for
-exactly one think after a change. The perception update is <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> in Paleblood and tested on
-802 <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr>.</p>
+exactly one think after a change. The perception update is <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>: Paleblood's replacement
+gives the original's answer on 802 <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr> and on 1,493 calls recorded in a real run of this
+encounter (10 more recorded calls are set aside because the code they reach is still the
+original's and could not be replayed), and an independent review approved it (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1079">#1079</a>).</p>
 <h3 id="the-target-list">The target list</h3>
 <p>The target list is what the beast has noticed: characters, and places it should go and look at.</p>
 <ul>
@@ -929,14 +938,56 @@ exactly one think after a change. The perception update is <abbr title="A functi
   <span class="wk-badge wk-badge--verified"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></span> What uses this speed is not traced yet.</li>
 </ul>
 <h2 id="attacks">Attacks</h2>
-<p><strong>Coming: this section needs a recording of the fight.</strong> Paleblood's renderer currently stops a
-few frames after the beast stands up: it meets a kind of depth-buffer read it does not support
-yet. Until that is fixed, no attack can be recorded or timed. When it is, this section gets the
-attack timeline, the state diagram of the fight and the attack-choice chart, each tied to a clip.</p>
-<p>One piece of the machinery is already <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>. The scripts' dice, <code>GetRandam_Int</code>, turns a
-20-bit random fraction into a whole number from min to max, each about equally likely.
-<span class="wk-badge wk-badge--verified"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></span> Whether this beast's scripts use it to
-pick attacks is not shown yet.</p>
+<h3 id="the-first-attack">The first attack</h3>
+<div class="en-sync">
+<figure class="en-clip" data-fps="30" id="clip-clinic-beast-attack">
+<video controls="controls" data-view="plain" height="1080" muted="muted" playsinline="playsinline" preload="metadata" src="../../../assets/media/enemies/clinic-beast/first-attack.webm" width="1920"></video>
+<figcaption>The hunter comes close; the beast lunges and its first attack lands, with a spray of blood (280 frames, silent). <span class="wk-badge wk-badge--observed">observed</span> From a local Paleblood run on 2026-11-14: main at `0ffc6fc` with [#1046](https://github.com/Yharnam-Hunters/Paleblood/pull/1046) applied (merged since). Drawn by Paleblood's own renderer at 1920×1080. <em>Bloodborne</em> © Sony Interactive Entertainment / FromSoftware.</figcaption>
+</figure>
+</div>
+<figure class="wk-frame">
+<p><a class="wk-frame-link" href="../../../assets/media/enemies/clinic-beast/first-attack.png"><img alt="The beast's attack landing in the clinic's lower hall: a dark furred shape with one glowing eye over the hooded hunter, a red spray of blood between them, the HUD's health bar near empty" decoding="async" height="1080" loading="lazy" src="../../../assets/media/enemies/clinic-beast/first-attack.png" width="1920" /></a></p>
+<figcaption>The frame the attack lands (frame 3880 of the same run). Full resolution. <em>Bloodborne</em> © Sony Interactive Entertainment / FromSoftware.</figcaption>
+</figure>
+<p>Since 14 November Paleblood runs the whole encounter with no stop: the beast attacks, the hunter
+dies ("YOU DIED"), the loading screen shows and the hunter wakes in the Hunter's Dream
+(<a href="../../../runtime/#how-far-a-boot-gets">Runtime</a>). <span class="wk-badge wk-badge--observed">observed</span></p>
+<p>What a recorded run showed of its decisions: <span class="wk-badge wk-badge--observed">observed</span></p>
+<ul>
+<li>Before it notices you, the beast runs the same idle plan as every other character in the clinic:
+  a short plan that it renews over and over.</li>
+<li>When the hunter came close, it first switched to a separate "noticed" plan, and some seconds
+  later started its own battle plan.</li>
+<li>With the hunter behind it, its battle plan's first decision was a one-second turn to face them.</li>
+<li>In our captured fight its think script used random whole numbers (the dice below), timers and
+  checks of the target's alert level. It did not check its own or the hunter's health.</li>
+</ul>
+<p>That is one run; the rest of its attack choice has not been watched yet.</p>
+<h3 id="how-it-chooses-read-from-the-games-script">How it chooses (read from the game's script)</h3>
+<p><span class="wk-badge wk-badge--inferred">read from the game's battle script (local study), not yet confirmed in a Paleblood run</span>
+This comes from a local study of the game's own AI script for this enemy, not from Paleblood
+running it; the native code that runs these plans is still being decompiled (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1109">#1109</a> is its
+first part). Only the turn when you are behind it has been seen in a run (above).</p>
+<ul>
+<li><strong>A weighted roll.</strong> Each time its battle plan restarts, the beast gives every move a weight
+  that depends on how far away you are, then rolls the dice over the total. Close up it favours its
+  quick opening swings; at mid range its two-hit lunge; far away it mostly circles or backs off
+  (about four times in ten) and otherwise closes the gap with a leaping attack or a run-in.</li>
+<li><strong>Combos.</strong> Most attacks start with one swing and roll again to decide how many follow-ups to
+  chain, up to four hits. It keeps turning towards you during the wind-up of most swings. One long
+  flurry mixes back and side hops into the chain; one heavy move has a cool-down of about twenty
+  seconds; in a few tight spots of the map it never uses its two widest moves.</li>
+<li><strong>Breathers.</strong> After every attack it decides on the spot, from your distance, what to do next:
+  very close it usually hops back or backs away a few metres; at mid range it strafes or edges
+  closer; far away it closes in or, about one time in three, leaps at you.</li>
+<li><strong>Turning.</strong> If you are behind it, it spends its next decision just turning to face you rather
+  than attacking (seen once in a Paleblood run, above).</li>
+<li><strong>Reactions.</strong> It can answer gunfire with a side hop, and it has the common stagger and dodge
+  reactions that many enemies share.</li>
+</ul>
+<p>The dice themselves are <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>. The scripts' <code>GetRandam_Int</code> turns a 20-bit random fraction into
+a whole number from min to max, each about equally likely, and the beast's script called it 35
+times in our captured fight. <span class="wk-badge wk-badge--verified"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></span></p>
 <h2 id="how-it-actually-works">How it actually works</h2>
 <h3 id="the-details">The details</h3>
 <p>In the order the game runs them, once per think for each enemy:</p>
@@ -952,18 +1003,22 @@ pick attacks is not shown yet.</p>
    current target (<code>ai_perception_current_handle</code>, <code>0x016acfa0</code>).</li>
 <li>Separately, every frame, <code>ai_target_speed_record_update</code> (<code>0x0162d840</code>) updates the speed
    record.</li>
+<li>For each sound filed near it, the sound check <code>ai_hearing_check_sound</code> (<code>0x0169cef0</code>) and the
+   hearing test <code>ai_hearing_test</code> (<code>0x0169d160</code>, with the ear's height check at <code>0x0169da30</code>)
+   decide whether it hears the sound (<a href="#how-it-hears">How it hears</a>).</li>
 </ol>
 <p>The <a href="../../../systems/ai/">AI system page</a> describes the shared machinery these functions belong to.</p>
 <h3 id="open-questions">Open questions</h3>
 <ul>
-<li><strong>Hearing.</strong> The hearing test has been located (<code>0x0169cef0</code> and <code>0x0169d160</code>) but not
-  decompiled. It would show whether the beast can hear you before it smells you.</li>
+<li><strong>Hearing in a run.</strong> The hearing code is decompiled and <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr>, but no recording shows
+  yet whether the beast hears you before it smells you.</li>
 <li><strong>How the level climbs.</strong> The routine that raises an entry from caution to find to battle
   (<code>0x016b17c0</code>) has not been read.</li>
 <li><strong>The wake.</strong> Confirming the chain in <a href="#why-it-gets-up">Why it gets up</a> needs the event logic in
   Paleblood source, and a run that records the nose result and the event's reaction on the same
   frames.</li>
-<li><strong>Its attacks</strong>, which need the fight recording.</li>
+<li><strong>Its attack choice in a run.</strong> The weighted roll, combos and breathers are read from the
+  game's script; a longer recorded fight is needed to confirm them.</li>
 <li><strong>Its identity in the game's data.</strong> Which of the game's character types this beast is has not
   been established in Paleblood source yet.</li>
 </ul>
@@ -975,10 +1030,12 @@ pick attacks is not shown yet.</p>
   3.5 m. See <a href="#the-nose-rule">the nose rule</a>.</li>
 <li><strong>Walls block its eyes, not its nose.</strong> A solid wall between you stops the line-of-sight ray,
   but the nose ignores walls. See <a href="#the-sight-test-step-by-step">the sight test</a>.</li>
+<li><strong>Behind it buys you a moment.</strong> With you behind it, its first decision in our run was to turn
+  to face you rather than attack. See <a href="#attacks">Attacks</a>.</li>
 </ul>
 <h2 id="sources">Sources</h2>
 <p>All the Paleblood pull requests below are by ThisIsAkill. Status is as of Paleblood
-<code>628534595723b2f61cea786f6c088f8e68139aa0</code>. <em>Verified</em> means <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr>, checked against recorded
+<code>5fba104352d8093dfc64bf346a97681ad554afea</code>. <em>Verified</em> means <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr>, checked against recorded
 game runs and approved by an independent review session (<code>symbols/reviews.csv</code>). <em>Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></em>
 means <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> and checked on <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr> only.</p>
 <div class="wk-table"><table>
@@ -1011,9 +1068,9 @@ means <abbr title="A function with a C++ replacement registered in the hook tabl
 </tr>
 <tr>
 <td><code>ai_perception_update</code><br><code>0x016a85c0</code></td>
-<td><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
-<td>edge 802/802</td>
-<td><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/999">#999</a></td>
+<td><span class="wk-badge wk-badge--verified"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></span></td>
+<td>recorded 1493/1503 (10 quarantined), edge 802/802</td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/999">#999</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1079">#1079</a></td>
 </tr>
 <tr>
 <td><code>ai_perception_current_handle</code><br><code>0x016acfa0</code></td>
@@ -1081,6 +1138,24 @@ means <abbr title="A function with a C++ replacement registered in the hook tabl
 <td>recorded 37/37, edge 73/73</td>
 <td><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/911">#911</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/988">#988</a></td>
 </tr>
+<tr>
+<td><code>ai_hearing_check_sound</code><br><code>0x0169cef0</code></td>
+<td><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td>edge 1642/1642</td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1103">#1103</a></td>
+</tr>
+<tr>
+<td><code>ai_hearing_test</code><br><code>0x0169d160</code></td>
+<td><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td>edge 561/561</td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1089">#1089</a></td>
+</tr>
+<tr>
+<td><code>ai_hearing_in_ear_range</code><br><code>0x0169da30</code></td>
+<td><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td>edge 449/449</td>
+<td><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1067">#1067</a></td>
+</tr>
 </tbody>
 </table></div>
 <div class="wk-table is-stack"><table class="wk-stack">
@@ -1096,6 +1171,21 @@ means <abbr title="A function with a C++ replacement registered in the hook tabl
 <td data-label="Media and runs">Hero frame and wake clip</td>
 <td data-label="Details">Local Paleblood run on 2026-11-13, main <code>bb1d71b</code> with #958 and #975 applied; drawn by Paleblood's renderer at 1920×1080; the clip is silent; each item has its own media review</td>
 <td data-label="Evidence"><span class="wk-badge wk-badge--observed">observed</span></td>
+</tr>
+<tr>
+<td data-label="Media and runs">First-attack clip and frame</td>
+<td data-label="Details">Local Paleblood run on 2026-11-14, main <code>0ffc6fc</code> with #1046 applied (merged since); frames 3640 to 3919, the still is frame 3880; drawn by Paleblood's renderer at 1920×1080; the clip is silent; each item has its own media review</td>
+<td data-label="Evidence"><span class="wk-badge wk-badge--observed">observed</span></td>
+</tr>
+<tr>
+<td data-label="Media and runs">Plans and script calls in the fight</td>
+<td data-label="Details">Recorded Paleblood <abbr title="Inputs recorded while the game ran, replayed by the harness.">capture</abbr> runs on 2026-11-14 that saved the beast's plan changes and its script's calls</td>
+<td data-label="Evidence"><span class="wk-badge wk-badge--observed">observed</span></td>
+</tr>
+<tr>
+<td data-label="Media and runs">Attack choice, combos, breathers, reactions</td>
+<td data-label="Details">A local study of the game's own AI script for this enemy; no script text is published</td>
+<td data-label="Evidence">read from the game's script, not yet confirmed in a run</td>
 </tr>
 <tr>
 <td data-label="Media and runs">Approach and sight results</td>

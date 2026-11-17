@@ -398,7 +398,7 @@
       <span class="wk-stat-track" role="img" aria-label="0.1658 percent of target code bytes verified">
         <span class="wk-stat-fill" style="width:0.1658%"></span>
       </span>
-      <span class="wk-progress-foot">0.1658% of code bytes verified · 1,368 replaced</span>
+      <span class="wk-progress-foot">0.1658% of code bytes verified · 1,369 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -438,39 +438,11 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 13, 2026 14:54:55 UTC">November 13, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 17, 2026 15:03:47 UTC">November 17, 2026</span></p>
       
-      
-      
-      <aside class="wk-freshness" role="note">
-        <p><b>Not yet updated for 15 merged changes.</b>
-        This page was last checked against Paleblood
-        <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/cf669283bed4b9a9f36e72ef1ebe28bf037d1a6f"><code>cf66928</code></a>;
-        these pull requests changed what it describes since:</p>
-        <ul>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1063">#1063</a> input, frame_timing: the key mapper's lookups, the key assign's held query and the listener takes</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1032">#1032</a> frame_timing: replace giving the gate's handle to a pass-on request</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1012">#1012</a> frame_timing: replace the task batch take and the lane sync signal</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1016">#1016</a> frame_timing, loading: replace the generator's calls and the headed allocate (carry of #1002)</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/978">#978</a> frame_timing: replace the stopwatch frame end, item update and listener list prepare</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/995">#995</a> engine: key assign queries, task add, item dialog cursor and lists as readable C++</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/973">#973</a> frame_timing: replace the worker lane's start, run and finish</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/965">#965</a> Replace throw_event and part_0x10_update with readable C++</li>
-          
-          <li>and 7 more</li>
-        </ul>
-      </aside>
       
       <h1 id="frame-timing">Frame timing</h1>
-<p class="wk-lede">How the game paces its frames: a frame step that runs once a frame, a frame limiter that waits out each frame's budget, and a task manager that runs the frame's work.</p>
+<p class="wk-lede">How the game paces its frames: a frame step that runs once a frame, a frame limiter that waits out each frame's budget, and a task manager that hands the frame's work to worker lanes. The same system label also holds the fixed-step methods the 60 FPS patches edit, such as the Chalice Dungeon gate's.</p>
 
 <div class="wk-glance">
 <p><span class="wk-label">At a glance</span></p>
@@ -478,11 +450,11 @@
 <dt>Scope</dt>
 <dd>Frame pacing, delta time, vsync and the main loop's time step.</dd>
 <dt>Verified</dt>
-<dd>The frame step, the frame limiter, the flipper constructor and the task manager's frame path are <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> and <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>.</dd>
+<dd>The frame step, the frame limiter, the flipper constructor and the task manager's frame path, dispatcher and task registration are <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> and <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>. The worker lanes, the task manager's helpers and the per-frame task's parts are <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr>.</dd>
 <dt>Our option</dt>
 <dd><code>BB_TARGET_FPS</code> does in code what the community frame-rate patches do in these functions.</dd>
 <dt>Open</dt>
-<dd>A few limiter fields, the owner of the <code>0x0111a...</code> clock layer, and most functions the 60 FPS patches edit.</dd>
+<dd>A few limiter fields, the owner of the <code>0x0111a...</code> clock layer, what the 76 registered tasks do, and most functions the 60 FPS patches edit.</dd>
 </dl>
 </div>
 <h2 id="summary">Summary</h2>
@@ -539,7 +511,11 @@
 <h3 id="the-frame-limiter">The frame limiter</h3>
 <p>Each frame the limiter does four things.</p>
 <p><strong>It applies the flip mode.</strong> The constructor reads the mode from the config value
-<code>Game.FlipMode</code>. A pending mode at <code>+0xc</code> replaces the current one at <code>+0x8</code> when <code>+0x276</code> is
+<code>Game.FlipMode</code>, through the game's integer config getter (<code>0x024eba00</code>, <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> and
+<abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr> by <a href="https://github.com/FFwLo">@FFwLo</a> in
+<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/889">#889</a>): it looks the key up, expands any
+reference markers in the text and parses it as a base-10 number, or returns the caller's fallback
+when the key is missing. A pending mode at <code>+0xc</code> replaces the current one at <code>+0x8</code> when <code>+0x276</code> is
 set. The mode chooses the sync interval (stored at <code>+0x10</code>) and the frame interval (a float at
 <code>+0x18</code>):</p>
 <div class="wk-table"><table>
@@ -587,8 +563,8 @@ IDs accepted by the imported libc <code>clock_gettime</code> wrapper. See the
   frame-rate patches overwrite it and its neighbours with their own code (a code cave), so it is
   not <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr>.</li>
 <li>The millisecond clock <code>frame_timing_get_monotonic_ms</code> (<code>0x0111a7f0</code>), its microsecond twin
-  <code>0x0111a760</code> (<abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> too, <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr>, by <a href="https://github.com/evill33t">@evill33t</a> in
-  <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/103">#103</a>) and the sleep wrapper <code>0x0111a880</code> (now <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr>, see below) are not on the limiter's path. They look like
+  <code>0x0111a760</code> (<abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> too, by <a href="https://github.com/evill33t">@evill33t</a> in
+  <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/103">#103</a>; both clocks are now <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>) and the sleep wrapper <code>0x0111a880</code> (now <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr>, see below) are not on the limiter's path. They look like
   the timing layer of a separate subsystem.</li>
 </ul>
 <details class="caveat">
@@ -632,25 +608,40 @@ edits, and what each belongs to, is part of running the game faster than 30 FPS.
   go, it stops and reports failure rather than trying the next entry.</li>
 <li><strong>Letting the handle go again.</strong> In a ritual mode a third method resets the handle. In the
   local ritual mode it always may; in the server ritual mode only when the online manager's bytes
-  allow it and a flag bit in the handled object is clear. It clears one word of that object, hands
-  the handle to a routine not yet analyzed (<code>0x01e9cb80</code>), and gives the gate request 8.
+  allow it and a flag bit in the handled object is clear. It clears one word of that object, passes
+  the handle on (<code>0x01e9cb80</code>: it copies the handled object's items into a new list and hands both
+  to the online side), and gives the gate request 8.
   A fourth method does the same under the same rules but first gathers the gate's sixteen slots:
   each active one goes into a short list (its key, its number, and a value the caller supplies for
   it), built on one of the engine's memory heaps. With no active slot it does nothing; otherwise
-  it hands the handle and the list on (<code>0x01e9cd20</code>, not yet analyzed), gives request 8, and then
+  it hands the handle and its own list on (<code>0x01e9cd20</code>, the same pass-on with the caller's list),
+  gives request 8, and then
   frees the list's memory.</li>
 <li><strong>Passing the handle on.</strong> A readiness check lets the gate go on when it is idle in a ritual or
   dungeon mode and the online manager allows it; in the server modes the handled object must also
   have one word at zero. Two methods that differ only in a "kind" number (1 or 2) run that check,
-  clear two words of the handled object, hand the handle on with the kind (to one routine in the
-  local modes, another in the server modes, neither analyzed yet), and give request 9.</li>
+  clear two words of the handled object, hand the handle on with the kind, and give request 9. In the
+  local modes (<code>0x02265170</code>) and the server modes (<code>0x02265960</code>) the hand-on makes a request from
+  the online manager's object and gives it the handle and the kind (<code>0x02269d40</code>, <code>0x02269e30</code>):
+  the request takes a counted reference to the handled object, marks it and is sent. When the
+  online manager's bytes refuse, the local version instead marks the object with a different
+  value and reports failure.</li>
 <li><strong>Creating the handle.</strong> Two methods make the handle in the first place, both only while the
   gate is idle in mode 1. One drops the old handle, builds a new handled object from two blocks of
   data, a block of the online manager and a name (the current name entry's, or a default), and
   gives request 3. The other reads four "levels" from event flags: for each of four base flags, the
   highest level from 9 down to 1 whose flag is set (flag numbers 6228 to 6287, every seventh one
   belonging to the same column). It builds the handled object from those four levels and gives
-  request 5. What the levels and the flags stand for in the game is not known yet.</li>
+  request 5: the builder (<code>0x02265580</code>) makes a handle object stamped with the local date, adds it
+  to the online manager's list and starts a new entry with it and the levels. A helper of the
+  other creation (<code>0x0231fbc0</code>) packs a decimal number into one word as four two-digit groups.
+  What the levels and the flags stand for in the game is not known yet.</li>
+<li><strong>Small helpers around the steps.</strong> The test the ritual resets open with is its own function
+  (<code>0x01ea5570</code>: no while busy, yes in the local ritual mode, and in the server ritual mode only
+  when the online manager allows it and the handled object's flag is clear). Every gate step first
+  counts itself (<code>0x01ec3000</code>), and builds a debug message once the next step would be 27 or more. The owner check's lookup
+  (<code>0x02265290</code>) finds or makes the online manager's entry for an id and keeps a counted
+  reference to it.</li>
 </ul>
 <p>The millisecond sleep wrapper (<code>0x0111a880</code>), which is not on the limiter's path, is <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> too.
 It converts the engine's millisecond delay to the kernel's microseconds. It multiplies in 32 bits,
@@ -684,14 +675,26 @@ as the original does, so very large delays wrap, and it always reports success.<
   (<code>0x01ea47a0</code>, one 60 FPS++ edit).</li>
 <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/199">#199</a>: the level creation
   (<code>0x01ea4cb0</code>, one 60 FPS++ edit), with the event-flag store shared with the event system.</li>
-<li>Status: <strong><abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr></strong>, not <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>. Each was compared with the original function on authored
-  <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr>, stock and with the 60 FPS++ edits, and wrong variants were rejected. None was
-  checked on frames recorded from a real game run.</li>
+<li><a href="https://github.com/FFwLo">@FFwLo</a> <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> the routines these methods call:
+  <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/886">#886</a> (the gate state query and the
+  step counter), <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/834">#834</a> (the two
+  handle pass-ons and the list's append), <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/835">#835</a>
+  (the local-mode pass-on and the session lookup),
+  <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/952">#952</a> (his server-mode pass-on and
+  the two creation helpers, carried onto main with him credited as co-author) and
+  <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1032">#1032</a> (giving the handle to a local
+  or server request).</li>
+<li>Status: <strong><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></strong>, not <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>. Each was compared with the original function on
+  constructed <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr> (the methods stock and with the 60 FPS++ edits), and deliberately
+  wrong versions were rejected. None was checked against recordings from the game: the title
+  and clinic boots never reach the online ritual paths, though the step counter has recorded
+  calls.</li>
 </ul>
 </details>
 <h3 id="small-clocks-waits-and-stopwatches">Small clocks, waits and stopwatches</h3>
-<p>Nine small helpers that read the time or sleep are <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> and <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr> (Paleblood
-<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/514">#514</a>). None of them is on the limiter's
+<p>Nine small helpers that read the time or sleep are <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> (Paleblood
+<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/514">#514</a>); eight are <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr> and the
+job result take has since been <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> against recordings. None of them is on the limiter's
 path:</p>
 <ul>
 <li><strong>Time of day.</strong> <code>frame_timing_time_of_day_us</code> (<code>0x02e61140</code>) gives the time of day in
@@ -719,8 +722,9 @@ option for them yet.</p>
 <details class="evidence">
 <summary>How these were <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></summary>
 <p>Each function's <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr> pass against the original (10 to 55 cases each), deliberately
-wrong versions fail, and an independent review approved all nine. They are <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr>:
-none has been recorded in a game run.</p>
+wrong versions fail, and an independent review approved all nine. Apart from the job result
+take, which recordings from the game now cover, they are <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr>: from the code and
+constructed tests only.</p>
 </details>
 <h3 id="frame-time-in-game-logic">Frame time in game logic</h3>
 <p>The frame step also passes time into character updates. One <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> update accumulates a
@@ -745,19 +749,69 @@ twice or half-finished:</p>
 every registered task (76 in Iosefka's Clinic), then fills a job with the record, the task table and
 the group mask and runs it through the same five steps as the workers. Each of those tasks is a
 piece of the game's own per-frame work, the next layer to map.</p>
-<p>On 13 November contributor <a href="https://github.com/FFwLo">@FFwLo</a> <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> the parts this path still
-called as originals, all <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr> (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/814">#814</a>). A worker holds a list of 16-byte slots, each a
-lane and the batch given to it, and a busy byte: <code>0x0143e030</code> puts a batch in a slot (refused while
-the worker is busy, for a null batch or an index past the slot count); <code>0x0143de20</code> marks the worker
-busy and starts every slot that holds a batch, a lane in mode 0 running on the calling thread and any
-other lane on its own thread; <code>0x0143deb0</code> runs the mode-0 lanes; <code>0x0143df10</code> waits until no lane is
-running, spinning on lanes that belong to other threads as the original does; and <code>0x0143ec40</code> frees
-a task's pending items under the task's lock. The per-frame task's own helpers followed
-(<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/793">#793</a>): two profiling stopwatch brackets and the end-of-frame tick of ten profiling stopwatches,
-which do nothing unless the profiling switch byte is set, and the item list and listener list updates
-that pass the frame-time descriptor on. The seeding of a thread's random generator (<code>0x024f8110</code>)
-fills four 32-bit words from a 32-bit seed with a 64-bit linear congruential step
-(<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/790">#790</a>); it uses the seed it is given and reads no entropy of its own.</p>
+<p><strong>The worker lanes.</strong> Most of this path's helpers were <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> by contributor
+<a href="https://github.com/FFwLo">@FFwLo</a>, all <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr>. A worker holds a list of slots, each a
+<em>lane</em> and the <em>batch</em> of tasks given to it, plus a busy byte
+(<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/814">#814</a>): <code>0x0143e030</code> puts a batch in a
+slot (refused while the worker is busy, for a null batch or an index past the slot count);
+<code>0x0143de20</code> marks the worker busy and starts every slot that holds a batch; <code>0x0143deb0</code> runs the
+lanes that work on the calling thread; and <code>0x0143df10</code> waits until no lane is running, spinning on
+lanes that belong to other threads as the original does. The lane steps themselves followed
+(<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/973">#973</a>). A lane in mode 0 runs its batch on
+the thread that calls it; any other mode wakes the lane's own thread through its sync object. A
+lane can be started, run one task at a time (each task's run gets the lane's mode) and finished,
+which gives it back empty. The two calls under them are <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> too
+(<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1012">#1012</a>): taking the next task from a
+batch, which is a double-ended queue of task pointers, and signalling the lane's sync event.</p>
+<p><strong>Bookkeeping around the dispatch.</strong> Six small helpers count and index the registered task entries,
+push a job onto a batch, look a task up by id and open or close a group record
+(<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/795">#795</a>); closing a record with no index
+makes the next dispatch wake the registered tasks first. For a registered task whose entry asks
+for it, the dispatcher refills the task's queue
+(<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/822">#822</a>): under the task's lock it empties
+the queue (<code>0x0143ec40</code>, which #822 showed empties a queue rather than freeing "pending items") and
+pushes a copy of every item of the task's item list back on, first to last. The same PR <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr>
+the engine's general heap lookup, which finds the allocator a pointer came from. Putting a task into the manager's queues
+(<code>0x01381580</code>) and adding the manager's switch to the debug menu (<code>0x013894f0</code>) are <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> and
+<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/995">#995</a>).</p>
+<p><strong>The per-frame task's parts.</strong> The per-frame task (<code>0x013d3520</code>, <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>) does a share of the
+frame's own bookkeeping. Its helpers are <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> and <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr>:</p>
+<ul>
+<li>two profiling stopwatch brackets and the end-of-frame tick of ten profiling stopwatches, which do
+  nothing unless the profiling switch byte is set
+  (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/793">#793</a>);</li>
+<li>the stopwatch's frame end (<code>0x014486d0</code>,
+  <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/978">#978</a>): every 30 frames it turns the
+  totals into per-frame averages and starts again, and every frame it folds the frame's count and
+  seconds into their peaks;</li>
+<li>the item update and the listener list's prepare step
+  (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/978">#978</a>): an item takes its requested
+  enabled state and is switched on or off; the list hands its owner and a named resource to every
+  listener. The two listener "takes" that receive them
+  (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1063">#1063</a>) keep nothing: the argument only
+  decides whether an unbound listener asks for an owner binding, or an empty label takes its
+  source's text;</li>
+<li>the update of the task's part at <code>+0x10</code> (<code>0x013d5440</code>,
+  <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/965">#965</a>), which does nothing unless the
+  frame's seconds are above 0, then steps its source and has its generator fill or step a buffer
+  sized for its output; and the generator's buffer size, fill and refresh
+  (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1016">#1016</a>, <a href="https://github.com/FFwLo">@FFwLo</a>'s
+  <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1002">#1002</a> carried onto main with him
+  credited as co-author). What the generator produces is not known yet.</li>
+</ul>
+<p>The seeding of a thread's random generator (<code>0x024f8110</code>) fills four 32-bit words from a 32-bit
+seed with a 64-bit linear congruential step
+(<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/790">#790</a>); it uses the seed it is given and
+reads no entropy of its own.</p>
+<details class="evidence">
+<summary>Task manager: what is <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></summary>
+<p>The frame path (<code>0x024512a0</code>, <code>0x01388c60</code>, <code>0x01388c70</code>), the dispatcher, the queue flush, the
+worker step, the frame-value publish, task registration and the per-frame task are <strong><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></strong>
+against recordings from the game. The worker lanes and their callees, the six helpers, the
+queue refill, the per-frame task's parts and the generator calls are <strong><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></strong>: from
+the code and constructed tests. Some of them do have recorded calls (the refill, several of the
+helpers) that pass, but they have not yet been promoted.</p>
+</details>
 <h2 id="key-functions">Key functions</h2>
 <div class="wk-table is-stack"><table class="wk-stack">
 <thead>

@@ -398,7 +398,7 @@
       <span class="wk-stat-track" role="img" aria-label="0.1658 percent of target code bytes verified">
         <span class="wk-stat-fill" style="width:0.1658%"></span>
       </span>
-      <span class="wk-progress-foot">0.1658% of code bytes verified · 1,368 replaced</span>
+      <span class="wk-progress-foot">0.1658% of code bytes verified · 1,369 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -432,7 +432,7 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 13, 2026 14:54:55 UTC">November 13, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 17, 2026 15:03:47 UTC">November 17, 2026</span></p>
       
       
       <h1 id="milestones">Milestones</h1>
@@ -557,6 +557,18 @@ names them. They are not saved boot records.</p>
 <figure class="wk-frame">
 <p><a class="wk-frame-link" href="../assets/media/milestones/2026-11-13-clinic-lights-tile-scissor-correct-brightness.png"><img alt="The clinic's operating room in dim lamplight: the hooded hunter behind the blood-stained table, shelves of bottles and gothic arches in shadow, a lit wall lamp beside a doorway on the right, and the HUD in the corners" decoding="async" height="1080" loading="lazy" src="../assets/media/milestones/2026-11-13-clinic-lights-tile-scissor-correct-brightness.png" width="1920" /></a></p>
 <figcaption><span class="wk-frame-when">13 Nov, ~07:50</span> <span class="wk-frame-what">Iosefka's Clinic at the right brightness (local run)</span><span class="wk-frame-detail">13 November, about 07:50 (local run): the clinic at the brightness of a reference capture. The game draws each deferred light as a full-screen quad once per 128x128 screen tile, with the tile set as the viewport scissor; the renderer did not apply that scissor, so each tile's draw lit the whole screen. <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/807">#807</a> (then in review, merged 13 November) applies it, together with <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/771">#771</a> (then in review, merged 13 November). The clinic drew at seconds per frame in these runs; on 13 November a local run measured about 6 frames a second (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/830">#830</a>), so it is not playable yet.</span></figcaption>
+</figure>
+<figure class="wk-frame">
+<p><a class="wk-frame-link" href="../assets/media/milestones/2026-11-14-clinic-you-died.png"><img alt="The clinic's lower hall in dim light, a body on the wooden floor, iron stands with blood bottles, and &quot;YOU DIED&quot; in faded red across the arched doorway; the beast's dark shape with one glowing eye at the right edge" decoding="async" height="1080" loading="lazy" src="../assets/media/milestones/2026-11-14-clinic-you-died.png" width="1920" /></a></p>
+<figcaption><span class="wk-frame-when">14 Nov, morning</span> <span class="wk-frame-what">YOU DIED: the clinic's first encounter runs (local run)</span><span class="wk-frame-detail">14 November (local run of clean <code>main</code> at <code>c595e3e7</code>, from a save at the clinic's start with a scripted controller): the hunter walks up to the first beast, its attack lands at about frame 3700, and the hunter dies at about frame 3950. The renderer fixes that let the encounter run merged the same day (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1000">#1000</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1004">#1004</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1022">#1022</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1027">#1027</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1031">#1031</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1066">#1066</a>). The beast's side of it is on <a href="../beasts-of-yharnam/enemies/clinic-beast/">The Clinic Beast</a>.</span></figcaption>
+</figure>
+<figure class="wk-frame">
+<p><a class="wk-frame-link" href="../assets/media/milestones/2026-11-14-hunters-dream-arrival.png"><img alt="A Gothic workshop overgrown with ivy under a huge full moon, bare trees and tall stone pillars around it, slightly blurred as the view fades in" decoding="async" height="1080" loading="lazy" src="../assets/media/milestones/2026-11-14-hunters-dream-arrival.png" width="1920" /></a></p>
+<figcaption><span class="wk-frame-when">14 Nov, morning</span> <span class="wk-frame-what">Waking in the Hunter's Dream (local run)</span><span class="wk-frame-detail">Same run: after the loading screen the hunter wakes in the Hunter's Dream, the game's hub, and the scripted controller walks on (to frames 8859 and 9355 in the two boots). No stop in 900 seconds.</span></figcaption>
+</figure>
+<figure class="wk-frame">
+<p><a class="wk-frame-link" href="../assets/media/milestones/2026-11-14-hunters-dream-walk.png"><img alt="The hooded hunter seen from behind on a stone path leading up to a flight of steps, candles and white flowers on both sides, a gravestone on the right and the Doll standing by a low wall on the left; health bar full" decoding="async" height="1080" loading="lazy" src="../assets/media/milestones/2026-11-14-hunters-dream-walk.png" width="1920" /></a></p>
+<figcaption><span class="wk-frame-when">14 Nov, ~11:50</span> <span class="wk-frame-what">Walking in the Hunter's Dream (local run)</span><span class="wk-frame-detail">14 November, about 11:50 (local run of <code>main</code> at <code>0281b312</code>, the revision of the saved boot record in <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1082">#1082</a>): the hunter walks up the path in the Hunter's Dream. The clinic ran at about 11 frames a second after <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/971">#971</a>, against the game's 30, so it is not playable yet. These boots start from a save and press buttons, so they are not saved records.</span></figcaption>
 </figure>
 </div>
 <p>Later milestones (the first playable scene) are added here as they are reached.</p>

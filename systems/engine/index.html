@@ -398,7 +398,7 @@
       <span class="wk-stat-track" role="img" aria-label="0.1658 percent of target code bytes verified">
         <span class="wk-stat-fill" style="width:0.1658%"></span>
       </span>
-      <span class="wk-progress-foot">0.1658% of code bytes verified · 1,368 replaced</span>
+      <span class="wk-progress-foot">0.1658% of code bytes verified · 1,369 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -430,49 +430,21 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 13, 2026 14:54:55 UTC">November 13, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 17, 2026 15:03:47 UTC">November 17, 2026</span></p>
       
-      
-      
-      <aside class="wk-freshness" role="note">
-        <p><b>Not yet updated for 31 merged changes.</b>
-        This page was last checked against Paleblood
-        <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/cf669283bed4b9a9f36e72ef1ebe28bf037d1a6f"><code>cf66928</code></a>;
-        these pull requests changed what it describes since:</p>
-        <ul>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1107">#1107</a> engine: replace the 104 other copies of the tree subtree release</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1109">#1109</a> ai: goal framework part 1: update-time scheduler reserve and goal registration options</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1084">#1084</a> engine: carry the subtree release of the set of 64-bit keys (#1074)</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1077">#1077</a> engine: carry the 8-byte array reserve copies (#1058)</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1062">#1062</a> engine: carry the list, 8-byte and 32-bit array push_back copies (FFwLo #1047, #1049, #1050)</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1063">#1063</a> input, frame_timing: the key mapper's lookups, the key assign's held query and the listener takes</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1053">#1053</a> verify seven functions with their recordings</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1039">#1039</a> engine: replace the wide string's assign of a repeated character</li>
-          
-          <li>and 23 more</li>
-        </ul>
-      </aside>
       
       <h1 id="engine">Engine</h1>
-<p class="wk-lede">The engine's shared plumbing that every system leans on: its fatal error report, its check for missing singletons, its reference-counted objects, and small helpers such as writing a line to the standard error stream.</p>
+<p class="wk-lede">The engine's shared plumbing that every system leans on: its fatal error report, its check for missing singletons, its reference-counted objects, its memory heaps, strings, text formatting and containers, and the hundreds of compiled copies of the same small container functions.</p>
 
 <div class="wk-glance">
 <p><span class="wk-label">At a glance</span></p>
 <dl>
 <dt>Scope</dt>
-<dd>Engine-wide helpers in Paleblood's <code>game/engine/</code>: the fatal error report and singleton check, reference counting, and <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> engine utility functions.</dd>
+<dd>Engine-wide helpers in Paleblood's <code>game/engine/</code>: the fatal error report and singleton check, reference counting, heaps and allocators, threads and locks, strings and text formatting, array, list and tree containers, FD4 handles, and the engine's function <a href="../../families/">families</a>.</dd>
 <dt>Verified</dt>
-<dd><code>engine_write_stderr</code>, the string helpers (comparisons, appends, case changes), wide-string set-up, owner storage, a word-and-product store and a handle-table lookup are <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr> against constructed cases. Since 12 and 13 November most of the engine's memory system (its heaps and allocators), its threads and its kernel synchronization objects are <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> too; the function table below gives each one's status.</dd>
+<dd>Most engine replacements are <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr> against constructed cases. A growing number are <code>verified</code> on inputs recorded in the game with an independent review: among them the string length, the string append, the signed prefix comparison, the word-and-product store, the static wide string set-up, the regular heap's allocation and aligned allocation, the Scaleform heap's bin free, the FD4 handle check and order, the instance update requests and 63 copies of the 8-byte array <code>push_back</code>. The function table below gives each one's status.</dd>
 <dt>Open</dt>
-<dd>Who calls the stderr writer during play, and with what text.</dd>
+<dd>Who calls the stderr writer during play, and with what text; what many of the tables, records and slot fillers the copies work on hold.</dd>
 </dl>
 </div>
 <h2 id="summary">Summary</h2>
@@ -551,8 +523,11 @@ in #110, merged in <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/27
 Each was brought up to date with <code>main</code>, its constructed <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr> pass against the original
 on current <code>main</code>, and an independent review approved it. The appends (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/337">#337</a>, 32 and
 48 cases), the word-and-product store (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/336">#336</a>, 32 cases) and the single-character
-lowercase (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/125">#125</a>, 291 generated cases) are <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr>: their constructed
-cases pass against the original. None was checked on recorded game runs.</p>
+lowercase (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/125">#125</a>, 291 generated cases) passed their constructed cases against
+the original. Since <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/683">#683</a> (12 November) the string length, the string append,
+the signed prefix comparison, the word-and-product store and the static wide string set-up are
+<code>verified</code>: they also pass on inputs recorded in the game, with an approved independent review.
+The other helpers here stay <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr>.</p>
 </details>
 <h3 id="memory-the-engines-heaps">Memory: the engine's heaps</h3>
 <p>The engine (FromSoftware's Dantelion2 library) never asks the system for memory one object at a
@@ -585,6 +560,113 @@ builds heaps of known shape:</p>
 (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/803">#803</a>; the engine's mutex wrappers are on the <a href="../kernel/">Kernel</a> page) and, by
 <a href="https://github.com/FFwLo">@FFwLo</a>, the wide string's assign from part of another string and its
 growth (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/737">#737</a>).</p>
+<p>Later in the week the rest of the memory plumbing around those heaps followed, all by
+<a href="https://github.com/FFwLo">@FFwLo</a>:</p>
+<ul>
+<li>the heap manager's <strong>locked regular heap</strong> (a regular heap, a light mutex and a small allocator
+  interface in a row), its constructor and set-up (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/755">#755</a>);</li>
+<li>the <strong>red-black tree</strong> in which the robust heap and the fixed allocator keep their free blocks:
+  its insert fix-up and its remove, which finishes one rebalancing case in place rather than going
+  round the textbook loop again (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/763">#763</a>);</li>
+<li><strong><code>allocator_of</code></strong> (<code>0x0247b720</code>), which answers which heap a pointer came from, asking the
+  thread's temporary heap first and then the heap registry under its read lock; it has well over a
+  hundred callers (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/822">#822</a>);</li>
+<li>a <strong>fixed-size block pool</strong> (pages of equal blocks on a partial and a full ring), its allocate and
+  free, which the shader upload manager uses (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/989">#989</a>);</li>
+<li>the Scaleform heap's <strong>large-block allocation and page release</strong>
+  (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/933">#933</a>).</li>
+</ul>
+<p>Two heap functions are now <code>verified</code>: the regular heap's allocation, from fresh recordings
+(<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/929">#929</a>), and its aligned allocation, after
+seven review rounds added the boundary cases that pinned every surviving mutant: 43 edge and 400
+recorded cases pass (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/963">#963</a>). The Scaleform
+heap's bin free is <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> from re-recordings (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1053">#1053</a>),
+after one more <abbr title="A generated input for a situation a recording does not reach.">edge case</abbr> for it (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1063">#1063</a>).</p>
+<h3 id="threads-locks-and-the-debug-print">Threads, locks and the debug print</h3>
+<p><a href="https://github.com/FFwLo">@FFwLo</a> <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> the engine mutex's constructor and set-up (#900,
+merged in <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/938">#938</a>), <code>thread_create</code>
+(<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/989">#989</a>) and the engine's <strong>debug print</strong>
+(<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/767">#767</a>): the variadic and <code>va_list</code> prints
+that the error reports, <code>fatal_error</code> included, write through. Both wait forever on one print lock,
+built in static storage on first use, and print only when forced or when printing is enabled.</p>
+<h3 id="strings-and-text-formatting">Strings and text formatting</h3>
+<p>The engine's narrow and wide strings behave like MSVC's <code>std::string</code> and <code>std::wstring</code>. By
+<a href="https://github.com/FFwLo">@FFwLo</a>, most of their assignments are now <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr>: from counted text
+(<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/760">#760</a>, which has several hundred call
+sites), the narrow and wide assign written once as a template over the character size
+(<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/931">#931</a>), the assign of one character
+repeated (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1039">#1039</a>), the wide string's
+constructor from text, and the byte array's copy assignment
+(<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/891">#891</a>). Text that points into the string's
+own characters is kept in place rather than copied, as in the original.</p>
+<p>Under them sits Dantelion2's own formatter (<code>DLFormat</code>), the engine's <code>printf</code>. Its text encoding
+conversions (UTF-8, and Shift-JIS through tables in the executable), the measures of how long a
+converted string will be, and its <code>%s</code> conversion are <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr>
+(<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/826">#826</a>), then its integer conversion, digit
+writer and the entry points around the two format drivers
+(<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/867">#867</a>). The conversions and integer
+writer each ran more than a million times in the coverage boots those PRs describe.</p>
+<h3 id="containers-and-their-copies">Containers and their copies</h3>
+<p>The compiler emitted the engine's small container functions again for nearly every element type,
+so the executable holds hundreds of identical copies of each. Paleblood writes each once as a
+template and gives every copy a one-line replacement on it:</p>
+<ul>
+<li><strong><code>push_back</code></strong> on the engine's arrays: one template, <code>engine::array_push_back</code>, for every element
+  type, first used by the four 32-bit id array copies of <a href="../param/">Parameters</a>
+  (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1013">#1013</a>); then, by
+  <a href="https://github.com/FFwLo">@FFwLo</a>, 178 copies for 8-byte elements, 14 more 32-bit copies and the
+  engine list's insert and <code>push_back</code> (40 copies; #1047, #1049 and #1050, merged in
+  <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1062">#1062</a>). 63 of the 8-byte copies are
+  <code>verified</code> from their recordings (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1120">#1120</a>).</li>
+<li><strong>Reallocation</strong> of an 8-byte array to a new capacity: 159 copies on a new <code>engine::array_reserve</code>
+  template (#1058 by <a href="https://github.com/FFwLo">@FFwLo</a>, merged in
+  <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1077">#1077</a>), and the remaining 87 copies as
+  one <a href="../../families/">family</a> (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1145">#1145</a>).</li>
+<li><strong>Tree release</strong>: by <a href="https://github.com/Jeffiest">@Jeffiest</a>, the release of a whole subtree of
+  a set of 64-bit keys (#1074, merged in <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1084">#1084</a>)
+  and the 104 other copies of the same tree release (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1107">#1107</a>).</li>
+<li><strong>Havok's array</strong> reserve and reserve-more, which the physics constructors call, by
+  <a href="https://github.com/FFwLo">@FFwLo</a> (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1009">#1009</a>).</li>
+</ul>
+<h3 id="object-instances-and-fd4-handles">Object instances and FD4 handles</h3>
+<p>FD4 is the layer of the game's framework that most systems' objects are built on. Small functions
+around it are <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/967">#967</a>): the object
+and map instances' update request (each queues its id once), moving a registration into its
+owner's pointer array, and the FD4 handle check (nonzero, an index within range, the same
+generation) and order. All five are now <code>verified</code>
+(<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1001">#1001</a>,
+<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1053">#1053</a>,
+<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1076">#1076</a>); the handle's refresh is
+<abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr> (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1009">#1009</a>). The handle check
+is also matched byte for byte with the original compiler, together with the 8-byte nonzero test it
+calls, which is too short to <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> and stays original
+(<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/985">#985</a>).</p>
+<h3 id="the-engines-families">The engine's families</h3>
+<p>Since 16 November the engine also has function families of larger copies: functions emitted at
+many addresses that differ only in the distances to the same globals and functions (<em>relative
+shapes</em>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1099">#1099</a>). All are by
+<a href="https://github.com/FFwLo">@FFwLo</a> and <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr>: the static wide string initializer (439
+copies), the thread allocator's frees and allocations, delegate event posters and a deleting
+destructor (879 copies,
+<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1138">#1138</a>), seventeen deleting destructor
+shapes (3,196 copies, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1141">#1141</a>), a Scaleform
+destructor and its deleting twin (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1142">#1142</a>),
+guarded static vtable setters (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1144">#1144</a>),
+sixteen fillers of a fixed 15-entry slot table whose meaning is not traced yet
+(<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1147">#1147</a>), small member-releasing
+destructors (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1152">#1152</a>), twelve more small
+relative families (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1155">#1155</a>) and member-destroying destructors (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1156">#1156</a>, 227 copies). The
+<a href="../../families/">Function families</a> page explains how they are found and proved.</p>
+<details class="evidence">
+<summary>How the newer engine replacements were <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></summary>
+<p>Each replacement is readable C++ in <code>game/engine/</code> with an edge-case generator beside it
+(invented heaps, strings, arrays and handles, never game files) and passes <code>verify.py</code> against
+the original; the PRs list their case and mutant counts. Copies <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> on one template are
+each run against their own original. The functions named <code>verified</code> above also pass on inputs
+recorded in the game, and an independent review approved each one (rows in
+<code>symbols/reviews.csv</code>). Everything else on this page is <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr> only: not yet checked on
+recordings, so not <code>verified</code>.</p>
+</details>
 <h3 id="vector-and-rotation-math">Vector and rotation math</h3>
 <p>The wind update of <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/568">#568</a> (see <a href="../render/#wind-on-models">Render</a>) inlines the engine's four-lane
 vector math, now in <code>game/engine/rotation_math.h</code>: a sine and cosine polynomial evaluated on four
@@ -592,6 +674,16 @@ values at once, a rotation quaternion built from half-angles, the rotation matri
 a vector length refined with a Newton step. <code>vector_operations.h</code> gained additions and
 multiplications that keep the original's operand order, so NaN results carry the same payloads.
 They are helpers of that replacement, not separate functions of the executable.</p>
+<p>Other systems' replacements added more such headers, each wrapping the exact instruction the
+original uses so every bit of the result matches: lane-wise minimum and maximum for the physics
+instance helpers (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/796">#796</a>), an octant-based
+sine and cosine for the camera's axis-angle quaternion (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/839">#839</a>),
+the reciprocal estimate (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/885">#885</a>), lane
+comparison masks and lane moves for the AI's sight test and debug display
+(<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/958">#958</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/972">#972</a>),
+and 64-bit float truncation (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1109">#1109</a>).
+DLNew's release of a heap buffer, which the engine inlines wherever an object frees memory it was
+handed, is a shared helper too (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/906">#906</a>).</p>
 <h2 id="key-functions">Key functions</h2>
 <div class="wk-table is-stack"><table class="wk-stack">
 <thead>

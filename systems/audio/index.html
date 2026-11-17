@@ -398,7 +398,7 @@
       <span class="wk-stat-track" role="img" aria-label="0.1658 percent of target code bytes verified">
         <span class="wk-stat-fill" style="width:0.1658%"></span>
       </span>
-      <span class="wk-progress-foot">0.1658% of code bytes verified · 1,368 replaced</span>
+      <span class="wk-progress-foot">0.1658% of code bytes verified · 1,369 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -436,29 +436,11 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 6, 2026 21:52:44 UTC">November 6, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 17, 2026 15:03:47 UTC">November 17, 2026</span></p>
       
-      
-      
-      <aside class="wk-freshness" role="note">
-        <p><b>Not yet updated for 3 merged changes.</b>
-        This page was last checked against Paleblood
-        <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/cf669283bed4b9a9f36e72ef1ebe28bf037d1a6f"><code>cf66928</code></a>;
-        these pull requests changed what it describes since:</p>
-        <ul>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1132">#1132</a> audio: replace FMOD output thread stop callback</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1101">#1101</a> audio: replace the FMOD output-label callback</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1148">#1148</a> audio: reconstruct FMOD Thread stop helper</li>
-          
-          
-        </ul>
-      </aside>
       
       <h1 id="audio">Audio</h1>
-<p class="wk-lede">The audio system covers sound playback, mixing and music. The game uses the FMOD sound engine; the first of its functions are mapped.</p>
+<p class="wk-lede">The audio system covers sound playback, mixing and music. The game uses the FMOD sound engine; the first of its functions are mapped: how FMOD's threads are placed, started and stopped, and the callbacks that describe the console's audio output to it.</p>
 
 <div class="wk-glance">
 <p><span class="wk-label">At a glance</span></p>
@@ -466,7 +448,7 @@
 <dt>Scope</dt>
 <dd>Sound playback, mixing, music.</dd>
 <dt>Verified</dt>
-<dd>Three FMOD functions are <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr> against constructed cases: the thread affinity lookup (<code>0x0111a8c0</code>) and two output callbacks (<code>0x0111b060</code>, <code>0x0111b0b0</code>).</dd>
+<dd>Seven FMOD functions are <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> and <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr> against constructed cases: the thread affinity lookup, the thread object's initialisation and stop, and four output callbacks. Two string copies FMOD uses are <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>.</dd>
 <dt>Open</dt>
 <dd>Playback, mixing and music themselves.</dd>
 </dl>
@@ -479,6 +461,23 @@ thread may use. <code>audio_fmod_thread_affinity_lookup</code> (<code>0x0111a8c0
 thread's name against eight known FMOD thread names in a fixed order (the non-blocking one by
 its first 23 characters only) and copies the matching slot's settings; for any other name it
 changes nothing and returns 0.</p>
+<p>Each of those threads is an FMOD <em>Thread</em> object, and two of its member functions are <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr>,
+both by <a href="https://github.com/evill33t">@evill33t</a>:</p>
+<ul>
+<li><strong>Initialising a thread object.</strong> <code>audio_fmod_initialize_thread</code> (<code>0x011183b0</code>) installs the
+  object's vtable and clears the eight fields that track a running thread: its native handle, the
+  running flag, its entry point and argument, a callback delay, the two semaphores used to start
+  and wake it, and one field whose purpose is unknown. The thread's name and its service context
+  are kept, and nothing else in the object is touched
+  (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1161">#1161</a>, 84 cases).</li>
+<li><strong>Stopping a thread.</strong> <code>audio_fmod_stop_thread</code> (<code>0x011185a0</code>) does nothing for a thread that is
+  not running. Otherwise it clears the running flag, wakes the thread if it has a wake-up
+  semaphore, waits on its start-up semaphore, and deletes both; any semaphore error is returned at
+  once. Then it tells an optional listener that the thread stopped (passing its handle and name),
+  clears the handle and releases any extra storage the thread held. It does not wait for the
+  native thread to exit: the call that looks like it would do that returns zero and does nothing
+  (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1148">#1148</a>, 152 cases).</li>
+</ul>
 <details class="evidence">
 <summary>How the lookup was <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></summary>
 <p>By <a href="https://github.com/evill33t">@evill33t</a> in #106, brought up to date with <code>main</code> and merged
@@ -490,19 +489,34 @@ semaphore wrappers) are FMOD's too; they are described on the <a href="../engine
 </details>
 <h3 id="fmods-output-device">FMOD's output device</h3>
 <p>FMOD learns about the <abbr title="PlayStation 4: an AMD x86-64 CPU (Jaguar) running Orbis OS, a FreeBSD derivative.">PS4</abbr>'s audio output through a table of callbacks the game installs (at
-<code>0x0111aed0</code>). Two of them are mapped and <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr>:</p>
+<code>0x0111aed0</code>). Four of them are mapped and <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr>:</p>
 <ul>
 <li><code>audio_fmod_output_driver_count</code> (<code>0x0111b060</code>) reports one output driver.</li>
 <li><code>audio_fmod_output_defaults</code> (<code>0x0111b0b0</code>) fills in the output's defaults, each only when FMOD
   asked for it: a setting word, then what looks like a 48 kHz sample rate and FMOD's 5.1 speaker
   mode. Those two meanings are hypotheses from the values, not yet confirmed from FMOD's use of
   them.</li>
+<li><code>audio_fmod_copy_output_label</code> (<code>0x0111b070</code>) copies the output's fixed name into FMOD's buffer:
+  at most one character less than the buffer's size, then the terminating zero. A missing buffer
+  or a size of zero or less is left alone (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1101">#1101</a>,
+  291 cases).</li>
+<li><code>audio_fmod_stop_output_threads</code> (<code>0x0111b1f0</code>) stops the output's two threads in order: the
+  audio-output thread first, then the mixer thread, only if the first stop succeeded. It returns
+  the thread stop's result (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1132">#1132</a>,
+  181 cases).</li>
 </ul>
 <details class="evidence">
 <summary>How the callbacks were <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></summary>
 <p>By <a href="https://github.com/evill33t">@evill33t</a> in <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/114">#114</a>: both match the original on
 constructed <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr> (every combination of present and missing outputs), and an independent
-review approved it. They are <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr>, not yet <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> against recorded game runs.</p>
+review approved it. They are <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr>, not yet <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> against recorded game runs.
+The label copy, the output-thread stop and the two thread-object functions
+(<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1101">#1101</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1132">#1132</a>,
+<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1148">#1148</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1161">#1161</a>, all by
+<a href="https://github.com/evill33t">@evill33t</a>) were compared with the original on the synthetic
+cases counted above, built with two compilers, and deliberately broken versions were
+rejected. They are <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr> too; thread start-up, concurrency and real playback are
+outside those cases.</p>
 </details>
 <h3 id="what-the-system-sees">What the system sees</h3>
 <p>Paleblood's <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> answers the console's audio calls, which shows what the game asks of them
@@ -531,6 +545,13 @@ review approved it. They are <abbr title="A replaced function that matches the o
 </tr>
 </thead>
 <tbody>
+<tr>
+<td data-label="Address"><code>0x011183b0</code></td>
+<td style="text-align: right;" data-label="Size">98</td>
+<td data-label="Name"><code>audio_fmod_initialize_thread</code></td>
+<td data-label="Status"><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></td>
+<td data-label="Notes">FMOD Thread initialization; publish the relocated vtable and clear selected fields; preserve all other bytes</td>
+</tr>
 <tr>
 <td data-label="Address"><code>0x011185a0</code></td>
 <td style="text-align: right;" data-label="Size">269</td>
@@ -598,6 +619,8 @@ replacement or a mod would change, and the risk.</p>
 <ul>
 <li>FMOD's mixing, music and sound banks: beyond the functions above, this system has not been
   studied yet.</li>
+<li>The full layout of FMOD's Thread object and its virtual methods, the meaning of the stop
+  listener's arguments, and the thread stop's result codes beyond the normal 0 and 33.</li>
 <li>Whether the speaker-mode value in the output defaults is 5.1, given that the game opens
   eight-channel ports.</li>
 </ul>

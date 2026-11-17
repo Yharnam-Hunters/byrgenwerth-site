@@ -398,7 +398,7 @@
       <span class="wk-stat-track" role="img" aria-label="0.1658 percent of target code bytes verified">
         <span class="wk-stat-fill" style="width:0.1658%"></span>
       </span>
-      <span class="wk-progress-foot">0.1658% of code bytes verified · 1,368 replaced</span>
+      <span class="wk-progress-foot">0.1658% of code bytes verified · 1,369 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -436,27 +436,11 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 28, 2026 05:15:03 UTC">October 28, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 17, 2026 15:03:47 UTC">November 17, 2026</span></p>
       
-      
-      
-      <aside class="wk-freshness" role="note">
-        <p><b>Not yet updated for 2 merged changes.</b>
-        This page was last checked against Paleblood
-        <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/cf669283bed4b9a9f36e72ef1ebe28bf037d1a6f"><code>cf66928</code></a>;
-        these pull requests changed what it describes since:</p>
-        <ul>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/796">#796</a> physics: replace the instance constructor's six helpers</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/930">#930</a> physics: replace the instance's id reserve, controller and body set constructors</li>
-          
-          
-        </ul>
-      </aside>
       
       <h1 id="physics">Physics</h1>
-<p class="wk-lede">The game's rigid bodies live in one physics world: shared tables of bodies, motions and constraints that other objects index into, and listeners that hear when a body changes.</p>
+<p class="wk-lede">The game's rigid bodies live in one physics world: shared tables of bodies, motions and constraints that other objects index into, and listeners that hear when a body changes. The constructor that builds a physics instance is verified, and the nine helpers it calls are now replaced too.</p>
 
 <div class="wk-glance">
 <p><span class="wk-label">At a glance</span></p>
@@ -465,6 +449,8 @@
 <dd>The physics world reached through the physics manager, and the objects that own bodies in it.</dd>
 <dt>Verified</dt>
 <dd>The physics-instance constructor <code>physics_instance_construct_01c0c2b0</code> (<code>0x01c0c2b0</code>).</dd>
+<dt>Edge-verified</dt>
+<dd>All nine helpers the constructor calls: the body set, controller, tracker and shape constructors, the shape bounds, the frame-to-transform step, the root body's ragdoll update and the id-vector growth.</dd>
 <dt>Fixed step</dt>
 <dd>An instance's controller steps at 1/30 s; the 60 FPS patches and <code>BB_TARGET_FPS=60</code> make it 1/60 s.</dd>
 <dt>Open</dt>
@@ -538,6 +524,42 @@ this:</p>
 </ol>
 <p>It is a compact way to store floats at half the size, and an example of why a replacement has to
 reproduce the exact instructions: the truncation works on the float's bits, not its value.</p>
+<h3 id="the-constructors-helpers">The constructor's helpers</h3>
+<p>The constructor was <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> while it still called nine helpers as original code. All nine are now
+<abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> and <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr>, by <a href="https://github.com/FFwLo">@FFwLo</a>. Many of the objects are Havok's
+(the physics middleware the game uses), with its reference counting and growable <code>hkArray</code> lists.</p>
+<ul>
+<li><strong>The body set</strong> (<code>0x00ae8700</code>) is built from a source description: it keeps a reference to the
+  source's shape set and copies its list of 32-bit body indices into a buffer from the shape heap.
+  Havok only counts references on objects that record a size, and the count wraps within 16 bits.</li>
+<li><strong>The controller</strong> (<code>0x00ae3fc0</code>) is built over the body set: it empties its lists, runs its
+  set-up with the set and the world, and appends the caller's 0x30-byte parameter block.</li>
+<li><strong>Growing an id list</strong> (<code>0x02bc1ca0</code>) moves a vector of 32-bit ids into a larger buffer from its
+  heap and frees the old one; many systems use it, not only physics. A failed allocation goes
+  through the engine's report and then carries on with no buffer, as the original does
+  (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/930">#930</a> for these three).</li>
+<li><strong>The tracker</strong> (<code>0x00ae6d00</code>, with its set-up cleared by <code>0x00ae6dc0</code>) is a Havok object that
+  keeps one 32-bit entry per shape flag, each starting at 1.</li>
+<li><strong>The shape object</strong> (<code>0x00ac46a0</code>) keeps the shape set, empties its four lists and goes on to
+  fill them; <strong>the shape summary</strong> (<code>0x00ac5e00</code>) works out the smallest box around each shape
+  entry's first row. With no entries the box stays inside out (minimum at the largest float,
+  maximum at its negative), and a not-a-number value in an entry wins, as in the original.</li>
+<li><strong>The transform from a frame</strong> (<code>0x0083d6d0</code>) turns three axes and a position into a transform:
+  a rotation built from the axes, the position, and a scale of 1.</li>
+<li><strong>The root update</strong> (<code>0x00ae6180</code>) is the ragdoll update of the root body. The constructor calls
+  it last, and two other systems call it too: it builds a pose, applies it with a weight, and
+  frees it (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/796">#796</a> for these six).</li>
+</ul>
+<details class="evidence">
+<summary>How the helpers were <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></summary>
+<p>Each helper was compared with the original on constructed cases in pattern-filled buffers, so
+every byte a function writes or leaves alone is checked, with the functions it calls stubbed
+and their arguments recorded: 3 to 16 cases each
+(<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/796">#796</a>,
+<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/930">#930</a>). The id-list growth also
+passes its 11 cases recorded from a boot; the others are not reached in the boot recordings.
+All nine are <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr>, not <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>.</p>
+</details>
 <h2 id="key-functions">Key functions</h2>
 <div class="wk-table is-stack"><table class="wk-stack">
 <thead>
@@ -716,7 +738,8 @@ reproduce the exact instructions: the truncation works on the float's bits, not 
 </ul>
 <h2 id="open-questions">Open questions</h2>
 <ul>
-<li>What kind of object is a physics instance: ragdolls, breakables, or both?</li>
+<li>What kind of object is a physics instance: ragdolls, breakables, or both? The root body's
+  ragdoll update in its last step suggests ragdolls at least, but that is not confirmed.</li>
 <li>What do the physics manager's two special modes mean? Both are on while the clinic loads.</li>
 </ul>
       

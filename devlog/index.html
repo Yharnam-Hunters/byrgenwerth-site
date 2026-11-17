@@ -398,7 +398,7 @@
       <span class="wk-stat-track" role="img" aria-label="0.1658 percent of target code bytes verified">
         <span class="wk-stat-fill" style="width:0.1658%"></span>
       </span>
-      <span class="wk-progress-foot">0.1658% of code bytes verified · 1,368 replaced</span>
+      <span class="wk-progress-foot">0.1658% of code bytes verified · 1,369 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -423,11 +423,21 @@ land, in six standard sections. Written in plain English: if a term is new, chec
     
     <li class="wk-timeline-item">
       <div class="wk-timeline-card">
-        <time datetime="2026-11-09 00:00:00+00:00">2026-11-09</time>
-        <div class="wk-timeline-summary"><h2 id="week-of-9-november-2026-past-the-title-through-character-creation-into-the-clinic"><a class="toclink" href="2026/11/09/week-of-9-november-2026-past-the-title-through-character-creation-into-the-clinic/">Week of 9 November 2026: past the title, through character creation, into the clinic</a></h2>
-<p>In local runs with scripted input the game now gets past its title: save data, the main menu, the Brightness and Controls screens, the opening cinematic in 3D, and character creation, where the 3D preview of the hunter now draws lit and in the right colours; the Contract screen went from about 9 to about 29 fps, the contract is named and finalised, and from the game's own save a boot continues into Iosefka's Clinic, which draws through the game's own post-processing and at the right brightness, at about 6 fps for now. The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> checklist is done (all eight issues closed), evill33t's Metal executor grows on macOS, function families replace thousands of tiny functions at once (a large share by count, a very small one by bytes), and every function is tagged with its likely source file. Over 18,000 family members and 93 hand-written functions became <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>, the family members by byte-exact matching and the others on inputs recorded in the game, and the engine's heaps, the resource <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> and the parameter tables were <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> in bulk. Work by @EzequielRindello, @BluePinetree, @evill33t, @FFwLo and a lead from @sweetbbak. This post grows through the week.</p>
+        <time datetime="2026-11-16 00:00:00+00:00">2026-11-16</time>
+        <div class="wk-timeline-summary"><h2 id="week-of-16-november-2026-thousands-of-copies-join-function-families"><a class="toclink" href="2026/11/16/week-of-16-november-2026-thousands-of-copies-join-function-families/">Week of 16 November 2026: thousands of copies join function families</a></h2>
+<p>Contributor @FFwLo grouped thousands more copies of small engine functions into families, including families of functions that differ only in the addresses they reach, and @evill33t continued FMOD's thread code. The clinic's first encounter, reached last week, is still the furthest point in local runs, at about 11 fps.</p>
 </div>
-        <a class="wk-card-go" href="2026/11/09/week-of-9-november-2026-past-the-title-through-character-creation-into-the-clinic/">Read the post</a>
+        <a class="wk-card-go" href="2026/11/16/week-of-16-november-2026-thousands-of-copies-join-function-families/">Read the post</a>
+      </div>
+    </li>
+    
+    <li class="wk-timeline-item">
+      <div class="wk-timeline-card">
+        <time datetime="2026-11-09 00:00:00+00:00">2026-11-09</time>
+        <div class="wk-timeline-summary"><h2 id="week-of-9-november-2026-through-character-creation-and-the-clinic-to-the-first-beast-and-the-hunters-dream"><a class="toclink" href="2026/11/09/week-of-9-november-2026-through-character-creation-and-the-clinic-to-the-first-beast-and-the-hunters-dream/">Week of 9 November 2026: through character creation and the clinic to the first beast and the Hunter's Dream</a></h2>
+<p>In local runs with scripted input the game now gets past its title: save data, the main menu, the Brightness and Controls screens, the opening cinematic in 3D and character creation, then into Iosefka's Clinic, which draws through the game's own post-processing and at the right brightness; by 14 November the clinic's first encounter runs with no stop, from the walk up to the beast and its first attack to "YOU DIED" and waking in the Hunter's Dream, and the clinic went from about 6 to about 11 fps. The <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> checklist is done (all eight issues closed), evill33t's Metal executor grows on macOS, function families replace thousands of tiny functions at once (a large share by count, a very small one by bytes), and every function is tagged with its likely source file. Over 18,000 family members and 264 hand-written functions became <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>, the family members by byte-exact matching and the others on inputs recorded in the game, including the clinic beast's sight and perception; its hearing is decompiled and <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr>. Work by @EzequielRindello, @BluePinetree, @evill33t, @FFwLo, @Jeffiest and a lead from @sweetbbak.</p>
+</div>
+        <a class="wk-card-go" href="2026/11/09/week-of-9-november-2026-through-character-creation-and-the-clinic-to-the-first-beast-and-the-hunters-dream/">Read the post</a>
       </div>
     </li>
     

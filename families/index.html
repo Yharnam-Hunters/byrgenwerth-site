@@ -398,7 +398,7 @@
       <span class="wk-stat-track" role="img" aria-label="0.1658 percent of target code bytes verified">
         <span class="wk-stat-fill" style="width:0.1658%"></span>
       </span>
-      <span class="wk-progress-foot">0.1658% of code bytes verified · 1,368 replaced</span>
+      <span class="wk-progress-foot">0.1658% of code bytes verified · 1,369 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -423,6 +423,8 @@
           
           <li><a href="#how-a-family-is-proved" class="wk-toc-link">How a family is proved</a></li>
           
+          <li><a href="#the-families-added-on-15-and-16-november" class="wk-toc-link">The families added on 15 and 16 November</a></li>
+          
           <li><a href="#the-families-in-counts-and-bytes" class="wk-toc-link">The families, in counts and bytes</a></li>
           
           <li><a href="#what-the-families-do-not-tell-you" class="wk-toc-link">What the families do not tell you</a></li>
@@ -436,45 +438,23 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 13, 2026 14:54:55 UTC">November 13, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 17, 2026 15:03:47 UTC">November 17, 2026</span></p>
       
-      
-      
-      <aside class="wk-freshness" role="note">
-        <p><b>Not yet updated for 5 merged changes.</b>
-        This page was last checked against Paleblood
-        <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/cf669283bed4b9a9f36e72ef1ebe28bf037d1a6f"><code>cf66928</code></a>;
-        these pull requests changed what it describes since:</p>
-        <ul>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1127">#1127</a> leaf: tagging constructors, reads through a pointer and small records as families (163 copies)</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1121">#1121</a> leaf: a sixteen-byte key match and two list walks as families (75 copies)</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1115">#1115</a> leaf: five small fixed-layout families (117 copies)</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1106">#1106</a> leaf: record initializers as a family (528 copies)</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1108">#1108</a> leaf: far field getters and setters as families ({d32}, 767 copies)</li>
-          
-          
-        </ul>
-      </aside>
       
       <h1 id="function-families">Function families</h1>
-<p class="wk-lede">Tens of thousands of the game's functions are tiny copies of the same few bytes. A family replaces each such shape once, with one readable body, and proves it on every copy. Families move the function count far more than the byte count, so this page always shows both.</p>
+<p class="wk-lede">Tens of thousands of the game's functions are copies of the same code: most are a few bytes long, and some are larger functions the compiler emitted again at hundreds of addresses. A family replaces each such shape once, with one readable body, and proves it on every copy. Families move the function count far more than the byte count, so this page always shows both.</p>
 
 <div class="wk-glance">
 <p><span class="wk-label">At a glance</span></p>
 <dl>
 <dt>What</dt>
-<dd>Empty methods, functions that return 0 or a fixed number, getters and setters of one field: each family is one exact byte shape, and every function with exactly that shape is a member.</dd>
+<dd>Empty methods, functions that return 0 or a fixed number, getters and setters of one field, record initializers, and since 16 November larger copies such as deleting destructors and static initializers: each family is one shape, and every function with exactly that shape is a member.</dd>
 <dt>Proof</dt>
-<dd>Every member runs its <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr> on the original and on the replacement, compared as strictly as any hand-written function, and deliberately wrong versions must fail. Since 12 November members are also <em><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></em> by byte-exact matching: each member compiles byte for byte from the family's own source, and an independent family review approves it (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/688">#688</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/691">#691</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/703">#703</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/725">#725</a>).</dd>
+<dd>Every member runs its <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr> on the original and on the replacement, compared as strictly as any hand-written function, and deliberately wrong versions must fail. Since 12 November members are also <em><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></em> by byte-exact matching: each member compiles byte for byte from the family's own source, and an independent family review approves it (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/688">#688</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/691">#691</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/703">#703</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/725">#725</a>). The first nineteen families are <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> this way; the families added since 15 November are <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr>, and 23 of them have byte-exact matching records waiting for their family reviews (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1165">#1165</a>).</dd>
 <dt>Honest numbers</dt>
 <dd>Members are a large share of the functions but a very small share of the code's bytes (the table below). Most of the game's code is still ahead.</dd>
 <dt>Source</dt>
-<dd>Paleblood's <code>docs/FAMILIES.md</code>, merged in <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/515">#515</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/527">#527</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/529">#529</a> and <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/531">#531</a> (10 November 2026).</dd>
+<dd>Paleblood's <code>docs/FAMILIES.md</code>, merged in <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/515">#515</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/527">#527</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/529">#529</a> and <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/531">#531</a> (10 November 2026), with relative shapes from <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1099">#1099</a> (16 November).</dd>
 </dl>
 </div>
 <h2 id="why-the-executable-is-full-of-tiny-functions">Why the executable is full of tiny functions</h2>
@@ -488,7 +468,8 @@ function total, but each is only one to a few bytes long.</p>
 game's call graph full of unreplaced leaves. A family does them all at once.</p>
 <h2 id="what-makes-a-function-a-member">What makes a function a member</h2>
 <p>A family is defined by its exact bytes, with at most one parameter (the field offset, or the
-constant returned). Paleblood's <code>tools/family_scan.py</code> reads your own copy of the executable and
+constant returned). Since <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1108">#1108</a> the field
+offset may also be a 32-bit one, for fields further than 0x80 bytes into an object. Paleblood's <code>tools/family_scan.py</code> reads your own copy of the executable and
 takes a function only when:</p>
 <ul>
 <li>its bytes are exactly the family's shape, from its start to its exported end;</li>
@@ -498,9 +479,25 @@ takes a function only when:</p>
 <li>nothing patches it: no relocation, no community frame-rate patch line, no other replacement or
   observation <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> names it.</li>
 </ul>
-<p>Shapes are kept deliberately narrow. A body that reads a global, calls anything, or writes only
-part of a register (which would keep the caller's upper bytes) is not a family: no synthetic case
-could stand in for the value it depends on.</p>
+<p>Shapes are kept deliberately narrow. A body that reads a global, calls a fixed function, or
+writes only part of a register (which would keep the caller's upper bytes) is not an exact-byte
+family: no synthetic case could stand in for the value it depends on. Calls through the object's
+own table of virtual functions are allowed, because the case builds that table itself
+(<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1135">#1135</a>).</p>
+<h3 id="larger-copies-relative-shapes">Larger copies: relative shapes</h3>
+<p>Some larger functions were also emitted at many addresses: an inline function's guarded static
+initializer, or a deleting destructor that calls the same destructor and then <code>operator delete</code>.
+Their copies are the same code, but because each sits at a different address, the distances in
+their calls and global reads differ, so their bytes are not identical.
+<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1099">#1099</a>, by
+<a href="https://github.com/FFwLo">@FFwLo</a>, lets a family's shape say "here is a distance that must reach
+this exact global or function". A copy is a member only when every other byte matches and every
+such distance, measured from the copy's own address, reaches the same target, so every member is
+the same code using the same globals and functions. Its cases then control those globals and stub
+those calls, just as for a hand-written replacement. A relative shape may also carry one parameter
+(a class size, an event kind) since <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1138">#1138</a>.
+Members of a relative family are as long as the function they copy, so unlike the tiny families
+they are large enough for the recorder's <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr> and can reach <code>verified</code> through in-game recordings.</p>
 <p>The member count and bytes are written down before the member table is generated, and the
 generator refuses a table that differs, so a family cannot quietly grow.</p>
 <h2 id="how-a-family-is-proved">How a family is proved</h2>
@@ -520,10 +517,54 @@ matching source and records the result per member, the family's independent revi
 member, and <code>tools/promote.py --families</code> moves each member with all three to <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/688">#688</a>).
 On 12 November that <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> 4,426 field getters and setters (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/691">#691</a>), 3,777 constant getters and
 member addresses (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/703">#703</a>) and 9,816 empty, zero and identity functions (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/725">#725</a>).</p>
+<h2 id="the-families-added-on-15-and-16-november">The families added on 15 and 16 November</h2>
+<p>All by <a href="https://github.com/FFwLo">@FFwLo</a>, and all <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr> (none <code>verified</code> yet):</p>
+<ul>
+<li><strong>More small leaf shapes</strong>: record initializers that clear fifteen words and store their owner
+  (528 copies, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1106">#1106</a>); far field getters
+  and setters (767 copies, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1108">#1108</a>);
+  setters that store a fixed 0, 1 or all-bits value (243 copies, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1112">#1112</a>);
+  float, double and sign-extending field accessors (150 copies, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1113">#1113</a>);
+  small fixed layouts such as an atomic counter increment and record clears (117 copies,
+  <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1115">#1115</a>); a sixteen-byte key match and two
+  list walks (75 copies, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1121">#1121</a>); tagging
+  constructors, reads through a pointer and bit-field records (163 copies,
+  <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1127">#1127</a>); and string writers, toggles,
+  string resets and a tree erase that call their objects' virtual functions (276 copies,
+  <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1135">#1135</a>).</li>
+<li><strong>Engine relative families</strong>: the static wide string initializer (439 copies,
+  <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1099">#1099</a>); the thread allocator's frees and
+  allocations, delegate event posters and forwarders (879 copies,
+  <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1138">#1138</a>); seventeen deleting destructor
+  shapes (3,196 copies, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1141">#1141</a>); a Scaleform
+  destructor and its deleting twin (464 copies, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1142">#1142</a>);
+  guarded static vtable setters (1,131 copies, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1144">#1144</a>);
+  the remaining copies of the 8-byte array reallocation (87 copies,
+  <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1145">#1145</a>); sixteen fillers of a fixed
+  15-entry slot table (443 copies, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1147">#1147</a>);
+  small member-releasing destructors (182 copies, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1152">#1152</a>);
+  twelve more small relative families (265 copies, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1155">#1155</a>), and member-destroying destructors (227 copies, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1156">#1156</a>).
+  See <a href="../systems/engine/#the-engines-families">Engine</a>.</li>
+<li><strong>Menu</strong>: the release of a held named resource, on two object layouts (82 copies,
+  <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1151">#1151</a>); see <a href="../systems/menu/">Menu</a>.</li>
+</ul>
+<p>The copy counts are the ones each PR states. What many of these copies belong to (which class,
+which table) is not known from their code alone, so several families are named after what they do
+or the address they reach.</p>
+<details class="evidence">
+<summary>Matching records for the new families</summary>
+<p><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1165">#1165</a>, by
+<a href="https://github.com/FFwLo">@FFwLo</a>, adds byte-exact matching records for 23 of the new leaf
+families (1,538 copies): each member compiles to its exact bytes from the family's generated
+source with the original compiler and flags, with every reference checked. Six other families
+with matching templates do not compile exactly yet and have no record. The records change no
+status: each member still needs its family's independent review before it can be promoted to
+<code>verified</code>. Relative families have no matching template; they take the recorded path instead.</p>
+</details>
 <h2 id="the-families-in-counts-and-bytes">The families, in counts and bytes</h2>
 <!-- Generated by tools/sync_progress.py from symbols/families.csv and symbols/families/ in Paleblood main. -->
 
-<div class="wk-table"><table>
+<div class="wk-table is-stack"><table class="wk-stack">
 <thead>
 <tr>
 <th>Family</th>
@@ -536,388 +577,1252 @@ member addresses (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/703
 </thead>
 <tbody>
 <tr>
-<td><code>returns_nothing</code></td>
-<td><code>c3</code></td>
-<td style="text-align: right;">5,040</td>
-<td style="text-align: right;">5,040</td>
-<td style="text-align: right;">5,040</td>
-<td style="text-align: right;">5,040</td>
+<td data-label="Family"><code>returns_nothing</code></td>
+<td data-label="Shape"><code>c3</code></td>
+<td style="text-align: right;" data-label="Members">5,040</td>
+<td style="text-align: right;" data-label="Bytes">5,040</td>
+<td style="text-align: right;" data-label="Edge-verified">5,040</td>
+<td style="text-align: right;" data-label="Verified">5,040</td>
 </tr>
 <tr>
-<td><code>returns_zero</code></td>
-<td><code>31 c0 c3</code></td>
-<td style="text-align: right;">4,480</td>
-<td style="text-align: right;">13,440</td>
-<td style="text-align: right;">4,480</td>
-<td style="text-align: right;">4,480</td>
+<td data-label="Family"><code>returns_zero</code></td>
+<td data-label="Shape"><code>31 c0 c3</code></td>
+<td style="text-align: right;" data-label="Members">4,480</td>
+<td style="text-align: right;" data-label="Bytes">13,440</td>
+<td style="text-align: right;" data-label="Edge-verified">4,480</td>
+<td style="text-align: right;" data-label="Verified">4,480</td>
 </tr>
 <tr>
-<td><code>zeroes_record_and_stores_first_argument</code></td>
-<td><code>48 c7 46 70 00 00 00 00 48 c7 46 68 00 00 00 00 48 c7 46 60 00 00 00 00 48 c7 46 58 00 00 00 00 48 c7 46 50 00 00 00 00 48 c7 46 48 00 00 00 00 48 c7 46 40 00 00 00 00 48 c7 46 38 00 00 00 00 48 c7 46 30 00 00 00 00 48 c7 46 28 00 00 00 00 48 c7 46 20 00 00 00 00 48 c7 46 18 00 00 00 00 48 c7 46 10 00 00 00 00 48 c7 46 08 00 00 00 00 48 c7 06 00 00 00 00 48 89 7e 78 31 c0 c3</code></td>
-<td style="text-align: right;">528</td>
-<td style="text-align: right;">66,528</td>
-<td style="text-align: right;">528</td>
-<td style="text-align: right;">0</td>
+<td data-label="Family"><code>zeroes_record_and_stores_first_argument</code></td>
+<td data-label="Shape"><code>48 c7 46 70 00 00 00 00 48 c7 46 68 00 00 00 00 48 c7 46 60 00 00 00 00 48 c7 46 58 00 00 00 00 48 c7 46 50 00 00 00 00 48 c7 46 48 00 00 00 00 48 c7 46 40 00 00 00 00 48 c7 46 38 00 00 00 00 48 c7 46 30 00 00 00 00 48 c7 46 28 00 00 00 00 48 c7 46 20 00 00 00 00 48 c7 46 18 00 00 00 00 48 c7 46 10 00 00 00 00 48 c7 46 08 00 00 00 00 48 c7 06 00 00 00 00 48 89 7e 78 31 c0 c3</code></td>
+<td style="text-align: right;" data-label="Members">528</td>
+<td style="text-align: right;" data-label="Bytes">66,528</td>
+<td style="text-align: right;" data-label="Edge-verified">528</td>
+<td style="text-align: right;" data-label="Verified">0</td>
 </tr>
 <tr>
-<td><code>returns_constant</code></td>
-<td><code>b8 {u32} c3</code></td>
-<td style="text-align: right;">2,537</td>
-<td style="text-align: right;">15,222</td>
-<td style="text-align: right;">2,537</td>
-<td style="text-align: right;">2,537</td>
+<td data-label="Family"><code>returns_constant</code></td>
+<td data-label="Shape"><code>b8 {u32} c3</code></td>
+<td style="text-align: right;" data-label="Members">2,537</td>
+<td style="text-align: right;" data-label="Bytes">15,222</td>
+<td style="text-align: right;" data-label="Edge-verified">2,537</td>
+<td style="text-align: right;" data-label="Verified">2,537</td>
 </tr>
 <tr>
-<td><code>matches_sixteen_byte_key</code></td>
-<td><code>31 c0 83 fa 10 75 25 48 8b 06 48 8b 4e 08 48 8b 77 18 48 3b 4f 20 0f 94 c1 48 85 c0 0f 94 c2 08 ca 48 39 f0 0f 94 c0 20 d0 0f b6 c0 c3</code></td>
-<td style="text-align: right;">43</td>
-<td style="text-align: right;">1,935</td>
-<td style="text-align: right;">43</td>
-<td style="text-align: right;">0</td>
+<td data-label="Family"><code>matches_sixteen_byte_key</code></td>
+<td data-label="Shape"><code>31 c0 83 fa 10 75 25 48 8b 06 48 8b 4e 08 48 8b 77 18 48 3b 4f 20 0f 94 c1 48 85 c0 0f 94 c2 08 ca 48 39 f0 0f 94 c0 20 d0 0f b6 c0 c3</code></td>
+<td style="text-align: right;" data-label="Members">43</td>
+<td style="text-align: right;" data-label="Bytes">1,935</td>
+<td style="text-align: right;" data-label="Edge-verified">43</td>
+<td style="text-align: right;" data-label="Verified">0</td>
 </tr>
 <tr>
-<td><code>counts_list_nodes</code></td>
-<td><code>48 8b 4f 30 31 c0 48 85 c9 74 10 31 c0 0f 1f 00 ff c0 48 8b 49 10 48 85 c9 75 f5 c3</code></td>
-<td style="text-align: right;">16</td>
-<td style="text-align: right;">448</td>
-<td style="text-align: right;">16</td>
-<td style="text-align: right;">0</td>
+<td data-label="Family"><code>counts_list_nodes</code></td>
+<td data-label="Shape"><code>48 8b 4f 30 31 c0 48 85 c9 74 10 31 c0 0f 1f 00 ff c0 48 8b 49 10 48 85 c9 75 f5 c3</code></td>
+<td style="text-align: right;" data-label="Members">16</td>
+<td style="text-align: right;" data-label="Bytes">448</td>
+<td style="text-align: right;" data-label="Edge-verified">16</td>
+<td style="text-align: right;" data-label="Verified">0</td>
 </tr>
 <tr>
-<td><code>reads_nth_list_node_dword</code></td>
-<td><code>48 8b 4f 30 31 c0 48 85 c9 74 12 ff c6 0f 1f 00 ff ce 74 0a 48 8b 49 10 48 85 c9 75 f3 c3 8b 41 18 c3</code></td>
-<td style="text-align: right;">16</td>
-<td style="text-align: right;">544</td>
-<td style="text-align: right;">16</td>
-<td style="text-align: right;">0</td>
+<td data-label="Family"><code>reads_nth_list_node_dword</code></td>
+<td data-label="Shape"><code>48 8b 4f 30 31 c0 48 85 c9 74 12 ff c6 0f 1f 00 ff ce 74 0a 48 8b 49 10 48 85 c9 75 f3 c3 8b 41 18 c3</code></td>
+<td style="text-align: right;" data-label="Members">16</td>
+<td style="text-align: right;" data-label="Bytes">544</td>
+<td style="text-align: right;" data-label="Edge-verified">16</td>
+<td style="text-align: right;" data-label="Verified">0</td>
 </tr>
 <tr>
-<td><code>reads_qword_field</code></td>
-<td><code>48 8b 47 {d8} c3</code></td>
-<td style="text-align: right;">3,337</td>
-<td style="text-align: right;">16,685</td>
-<td style="text-align: right;">3,337</td>
-<td style="text-align: right;">3,337</td>
+<td data-label="Family"><code>reads_qword_field</code></td>
+<td data-label="Shape"><code>48 8b 47 {d8} c3</code></td>
+<td style="text-align: right;" data-label="Members">3,337</td>
+<td style="text-align: right;" data-label="Bytes">16,685</td>
+<td style="text-align: right;" data-label="Edge-verified">3,337</td>
+<td style="text-align: right;" data-label="Verified">3,337</td>
 </tr>
 <tr>
-<td><code>reads_far_qword_field</code></td>
-<td><code>48 8b 87 {d32} c3</code></td>
-<td style="text-align: right;">224</td>
-<td style="text-align: right;">1,792</td>
-<td style="text-align: right;">224</td>
-<td style="text-align: right;">0</td>
+<td data-label="Family"><code>reads_far_qword_field</code></td>
+<td data-label="Shape"><code>48 8b 87 {d32} c3</code></td>
+<td style="text-align: right;" data-label="Members">224</td>
+<td style="text-align: right;" data-label="Bytes">1,792</td>
+<td style="text-align: right;" data-label="Edge-verified">224</td>
+<td style="text-align: right;" data-label="Verified">0</td>
 </tr>
 <tr>
-<td><code>reads_dword_field</code></td>
-<td><code>8b 47 {d8} c3</code></td>
-<td style="text-align: right;">575</td>
-<td style="text-align: right;">2,300</td>
-<td style="text-align: right;">575</td>
-<td style="text-align: right;">575</td>
+<td data-label="Family"><code>reads_dword_field</code></td>
+<td data-label="Shape"><code>8b 47 {d8} c3</code></td>
+<td style="text-align: right;" data-label="Members">575</td>
+<td style="text-align: right;" data-label="Bytes">2,300</td>
+<td style="text-align: right;" data-label="Edge-verified">575</td>
+<td style="text-align: right;" data-label="Verified">575</td>
 </tr>
 <tr>
-<td><code>reads_far_dword_field</code></td>
-<td><code>8b 87 {d32} c3</code></td>
-<td style="text-align: right;">151</td>
-<td style="text-align: right;">1,057</td>
-<td style="text-align: right;">151</td>
-<td style="text-align: right;">0</td>
+<td data-label="Family"><code>reads_far_dword_field</code></td>
+<td data-label="Shape"><code>8b 87 {d32} c3</code></td>
+<td style="text-align: right;" data-label="Members">151</td>
+<td style="text-align: right;" data-label="Bytes">1,057</td>
+<td style="text-align: right;" data-label="Edge-verified">151</td>
+<td style="text-align: right;" data-label="Verified">0</td>
 </tr>
 <tr>
-<td><code>reads_word_field</code></td>
-<td><code>0f b7 47 {d8} c3</code></td>
-<td style="text-align: right;">60</td>
-<td style="text-align: right;">300</td>
-<td style="text-align: right;">60</td>
-<td style="text-align: right;">60</td>
+<td data-label="Family"><code>reads_word_field</code></td>
+<td data-label="Shape"><code>0f b7 47 {d8} c3</code></td>
+<td style="text-align: right;" data-label="Members">60</td>
+<td style="text-align: right;" data-label="Bytes">300</td>
+<td style="text-align: right;" data-label="Edge-verified">60</td>
+<td style="text-align: right;" data-label="Verified">60</td>
 </tr>
 <tr>
-<td><code>reads_far_word_field</code></td>
-<td><code>0f b7 87 {d32} c3</code></td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">24</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">0</td>
+<td data-label="Family"><code>reads_far_word_field</code></td>
+<td data-label="Shape"><code>0f b7 87 {d32} c3</code></td>
+<td style="text-align: right;" data-label="Members">3</td>
+<td style="text-align: right;" data-label="Bytes">24</td>
+<td style="text-align: right;" data-label="Edge-verified">3</td>
+<td style="text-align: right;" data-label="Verified">0</td>
 </tr>
 <tr>
-<td><code>reads_byte_field</code></td>
-<td><code>0f b6 47 {d8} c3</code></td>
-<td style="text-align: right;">22</td>
-<td style="text-align: right;">110</td>
-<td style="text-align: right;">22</td>
-<td style="text-align: right;">22</td>
+<td data-label="Family"><code>reads_byte_field</code></td>
+<td data-label="Shape"><code>0f b6 47 {d8} c3</code></td>
+<td style="text-align: right;" data-label="Members">22</td>
+<td style="text-align: right;" data-label="Bytes">110</td>
+<td style="text-align: right;" data-label="Edge-verified">22</td>
+<td style="text-align: right;" data-label="Verified">22</td>
 </tr>
 <tr>
-<td><code>reads_far_byte_field</code></td>
-<td><code>0f b6 87 {d32} c3</code></td>
-<td style="text-align: right;">4</td>
-<td style="text-align: right;">32</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: right;">0</td>
+<td data-label="Family"><code>reads_far_byte_field</code></td>
+<td data-label="Shape"><code>0f b6 87 {d32} c3</code></td>
+<td style="text-align: right;" data-label="Members">4</td>
+<td style="text-align: right;" data-label="Bytes">32</td>
+<td style="text-align: right;" data-label="Edge-verified">4</td>
+<td style="text-align: right;" data-label="Verified">0</td>
 </tr>
 <tr>
-<td><code>field_address</code></td>
-<td><code>48 8d 47 {d8} c3</code></td>
-<td style="text-align: right;">1,240</td>
-<td style="text-align: right;">6,200</td>
-<td style="text-align: right;">1,240</td>
-<td style="text-align: right;">1,240</td>
+<td data-label="Family"><code>field_address</code></td>
+<td data-label="Shape"><code>48 8d 47 {d8} c3</code></td>
+<td style="text-align: right;" data-label="Members">1,240</td>
+<td style="text-align: right;" data-label="Bytes">6,200</td>
+<td style="text-align: right;" data-label="Edge-verified">1,240</td>
+<td style="text-align: right;" data-label="Verified">1,240</td>
 </tr>
 <tr>
-<td><code>far_field_address</code></td>
-<td><code>48 8d 87 {d32} c3</code></td>
-<td style="text-align: right;">184</td>
-<td style="text-align: right;">1,472</td>
-<td style="text-align: right;">184</td>
-<td style="text-align: right;">0</td>
+<td data-label="Family"><code>far_field_address</code></td>
+<td data-label="Shape"><code>48 8d 87 {d32} c3</code></td>
+<td style="text-align: right;" data-label="Members">184</td>
+<td style="text-align: right;" data-label="Bytes">1,472</td>
+<td style="text-align: right;" data-label="Edge-verified">184</td>
+<td style="text-align: right;" data-label="Verified">0</td>
 </tr>
 <tr>
-<td><code>reads_first_qword</code></td>
-<td><code>48 8b 07 c3</code></td>
-<td style="text-align: right;">42</td>
-<td style="text-align: right;">168</td>
-<td style="text-align: right;">42</td>
-<td style="text-align: right;">42</td>
+<td data-label="Family"><code>reads_first_qword</code></td>
+<td data-label="Shape"><code>48 8b 07 c3</code></td>
+<td style="text-align: right;" data-label="Members">42</td>
+<td style="text-align: right;" data-label="Bytes">168</td>
+<td style="text-align: right;" data-label="Edge-verified">42</td>
+<td style="text-align: right;" data-label="Verified">42</td>
 </tr>
 <tr>
-<td><code>reads_first_dword</code></td>
-<td><code>8b 07 c3</code></td>
-<td style="text-align: right;">29</td>
-<td style="text-align: right;">87</td>
-<td style="text-align: right;">29</td>
-<td style="text-align: right;">29</td>
+<td data-label="Family"><code>reads_first_dword</code></td>
+<td data-label="Shape"><code>8b 07 c3</code></td>
+<td style="text-align: right;" data-label="Members">29</td>
+<td style="text-align: right;" data-label="Bytes">87</td>
+<td style="text-align: right;" data-label="Edge-verified">29</td>
+<td style="text-align: right;" data-label="Verified">29</td>
 </tr>
 <tr>
-<td><code>writes_qword_field</code></td>
-<td><code>48 89 77 {d8} c3</code></td>
-<td style="text-align: right;">109</td>
-<td style="text-align: right;">545</td>
-<td style="text-align: right;">109</td>
-<td style="text-align: right;">109</td>
+<td data-label="Family"><code>reads_float_field</code></td>
+<td data-label="Shape"><code>c5 fa 10 47 {d8} c3</code></td>
+<td style="text-align: right;" data-label="Members">68</td>
+<td style="text-align: right;" data-label="Bytes">408</td>
+<td style="text-align: right;" data-label="Edge-verified">68</td>
+<td style="text-align: right;" data-label="Verified">0</td>
 </tr>
 <tr>
-<td><code>writes_far_qword_field</code></td>
-<td><code>48 89 b7 {d32} c3</code></td>
-<td style="text-align: right;">76</td>
-<td style="text-align: right;">608</td>
-<td style="text-align: right;">76</td>
-<td style="text-align: right;">0</td>
+<td data-label="Family"><code>writes_float_field</code></td>
+<td data-label="Shape"><code>c5 fa 11 47 {d8} c3</code></td>
+<td style="text-align: right;" data-label="Members">53</td>
+<td style="text-align: right;" data-label="Bytes">318</td>
+<td style="text-align: right;" data-label="Edge-verified">53</td>
+<td style="text-align: right;" data-label="Verified">0</td>
 </tr>
 <tr>
-<td><code>writes_dword_field</code></td>
-<td><code>89 77 {d8} c3</code></td>
-<td style="text-align: right;">153</td>
-<td style="text-align: right;">612</td>
-<td style="text-align: right;">153</td>
-<td style="text-align: right;">153</td>
+<td data-label="Family"><code>writes_double_field</code></td>
+<td data-label="Shape"><code>c5 fb 11 47 {d8} c3</code></td>
+<td style="text-align: right;" data-label="Members">12</td>
+<td style="text-align: right;" data-label="Bytes">72</td>
+<td style="text-align: right;" data-label="Edge-verified">12</td>
+<td style="text-align: right;" data-label="Verified">0</td>
 </tr>
 <tr>
-<td><code>writes_far_dword_field</code></td>
-<td><code>89 b7 {d32} c3</code></td>
-<td style="text-align: right;">61</td>
-<td style="text-align: right;">427</td>
-<td style="text-align: right;">61</td>
-<td style="text-align: right;">0</td>
+<td data-label="Family"><code>reads_signed_word_field</code></td>
+<td data-label="Shape"><code>0f bf 47 {d8} c3</code></td>
+<td style="text-align: right;" data-label="Members">11</td>
+<td style="text-align: right;" data-label="Bytes">55</td>
+<td style="text-align: right;" data-label="Edge-verified">11</td>
+<td style="text-align: right;" data-label="Verified">0</td>
 </tr>
 <tr>
-<td><code>writes_word_field</code></td>
-<td><code>66 89 77 {d8} c3</code></td>
-<td style="text-align: right;">10</td>
-<td style="text-align: right;">50</td>
-<td style="text-align: right;">10</td>
-<td style="text-align: right;">10</td>
+<td data-label="Family"><code>reads_signed_byte_field</code></td>
+<td data-label="Shape"><code>0f be 47 {d8} c3</code></td>
+<td style="text-align: right;" data-label="Members">6</td>
+<td style="text-align: right;" data-label="Bytes">30</td>
+<td style="text-align: right;" data-label="Edge-verified">6</td>
+<td style="text-align: right;" data-label="Verified">0</td>
 </tr>
 <tr>
-<td><code>writes_far_word_field</code></td>
-<td><code>66 89 b7 {d32} c3</code></td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">40</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">0</td>
+<td data-label="Family"><code>writes_qword_field</code></td>
+<td data-label="Shape"><code>48 89 77 {d8} c3</code></td>
+<td style="text-align: right;" data-label="Members">109</td>
+<td style="text-align: right;" data-label="Bytes">545</td>
+<td style="text-align: right;" data-label="Edge-verified">109</td>
+<td style="text-align: right;" data-label="Verified">109</td>
 </tr>
 <tr>
-<td><code>writes_byte_field</code></td>
-<td><code>40 88 77 {d8} c3</code></td>
-<td style="text-align: right;">61</td>
-<td style="text-align: right;">305</td>
-<td style="text-align: right;">61</td>
-<td style="text-align: right;">61</td>
+<td data-label="Family"><code>writes_wide_string_at_0x28_to_sink</code></td>
+<td data-label="Shape"><code>55 48 89 e5 41 57 41 56 53 50 49 89 f6 49 8b 06 4c 8b b8 90 00 00 00 48 8d 5f 28 48 83 7f 40 08 72 03 48 8b 1b 48 8b 07 ff 50 60 48 89 c1 31 c0 4c 89 f7 48 89 de 48 89 ca 4c 89 f9 48 83 c4 08 5b 41 5e 41 5f 5d ff e1</code></td>
+<td style="text-align: right;" data-label="Members">56</td>
+<td style="text-align: right;" data-label="Bytes">4,032</td>
+<td style="text-align: right;" data-label="Edge-verified">56</td>
+<td style="text-align: right;" data-label="Verified">0</td>
 </tr>
 <tr>
-<td><code>writes_far_byte_field</code></td>
-<td><code>40 88 b7 {d32} c3</code></td>
-<td style="text-align: right;">59</td>
-<td style="text-align: right;">472</td>
-<td style="text-align: right;">59</td>
-<td style="text-align: right;">0</td>
+<td data-label="Family"><code>writes_wide_string_through_0x20_to_sink</code></td>
+<td data-label="Shape"><code>55 48 89 e5 41 57 41 56 53 50 49 89 f6 49 8b 06 4c 8b b8 90 00 00 00 48 8b 47 20 48 83 78 20 08 48 8d 58 08 72 03 48 8b 1b 48 8b 07 ff 50 60 48 89 c1 31 c0 4c 89 f7 48 89 de 48 89 ca 4c 89 f9 48 83 c4 08 5b 41 5e 41 5f 5d ff e1</code></td>
+<td style="text-align: right;" data-label="Members">28</td>
+<td style="text-align: right;" data-label="Bytes">2,128</td>
+<td style="text-align: right;" data-label="Edge-verified">28</td>
+<td style="text-align: right;" data-label="Verified">0</td>
 </tr>
 <tr>
-<td><code>writes_first_qword</code></td>
-<td><code>48 89 37 c3</code></td>
-<td style="text-align: right;">23</td>
-<td style="text-align: right;">92</td>
-<td style="text-align: right;">23</td>
-<td style="text-align: right;">23</td>
+<td data-label="Family"><code>writes_text_at_0x20_to_sink</code></td>
+<td data-label="Shape"><code>55 48 89 e5 41 57 41 56 53 50 48 89 f3 48 8b 03 4c 8b b8 90 00 00 00 48 8b 07 4c 8b 77 20 ff 50 60 48 89 c1 31 c0 48 89 df 4c 89 f6 48 89 ca 4c 89 f9 48 83 c4 08 5b 41 5e 41 5f 5d ff e1</code></td>
+<td style="text-align: right;" data-label="Members">28</td>
+<td style="text-align: right;" data-label="Bytes">1,736</td>
+<td style="text-align: right;" data-label="Edge-verified">28</td>
+<td style="text-align: right;" data-label="Verified">0</td>
 </tr>
 <tr>
-<td><code>writes_first_dword</code></td>
-<td><code>89 37 c3</code></td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">15</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">5</td>
+<td data-label="Family"><code>toggles_flag_at_8_through_first_virtual</code></td>
+<td data-label="Shape"><code>55 48 89 e5 53 50 48 89 fb 48 85 f6 74 1a 31 c0 80 7b 08 00 75 26 48 8b 03 48 89 df ff 10 85 c0 75 1a c6 43 08 01 eb 12 48 8b 03 31 f6 48 89 df ff 10 85 c0 75 06 c6 43 08 00 31 c0 48 83 c4 08 5b 5d c3</code></td>
+<td style="text-align: right;" data-label="Members">26</td>
+<td style="text-align: right;" data-label="Bytes">1,742</td>
+<td style="text-align: right;" data-label="Edge-verified">26</td>
+<td style="text-align: right;" data-label="Verified">0</td>
 </tr>
 <tr>
-<td><code>returns_first_argument</code></td>
-<td><code>48 89 f8 c3</code></td>
-<td style="text-align: right;">169</td>
-<td style="text-align: right;">676</td>
-<td style="text-align: right;">169</td>
-<td style="text-align: right;">169</td>
+<td data-label="Family"><code>toggles_flag_at_0x20_through_first_virtual</code></td>
+<td data-label="Shape"><code>55 48 89 e5 53 50 48 89 fb 48 85 f6 74 1a 31 c0 80 7b 20 00 75 26 48 8b 03 48 89 df ff 10 85 c0 75 1a c6 43 20 01 eb 12 48 8b 03 31 f6 48 89 df ff 10 85 c0 75 06 c6 43 20 00 31 c0 48 83 c4 08 5b 5d c3</code></td>
+<td style="text-align: right;" data-label="Members">18</td>
+<td style="text-align: right;" data-label="Bytes">1,206</td>
+<td style="text-align: right;" data-label="Edge-verified">18</td>
+<td style="text-align: right;" data-label="Verified">0</td>
 </tr>
 <tr>
-<td><code>stores_constant_in_first_dword_returning_object</code></td>
-<td><code>c7 07 {u32} 48 89 f8 c3</code></td>
-<td style="text-align: right;">40</td>
-<td style="text-align: right;">400</td>
-<td style="text-align: right;">40</td>
-<td style="text-align: right;">0</td>
+<td data-label="Family"><code>resets_wide_string_at_8</code></td>
+<td data-label="Shape"><code>55 48 89 e5 53 50 48 89 fb 48 83 7b 20 08 72 0e 48 8b 73 08 48 8b 7b 28 48 8b 07 ff 50 70 48 c7 43 20 07 00 00 00 48 c7 43 18 00 00 00 00 66 c7 43 08 00 00 48 83 c4 08 5b 5d c3</code></td>
+<td style="text-align: right;" data-label="Members">15</td>
+<td style="text-align: right;" data-label="Bytes">885</td>
+<td style="text-align: right;" data-label="Edge-verified">15</td>
+<td style="text-align: right;" data-label="Verified">0</td>
 </tr>
 <tr>
-<td><code>reads_dword_through_pointer_at_8</code></td>
-<td><code>48 8b 47 08 8b 40 {d8} c3</code></td>
-<td style="text-align: right;">17</td>
-<td style="text-align: right;">136</td>
-<td style="text-align: right;">17</td>
-<td style="text-align: right;">0</td>
+<td data-label="Family"><code>resets_wide_string_at_0x10</code></td>
+<td data-label="Shape"><code>55 48 89 e5 53 50 48 89 fb 48 83 7b 28 08 72 0e 48 8b 73 10 48 8b 7b 30 48 8b 07 ff 50 70 48 c7 43 28 07 00 00 00 48 c7 43 20 00 00 00 00 66 c7 43 10 00 00 48 83 c4 08 5b 5d c3</code></td>
+<td style="text-align: right;" data-label="Members">14</td>
+<td style="text-align: right;" data-label="Bytes">826</td>
+<td style="text-align: right;" data-label="Edge-verified">14</td>
+<td style="text-align: right;" data-label="Verified">0</td>
 </tr>
 <tr>
-<td><code>reads_qword_through_pointer_at_8</code></td>
-<td><code>48 8b 47 08 48 8b 40 {d8} c3</code></td>
-<td style="text-align: right;">12</td>
-<td style="text-align: right;">108</td>
-<td style="text-align: right;">12</td>
-<td style="text-align: right;">0</td>
+<td data-label="Family"><code>tail_calls_slot_0_of_nth_node_at_0x30</code></td>
+<td data-label="Shape"><code>48 8b 7f 30 48 85 ff 74 14 ff c6 0f 1f 44 00 00 ff ce 74 0c 48 8b 7f 10 48 85 ff 75 f3 31 c0 c3 48 8b 07 ff 20</code></td>
+<td style="text-align: right;" data-label="Members">16</td>
+<td style="text-align: right;" data-label="Bytes">592</td>
+<td style="text-align: right;" data-label="Edge-verified">16</td>
+<td style="text-align: right;" data-label="Verified">0</td>
 </tr>
 <tr>
-<td><code>address_through_pointer_at_8</code></td>
-<td><code>48 8b 47 08 48 83 c0 {d8} c3</code></td>
-<td style="text-align: right;">18</td>
-<td style="text-align: right;">162</td>
-<td style="text-align: right;">18</td>
-<td style="text-align: right;">0</td>
+<td data-label="Family"><code>shifts_arguments_into_virtual_0x88</code></td>
+<td data-label="Shape"><code>48 8b 07 4c 8b 98 88 00 00 00 41 0f b6 c1 45 31 c9 48 89 d6 48 89 ca 4c 89 c1 41 89 c0 41 ff e3</code></td>
+<td style="text-align: right;" data-label="Members">13</td>
+<td style="text-align: right;" data-label="Bytes">416</td>
+<td style="text-align: right;" data-label="Edge-verified">13</td>
+<td style="text-align: right;" data-label="Verified">0</td>
 </tr>
 <tr>
-<td><code>returns_all_bits</code></td>
-<td><code>48 c7 c0 ff ff ff ff c3</code></td>
-<td style="text-align: right;">9</td>
-<td style="text-align: right;">72</td>
-<td style="text-align: right;">9</td>
-<td style="text-align: right;">0</td>
+<td data-label="Family"><code>calls_0x78_stores_dword_at_0x20_calls_0xa8</code></td>
+<td data-label="Shape"><code>55 48 89 e5 41 56 53 41 89 f6 48 89 fb 48 8b 03 31 f6 ff 50 78 44 89 73 20 48 8b 03 48 89 df ff 90 a8 00 00 00 c6 43 08 01 5b 41 5e 5d c3</code></td>
+<td style="text-align: right;" data-label="Members">13</td>
+<td style="text-align: right;" data-label="Bytes">598</td>
+<td style="text-align: right;" data-label="Edge-verified">13</td>
+<td style="text-align: right;" data-label="Verified">0</td>
 </tr>
 <tr>
-<td><code>resets_first_qword_returning_object</code></td>
-<td><code>48 c7 07 00 00 00 00 48 89 f8 c3</code></td>
-<td style="text-align: right;">8</td>
-<td style="text-align: right;">88</td>
-<td style="text-align: right;">8</td>
-<td style="text-align: right;">0</td>
+<td data-label="Family"><code>flushes_pending_through_member_at_0x40</code></td>
+<td data-label="Shape"><code>55 48 89 e5 41 56 53 49 89 f6 48 8b 47 40 48 85 c0 74 44 48 8b 18 48 85 db 74 3c 8a 43 0c a8 01 74 35 83 7b 10 00 74 2f 88 c1 80 e1 02 75 28 0c 02 88 43 0c 48 8b 03 48 89 df 4c 89 f6 ff 50 18 48 8b 03 48 89 df 4c 89 f6 ff 50 20 80 63 0c fd c7 43 10 00 00 00 00 5b 41 5e 5d c3</code></td>
+<td style="text-align: right;" data-label="Members">15</td>
+<td style="text-align: right;" data-label="Bytes">1,380</td>
+<td style="text-align: right;" data-label="Edge-verified">15</td>
+<td style="text-align: right;" data-label="Verified">0</td>
 </tr>
 <tr>
-<td><code>adjusts_pointer_at_8_unless_null</code></td>
-<td><code>48 8b 4f 08 31 c0 48 85 c9 74 0a 48 81 c1 d0 00 00 00 48 89 c8 c3</code></td>
-<td style="text-align: right;">15</td>
-<td style="text-align: right;">330</td>
-<td style="text-align: right;">15</td>
-<td style="text-align: right;">0</td>
+<td data-label="Family"><code>tail_calls_0x68_of_what_0x38_returns</code></td>
+<td data-label="Shape"><code>55 48 89 e5 53 50 48 89 f3 48 8b 07 ff 50 38 48 8b 08 48 8b 49 68 48 89 c7 48 89 de 48 83 c4 08 5b 5d ff e1</code></td>
+<td style="text-align: right;" data-label="Members">10</td>
+<td style="text-align: right;" data-label="Bytes">360</td>
+<td style="text-align: right;" data-label="Edge-verified">10</td>
+<td style="text-align: right;" data-label="Verified">0</td>
 </tr>
 <tr>
-<td><code>reads_wide_string_text_at_0x30</code></td>
-<td><code>48 8b 47 30 48 83 78 20 08 48 8d 40 08 72 03 48 8b 00 c3</code></td>
-<td style="text-align: right;">18</td>
-<td style="text-align: right;">342</td>
-<td style="text-align: right;">18</td>
-<td style="text-align: right;">0</td>
+<td data-label="Family"><code>erases_subtree_with_wide_string_at_0x28</code></td>
+<td data-label="Shape"><code>55 48 89 e5 41 57 41 56 53 50 48 89 f3 49 89 fe 80 7b 19 00 75 5b 66 2e 0f 1f 84 00 00 00 00 00 48 8b 73 10 4c 89 f7 e8 d4 ff ff ff 4c 8b 3b 48 83 7b 40 08 72 0e 48 8b 73 28 48 8b 7b 48 48 8b 07 ff 50 70 48 c7 43 40 07 00 00 00 48 c7 43 38 00 00 00 00 66 c7 43 28 00 00 49 8b 7e 18 48 8b 07 48 89 de ff 50 70 41 80 7f 19 00 4c 89 fb 74 af 48 83 c4 08 5b 41 5e 41 5f 5d c3</code></td>
+<td style="text-align: right;" data-label="Members">24</td>
+<td style="text-align: right;" data-label="Bytes">2,976</td>
+<td style="text-align: right;" data-label="Edge-verified">24</td>
+<td style="text-align: right;" data-label="Verified">0</td>
 </tr>
 <tr>
-<td><code>writes_top_four_bits_of_first_dword</code></td>
-<td><code>b8 ff ff ff 0f 23 07 c1 e6 1c 09 c6 89 37 c3</code></td>
-<td style="text-align: right;">12</td>
-<td style="text-align: right;">180</td>
-<td style="text-align: right;">12</td>
-<td style="text-align: right;">0</td>
+<td data-label="Family"><code>writes_far_qword_field</code></td>
+<td data-label="Shape"><code>48 89 b7 {d32} c3</code></td>
+<td style="text-align: right;" data-label="Members">76</td>
+<td style="text-align: right;" data-label="Bytes">608</td>
+<td style="text-align: right;" data-label="Edge-verified">76</td>
+<td style="text-align: right;" data-label="Verified">0</td>
 </tr>
 <tr>
-<td><code>writes_low_ten_bits_of_first_dword</code></td>
-<td><code>b8 00 fc ff ff 23 07 81 e6 ff 03 00 00 09 c6 89 37 c3</code></td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">126</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">0</td>
+<td data-label="Family"><code>writes_dword_field</code></td>
+<td data-label="Shape"><code>89 77 {d8} c3</code></td>
+<td style="text-align: right;" data-label="Members">153</td>
+<td style="text-align: right;" data-label="Bytes">612</td>
+<td style="text-align: right;" data-label="Edge-verified">153</td>
+<td style="text-align: right;" data-label="Verified">153</td>
 </tr>
 <tr>
-<td><code>packs_first_dword_from_two_bit_fields</code></td>
-<td><code>81 e6 ff 03 00 00 c1 e2 1c 09 f2 89 17 c3</code></td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">98</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">0</td>
+<td data-label="Family"><code>writes_far_dword_field</code></td>
+<td data-label="Shape"><code>89 b7 {d32} c3</code></td>
+<td style="text-align: right;" data-label="Members">61</td>
+<td style="text-align: right;" data-label="Bytes">427</td>
+<td style="text-align: right;" data-label="Edge-verified">61</td>
+<td style="text-align: right;" data-label="Verified">0</td>
 </tr>
 <tr>
-<td><code>returns_second_argument</code></td>
-<td><code>48 89 f0 c3</code></td>
-<td style="text-align: right;">56</td>
-<td style="text-align: right;">224</td>
-<td style="text-align: right;">56</td>
-<td style="text-align: right;">56</td>
+<td data-label="Family"><code>writes_word_field</code></td>
+<td data-label="Shape"><code>66 89 77 {d8} c3</code></td>
+<td style="text-align: right;" data-label="Members">10</td>
+<td style="text-align: right;" data-label="Bytes">50</td>
+<td style="text-align: right;" data-label="Edge-verified">10</td>
+<td style="text-align: right;" data-label="Verified">10</td>
 </tr>
 <tr>
-<td><code>atomically_increments_dword_at_8</code></td>
-<td><code>b8 01 00 00 00 f0 0f c1 47 08 c3</code></td>
-<td style="text-align: right;">31</td>
-<td style="text-align: right;">341</td>
-<td style="text-align: right;">31</td>
-<td style="text-align: right;">0</td>
+<td data-label="Family"><code>writes_far_word_field</code></td>
+<td data-label="Shape"><code>66 89 b7 {d32} c3</code></td>
+<td style="text-align: right;" data-label="Members">5</td>
+<td style="text-align: right;" data-label="Bytes">40</td>
+<td style="text-align: right;" data-label="Edge-verified">5</td>
+<td style="text-align: right;" data-label="Verified">0</td>
 </tr>
 <tr>
-<td><code>reads_pointer_without_low_bit</code></td>
-<td><code>48 8b 47 {d8} 48 83 e0 fe c3</code></td>
-<td style="text-align: right;">41</td>
-<td style="text-align: right;">369</td>
-<td style="text-align: right;">41</td>
-<td style="text-align: right;">0</td>
+<td data-label="Family"><code>writes_byte_field</code></td>
+<td data-label="Shape"><code>40 88 77 {d8} c3</code></td>
+<td style="text-align: right;" data-label="Members">61</td>
+<td style="text-align: right;" data-label="Bytes">305</td>
+<td style="text-align: right;" data-label="Edge-verified">61</td>
+<td style="text-align: right;" data-label="Verified">61</td>
 </tr>
 <tr>
-<td><code>clears_first_two_qwords</code></td>
-<td><code>48 c7 47 08 00 00 00 00 48 c7 07 00 00 00 00 c3</code></td>
-<td style="text-align: right;">13</td>
-<td style="text-align: right;">208</td>
-<td style="text-align: right;">13</td>
-<td style="text-align: right;">0</td>
+<td data-label="Family"><code>writes_far_byte_field</code></td>
+<td data-label="Shape"><code>40 88 b7 {d32} c3</code></td>
+<td style="text-align: right;" data-label="Members">59</td>
+<td style="text-align: right;" data-label="Bytes">472</td>
+<td style="text-align: right;" data-label="Edge-verified">59</td>
+<td style="text-align: right;" data-label="Verified">0</td>
 </tr>
 <tr>
-<td><code>clears_first_four_qwords</code></td>
-<td><code>48 c7 47 18 00 00 00 00 48 c7 47 10 00 00 00 00 48 c7 47 08 00 00 00 00 48 c7 07 00 00 00 00 c3</code></td>
-<td style="text-align: right;">18</td>
-<td style="text-align: right;">576</td>
-<td style="text-align: right;">18</td>
-<td style="text-align: right;">0</td>
+<td data-label="Family"><code>writes_first_qword</code></td>
+<td data-label="Shape"><code>48 89 37 c3</code></td>
+<td style="text-align: right;" data-label="Members">23</td>
+<td style="text-align: right;" data-label="Bytes">92</td>
+<td style="text-align: right;" data-label="Edge-verified">23</td>
+<td style="text-align: right;" data-label="Verified">23</td>
 </tr>
 <tr>
-<td><code>clears_two_qwords_and_a_dword</code></td>
-<td><code>c7 47 10 00 00 00 00 48 c7 47 08 00 00 00 00 48 c7 07 00 00 00 00 c3</code></td>
-<td style="text-align: right;">14</td>
-<td style="text-align: right;">322</td>
-<td style="text-align: right;">14</td>
-<td style="text-align: right;">0</td>
+<td data-label="Family"><code>writes_first_dword</code></td>
+<td data-label="Shape"><code>89 37 c3</code></td>
+<td style="text-align: right;" data-label="Members">5</td>
+<td style="text-align: right;" data-label="Bytes">15</td>
+<td style="text-align: right;" data-label="Edge-verified">5</td>
+<td style="text-align: right;" data-label="Verified">5</td>
 </tr>
 <tr>
-<td><code>returns_float_zero</code></td>
-<td><code>c5 f8 57 c0 c3</code></td>
-<td style="text-align: right;">71</td>
-<td style="text-align: right;">355</td>
-<td style="text-align: right;">71</td>
-<td style="text-align: right;">71</td>
+<td data-label="Family"><code>stores_one_in_byte_field</code></td>
+<td data-label="Shape"><code>c6 47 {d8} 01 c3</code></td>
+<td style="text-align: right;" data-label="Members">68</td>
+<td style="text-align: right;" data-label="Bytes">340</td>
+<td style="text-align: right;" data-label="Edge-verified">68</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>clears_byte_field</code></td>
+<td data-label="Shape"><code>c6 47 {d8} 00 c3</code></td>
+<td style="text-align: right;" data-label="Members">59</td>
+<td style="text-align: right;" data-label="Bytes">295</td>
+<td style="text-align: right;" data-label="Edge-verified">59</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>clears_qword_field</code></td>
+<td data-label="Shape"><code>48 c7 47 {d8} 00 00 00 00 c3</code></td>
+<td style="text-align: right;" data-label="Members">38</td>
+<td style="text-align: right;" data-label="Bytes">342</td>
+<td style="text-align: right;" data-label="Edge-verified">38</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>clears_dword_field</code></td>
+<td data-label="Shape"><code>c7 47 {d8} 00 00 00 00 c3</code></td>
+<td style="text-align: right;" data-label="Members">26</td>
+<td style="text-align: right;" data-label="Bytes">208</td>
+<td style="text-align: right;" data-label="Edge-verified">26</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>stores_one_in_dword_field</code></td>
+<td data-label="Shape"><code>c7 47 {d8} 01 00 00 00 c3</code></td>
+<td style="text-align: right;" data-label="Members">3</td>
+<td style="text-align: right;" data-label="Bytes">24</td>
+<td style="text-align: right;" data-label="Edge-verified">3</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>stores_all_bits_in_dword_field</code></td>
+<td data-label="Shape"><code>c7 47 {d8} ff ff ff ff c3</code></td>
+<td style="text-align: right;" data-label="Members">21</td>
+<td style="text-align: right;" data-label="Bytes">168</td>
+<td style="text-align: right;" data-label="Edge-verified">21</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>clears_first_qword</code></td>
+<td data-label="Shape"><code>48 c7 07 00 00 00 00 c3</code></td>
+<td style="text-align: right;" data-label="Members">18</td>
+<td style="text-align: right;" data-label="Bytes">144</td>
+<td style="text-align: right;" data-label="Edge-verified">18</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>clears_first_dword</code></td>
+<td data-label="Shape"><code>c7 07 00 00 00 00 c3</code></td>
+<td style="text-align: right;" data-label="Members">4</td>
+<td style="text-align: right;" data-label="Bytes">28</td>
+<td style="text-align: right;" data-label="Edge-verified">4</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>clears_first_byte</code></td>
+<td data-label="Shape"><code>c6 07 00 c3</code></td>
+<td style="text-align: right;" data-label="Members">4</td>
+<td style="text-align: right;" data-label="Bytes">16</td>
+<td style="text-align: right;" data-label="Edge-verified">4</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>stores_one_in_first_byte</code></td>
+<td data-label="Shape"><code>c6 07 01 c3</code></td>
+<td style="text-align: right;" data-label="Members">2</td>
+<td style="text-align: right;" data-label="Bytes">8</td>
+<td style="text-align: right;" data-label="Edge-verified">2</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>returns_first_argument</code></td>
+<td data-label="Shape"><code>48 89 f8 c3</code></td>
+<td style="text-align: right;" data-label="Members">169</td>
+<td style="text-align: right;" data-label="Bytes">676</td>
+<td style="text-align: right;" data-label="Edge-verified">169</td>
+<td style="text-align: right;" data-label="Verified">169</td>
+</tr>
+<tr>
+<td data-label="Family"><code>stores_constant_in_first_dword_returning_object</code></td>
+<td data-label="Shape"><code>c7 07 {u32} 48 89 f8 c3</code></td>
+<td style="text-align: right;" data-label="Members">40</td>
+<td style="text-align: right;" data-label="Bytes">400</td>
+<td style="text-align: right;" data-label="Edge-verified">40</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>reads_dword_through_pointer_at_8</code></td>
+<td data-label="Shape"><code>48 8b 47 08 8b 40 {d8} c3</code></td>
+<td style="text-align: right;" data-label="Members">17</td>
+<td style="text-align: right;" data-label="Bytes">136</td>
+<td style="text-align: right;" data-label="Edge-verified">17</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>reads_qword_through_pointer_at_8</code></td>
+<td data-label="Shape"><code>48 8b 47 08 48 8b 40 {d8} c3</code></td>
+<td style="text-align: right;" data-label="Members">12</td>
+<td style="text-align: right;" data-label="Bytes">108</td>
+<td style="text-align: right;" data-label="Edge-verified">12</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>address_through_pointer_at_8</code></td>
+<td data-label="Shape"><code>48 8b 47 08 48 83 c0 {d8} c3</code></td>
+<td style="text-align: right;" data-label="Members">18</td>
+<td style="text-align: right;" data-label="Bytes">162</td>
+<td style="text-align: right;" data-label="Edge-verified">18</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>returns_all_bits</code></td>
+<td data-label="Shape"><code>48 c7 c0 ff ff ff ff c3</code></td>
+<td style="text-align: right;" data-label="Members">9</td>
+<td style="text-align: right;" data-label="Bytes">72</td>
+<td style="text-align: right;" data-label="Edge-verified">9</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>resets_first_qword_returning_object</code></td>
+<td data-label="Shape"><code>48 c7 07 00 00 00 00 48 89 f8 c3</code></td>
+<td style="text-align: right;" data-label="Members">8</td>
+<td style="text-align: right;" data-label="Bytes">88</td>
+<td style="text-align: right;" data-label="Edge-verified">8</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>adjusts_pointer_at_8_unless_null</code></td>
+<td data-label="Shape"><code>48 8b 4f 08 31 c0 48 85 c9 74 0a 48 81 c1 d0 00 00 00 48 89 c8 c3</code></td>
+<td style="text-align: right;" data-label="Members">15</td>
+<td style="text-align: right;" data-label="Bytes">330</td>
+<td style="text-align: right;" data-label="Edge-verified">15</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>reads_wide_string_text_at_0x30</code></td>
+<td data-label="Shape"><code>48 8b 47 30 48 83 78 20 08 48 8d 40 08 72 03 48 8b 00 c3</code></td>
+<td style="text-align: right;" data-label="Members">18</td>
+<td style="text-align: right;" data-label="Bytes">342</td>
+<td style="text-align: right;" data-label="Edge-verified">18</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>writes_top_four_bits_of_first_dword</code></td>
+<td data-label="Shape"><code>b8 ff ff ff 0f 23 07 c1 e6 1c 09 c6 89 37 c3</code></td>
+<td style="text-align: right;" data-label="Members">12</td>
+<td style="text-align: right;" data-label="Bytes">180</td>
+<td style="text-align: right;" data-label="Edge-verified">12</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>writes_low_ten_bits_of_first_dword</code></td>
+<td data-label="Shape"><code>b8 00 fc ff ff 23 07 81 e6 ff 03 00 00 09 c6 89 37 c3</code></td>
+<td style="text-align: right;" data-label="Members">7</td>
+<td style="text-align: right;" data-label="Bytes">126</td>
+<td style="text-align: right;" data-label="Edge-verified">7</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>packs_first_dword_from_two_bit_fields</code></td>
+<td data-label="Shape"><code>81 e6 ff 03 00 00 c1 e2 1c 09 f2 89 17 c3</code></td>
+<td style="text-align: right;" data-label="Members">7</td>
+<td style="text-align: right;" data-label="Bytes">98</td>
+<td style="text-align: right;" data-label="Edge-verified">7</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>returns_second_argument</code></td>
+<td data-label="Shape"><code>48 89 f0 c3</code></td>
+<td style="text-align: right;" data-label="Members">56</td>
+<td style="text-align: right;" data-label="Bytes">224</td>
+<td style="text-align: right;" data-label="Edge-verified">56</td>
+<td style="text-align: right;" data-label="Verified">56</td>
+</tr>
+<tr>
+<td data-label="Family"><code>atomically_increments_dword_at_8</code></td>
+<td data-label="Shape"><code>b8 01 00 00 00 f0 0f c1 47 08 c3</code></td>
+<td style="text-align: right;" data-label="Members">31</td>
+<td style="text-align: right;" data-label="Bytes">341</td>
+<td style="text-align: right;" data-label="Edge-verified">31</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>reads_pointer_without_low_bit</code></td>
+<td data-label="Shape"><code>48 8b 47 {d8} 48 83 e0 fe c3</code></td>
+<td style="text-align: right;" data-label="Members">41</td>
+<td style="text-align: right;" data-label="Bytes">369</td>
+<td style="text-align: right;" data-label="Edge-verified">41</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>clears_first_two_qwords</code></td>
+<td data-label="Shape"><code>48 c7 47 08 00 00 00 00 48 c7 07 00 00 00 00 c3</code></td>
+<td style="text-align: right;" data-label="Members">13</td>
+<td style="text-align: right;" data-label="Bytes">208</td>
+<td style="text-align: right;" data-label="Edge-verified">13</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>clears_first_four_qwords</code></td>
+<td data-label="Shape"><code>48 c7 47 18 00 00 00 00 48 c7 47 10 00 00 00 00 48 c7 47 08 00 00 00 00 48 c7 07 00 00 00 00 c3</code></td>
+<td style="text-align: right;" data-label="Members">18</td>
+<td style="text-align: right;" data-label="Bytes">576</td>
+<td style="text-align: right;" data-label="Edge-verified">18</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>clears_two_qwords_and_a_dword</code></td>
+<td data-label="Shape"><code>c7 47 10 00 00 00 00 48 c7 47 08 00 00 00 00 48 c7 07 00 00 00 00 c3</code></td>
+<td style="text-align: right;" data-label="Members">14</td>
+<td style="text-align: right;" data-label="Bytes">322</td>
+<td style="text-align: right;" data-label="Edge-verified">14</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>returns_float_zero</code></td>
+<td data-label="Shape"><code>c5 f8 57 c0 c3</code></td>
+<td style="text-align: right;" data-label="Members">71</td>
+<td style="text-align: right;" data-label="Bytes">355</td>
+<td style="text-align: right;" data-label="Edge-verified">71</td>
+<td style="text-align: right;" data-label="Verified">71</td>
+</tr>
+<tr>
+<td data-label="Family"><code>initialize_static_wide_string</code></td>
+<td data-label="Shape"><code>41 57 41 56 41 54 53 48 83 ec 18 4c 8b 35 {rel:0x057e3be0} 49 8b 06 48 89 44 24 10 4c 8d 3d {rel:0x05acebc8} 41 80 3f 00 0f 85 87 00 00 00 4c 8d 25 {rel:0x05940670} 49 8b 1c 24 48 85 db 75 0c e8 {rel:0x02fa2b10} 48 89 c3 49 89 1c 24 48 8b 03 48 8d 7c 24 08 31 d2 48 89 de ff 50 20 f6 44 24 08 20 75 15 48 8d 15 {rel:0x04b37dc0} 31 ff be 3e 00 00 00 31 c0 e8 {rel:0x024b55b0} 48 8d 35 {rel:0x05aceb90} 48 89 5e 28 48 c7 46 20 07 00 00 00 48 c7 46 18 00 00 00 00 66 c7 46 08 00 00 c6 46 30 01 48 8d 3d {rel:0x02a44140} 48 8d 15 {rel:0x0553b490} e8 {rel:0x02fbe548} 49 c7 07 01 00 00 00 49 8b 06 48 3b 44 24 10 75 0c 48 83 c4 18 5b 41 5c 41 5e 41 5f c3 e8 {rel:0x02fbe4f8}</code></td>
+<td style="text-align: right;" data-label="Members">439</td>
+<td style="text-align: right;" data-label="Bytes">89,995</td>
+<td style="text-align: right;" data-label="Edge-verified">439</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>frees_object_through_thread_allocator</code></td>
+<td data-label="Shape"><code>53 48 89 fb 64 48 8b 04 25 00 00 00 00 48 03 05 {rel:0x057e40f8} 48 8b 00 48 8b 78 58 48 8b 07 48 8b 40 18 8b 4b 08 c1 e9 10 81 f9 ff ff 00 00 ba {u32} 0f 45 d1 48 89 de 5b ff e0</code></td>
+<td style="text-align: right;" data-label="Members">297</td>
+<td style="text-align: right;" data-label="Bytes">17,820</td>
+<td style="text-align: right;" data-label="Edge-verified">297</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>posts_event_to_delegate_at_0x50</code></td>
+<td data-label="Shape"><code>55 48 89 e5 53 48 83 ec 18 48 8b 1d {rel:0x057e3be0} 48 8b 03 48 89 45 f0 48 83 7f 58 00 74 33 c7 45 e0 {u32} 89 75 e4 48 89 55 e8 48 8b 47 50 48 8b 4f 58 48 03 47 60 f6 c1 01 74 08 48 8b 10 48 8b 4c 11 ff 8b 57 68 48 8d 75 e0 48 89 c7 ff d1 48 8b 03 48 3b 45 f0 75 07 48 83 c4 18 5b 5d c3 e8 {rel:0x02fbe4f8}</code></td>
+<td style="text-align: right;" data-label="Members">153</td>
+<td style="text-align: right;" data-label="Bytes">15,606</td>
+<td style="text-align: right;" data-label="Edge-verified">153</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>calls_delegate_at_0x18_else_virtual_0x80</code></td>
+<td data-label="Shape"><code>48 8b 4f 30 48 85 c9 74 1d 48 8b 47 38 48 03 47 18 f6 c1 01 74 08 48 8b 10 48 8b 4c 11 ff 8b 57 40 48 89 c7 ff e1 48 8b 06 48 8b 88 80 00 00 00 48 8d 05 {rel:0x04dc0016} 48 89 f7 48 89 c6 ff e1</code></td>
+<td style="text-align: right;" data-label="Members">107</td>
+<td style="text-align: right;" data-label="Bytes">6,741</td>
+<td style="text-align: right;" data-label="Edge-verified">107</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>deleting_destructor_freeing_0x28_bytes</code></td>
+<td data-label="Shape"><code>53 48 89 fb 48 8d 05 {rel:0x0566fa90} 48 83 c0 10 48 89 03 48 85 db 74 29 64 48 8b 04 25 00 00 00 00 48 03 05 {rel:0x057e40f8} 48 8b 00 48 8b 78 58 48 8b 07 48 8b 40 18 ba 28 00 00 00 48 89 de 5b ff e0 5b c3</code></td>
+<td style="text-align: right;" data-label="Members">43</td>
+<td style="text-align: right;" data-label="Bytes">2,838</td>
+<td style="text-align: right;" data-label="Edge-verified">43</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>posts_text_event_to_delegate_at_0x50</code></td>
+<td data-label="Shape"><code>55 48 89 e5 41 57 41 56 41 54 53 48 83 ec 20 49 89 f6 49 89 ff 4c 8b 25 {rel:0x057e3be0} 49 8b 04 24 48 89 45 d8 49 8b 5f 48 31 d2 66 83 3b 00 74 0b 48 89 df e8 {rel:0x02fbf228} 48 89 c2 4c 89 f7 48 89 de e8 {rel:0x02a2a310} 49 83 7f 58 00 74 2d c7 45 c8 02 00 00 00 4c 89 75 d0 49 8b 7f 50 49 8b 47 58 49 03 7f 60 a8 01 74 08 48 8b 0f 48 8b 44 08 ff 41 8b 57 68 48 8d 75 c8 ff d0 49 8b 04 24 48 3b 45 d8 75 0d 48 83 c4 20 5b 41 5c 41 5e 41 5f 5d c3 e8 {rel:0x02fbe4f8}</code></td>
+<td style="text-align: right;" data-label="Members">83</td>
+<td style="text-align: right;" data-label="Bytes">12,450</td>
+<td style="text-align: right;" data-label="Edge-verified">83</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>posts_record_event_to_delegate_at_0x8</code></td>
+<td data-label="Shape"><code>55 48 89 e5 41 57 41 56 41 54 53 48 83 ec 40 49 89 ff 4c 8b 35 {rel:0x057e3be0} 49 8b 06 48 89 45 d8 48 85 f6 74 65 48 8b 5e 10 48 85 db 74 5c 4c 8b 26 4d 85 e4 74 54 49 83 7f 08 00 74 4d 48 8d 7d a8 e8 {rel:0x01400810} 48 8d 05 {rel:0x056f3170} 48 83 c0 10 48 89 45 a8 48 89 5d c8 4c 89 65 d0 49 8b 7f 08 49 8b 47 10 49 03 7f 18 a8 01 74 08 48 8b 0f 48 8b 44 08 ff 41 8b 57 20 48 8d 5d a8 48 89 de ff d0 48 89 df e8 {rel:0x013a75d0} 49 8b 06 48 3b 45 d8 75 0d 48 83 c4 40 5b 41 5c 41 5e 41 5f 5d c3 e8 {rel:0x02fbe4f8}</code></td>
+<td style="text-align: right;" data-label="Members">70</td>
+<td style="text-align: right;" data-label="Bytes">11,550</td>
+<td style="text-align: right;" data-label="Edge-verified">70</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>deletes_sized_through_thread_allocator</code></td>
+<td data-label="Shape"><code>53 48 89 fb 48 85 db 74 29 64 48 8b 04 25 00 00 00 00 48 03 05 {rel:0x057e40f8} 48 8b 00 48 8b 78 58 48 8b 07 48 8b 40 18 ba {u32} 48 89 de 5b ff e0 5b c3</code></td>
+<td style="text-align: right;" data-label="Members">109</td>
+<td style="text-align: right;" data-label="Bytes">5,668</td>
+<td style="text-align: right;" data-label="Edge-verified">109</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>allocates_from_thread_allocator</code></td>
+<td data-label="Shape"><code>50 64 48 8b 04 25 00 00 00 00 48 03 05 {rel:0x057e40f8} 48 8b 00 48 8b 78 58 48 8b 07 48 8b 40 10 be {u32} 5a ff e0</code></td>
+<td style="text-align: right;" data-label="Members">17</td>
+<td style="text-align: right;" data-label="Bytes">663</td>
+<td style="text-align: right;" data-label="Edge-verified">17</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>destroys_then_deletes</code></td>
+<td data-label="Shape"><code>55 48 89 e5 53 50 48 89 fb e8 {rel:0x024b5a60} 48 89 df 48 83 c4 08 5b 5d e9 {rel:0x02fbe588}</code></td>
+<td style="text-align: right;" data-label="Members">1,438</td>
+<td style="text-align: right;" data-label="Bytes">40,264</td>
+<td style="text-align: right;" data-label="Edge-verified">1,438</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>calls_virtual_0x28_then_deletes_if_asked</code></td>
+<td data-label="Shape"><code>55 48 89 e5 41 56 53 41 89 f6 48 89 fb 48 8b 03 ff 50 28 45 84 f6 74 0c 48 89 df 5b 41 5e 5d e9 {rel:0x02fbe588} 5b 41 5e 5d c3</code></td>
+<td style="text-align: right;" data-label="Members">1,020</td>
+<td style="text-align: right;" data-label="Bytes">41,820</td>
+<td style="text-align: right;" data-label="Edge-verified">1,020</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>destroys_with_0x01402180_then_deletes</code></td>
+<td data-label="Shape"><code>55 48 89 e5 53 50 48 89 fb e8 {rel:0x01402180} 48 89 df 48 83 c4 08 5b 5d e9 {rel:0x02fbe588}</code></td>
+<td style="text-align: right;" data-label="Members">87</td>
+<td style="text-align: right;" data-label="Bytes">2,436</td>
+<td style="text-align: right;" data-label="Edge-verified">87</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>destroys_with_0x010e7ca0_then_deletes</code></td>
+<td data-label="Shape"><code>55 48 89 e5 53 50 48 89 fb e8 {rel:0x010e7ca0} 48 89 df 48 83 c4 08 5b 5d e9 {rel:0x02fbe588}</code></td>
+<td style="text-align: right;" data-label="Members">42</td>
+<td style="text-align: right;" data-label="Bytes">1,176</td>
+<td style="text-align: right;" data-label="Edge-verified">42</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>destroys_with_0x01401dc0_then_deletes</code></td>
+<td data-label="Shape"><code>55 48 89 e5 53 50 48 89 fb e8 {rel:0x01401dc0} 48 89 df 48 83 c4 08 5b 5d e9 {rel:0x02fbe588}</code></td>
+<td style="text-align: right;" data-label="Members">24</td>
+<td style="text-align: right;" data-label="Bytes">672</td>
+<td style="text-align: right;" data-label="Edge-verified">24</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>destroys_with_0x01640e70_then_deletes</code></td>
+<td data-label="Shape"><code>55 48 89 e5 53 50 48 89 fb e8 {rel:0x01640e70} 48 89 df 48 83 c4 08 5b 5d e9 {rel:0x02fbe588}</code></td>
+<td style="text-align: right;" data-label="Members">20</td>
+<td style="text-align: right;" data-label="Bytes">560</td>
+<td style="text-align: right;" data-label="Edge-verified">20</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>destroys_with_0x0139c4f0_then_deletes</code></td>
+<td data-label="Shape"><code>55 48 89 e5 53 50 48 89 fb e8 {rel:0x0139c4f0} 48 89 df 48 83 c4 08 5b 5d e9 {rel:0x02fbe588}</code></td>
+<td style="text-align: right;" data-label="Members">18</td>
+<td style="text-align: right;" data-label="Bytes">504</td>
+<td style="text-align: right;" data-label="Edge-verified">18</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>destroys_with_0x007164e0_then_frees</code></td>
+<td data-label="Shape"><code>55 48 89 e5 53 50 48 89 fb e8 {rel:0x007164e0} 48 8d 05 {rel:0x057e7320} 48 8b 38 48 8b 07 48 8b 40 68 48 89 de 48 83 c4 08 5b 5d ff e0</code></td>
+<td style="text-align: right;" data-label="Members">156</td>
+<td style="text-align: right;" data-label="Bytes">6,552</td>
+<td style="text-align: right;" data-label="Edge-verified">156</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>destroys_with_0x005696e0_then_frees</code></td>
+<td data-label="Shape"><code>55 48 89 e5 53 50 48 89 fb e8 {rel:0x005696e0} 48 8d 05 {rel:0x057e7320} 48 8b 38 48 8b 07 48 8b 40 68 48 89 de 48 83 c4 08 5b 5d ff e0</code></td>
+<td style="text-align: right;" data-label="Members">54</td>
+<td style="text-align: right;" data-label="Bytes">2,268</td>
+<td style="text-align: right;" data-label="Edge-verified">54</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>destroys_with_0x006fa840_then_frees</code></td>
+<td data-label="Shape"><code>55 48 89 e5 53 50 48 89 fb e8 {rel:0x006fa840} 48 8d 05 {rel:0x057e7320} 48 8b 38 48 8b 07 48 8b 40 68 48 89 de 48 83 c4 08 5b 5d ff e0</code></td>
+<td style="text-align: right;" data-label="Members">35</td>
+<td style="text-align: right;" data-label="Bytes">1,470</td>
+<td style="text-align: right;" data-label="Edge-verified">35</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>destroys_with_0x0045a480_then_frees</code></td>
+<td data-label="Shape"><code>55 48 89 e5 53 50 48 89 fb e8 {rel:0x0045a480} 48 8d 05 {rel:0x057e7320} 48 8b 38 48 8b 07 48 8b 40 68 48 89 de 48 83 c4 08 5b 5d ff e0</code></td>
+<td style="text-align: right;" data-label="Members">25</td>
+<td style="text-align: right;" data-label="Bytes">1,050</td>
+<td style="text-align: right;" data-label="Edge-verified">25</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>calls_empty_destructor_then_deletes</code></td>
+<td data-label="Shape"><code>55 48 89 e5 53 50 48 89 fb e8 {rel:0x01401600} 48 89 df 48 83 c4 08 5b 5d e9 {rel:0x02fbe588}</code></td>
+<td style="text-align: right;" data-label="Members">217</td>
+<td style="text-align: right;" data-label="Bytes">6,076</td>
+<td style="text-align: right;" data-label="Edge-verified">217</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>destroys_with_0x010ee390_then_deletes</code></td>
+<td data-label="Shape"><code>55 48 89 e5 53 50 48 89 fb e8 {rel:0x010ee390} 48 89 df 48 83 c4 08 5b 5d e9 {rel:0x02fbe588}</code></td>
+<td style="text-align: right;" data-label="Members">14</td>
+<td style="text-align: right;" data-label="Bytes">392</td>
+<td style="text-align: right;" data-label="Edge-verified">14</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>destroys_with_0x016ea820_then_deletes</code></td>
+<td data-label="Shape"><code>55 48 89 e5 53 50 48 89 fb e8 {rel:0x016ea820} 48 89 df 48 83 c4 08 5b 5d e9 {rel:0x02fbe588}</code></td>
+<td style="text-align: right;" data-label="Members">12</td>
+<td style="text-align: right;" data-label="Bytes">336</td>
+<td style="text-align: right;" data-label="Edge-verified">12</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>destroys_with_0x02afd720_then_deletes</code></td>
+<td data-label="Shape"><code>55 48 89 e5 53 50 48 89 fb e8 {rel:0x02afd720} 48 89 df 48 83 c4 08 5b 5d e9 {rel:0x02fbe588}</code></td>
+<td style="text-align: right;" data-label="Members">11</td>
+<td style="text-align: right;" data-label="Bytes">308</td>
+<td style="text-align: right;" data-label="Edge-verified">11</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>destroys_with_0x0274a7f0_then_deletes</code></td>
+<td data-label="Shape"><code>55 48 89 e5 53 50 48 89 fb e8 {rel:0x0274a7f0} 48 89 df 48 83 c4 08 5b 5d e9 {rel:0x02fbe588}</code></td>
+<td style="text-align: right;" data-label="Members">10</td>
+<td style="text-align: right;" data-label="Bytes">280</td>
+<td style="text-align: right;" data-label="Edge-verified">10</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>destroys_with_0x006fbd50_then_frees</code></td>
+<td data-label="Shape"><code>55 48 89 e5 53 50 48 89 fb e8 {rel:0x006fbd50} 48 8d 05 {rel:0x057e7320} 48 8b 38 48 8b 07 48 8b 40 68 48 89 de 48 83 c4 08 5b 5d ff e0</code></td>
+<td style="text-align: right;" data-label="Members">13</td>
+<td style="text-align: right;" data-label="Bytes">546</td>
+<td style="text-align: right;" data-label="Edge-verified">13</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>releases_member_at_0xc0_then_destroys_base</code></td>
+<td data-label="Shape"><code>55 48 89 e5 53 50 48 89 fb 48 8d 05 {rel:0x055b8100} 48 83 c0 10 48 89 03 48 8b bb c0 00 00 00 48 85 ff 74 26 40 f6 c7 01 74 0c 48 ff cf 48 89 bb c0 00 00 00 eb 14 8b 47 20 a9 ff ff 3f 00 74 0a ff c8 89 47 20 e8 {rel:0x027ee1e0} 48 89 df 48 83 c4 08 5b 5d e9 {rel:0x006f92f0}</code></td>
+<td style="text-align: right;" data-label="Members">309</td>
+<td style="text-align: right;" data-label="Bytes">26,883</td>
+<td style="text-align: right;" data-label="Edge-verified">309</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>releases_member_at_0xc0_then_destroys_and_frees</code></td>
+<td data-label="Shape"><code>55 48 89 e5 53 50 48 89 fb 48 8d 05 {rel:0x055b8100} 48 83 c0 10 48 89 03 48 8b bb c0 00 00 00 48 85 ff 74 26 40 f6 c7 01 74 0c 48 ff cf 48 89 bb c0 00 00 00 eb 14 8b 47 20 a9 ff ff 3f 00 74 0a ff c8 89 47 20 e8 {rel:0x027ee1e0} 48 89 df e8 {rel:0x006f92f0} 48 8d 05 {rel:0x057e7320} 48 8b 38 48 8b 07 48 8b 40 68 48 89 de 48 83 c4 08 5b 5d ff e0</code></td>
+<td style="text-align: right;" data-label="Members">155</td>
+<td style="text-align: right;" data-label="Bytes">16,895</td>
+<td style="text-align: right;" data-label="Edge-verified">155</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>sets_static_vtable_at_0x05ac59b0</code></td>
+<td data-label="Shape"><code>48 8d 05 {rel:0x05ac59b8} 80 38 00 75 1c 48 8d 0d {rel:0x056b4840} 48 83 c1 10 48 8d 15 {rel:0x05ac59b0} 48 89 0a 48 c7 00 01 00 00 00 c3</code></td>
+<td style="text-align: right;" data-label="Members">372</td>
+<td style="text-align: right;" data-label="Bytes">15,252</td>
+<td style="text-align: right;" data-label="Edge-verified">372</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>sets_static_vtable_at_0x05ac59c0</code></td>
+<td data-label="Shape"><code>48 8d 05 {rel:0x05ac59c8} 80 38 00 75 1c 48 8d 0d {rel:0x056b4890} 48 83 c1 10 48 8d 15 {rel:0x05ac59c0} 48 89 0a 48 c7 00 01 00 00 00 c3</code></td>
+<td style="text-align: right;" data-label="Members">372</td>
+<td style="text-align: right;" data-label="Bytes">15,252</td>
+<td style="text-align: right;" data-label="Edge-verified">372</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>sets_static_vtable_at_0x05ac59d0</code></td>
+<td data-label="Shape"><code>48 8d 05 {rel:0x05ac59d8} 80 38 00 75 1c 48 8d 0d {rel:0x056b47f0} 48 83 c1 10 48 8d 15 {rel:0x05ac59d0} 48 89 0a 48 c7 00 01 00 00 00 c3</code></td>
+<td style="text-align: right;" data-label="Members">373</td>
+<td style="text-align: right;" data-label="Bytes">15,293</td>
+<td style="text-align: right;" data-label="Edge-verified">373</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>stores_vtable_0x05541b90_then_releases_member_at_8</code></td>
+<td data-label="Shape"><code>48 8d 05 {rel:0x05541b90} 48 83 c0 10 48 89 07 48 8b 7f 08 48 85 ff 74 06 48 8b 07 ff 60 18 c3</code></td>
+<td style="text-align: right;" data-label="Members">14</td>
+<td style="text-align: right;" data-label="Bytes">420</td>
+<td style="text-align: right;" data-label="Edge-verified">14</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>reallocates_array64</code></td>
+<td data-label="Shape"><code>55 48 89 e5 41 57 41 56 41 54 53 49 89 f6 49 89 fc 49 8b 7c 24 20 48 8b 07 4a 8d 34 f5 00 00 00 00 ba 08 00 00 00 ff 50 58 49 89 c7 4d 85 ff 75 2e 64 48 8b 04 25 00 00 00 00 48 03 05 {rel:0x057e4318} 83 38 00 0f 85 94 00 00 00 48 8d 15 {rel:0x04b37d80} 31 ff be 09 01 00 00 31 c0 e8 {rel:0x024b55b0} 49 8b 5c 24 08 49 8b 44 24 10 48 39 c3 74 36 4c 89 f9 66 66 66 66 66 66 2e 0f 1f 84 00 00 00 00 00 48 85 c9 74 06 48 8b 13 48 89 11 48 83 c1 08 48 83 c3 08 48 39 d8 75 e8 49 8b 74 24 08 49 8b 5c 24 10 eb 03 48 89 de 48 29 f3 48 c1 fb 03 48 85 f6 74 0b 49 8b 7c 24 20 48 8b 07 ff 50 70 4b 8d 04 f7 49 89 44 24 18 49 8d 04 df 49 89 44 24 10 4d 89 7c 24 08 5b 41 5c 41 5e 41 5f 5d c3 64 48 8b 04 25 00 00 00 00 48 03 05 {rel:0x057e4320} be 01 00 00 00 48 89 c7 e8 {rel:0x02fbe978}</code></td>
+<td style="text-align: right;" data-label="Members">87</td>
+<td style="text-align: right;" data-label="Bytes">21,837</td>
+<td style="text-align: right;" data-label="Edge-verified">87</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>fills_3_slots_with_05ac5cac</code></td>
+<td data-label="Shape"><code>48 8d 05 {rel:0x05ac5cac} 48 89 06 48 89 46 08 48 89 46 10 48 c7 46 70 00 00 00 00 48 c7 46 68 00 00 00 00 48 c7 46 60 00 00 00 00 48 c7 46 58 00 00 00 00 48 c7 46 50 00 00 00 00 48 c7 46 48 00 00 00 00 48 c7 46 40 00 00 00 00 48 c7 46 38 00 00 00 00 48 c7 46 30 00 00 00 00 48 c7 46 28 00 00 00 00 48 c7 46 20 00 00 00 00 48 c7 46 18 00 00 00 00 48 89 7e 78 31 c0 c3</code></td>
+<td style="text-align: right;" data-label="Members">32</td>
+<td style="text-align: right;" data-label="Bytes">3,872</td>
+<td style="text-align: right;" data-label="Edge-verified">32</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>fills_1_slot_with_05ac5e6b</code></td>
+<td data-label="Shape"><code>48 8d 05 {rel:0x05ac5e6b} 48 89 06 48 c7 46 70 00 00 00 00 48 c7 46 68 00 00 00 00 48 c7 46 60 00 00 00 00 48 c7 46 58 00 00 00 00 48 c7 46 50 00 00 00 00 48 c7 46 48 00 00 00 00 48 c7 46 40 00 00 00 00 48 c7 46 38 00 00 00 00 48 c7 46 30 00 00 00 00 48 c7 46 28 00 00 00 00 48 c7 46 20 00 00 00 00 48 c7 46 18 00 00 00 00 48 c7 46 10 00 00 00 00 48 c7 46 08 00 00 00 00 48 89 7e 78 31 c0 c3</code></td>
+<td style="text-align: right;" data-label="Members">12</td>
+<td style="text-align: right;" data-label="Bytes">1,548</td>
+<td style="text-align: right;" data-label="Edge-verified">12</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>fills_1_slot_with_05ac5cac</code></td>
+<td data-label="Shape"><code>48 8d 05 {rel:0x05ac5cac} 48 89 06 48 c7 46 70 00 00 00 00 48 c7 46 68 00 00 00 00 48 c7 46 60 00 00 00 00 48 c7 46 58 00 00 00 00 48 c7 46 50 00 00 00 00 48 c7 46 48 00 00 00 00 48 c7 46 40 00 00 00 00 48 c7 46 38 00 00 00 00 48 c7 46 30 00 00 00 00 48 c7 46 28 00 00 00 00 48 c7 46 20 00 00 00 00 48 c7 46 18 00 00 00 00 48 c7 46 10 00 00 00 00 48 c7 46 08 00 00 00 00 48 89 7e 78 31 c0 c3</code></td>
+<td style="text-align: right;" data-label="Members">63</td>
+<td style="text-align: right;" data-label="Bytes">8,127</td>
+<td style="text-align: right;" data-label="Edge-verified">63</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>fills_4_slots_with_05ac5cac</code></td>
+<td data-label="Shape"><code>48 8d 05 {rel:0x05ac5cac} 48 89 06 48 89 46 08 48 89 46 10 48 89 46 18 48 c7 46 70 00 00 00 00 48 c7 46 68 00 00 00 00 48 c7 46 60 00 00 00 00 48 c7 46 58 00 00 00 00 48 c7 46 50 00 00 00 00 48 c7 46 48 00 00 00 00 48 c7 46 40 00 00 00 00 48 c7 46 38 00 00 00 00 48 c7 46 30 00 00 00 00 48 c7 46 28 00 00 00 00 48 c7 46 20 00 00 00 00 48 89 7e 78 31 c0 c3</code></td>
+<td style="text-align: right;" data-label="Members">22</td>
+<td style="text-align: right;" data-label="Bytes">2,574</td>
+<td style="text-align: right;" data-label="Edge-verified">22</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>fills_5_slots_with_05ac5cac</code></td>
+<td data-label="Shape"><code>48 8d 05 {rel:0x05ac5cac} 48 89 06 48 89 46 08 48 89 46 10 48 89 46 18 48 89 46 20 48 c7 46 70 00 00 00 00 48 c7 46 68 00 00 00 00 48 c7 46 60 00 00 00 00 48 c7 46 58 00 00 00 00 48 c7 46 50 00 00 00 00 48 c7 46 48 00 00 00 00 48 c7 46 40 00 00 00 00 48 c7 46 38 00 00 00 00 48 c7 46 30 00 00 00 00 48 c7 46 28 00 00 00 00 48 89 7e 78 31 c0 c3</code></td>
+<td style="text-align: right;" data-label="Members">13</td>
+<td style="text-align: right;" data-label="Bytes">1,469</td>
+<td style="text-align: right;" data-label="Edge-verified">13</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>fills_1_slot_with_05acd45c</code></td>
+<td data-label="Shape"><code>48 8d 05 {rel:0x05acd45c} 48 89 06 48 c7 46 70 00 00 00 00 48 c7 46 68 00 00 00 00 48 c7 46 60 00 00 00 00 48 c7 46 58 00 00 00 00 48 c7 46 50 00 00 00 00 48 c7 46 48 00 00 00 00 48 c7 46 40 00 00 00 00 48 c7 46 38 00 00 00 00 48 c7 46 30 00 00 00 00 48 c7 46 28 00 00 00 00 48 c7 46 20 00 00 00 00 48 c7 46 18 00 00 00 00 48 c7 46 10 00 00 00 00 48 c7 46 08 00 00 00 00 48 89 7e 78 31 c0 c3</code></td>
+<td style="text-align: right;" data-label="Members">30</td>
+<td style="text-align: right;" data-label="Bytes">3,870</td>
+<td style="text-align: right;" data-label="Edge-verified">30</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>fills_1_slot_with_05acd1bc</code></td>
+<td data-label="Shape"><code>48 8d 05 {rel:0x05acd1bc} 48 89 06 48 c7 46 70 00 00 00 00 48 c7 46 68 00 00 00 00 48 c7 46 60 00 00 00 00 48 c7 46 58 00 00 00 00 48 c7 46 50 00 00 00 00 48 c7 46 48 00 00 00 00 48 c7 46 40 00 00 00 00 48 c7 46 38 00 00 00 00 48 c7 46 30 00 00 00 00 48 c7 46 28 00 00 00 00 48 c7 46 20 00 00 00 00 48 c7 46 18 00 00 00 00 48 c7 46 10 00 00 00 00 48 c7 46 08 00 00 00 00 48 89 7e 78 31 c0 c3</code></td>
+<td style="text-align: right;" data-label="Members">12</td>
+<td style="text-align: right;" data-label="Bytes">1,548</td>
+<td style="text-align: right;" data-label="Edge-verified">12</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>fills_2_slots_with_05acd45c</code></td>
+<td data-label="Shape"><code>48 8d 05 {rel:0x05acd45c} 48 89 06 48 89 46 08 48 c7 46 70 00 00 00 00 48 c7 46 68 00 00 00 00 48 c7 46 60 00 00 00 00 48 c7 46 58 00 00 00 00 48 c7 46 50 00 00 00 00 48 c7 46 48 00 00 00 00 48 c7 46 40 00 00 00 00 48 c7 46 38 00 00 00 00 48 c7 46 30 00 00 00 00 48 c7 46 28 00 00 00 00 48 c7 46 20 00 00 00 00 48 c7 46 18 00 00 00 00 48 c7 46 10 00 00 00 00 48 89 7e 78 31 c0 c3</code></td>
+<td style="text-align: right;" data-label="Members">15</td>
+<td style="text-align: right;" data-label="Bytes">1,875</td>
+<td style="text-align: right;" data-label="Edge-verified">15</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>fills_2_slots_with_05ac5cac</code></td>
+<td data-label="Shape"><code>48 8d 05 {rel:0x05ac5cac} 48 89 06 48 89 46 08 48 c7 46 70 00 00 00 00 48 c7 46 68 00 00 00 00 48 c7 46 60 00 00 00 00 48 c7 46 58 00 00 00 00 48 c7 46 50 00 00 00 00 48 c7 46 48 00 00 00 00 48 c7 46 40 00 00 00 00 48 c7 46 38 00 00 00 00 48 c7 46 30 00 00 00 00 48 c7 46 28 00 00 00 00 48 c7 46 20 00 00 00 00 48 c7 46 18 00 00 00 00 48 c7 46 10 00 00 00 00 48 89 7e 78 31 c0 c3</code></td>
+<td style="text-align: right;" data-label="Members">40</td>
+<td style="text-align: right;" data-label="Bytes">5,000</td>
+<td style="text-align: right;" data-label="Edge-verified">40</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>fills_1_slot_with_05acee04</code></td>
+<td data-label="Shape"><code>48 8d 05 {rel:0x05acee04} 48 89 06 48 c7 46 70 00 00 00 00 48 c7 46 68 00 00 00 00 48 c7 46 60 00 00 00 00 48 c7 46 58 00 00 00 00 48 c7 46 50 00 00 00 00 48 c7 46 48 00 00 00 00 48 c7 46 40 00 00 00 00 48 c7 46 38 00 00 00 00 48 c7 46 30 00 00 00 00 48 c7 46 28 00 00 00 00 48 c7 46 20 00 00 00 00 48 c7 46 18 00 00 00 00 48 c7 46 10 00 00 00 00 48 c7 46 08 00 00 00 00 48 89 7e 78 31 c0 c3</code></td>
+<td style="text-align: right;" data-label="Members">10</td>
+<td style="text-align: right;" data-label="Bytes">1,290</td>
+<td style="text-align: right;" data-label="Edge-verified">10</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>fills_1_slot_with_05ac5dfd</code></td>
+<td data-label="Shape"><code>48 8d 05 {rel:0x05ac5dfd} 48 89 06 48 c7 46 70 00 00 00 00 48 c7 46 68 00 00 00 00 48 c7 46 60 00 00 00 00 48 c7 46 58 00 00 00 00 48 c7 46 50 00 00 00 00 48 c7 46 48 00 00 00 00 48 c7 46 40 00 00 00 00 48 c7 46 38 00 00 00 00 48 c7 46 30 00 00 00 00 48 c7 46 28 00 00 00 00 48 c7 46 20 00 00 00 00 48 c7 46 18 00 00 00 00 48 c7 46 10 00 00 00 00 48 c7 46 08 00 00 00 00 48 89 7e 78 31 c0 c3</code></td>
+<td style="text-align: right;" data-label="Members">10</td>
+<td style="text-align: right;" data-label="Bytes">1,290</td>
+<td style="text-align: right;" data-label="Edge-verified">10</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>fills_1_slot_with_05ac5f5b</code></td>
+<td data-label="Shape"><code>48 8d 05 {rel:0x05ac5f5b} 48 89 06 48 c7 46 70 00 00 00 00 48 c7 46 68 00 00 00 00 48 c7 46 60 00 00 00 00 48 c7 46 58 00 00 00 00 48 c7 46 50 00 00 00 00 48 c7 46 48 00 00 00 00 48 c7 46 40 00 00 00 00 48 c7 46 38 00 00 00 00 48 c7 46 30 00 00 00 00 48 c7 46 28 00 00 00 00 48 c7 46 20 00 00 00 00 48 c7 46 18 00 00 00 00 48 c7 46 10 00 00 00 00 48 c7 46 08 00 00 00 00 48 89 7e 78 31 c0 c3</code></td>
+<td style="text-align: right;" data-label="Members">48</td>
+<td style="text-align: right;" data-label="Bytes">6,192</td>
+<td style="text-align: right;" data-label="Edge-verified">48</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>fills_2_slots_05ac74a5_05ac74a3</code></td>
+<td data-label="Shape"><code>48 8d 05 {rel:0x05ac74a5} 48 89 06 48 8d 05 {rel:0x05ac74a3} 48 89 46 08 48 c7 46 70 00 00 00 00 48 c7 46 68 00 00 00 00 48 c7 46 60 00 00 00 00 48 c7 46 58 00 00 00 00 48 c7 46 50 00 00 00 00 48 c7 46 48 00 00 00 00 48 c7 46 40 00 00 00 00 48 c7 46 38 00 00 00 00 48 c7 46 30 00 00 00 00 48 c7 46 28 00 00 00 00 48 c7 46 20 00 00 00 00 48 c7 46 18 00 00 00 00 48 c7 46 10 00 00 00 00 48 89 7e 78 31 c0 c3</code></td>
+<td style="text-align: right;" data-label="Members">34</td>
+<td style="text-align: right;" data-label="Bytes">4,488</td>
+<td style="text-align: right;" data-label="Edge-verified">34</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>fills_2_slots_05ac74a7_05ac5cac</code></td>
+<td data-label="Shape"><code>48 8d 05 {rel:0x05ac74a7} 48 89 06 48 8d 05 {rel:0x05ac5cac} 48 89 46 08 48 c7 46 70 00 00 00 00 48 c7 46 68 00 00 00 00 48 c7 46 60 00 00 00 00 48 c7 46 58 00 00 00 00 48 c7 46 50 00 00 00 00 48 c7 46 48 00 00 00 00 48 c7 46 40 00 00 00 00 48 c7 46 38 00 00 00 00 48 c7 46 30 00 00 00 00 48 c7 46 28 00 00 00 00 48 c7 46 20 00 00 00 00 48 c7 46 18 00 00 00 00 48 c7 46 10 00 00 00 00 48 89 7e 78 31 c0 c3</code></td>
+<td style="text-align: right;" data-label="Members">34</td>
+<td style="text-align: right;" data-label="Bytes">4,488</td>
+<td style="text-align: right;" data-label="Edge-verified">34</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>fills_2_slots_05ac74a4_05ac74a3</code></td>
+<td data-label="Shape"><code>48 8d 05 {rel:0x05ac74a4} 48 89 06 48 8d 05 {rel:0x05ac74a3} 48 89 46 08 48 c7 46 70 00 00 00 00 48 c7 46 68 00 00 00 00 48 c7 46 60 00 00 00 00 48 c7 46 58 00 00 00 00 48 c7 46 50 00 00 00 00 48 c7 46 48 00 00 00 00 48 c7 46 40 00 00 00 00 48 c7 46 38 00 00 00 00 48 c7 46 30 00 00 00 00 48 c7 46 28 00 00 00 00 48 c7 46 20 00 00 00 00 48 c7 46 18 00 00 00 00 48 c7 46 10 00 00 00 00 48 89 7e 78 31 c0 c3</code></td>
+<td style="text-align: right;" data-label="Members">34</td>
+<td style="text-align: right;" data-label="Bytes">4,488</td>
+<td style="text-align: right;" data-label="Edge-verified">34</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>fills_2_slots_05ac74a9_05ac5cac</code></td>
+<td data-label="Shape"><code>48 8d 05 {rel:0x05ac74a9} 48 89 06 48 8d 05 {rel:0x05ac5cac} 48 89 46 08 48 c7 46 70 00 00 00 00 48 c7 46 68 00 00 00 00 48 c7 46 60 00 00 00 00 48 c7 46 58 00 00 00 00 48 c7 46 50 00 00 00 00 48 c7 46 48 00 00 00 00 48 c7 46 40 00 00 00 00 48 c7 46 38 00 00 00 00 48 c7 46 30 00 00 00 00 48 c7 46 28 00 00 00 00 48 c7 46 20 00 00 00 00 48 c7 46 18 00 00 00 00 48 c7 46 10 00 00 00 00 48 89 7e 78 31 c0 c3</code></td>
+<td style="text-align: right;" data-label="Members">34</td>
+<td style="text-align: right;" data-label="Bytes">4,488</td>
+<td style="text-align: right;" data-label="Edge-verified">34</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>releases_named_resource_held_at_0x70</code></td>
+<td data-label="Shape"><code>55 48 89 e5 41 57 41 56 53 50 48 89 fb 80 7b 70 00 0f 84 84 00 00 00 48 8b 7b 78 48 85 ff 74 0d e8 {rel:0x01401720} 48 c7 43 78 00 00 00 00 4c 8d 3d {rel:0x058b3570} 49 8b 3f 48 85 ff 74 5b 4c 8d b3 88 00 00 00 48 83 bb a0 00 00 00 08 72 05 49 8b 36 eb 03 4c 89 f6 e8 {rel:0x013a2a00} 49 8b 3f 48 85 ff 74 17 48 85 c0 74 12 ba 01 00 00 00 b9 01 00 00 00 48 89 c6 e8 {rel:0x013a33c0} 48 c7 83 98 00 00 00 00 00 00 00 48 83 bb a0 00 00 00 08 72 03 4d 8b 36 66 41 c7 06 00 00 c6 43 71 00 48 83 c4 08 5b 41 5e 41 5f 5d c3</code></td>
+<td style="text-align: right;" data-label="Members">45</td>
+<td style="text-align: right;" data-label="Bytes">7,470</td>
+<td style="text-align: right;" data-label="Edge-verified">45</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>releases_named_resource_held_at_0x68</code></td>
+<td data-label="Shape"><code>55 48 89 e5 41 57 41 56 53 50 48 89 fb 80 7b 68 00 0f 84 84 00 00 00 48 8b 7b 70 48 85 ff 74 0d e8 {rel:0x01401720} 48 c7 43 70 00 00 00 00 4c 8d 3d {rel:0x058b3570} 49 8b 3f 48 85 ff 74 5b 49 89 de 49 83 ee 80 48 83 bb 98 00 00 00 08 72 05 49 8b 36 eb 03 4c 89 f6 e8 {rel:0x013a2a00} 49 8b 3f 48 85 ff 74 17 48 85 c0 74 12 ba 01 00 00 00 b9 01 00 00 00 48 89 c6 e8 {rel:0x013a33c0} 48 c7 83 90 00 00 00 00 00 00 00 48 83 bb 98 00 00 00 08 72 03 4d 8b 36 66 41 c7 06 00 00 c6 43 69 00 48 83 c4 08 5b 41 5e 41 5f 5d c3</code></td>
+<td style="text-align: right;" data-label="Members">37</td>
+<td style="text-align: right;" data-label="Bytes">6,142</td>
+<td style="text-align: right;" data-label="Edge-verified">37</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>stores_vtable_releases_0x10_then_destroys</code></td>
+<td data-label="Shape"><code>55 48 89 e5 53 50 48 89 fb 48 8d 05 {rel:0x057b1fb0} 48 89 03 48 8b 7b 10 48 85 ff 74 0d e8 {rel:0x02450560} 48 c7 43 10 00 00 00 00 48 89 df 48 83 c4 08 5b 5d e9 {rel:0x013e5c40}</code></td>
+<td style="text-align: right;" data-label="Members">44</td>
+<td style="text-align: right;" data-label="Bytes">2,420</td>
+<td style="text-align: right;" data-label="Edge-verified">44</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>stores_vtable_releases_0x10_destroys_then_deletes</code></td>
+<td data-label="Shape"><code>55 48 89 e5 53 50 48 89 fb 48 8d 05 {rel:0x057b1fb0} 48 89 03 48 8b 7b 10 48 85 ff 74 0d e8 {rel:0x02450560} 48 c7 43 10 00 00 00 00 48 89 df e8 {rel:0x013e5c40} 48 89 df 48 83 c4 08 5b 5d e9 {rel:0x02fbe588}</code></td>
+<td style="text-align: right;" data-label="Members">44</td>
+<td style="text-align: right;" data-label="Bytes">2,772</td>
+<td style="text-align: right;" data-label="Edge-verified">44</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>releases_member_at_0x20_through_0x01401720</code></td>
+<td data-label="Shape"><code>55 48 89 e5 53 50 48 89 fb 48 8b 7b 20 48 85 ff 74 0d e8 {rel:0x01401720} 48 c7 43 20 00 00 00 00 48 83 c4 08 5b 5d c3</code></td>
+<td style="text-align: right;" data-label="Members">47</td>
+<td style="text-align: right;" data-label="Bytes">1,786</td>
+<td style="text-align: right;" data-label="Edge-verified">47</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>releases_member_at_0x18_through_0x01401720</code></td>
+<td data-label="Shape"><code>55 48 89 e5 53 50 48 89 fb 48 8b 7b 18 48 85 ff 74 0d e8 {rel:0x01401720} 48 c7 43 18 00 00 00 00 48 83 c4 08 5b 5d c3</code></td>
+<td style="text-align: right;" data-label="Members">5</td>
+<td style="text-align: right;" data-label="Bytes">190</td>
+<td style="text-align: right;" data-label="Edge-verified">5</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>destroys_then_frees_0x10_bytes_through_0x05ac8288</code></td>
+<td data-label="Shape"><code>55 48 89 e5 53 50 48 89 fb e8 {rel:0x02c82960} 48 8d 05 {rel:0x05ac8288} 48 8b 38 ba 10 00 00 00 b9 08 00 00 00 48 89 de 48 83 c4 08 5b 5d e9 {rel:0x02fa1c20}</code></td>
+<td style="text-align: right;" data-label="Members">42</td>
+<td style="text-align: right;" data-label="Bytes">2,016</td>
+<td style="text-align: right;" data-label="Edge-verified">42</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>destroys_and_frees_object_through_owning_heap</code></td>
+<td data-label="Shape"><code>55 48 89 e5 41 56 53 48 89 fb 48 85 db 74 27 48 89 df e8 {rel:0x0247b720} 49 89 c6 48 8b 03 48 89 df ff 50 08 49 8b 06 48 8b 40 70 4c 89 f7 48 89 de 5b 41 5e 5d ff e0 5b 41 5e 5d c3</code></td>
+<td style="text-align: right;" data-label="Members">25</td>
+<td style="text-align: right;" data-label="Bytes">1,475</td>
+<td style="text-align: right;" data-label="Edge-verified">25</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>releases_path_entry_then_deletes_it</code></td>
+<td data-label="Shape"><code>55 48 89 e5 41 56 53 48 89 f3 48 83 c7 68 e8 {rel:0x013e6ae0} 48 85 db 0f 94 c1 48 85 db 74 06 34 01 08 c8 74 05 5b 41 5e 5d c3 48 89 df e8 {rel:0x0247b720} 49 89 c6 48 8b 03 48 89 df ff 50 08 49 8b 06 48 8b 40 70 4c 89 f7 48 89 de 5b 41 5e 5d ff e0</code></td>
+<td style="text-align: right;" data-label="Members">22</td>
+<td style="text-align: right;" data-label="Bytes">1,760</td>
+<td style="text-align: right;" data-label="Edge-verified">22</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>finds_path_entry_by_text</code></td>
+<td data-label="Shape"><code>55 48 89 e5 53 48 83 ec 18 48 8b 1d {rel:0x057e3be0} 48 8b 03 48 89 45 f0 48 83 c7 68 48 89 75 e0 c7 45 e8 00 00 00 00 c6 45 ec 01 48 8d 75 e0 e8 {rel:0x013e68f0} 48 8b 0b 48 3b 4d f0 75 07 48 83 c4 18 5b 5d c3 e8 {rel:0x02fbe4f8}</code></td>
+<td style="text-align: right;" data-label="Members">30</td>
+<td style="text-align: right;" data-label="Bytes">2,160</td>
+<td style="text-align: right;" data-label="Edge-verified">30</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>adds_reference_on_interface_id_0x04b2f320</code></td>
+<td data-label="Shape"><code>55 48 89 e5 41 56 53 49 89 d6 48 89 fb 48 8d 05 {rel:0x04b2f320} ba 10 00 00 00 48 89 f7 48 89 c6 e8 {rel:0x02fbe638} 85 c0 75 0c 48 8b 03 48 89 df ff 50 08 49 89 1e b8 04 00 00 80 5b 41 5e 5d c3</code></td>
+<td style="text-align: right;" data-label="Members">25</td>
+<td style="text-align: right;" data-label="Bytes">1,550</td>
+<td style="text-align: right;" data-label="Edge-verified">25</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>reports_fatal_error_line_0xad</code></td>
+<td data-label="Shape"><code>48 8d 15 {rel:0x04b38390} 31 ff be ad 00 00 00 31 c0 e9 {rel:0x024b55b0}</code></td>
+<td style="text-align: right;" data-label="Members">29</td>
+<td style="text-align: right;" data-label="Bytes">609</td>
+<td style="text-align: right;" data-label="Edge-verified">29</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>resolves_kind_and_index_then_calls_slot_0x38</code></td>
+<td data-label="Shape"><code>55 48 89 e5 53 50 48 89 f3 0f bf 57 0a 0f b7 77 08 48 89 df e8 {rel:0x02c4f560} 48 8b 08 48 8b 49 38 48 89 c7 48 89 de 48 83 c4 08 5b 5d ff e1</code></td>
+<td style="text-align: right;" data-label="Members">26</td>
+<td style="text-align: right;" data-label="Bytes">1,196</td>
+<td style="text-align: right;" data-label="Edge-verified">26</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>resolves_kind_and_index_then_calls_slot_0x58</code></td>
+<td data-label="Shape"><code>55 48 89 e5 53 50 48 89 f3 0f bf 57 0a 0f b7 77 08 48 89 df e8 {rel:0x02c4f560} 48 8b 08 48 8b 49 58 48 89 c7 48 89 de 48 83 c4 08 5b 5d ff e1</code></td>
+<td style="text-align: right;" data-label="Members">20</td>
+<td style="text-align: right;" data-label="Bytes">920</td>
+<td style="text-align: right;" data-label="Edge-verified">20</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>stores_vtable_releases_tagged_string_0x38_then_destroys</code></td>
+<td data-label="Shape"><code>55 48 89 e5 53 50 48 89 fb 48 8d 05 {rel:0x05686720} 48 83 c0 10 48 89 03 48 8d 7b 38 e8 {rel:0x00836840} 48 89 df 48 83 c4 08 5b 5d e9 {rel:0x00d5f020}</code></td>
+<td style="text-align: right;" data-label="Members">22</td>
+<td style="text-align: right;" data-label="Bytes">1,012</td>
+<td style="text-align: right;" data-label="Edge-verified">22</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>stores_vtable_calls_slot_0x18_clears_flag_then_destroys</code></td>
+<td data-label="Shape"><code>55 48 89 e5 53 50 48 89 fb 48 8d 05 {rel:0x057b9520} 48 8d 48 10 48 89 0b ff 50 28 80 63 0b bf 48 89 df 48 83 c4 08 5b 5d e9 {rel:0x0271a600}</code></td>
+<td style="text-align: right;" data-label="Members">17</td>
+<td style="text-align: right;" data-label="Bytes">748</td>
+<td style="text-align: right;" data-label="Edge-verified">17</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>stores_vtable_calls_slot_0x18_clears_flag_destroys_then_deletes</code></td>
+<td data-label="Shape"><code>55 48 89 e5 53 50 48 89 fb 48 8d 05 {rel:0x057b9520} 48 8d 48 10 48 89 0b ff 50 28 80 63 0b bf 48 89 df e8 {rel:0x0271a600} 48 89 df 48 83 c4 08 5b 5d e9 {rel:0x02fbe588}</code></td>
+<td style="text-align: right;" data-label="Members">17</td>
+<td style="text-align: right;" data-label="Bytes">884</td>
+<td style="text-align: right;" data-label="Edge-verified">17</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>clears_hk_array_of_4_byte_elements</code></td>
+<td data-label="Shape"><code>55 48 89 e5 53 50 48 89 fb c7 43 08 00 00 00 00 8b 53 0c 85 d2 78 13 c1 e2 02 48 8b 33 48 8d 3d {rel:0x058018b0} 48 8b 07 ff 50 28 48 c7 03 00 00 00 00 c7 43 0c 00 00 00 80 48 83 c4 08 5b 5d c3</code></td>
+<td style="text-align: right;" data-label="Members">16</td>
+<td style="text-align: right;" data-label="Bytes">1,008</td>
+<td style="text-align: right;" data-label="Edge-verified">16</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>releases_0x18_byte_elements_at_0x18_then_empties</code></td>
+<td data-label="Shape"><code>55 48 89 e5 41 57 41 56 53 50 49 89 fe 49 8b 5e 18 4d 8b 7e 20 4c 39 fb 74 1b 66 0f 1f 44 00 00 48 89 df e8 {rel:0x02fa7940} 48 83 c3 18 49 39 df 75 ef 49 8b 5e 18 49 89 5e 20 48 83 c4 08 5b 41 5e 41 5f 5d c3</code></td>
+<td style="text-align: right;" data-label="Members">16</td>
+<td style="text-align: right;" data-label="Bytes">1,088</td>
+<td style="text-align: right;" data-label="Edge-verified">16</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>destroys_member_0x68_then_base</code></td>
+<td data-label="Shape"><code>55 48 89 e5 53 50 48 89 fb 48 8d 7b 68 e8 {rel:0x005c9010} 48 89 df 48 83 c4 08 5b 5d e9 {rel:0x005696e0}</code></td>
+<td style="text-align: right;" data-label="Members">27</td>
+<td style="text-align: right;" data-label="Bytes">864</td>
+<td style="text-align: right;" data-label="Edge-verified">27</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>destroys_member_0x68_and_base_then_frees</code></td>
+<td data-label="Shape"><code>55 48 89 e5 53 50 48 89 fb 48 8d 7b 68 e8 {rel:0x005c9010} 48 89 df e8 {rel:0x005696e0} 48 8d 05 {rel:0x057e7320} 48 8b 38 48 8b 07 48 8b 40 68 48 89 de 48 83 c4 08 5b 5d ff e0</code></td>
+<td style="text-align: right;" data-label="Members">27</td>
+<td style="text-align: right;" data-label="Bytes">1,458</td>
+<td style="text-align: right;" data-label="Edge-verified">27</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>adjusts_0x20_destroys_member_0x68_then_base</code></td>
+<td data-label="Shape"><code>55 48 89 e5 53 50 48 8d 5f e0 48 83 c7 48 e8 {rel:0x005c9010} 48 89 df 48 83 c4 08 5b 5d e9 {rel:0x005696e0}</code></td>
+<td style="text-align: right;" data-label="Members">27</td>
+<td style="text-align: right;" data-label="Bytes">891</td>
+<td style="text-align: right;" data-label="Edge-verified">27</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>adjusts_0x20_destroys_member_0x68_and_base_then_frees</code></td>
+<td data-label="Shape"><code>55 48 89 e5 53 50 48 8d 5f e0 48 83 c7 48 e8 {rel:0x005c9010} 48 89 df e8 {rel:0x005696e0} 48 8d 05 {rel:0x057e7320} 48 8b 38 48 8b 07 48 8b 40 68 48 89 de 48 83 c4 08 5b 5d ff e0</code></td>
+<td style="text-align: right;" data-label="Members">27</td>
+<td style="text-align: right;" data-label="Bytes">1,485</td>
+<td style="text-align: right;" data-label="Edge-verified">27</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>adjusts_0x68_destroys_member_0x68_then_base</code></td>
+<td data-label="Shape"><code>55 48 89 e5 53 50 48 8d 5f 98 e8 {rel:0x005c9010} 48 89 df 48 83 c4 08 5b 5d e9 {rel:0x005696e0}</code></td>
+<td style="text-align: right;" data-label="Members">27</td>
+<td style="text-align: right;" data-label="Bytes">783</td>
+<td style="text-align: right;" data-label="Edge-verified">27</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>adjusts_0x68_destroys_member_0x68_and_base_then_frees</code></td>
+<td data-label="Shape"><code>55 48 89 e5 53 50 48 8d 5f 98 e8 {rel:0x005c9010} 48 89 df e8 {rel:0x005696e0} 48 8d 05 {rel:0x057e7320} 48 8b 38 48 8b 07 48 8b 40 68 48 89 de 48 83 c4 08 5b 5d ff e0</code></td>
+<td style="text-align: right;" data-label="Members">22</td>
+<td style="text-align: right;" data-label="Bytes">1,122</td>
+<td style="text-align: right;" data-label="Edge-verified">22</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>destroys_member_0x70_releases_0x68_then_base</code></td>
+<td data-label="Shape"><code>55 48 89 e5 53 50 48 89 fb 48 8d 7b 70 e8 {rel:0x005c9010} 48 8d 05 {rel:0x055584e0} 48 8d 48 10 48 89 0b 48 05 e8 00 00 00 48 89 43 20 48 8b 7b 68 48 85 ff 74 05 e8 {rel:0x0045a4c0} 48 89 df 48 83 c4 08 5b 5d e9 {rel:0x005696e0}</code></td>
+<td style="text-align: right;" data-label="Members">12</td>
+<td style="text-align: right;" data-label="Bytes">840</td>
+<td style="text-align: right;" data-label="Edge-verified">12</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>destroys_member_0x70_releases_0x68_and_base_then_frees</code></td>
+<td data-label="Shape"><code>55 48 89 e5 53 50 48 89 fb 48 8d 7b 70 e8 {rel:0x005c9010} 48 8d 05 {rel:0x055584e0} 48 8d 48 10 48 89 0b 48 05 e8 00 00 00 48 89 43 20 48 8b 7b 68 48 85 ff 74 05 e8 {rel:0x0045a4c0} 48 89 df e8 {rel:0x005696e0} 48 8d 05 {rel:0x057e7320} 48 8b 38 48 8b 07 48 8b 40 68 48 89 de 48 83 c4 08 5b 5d ff e0</code></td>
+<td style="text-align: right;" data-label="Members">12</td>
+<td style="text-align: right;" data-label="Bytes">1,104</td>
+<td style="text-align: right;" data-label="Edge-verified">12</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>adjusts_0x20_destroys_member_0x70_releases_0x68_then_base</code></td>
+<td data-label="Shape"><code>55 48 89 e5 53 50 48 89 fb 48 8d 7b 50 e8 {rel:0x005c9010} 48 8d 05 {rel:0x055584e0} 48 8d 48 10 48 89 4b e0 48 05 e8 00 00 00 48 89 03 48 8b 7b 48 48 8d 5b e0 48 85 ff 74 05 e8 {rel:0x0045a4c0} 48 89 df 48 83 c4 08 5b 5d e9 {rel:0x005696e0}</code></td>
+<td style="text-align: right;" data-label="Members">12</td>
+<td style="text-align: right;" data-label="Bytes">888</td>
+<td style="text-align: right;" data-label="Edge-verified">12</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>adjusts_0x20_destroys_member_0x70_releases_0x68_and_base_then_frees</code></td>
+<td data-label="Shape"><code>55 48 89 e5 53 50 48 89 fb 48 8d 7b 50 e8 {rel:0x005c9010} 48 8d 05 {rel:0x055584e0} 48 8d 48 10 48 89 4b e0 48 05 e8 00 00 00 48 89 03 48 8b 7b 48 48 8d 5b e0 48 85 ff 74 05 e8 {rel:0x0045a4c0} 48 89 df e8 {rel:0x005696e0} 48 8d 05 {rel:0x057e7320} 48 8b 38 48 8b 07 48 8b 40 68 48 89 de 48 83 c4 08 5b 5d ff e0</code></td>
+<td style="text-align: right;" data-label="Members">12</td>
+<td style="text-align: right;" data-label="Bytes">1,152</td>
+<td style="text-align: right;" data-label="Edge-verified">12</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>adjusts_0x70_destroys_member_0x70_releases_0x68_then_base</code></td>
+<td data-label="Shape"><code>55 48 89 e5 53 50 48 89 fb e8 {rel:0x005c9010} 48 8d 05 {rel:0x055584e0} 48 8d 48 10 48 89 4b 90 48 05 e8 00 00 00 48 89 43 b0 48 8b 7b f8 48 8d 5b 90 48 85 ff 74 05 e8 {rel:0x0045a4c0} 48 89 df 48 83 c4 08 5b 5d e9 {rel:0x005696e0}</code></td>
+<td style="text-align: right;" data-label="Members">12</td>
+<td style="text-align: right;" data-label="Bytes">852</td>
+<td style="text-align: right;" data-label="Edge-verified">12</td>
+<td style="text-align: right;" data-label="Verified">0</td>
+</tr>
+<tr>
+<td data-label="Family"><code>adjusts_0x70_destroys_member_0x70_releases_0x68_and_base_then_frees</code></td>
+<td data-label="Shape"><code>55 48 89 e5 53 50 48 89 fb e8 {rel:0x005c9010} 48 8d 05 {rel:0x055584e0} 48 8d 48 10 48 89 4b 90 48 05 e8 00 00 00 48 89 43 b0 48 8b 7b f8 48 8d 5b 90 48 85 ff 74 05 e8 {rel:0x0045a4c0} 48 89 df e8 {rel:0x005696e0} 48 8d 05 {rel:0x057e7320} 48 8b 38 48 8b 07 48 8b 40 68 48 89 de 48 83 c4 08 5b 5d ff e0</code></td>
+<td style="text-align: right;" data-label="Members">10</td>
+<td style="text-align: right;" data-label="Bytes">930</td>
+<td style="text-align: right;" data-label="Edge-verified">10</td>
+<td style="text-align: right;" data-label="Verified">0</td>
 </tr>
 </tbody>
 </table></div>
@@ -931,19 +1836,19 @@ member addresses (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/703
 <tbody>
 <tr>
 <td>Families</td>
-<td style="text-align: right;">48</td>
+<td style="text-align: right;">156</td>
 </tr>
 <tr>
 <td>Members, by count</td>
-<td style="text-align: right;">19,669 (12.47%) of 157,757 functions</td>
+<td style="text-align: right;">27,733 (17.58%) of 157,757 functions</td>
 </tr>
 <tr>
 <td>Members, by bytes</td>
-<td style="text-align: right;">141,663 (0.33%) of 42,487,404 bytes</td>
+<td style="text-align: right;">651,051 (1.53%) of 42,487,404 bytes</td>
 </tr>
 <tr>
 <td>Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> members</td>
-<td style="text-align: right;">19,669</td>
+<td style="text-align: right;">27,733</td>
 </tr>
 </tbody>
 </table></div>

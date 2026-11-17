@@ -398,7 +398,7 @@
       <span class="wk-stat-track" role="img" aria-label="0.1658 percent of target code bytes verified">
         <span class="wk-stat-fill" style="width:0.1658%"></span>
       </span>
-      <span class="wk-progress-foot">0.1658% of code bytes verified · 1,368 replaced</span>
+      <span class="wk-progress-foot">0.1658% of code bytes verified · 1,369 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -436,39 +436,21 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 10, 2026 20:41:05 UTC">November 10, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 17, 2026 15:03:47 UTC">November 17, 2026</span></p>
       
-      
-      
-      <aside class="wk-freshness" role="note">
-        <p><b>Not yet updated for 3 merged changes.</b>
-        This page was last checked against Paleblood
-        <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/cf669283bed4b9a9f36e72ef1ebe28bf037d1a6f"><code>cf66928</code></a>;
-        these pull requests changed what it describes since:</p>
-        <ul>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1063">#1063</a> input, frame_timing: the key mapper's lookups, the key assign's held query and the listener takes</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/995">#995</a> engine: key assign queries, task add, item dialog cursor and lists as readable C++</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/975">#975</a> input: closed-loop walks in input scripts</li>
-          
-          
-        </ul>
-      </aside>
       
       <h1 id="input">Input</h1>
-<p class="wk-lede">The input system handles the controller pads. This page covers the once-a-frame step of FD4PadManager, the manager that keeps a map of pad entries, and the pad vibration and mouse setup functions.</p>
+<p class="wk-lede">The input system turns the controller's buttons and sticks into the game's own logical keys. This page covers the key assign that answers "is this key pressed?", the once-a-frame step of FD4PadManager, and the pad vibration and mouse setup functions.</p>
 
 <div class="wk-glance">
 <p><span class="wk-label">At a glance</span></p>
 <dl>
 <dt>Scope</dt>
-<dd>Pad polling, mapping, dead zones, vibration, mouse and input buffering. Mapped so far: the per-frame step of the <code>FD4PadManager</code> pad map, pad vibration and the mouse device's setup.</dd>
+<dd>Pad polling, mapping, dead zones, vibration, mouse and input buffering. Mapped so far: the key assign's queries and its key mapper, the per-frame step of the <code>FD4PadManager</code> pad map, pad vibration and the mouse device's setup.</dd>
 <dt>Verified</dt>
-<dd>The pad step is <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>; the vibration setter, the mouse device constructor and its two opens are <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr>.</dd>
+<dd>The pad step, the vibration setter, the key assign's pressed, analog and free-id queries and the pad slot constructor are <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>. The key mapper's lookups, the held query, the mouse device constructor and its two opens are <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr>.</dd>
 <dt>Open</dt>
-<dd>What the two entries and the owner are; where the pad is polled; mapping, dead zones and input buffering.</dd>
+<dd>What the two entries and the owner are; where the pad is polled and how its state reaches the key assign; dead zones and input buffering.</dd>
 </dl>
 </div>
 <h2 id="summary">Summary</h2>
@@ -481,7 +463,50 @@
 <li><strong>Advances that owner</strong> with a frame-time descriptor, when it is ready.</li>
 </ol>
 <p>While the hunter stands in Iosefka's Clinic the advance branch stays idle.</p>
-<p>Scope still to map: pad polling, mapping, dead zones, input buffering.</p>
+<p>Scope still to map: pad polling, dead zones, input buffering.</p>
+<h3 id="from-buttons-to-logical-keys">From buttons to logical keys</h3>
+<p>The game does not ask "is the cross button down?". It asks about its own <strong>logical keys</strong> (menu
+up, confirm and so on), and the FD4 key assign answers from the physical buttons and sticks each
+key is assigned to. These queries run hundreds of thousands of times in a boot, on the title menus,
+in character creation and in the clinic.</p>
+<ul>
+<li><strong>Pressed and analog.</strong> A logical key is answered only when the key assign is enabled, the key
+  mapper gives a button for it, and the key's state entry says it is enabled and not suppressed.
+  "Pressed" is that button's bit in the sampled state, or else the alternate input the mapper names
+  for that button being held; "analog" is the button's value (a stick axis or a pressure), 0
+  otherwise. The original looks the key's state entry up twice, once per flag, and the replacement
+  does the same.</li>
+<li><strong>Held combinations.</strong> A key can also be "held" through any of its combinations, each of up to
+  four logical keys with a test (pressed, released, or an analog value above 0). An unused part
+  passes; a part with an unknown test repeats the previous part's result, so as the first part it
+  fails, because the original leaves its result register untouched.</li>
+<li><strong>The key mapper</strong> answers which button index a logical key is assigned to, and which second
+  input (another device's) a button index maps to, or -1 for none. Its maps are MSVC trees with
+  the key and value packed at 4-byte alignment.</li>
+<li><strong>Bookkeeping.</strong> A search finds the first free id among a table's assignments (visiting every
+  entry for each id), and a new pad slot starts with no pad and a "pad not set" debug label.</li>
+</ul>
+<details class="evidence">
+<summary>Key assign: PRs and evidence</summary>
+<ul>
+<li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/995">#995</a>: the pressed and analog
+  queries, the free-id search and the pad slot constructor, now <strong><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></strong>: checked against
+  recordings from the game and approved by an independent review.</li>
+<li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1063">#1063</a>: the key mapper's two
+  lookups, the held-set test and the held query, <strong><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></strong> from the code and
+  constructed tests (29 to 38 cases each; all 18 deliberately wrong versions fail).</li>
+</ul>
+</details>
+<h3 id="scripted-walks-for-test-boots">Scripted walks for test boots</h3>
+<p>Unattended test boots drive the game with input scripts. Since
+<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/975">#975</a> a script can <strong>walk</strong> the character
+to a ground position: the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> steers the left stick towards the target, re-aiming every few
+frames from where the character really is, learns the camera's turn from how the character moved,
+sidesteps when stuck, and gives up after a time limit. The position comes from a small game-side
+function (<code>game/input/player_position.cpp</code>) that reports the player position the Havok AI debug
+display already reads, or nothing while a map loads. It is test tooling, not a replacement:
+nothing in the game calls it. In a clinic boot, a route of 12 walks took the player from the
+operating table to the enemy.</p>
 <h3 id="what-the-game-asks-the-system-for">What the game asks the system for</h3>
 <p>The executable's imports show which input libraries it uses, and which calls from each:</p>
 <div class="wk-table is-stack"><table class="wk-stack">
@@ -529,8 +554,9 @@ executable's own calls fix their shapes:</p>
 <p>With <code>--input host</code> the <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr> feeds a real gamepad and the keyboard into these calls. That is the
 <abbr title="What the game's code runs on: Paleblood's own loader and its own PS4 system libraries, written clean-room.">runtime</abbr>'s side; the game code that reads the state is not decompiled yet.</p>
 <h3 id="vibration-and-the-mouse">Vibration and the mouse</h3>
-<p>Four small device functions are <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> and <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr> (Paleblood
-<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/520">#520</a>):</p>
+<p>Four small device functions are <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> (Paleblood
+<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/520">#520</a>); the vibration setter is now
+<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>, the three mouse functions <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr>:</p>
 <ul>
 <li><strong>Vibration.</strong> <code>input_pad_set_vibration</code> (<code>0x02a9c790</code>) sets both motors of an open pad with
   <code>scePadSetVibration</code>, and answers false when the pad is not open or the call fails. Its second
@@ -552,7 +578,8 @@ executable's own calls fix their shapes:</p>
 <summary>How these were <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></summary>
 <p>Each function's <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr> pass against the original (9, 10, 11 and 11 cases), deliberately
 wrong versions fail, and an independent review approved all four. No community patch edits
-them. They are <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr>: none has been recorded in a game run.</p>
+them. The vibration setter has since been checked against recordings from the game; the three
+mouse functions are <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr>, from the code and constructed tests only.</p>
 </details>
 <h2 id="key-functions">Key functions</h2>
 <div class="wk-table is-stack"><table class="wk-stack">
@@ -727,7 +754,7 @@ change it:</p>
 <li>What the two pad map entries keyed by globals are, and what the owner the step advances is.</li>
 <li>What the functions around the two <code>scePadReadState</code> calls (<code>0x02a90168</code>, <code>0x02a91948</code>) keep of
   each state (the start of pad polling).</li>
-<li>Pad mapping and input buffering have not been studied yet. The sticks' dead zones are applied by
+<li>How the sampled pad state reaches the key assign, and input buffering, have not been studied yet. The sticks' dead zones are applied by
   the game's own code, from the deadzone the controller information reports (only the motion
   sensor's deadband is set through the library).</li>
 <li>Whether the mouse path is used by anything in the shipped game: the mouse device's constructor has two callers (<code>0x02558eb3</code>, <code>0x02558fb6</code>), not yet mapped, and nothing calls either open directly (only their vtable slots point at them).</li>

@@ -398,7 +398,7 @@
       <span class="wk-stat-track" role="img" aria-label="0.1658 percent of target code bytes verified">
         <span class="wk-stat-fill" style="width:0.1658%"></span>
       </span>
-      <span class="wk-progress-foot">0.1658% of code bytes verified · 1,368 replaced</span>
+      <span class="wk-progress-foot">0.1658% of code bytes verified · 1,369 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -436,54 +436,31 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 28, 2026 05:15:03 UTC">October 28, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 17, 2026 15:03:47 UTC">November 17, 2026</span></p>
       
-      
-      
-      <aside class="wk-freshness" role="note">
-        <p><b>Not yet updated for 16 merged changes.</b>
-        This page was last checked against Paleblood
-        <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/cf669283bed4b9a9f36e72ef1ebe28bf037d1a6f"><code>cf66928</code></a>;
-        these pull requests changed what it describes since:</p>
-        <ul>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1109">#1109</a> ai: goal framework part 1: update-time scheduler reserve and goal registration options</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1103">#1103</a> ai: the sound check (0x0169cef0), edge-verified</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1089">#1089</a> ai: the hearing test (0x0169d160), edge-verified</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1079">#1079</a> ai: perception update and debug display move verified</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1067">#1067</a> ai: hearing, the ear's shape (0x0169da30)</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/997">#997</a> ai: verify the sight test, target refresh, visible lookup and inside test</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/999">#999</a> ai: replace the perception update and the current target's handle</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/972">#972</a> ai: replace the group reset and the debug display's set position, flush and end</li>
-          
-          <li>and 8 more</li>
-        </ul>
-      </aside>
       
       <h1 id="ai">AI</h1>
-<p class="wk-lede">The game runs a shared Havok AI world, owned by the SprjHkAiManager singleton. This page covers the once-a-frame update that steps that world and draws its debug display.</p>
+<p class="wk-lede">How enemies notice you and how their AI is run. The game steps a shared Havok AI world once a frame; each enemy's AI scripts call back into the game to read timers, numbers and stats; and the engine decides what each enemy sees and hears. This page covers the parts of that already rewritten as readable source.</p>
 
 <div class="wk-glance">
 <p><span class="wk-label">At a glance</span></p>
 <dl>
 <dt>Scope</dt>
-<dd>The per-frame AI manager update: the world step and the AI debug drawing.</dd>
+<dd>The per-frame AI world update and its debug drawing; the script bindings an enemy's AI scripts call; sight, hearing and the target list; the first pieces of the goal framework.</dd>
 <dt>Verified</dt>
-<dd><code>ai_hk_frame_update_0222bc10</code> steps the AI world by a fixed 1/30 s and gates the debug drawing behind flags.</dd>
+<dd>The frame update, the sight test, the perception update, the target list's main-target matching, most per-frame character queries and most timer, number and target-state bindings are checked against recordings from the game.</dd>
+<dt>Edge-verified</dt>
+<dd>Hearing (the ear's shape, the hearing test and the sound check), the goal registration options and the update-time scheduler, the stat bindings and several debug-draw helpers: checked from the code and constructed tests only.</dd>
 <dt>Open</dt>
-<dd>The world step itself (<code>0x021cdad0</code>), the groups and objects, and how individual enemies decide what to do.</dd>
+<dd>The AI world step itself (<code>0x021cdad0</code>), the target-list update that ages and promotes entries, how goals are run, and how any individual enemy decides what to do.</dd>
 </dl>
 </div>
 <h2 id="summary">Summary</h2>
-<p>The game steps a shared Havok AI world through <code>SprjHkAiManager</code> (singleton <code>0x059401a0</code>). The
-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> wrapper does not establish which enemy or NPC decisions that world supplies.</p>
+<p>The game steps a shared Havok AI world through <code>SprjHkAiManager</code> (singleton <code>0x059401a0</code>).
+Enemy behaviour itself is written in AI scripts that run on the game's script VM; each frame they
+call back into the executable through methods registered under the names the scripts use.
+Paleblood has <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> the engine side of several of those calls and the perception code they read
+from. None of this yet describes how a particular enemy or boss chooses its attacks.</p>
 <h3 id="what-one-frame-does">What one frame does</h3>
 <p>Once a frame, <code>ai_hk_frame_update_0222bc10</code> (<code>0x0222bc10</code>):</p>
 <ol>
@@ -499,7 +476,7 @@
 <thead>
 <tr>
 <th>Piece</th>
-<th>What it uses</th>
+<th>What it does</th>
 </tr>
 </thead>
 <tbody>
@@ -508,16 +485,36 @@
 <td>the camera's position, or the player character's when the character manager exists</td>
 </tr>
 <tr>
-<td>Debug marks</td>
-<td>(not yet detailed)</td>
+<td>Group reset (<code>0x02224090</code>)</td>
+<td>one world area's debug step: its debug-menu entry cycles through added, shown, removed and hidden; with the step flag set, the area's blocks are stepped too</td>
+</tr>
+<tr>
+<td>Debug display move (<code>0x016334b0</code>)</td>
+<td>moves the display to a position, staying put while its object stands on the same unflagged navigation point close to the reference</td>
+</tr>
+<tr>
+<td>Debug flush (<code>0x01633ac0</code>)</td>
+<td>marks the objects of the entities the display's object links to</td>
+</tr>
+<tr>
+<td>Debug end (<code>0x0163bb50</code>)</td>
+<td>draws the view's marks and the world's marks, then the subject's bounding box when asked (a box whose maximum is below its minimum in any lane is skipped)</td>
 </tr>
 <tr>
 <td>Draw descriptor</td>
-<td>every AI object in the owner's groups, or the whole manager</td>
+<td>every AI object in the owner's groups, or the whole manager; its colour callback (<code>0x02232a60</code>) averages the palette colours of the layer bits both masks share</td>
 </tr>
 <tr>
-<td>Axis frames</td>
-<td>ids looked up in the manager's id map</td>
+<td>World draw (<code>0x021d6ea0</code>)</td>
+<td>sets four render-state settings, then draws every section of the AI world (nothing when the view has no debug renderer)</td>
+</tr>
+<tr>
+<td>Axis frames (<code>0x0135d810</code>)</td>
+<td>ids looked up in the manager's id map, each drawn under the debug renderer's lock</td>
+</tr>
+<tr>
+<td>Entity point (<code>0x029ae440</code>)</td>
+<td>the centre of one face of a nav-mesh instance, through its transform</td>
 </tr>
 <tr>
 <td>Boxes</td>
@@ -530,14 +527,146 @@
 (see <a href="#patch-points">Patch points</a>).</p>
 <p>In the recordings from Iosefka's Clinic the update resets its three groups, copies the matrices
 and draws each AI object; the debug display, axis frames, boxes and the manager-wide draw stay off.</p>
-<p>Scope still to map: the AI world step itself (<code>0x021cdad0</code>), the groups and objects, the
-behaviour of individual enemies.</p>
+<details class="evidence">
+<summary>The frame update's helpers: PRs, contributors and evidence</summary>
+<ul>
+<li><a href="https://github.com/FFwLo">@FFwLo</a> <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> the debug-draw helpers:
+  <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/815">#815</a> (the axis frames and the
+  layer colour callback), <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/885">#885</a> (the
+  world draw and the entity point) and
+  <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/972">#972</a> (the group reset and the debug
+  display's move, flush and end).</li>
+<li>The group reset, the entity point and the debug display move are now <strong><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></strong>: checked
+  against recordings from the game (the move's in
+  <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1079">#1079</a>, with all of its paths
+  covered by recordings and constructed cases together) and approved by an independent
+  review.</li>
+<li>The axis frames, colour callback, world draw, flush and end are <strong><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></strong>: from the
+  code and constructed tests only. The clinic boots never call some of them, and others start
+  with a short branch the recorder cannot yet <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr>.</li>
+</ul>
+</details>
+<h3 id="what-an-enemys-scripts-can-ask">What an enemy's scripts can ask</h3>
+<p>The engine side of the AI scripts is a set of small bindings that read or change a character's
+"think", the object that carries its AI state
+(<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/911">#911</a>):</p>
+<ul>
+<li><strong>Random draws.</strong> A float or an integer in a range, from a 20-bit fraction of the engine's random
+  source.</li>
+<li><strong>Timers and numbers.</strong> Each think keeps 16 count-down timers and 64 free numbers, separately for
+  the logic scripts and the goal scripts. The two sides check their indices differently (timers
+  signed, numbers unsigned) and answer an out-of-range "is this timer finished?" differently; the
+  replacements keep those quirks.</li>
+<li><strong>Target state.</strong> Four levels: normal, caution, find and battle, plus whether the state changed
+  since the last think, and an optional forced state.</li>
+<li><strong>Stats.</strong> The SP, MP, HP and HP ratio of the character the script names, or 0 when there is
+  none.</li>
+</ul>
+<p>Alongside them run the per-frame questions a think asks about its own character
+(<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/920">#920</a>): its id, a negated column of its transform, a flag-module check, whether an
+effect on it carries one of three state bits, a ready check whose meaning is not yet known, link
+ids, and a pending AI event that is posted once the named character has it pending.</p>
+<p>The random integer, the timer, number and target-state bindings and the character queries are
+<strong><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></strong> from in-game recordings; the random float, the forced-state read, the stat bindings and
+the goal-side timers and numbers are <strong><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></strong>.</p>
+<h3 id="how-an-enemy-sees-you">How an enemy sees you</h3>
+<p>Sight decides the "visible" flag the scripts read
+(<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/936">#936</a>,
+<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/958">#958</a>). In plain words:</p>
+<ul>
+<li><strong>Close by, at any angle.</strong> A character within the enemy's "nose" distance (plus both bodies'
+  sizes) is noticed whichever way the enemy faces.</li>
+<li><strong>By eye.</strong> Further out, the target must be within an eye distance that depends on how dark it
+  is where the target stands, scaled by how visible the target is and how sharp the enemy's sight
+  is; measured from a point a little behind the enemy, and not closer than a starting distance.
+  It must also be inside the enemy's width cone and height cone.</li>
+<li><strong>Line of sight.</strong> When the caller asks, a ray from the enemy's eyes to the target's must hit
+  nothing in the physics world.</li>
+<li>A target marked unseeable is never noticed, though the test still runs.</li>
+</ul>
+<p>The sight test also places targets by direction ("is the target in front, behind, beside me?",
+<code>0x01693850</code>), and a speed record keeps how fast the followed target is closing in over the last
+30 frames.</p>
+<p><strong>The target list.</strong> What an enemy has noticed goes into a list of target entries. A noticed
+character refreshes its entry (marked visible this update) or gets a new one
+(<code>0x016b2760</code>). The entry with the highest priority is the main target, and every other entry for
+the same character, or for a place within half a metre of it, is marked as matching it
+(<code>0x016b30a0</code>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/920">#920</a>,
+<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/951">#951</a>,
+<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/961">#961</a>).</p>
+<p><strong>The perception update</strong> (<code>0x016a85c0</code>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/999">#999</a>)
+runs once per think. It counts down a perception timer, runs the target-list update (sight and
+hearing; still the original code), and then reads the target state off the list in a fixed order.
+The normal, caution, find and battle ladder lives in each target entry; this update only reports
+it, and the state it replaces becomes the previous state, so "the state changed" is true for exactly
+one think. It also answers whether the target faces the enemy and serves a one-shot "force battle"
+request.</p>
+<details class="evidence">
+<summary>Sight and perception: what is <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></summary>
+<ul>
+<li><strong>Verified</strong> (checked against recordings from the game, each approved by an independent
+  review): the sight test, the target-list refresh, the visible-flag lookup and the direction
+  test (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/997">#997</a>); the main-target
+  matching (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/951">#951</a>, whose recordings
+  only held empty lists, so its matching logic rests on constructed cases, including the
+  boundary case added in <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/961">#961</a>); the
+  perception update and the current target's handle
+  (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1079">#1079</a>, from a <abbr title="Inputs recorded while the game ran, replayed by the harness.">capture</abbr> boot of
+  the clinic beast fight: 1493 of 1503 recordings pass, and 10 are set aside because the
+  original itself leaves stack garbage in one byte or the recording is incomplete); the
+  target speed record.</li>
+<li><strong>Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></strong> (from the code and constructed tests): the script-side visible-target and
+  inside-target queries and the sight query's reset.</li>
+</ul>
+</details>
+<h3 id="how-an-enemy-hears-you">How an enemy hears you</h3>
+<p>Hearing is <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> in three steps, all <strong><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></strong> from the code and constructed tests
+(<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1067">#1067</a>,
+<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1089">#1089</a>,
+<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1103">#1103</a>). An enemy does not hear "noise"
+in general: each sound has a position, a range and a maker.</p>
+<ol>
+<li><strong>The sound check</strong> (<code>0x0169cef0</code>) first decides whether this enemy may hear that maker at all,
+   and how big the maker is. A character's sound is checked by team, using a table of which teams
+   hear which (some sounds use the attack-hit team tables instead). An object's sound counts while
+   the object still exists. Either way the sound then goes to the hearing test.</li>
+<li><strong>The hearing test</strong> (<code>0x0169d160</code>) compares the sound's range, less the enemy's sound-cut
+   distance, with the gap between them: the distance less both bodies' sizes. If the range covers
+   the gap, the sound is heard.</li>
+<li>Otherwise the enemy's <strong>ear</strong> may still reach it: the ear reaches a little further, and its
+   width and height angles decide. <strong>The ear's shape</strong> (<code>0x0169da30</code>) answers whether a sphere
+   around the sound reaches the ear, within its height angle or along that angle's edge.</li>
+</ol>
+<p>A heard sound is remembered: its position (unless the enemy already remembers a closer one) and,
+always, which sound it was.</p>
+<details class="evidence">
+<summary>Why hearing is not <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> yet</summary>
+<p>Each function passes its constructed cases against the original (449, 561 and 1642), and the
+deliberately wrong versions fail, except ones shown to be equivalent. The ear's shape cannot be
+recorded yet: one of its arguments arrives in a vector register the recorder does not <abbr title="Inputs recorded while the game ran, replayed by the harness.">capture</abbr>.
+No recording from the game covers any of the three.</p>
+</details>
+<h3 id="goals-the-first-pieces">Goals: the first pieces</h3>
+<p>An enemy's AI plans with goals: its scripts add goals by id, each goal id having a definition
+registered when the scripts load. The first part of that framework is <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> and
+<strong><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></strong> (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1109">#1109</a>):</p>
+<ul>
+<li><strong>Registration options.</strong> Four script functions the AI scripts call at load for a goal id. Each
+  finds the id's definition and sets one option: the goal has no update, the update-time range it
+  is updated in, the goal cannot be interrupted, or combo attacks may be cancelled.</li>
+<li><strong>The update-time scheduler's reserve</strong> (<code>0x016a3be0</code>). It spreads AI updates over frames: a
+  ring of 100 one-frame slots, at 30 frames a second, each counting the updates booked in it. A
+  booking goes into the slot its delay names, or, when that slot is full, into the next slot with
+  room, and the delay comes back moved to match. Nothing in the executable calls it directly.</li>
+</ul>
+<p>How goals are run, interrupted and ended is not <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> yet.</p>
 <details class="caveat">
-<summary>What this wrapper does not tell us</summary>
-<p>This <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> wrapper establishes how the AI manager is stepped and how its debug drawing is
-gated. It does not reveal an individual enemy's decisions, attack timing, or boss phases. The
-current source and evidence contain no basis for those profiles yet; gameplay observations alone
-will be labeled as observations until their implementation is traced.</p>
+<summary>What this page does not tell us</summary>
+<p>The <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> code establishes how the AI world is stepped, what the scripts can read, and how
+sight, hearing and the target state are computed. It does not reveal any individual enemy's
+decisions, attack timing or boss phases: those live in the AI scripts and the goal code that is
+not <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> yet. Gameplay observations alone will be labelled as observations until their
+implementation is traced.</p>
 </details>
 <h2 id="key-functions">Key functions</h2>
 <div class="wk-table is-stack"><table class="wk-stack">
@@ -1008,6 +1137,8 @@ holds elements, and each element holds a list of objects.</p>
 </tbody>
 </table></div>
 <p><strong><code>SprjHkAiManager</code>.</strong> AI world <code>+0x10</code> (its id map at <code>+0x10</code>), view object <code>+0x20</code>.</p>
+<p><strong>The think's perception record</strong> sits at think <code>+0x560</code>; the script bindings read the current and
+previous target state from it, and a forced state at think <code>+0x9a8</code> (-1 when none).</p>
 <h2 id="patch-points">Patch points</h2>
 <p>The AI world's time step is 1/30 s. The frame-rate patches are described in
 <a href="../frame_timing/">Frame timing</a>.</p>
@@ -1037,6 +1168,10 @@ holds elements, and each element holds a list of objects.</p>
 <ul>
 <li>With <code>Uncap FPS++</code>, the AI world still steps by 1/30 s each frame: does AI run faster at high
   frame rates?</li>
+<li>How the target-list update ages entries and moves them up the caution, find and battle ladder.</li>
+<li>How goals are activated, updated, interrupted and ended, and what the update-time scheduler's
+  owner books with it.</li>
+<li>What the ready check among the character queries stands for.</li>
 </ul>
       
       </div>

@@ -398,7 +398,7 @@
       <span class="wk-stat-track" role="img" aria-label="0.1658 percent of target code bytes verified">
         <span class="wk-stat-fill" style="width:0.1658%"></span>
       </span>
-      <span class="wk-progress-foot">0.1658% of code bytes verified · 1,368 replaced</span>
+      <span class="wk-progress-foot">0.1658% of code bytes verified · 1,369 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -436,31 +436,11 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 13, 2026 14:54:55 UTC">November 13, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 17, 2026 15:03:47 UTC">November 17, 2026</span></p>
       
-      
-      
-      <aside class="wk-freshness" role="note">
-        <p><b>Not yet updated for 4 merged changes.</b>
-        This page was last checked against Paleblood
-        <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/cf669283bed4b9a9f36e72ef1ebe28bf037d1a6f"><code>cf66928</code></a>;
-        these pull requests changed what it describes since:</p>
-        <ul>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/912">#912</a> verification: edge rows for 65 edge-verified functions</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/889">#889</a> kernel, frame_timing: replace the memory pool free (0x011ab3a0) and config_get_int (0x024eba00)</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/740">#740</a> kernel: replace the engine's PthreadMutex.cpp (init, destroy, lock, try lock, unlock)</li>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/745">#745</a> kernel: replace the engine's read-write lock (DLReadWriteLock)</li>
-          
-          
-        </ul>
-      </aside>
       
       <h1 id="kernel">Kernel</h1>
-<p class="wk-lede">The engine's core library: thin wrappers around the PS4 kernel for threads, mutexes and condition variables, which report every unexpected result through one fatal error function.</p>
+<p class="wk-lede">The engine's core library: thin wrappers around the PS4 kernel for threads, mutexes, read-write locks and condition variables, which report every unexpected result through one fatal error function.</p>
 
 <div class="wk-glance">
 <p><span class="wk-label">At a glance</span></p>
@@ -468,9 +448,9 @@
 <dt>Scope</dt>
 <dd>Dantelion2's kernel layer ("ClassLibrary/Core/Kernel" in its source paths), and the kernel and <code>libc</code> calls the executable imports.</dd>
 <dt>Verified</dt>
-<dd><code>kernel_condition_wait</code> (<code>0x02483e80</code>), the condition-variable wait the frame-rate patches edit.</dd>
+<dd><code>kernel_condition_wait</code> (<code>0x02483e80</code>), the condition-variable wait the frame-rate patches edit, and since 15 November most of the engine's mutex, light mutex and read-write lock wrappers and its memory pool free. A few members without recordings stay <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr> (the function table gives each one's status).</dd>
 <dt>Open</dt>
-<dd>Which objects the condition waits made each frame belong to.</dd>
+<dd>Which objects the condition waits made each frame belong to; the error paths of the lock wrappers are covered only by constructed cases.</dd>
 </dl>
 </div>
 <h2 id="summary">Summary</h2>
@@ -512,11 +492,44 @@ approved it.</p>
 <h3 id="the-engines-light-mutex">The engine's light mutex</h3>
 <p><code>DLLightMutex</code> wraps one system mutex (at <code>+0x08</code>) with an "initialized" flag (at <code>+0x10</code>). Eight of
 its members (<code>0x0247ecb0</code>–<code>0x0247f070</code>: constructor, destructors, initialize, finalize, lock, try
-lock, unlock) were <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> by contributor <a href="https://github.com/FFwLo">@FFwLo</a> and are <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr>
+lock, unlock) were <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> by contributor <a href="https://github.com/FFwLo">@FFwLo</a>
 (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/748">#748</a>). Every member asks whether the mutex is initialized through the object's third virtual
 function (<code>0x0247ee80</code>), which is only four bytes long, too short to <abbr title="A 14-byte jump written over the start of an original function, sending its callers to the replacement.">hook</abbr>, so it stays original. A
 destructor leaves the flag set when the system says the mutex is busy (<code>EBUSY</code>), and reports any
-other failure through the engine's error report.</p>
+other failure through the engine's error report. Seven of the eight are now <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> on
+recordings from the game (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1119">#1119</a>); the
+deleting destructor, which has no recordings, stays <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr>.</p>
+<h3 id="the-engines-own-mutex-and-read-write-lock">The engine's own mutex and read-write lock</h3>
+<p>Below the light mutex sit the engine's plain mutex wrappers (its <code>PthreadMutex.cpp</code>) and its
+read-write lock, <code>DLReadWriteLock</code>. Both were <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> by <a href="https://github.com/FFwLo">@FFwLo</a>, and
+they follow the same pattern: a few expected results come back as small numbers, and anything else
+goes to the engine's error report.</p>
+<ul>
+<li><strong>The mutex</strong> (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/740">#740</a>): initialize,
+  destroy, lock, try lock and unlock (<code>0x02483fe0</code>–<code>0x02484290</code>). The mutex is recursive. Lock
+  waits forever when the timeout is -1 and otherwise makes a timed wait; a time-out gives -3, a
+  busy mutex -2, and running out of memory or mutexes at initialization -1. Unlock accepts quietly
+  a mutex the thread does not own (<code>EPERM</code>). For some errors the original reports a chain of
+  messages that falls through from one to the next, and the replacement keeps that chain.</li>
+<li><strong>The read-write lock</strong> (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/745">#745</a>): eleven
+  members (<code>0x0247f180</code>–<code>0x0247f710</code>). Like the light mutex it holds the system lock at <code>+0x08</code>
+  and an "initialized" flag at <code>+0x10</code>, and asks for the flag through a four-byte virtual function
+  that stays original. Read and write locks wait forever or with a time limit, a try write lock
+  gives -2 when busy, and the unlock (the same code three times in the executable) gives -4 for a
+  lock the thread does not hold. A lock that is not initialized is reported and then used anyway,
+  as in the original. The resource <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> (see <a href="../loading/">Loading</a>) takes these locks.</li>
+<li><strong>The memory pool free</strong> (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/889">#889</a>):
+  <code>0x011ab3a0</code>, the release the kernel layer's mutex destroy uses. It creates the pool's own lock on
+  first use, takes the block's size off the pool's counters (from a header in front of the block,
+  the block's first word, or the backing heap), then hands the block to the pool's free callback,
+  releases its pages, or frees it on the backing heap.</li>
+</ul>
+<p>Most of these are <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> on recordings from the game, approved by an independent review
+(<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1119">#1119</a>). The recordings exercise only
+the success paths; the error paths are covered by constructed <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr>. The members without
+recordings (the mutex's destroy and try lock, the lock's deleting destructor and try write lock)
+stay <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr>. Every <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr> function also carries a current recorded edge result
+(<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/912">#912</a>).</p>
 <h3 id="how-a-condition-wait-works">How a condition wait works</h3>
 <p><code>kernel_condition_wait</code> (<code>0x02483e80</code>) waits on a condition variable. It has two paths:</p>
 <ol>

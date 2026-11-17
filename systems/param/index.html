@@ -398,7 +398,7 @@
       <span class="wk-stat-track" role="img" aria-label="0.1658 percent of target code bytes verified">
         <span class="wk-stat-fill" style="width:0.1658%"></span>
       </span>
-      <span class="wk-progress-foot">0.1658% of code bytes verified · 1,368 replaced</span>
+      <span class="wk-progress-foot">0.1658% of code bytes verified · 1,369 replaced</span>
       <span class="wk-progress-more">Full progress →</span>
     </a>
     
@@ -436,22 +436,8 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 13, 2026 14:54:55 UTC">November 13, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 17, 2026 15:03:47 UTC">November 17, 2026</span></p>
       
-      
-      
-      <aside class="wk-freshness" role="note">
-        <p><b>Not yet updated for 1 merged change.</b>
-        This page was last checked against Paleblood
-        <a href="https://github.com/Yharnam-Hunters/Paleblood/commit/cf669283bed4b9a9f36e72ef1ebe28bf037d1a6f"><code>cf66928</code></a>;
-        these pull requests changed what it describes since:</p>
-        <ul>
-          
-          <li><a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1013">#1013</a> param, engine: replace the id array push_back family</li>
-          
-          
-        </ul>
-      </aside>
       
       <h1 id="parameters">Parameters</h1>
 <p class="wk-lede">Most of Bloodborne's numbers are not in its code. Weapon damage and scaling, armor, items, the effects of consumables and blood gems, enemy stats and AI tuning, item drops, shop stock, the lamps you warp between, and the colors and layout of menus all live in parameter tables: PARAM files the game loads. The code asks a table for a row by its id and reads fields from that row. This page covers the part of the game that holds those tables and answers those questions. It does not describe what the tables contain, which is game data.</p>
@@ -462,7 +448,7 @@
 <dt>Scope</dt>
 <dd>Paleblood's <code>game/param/</code>: the solo parameter repository, the per-table row lookups, the equipment, menu, map and return-point lookups, row names and rows by position, table walks, the attack and behavior pairs, gem searches and character creation's face tables.</dd>
 <dt>Verified</dt>
-<dd>Every <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> lookup is <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr> against the original on invented tables. None is <code>verified</code> yet: none has been checked on frames recorded from a real game run.</dd>
+<dd>Every <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> lookup is <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr> against the original on invented tables. 23 of the plain row-by-id lookups are also <code>verified</code>: they pass on inputs recorded in the game, and an independent review approved each one (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1119">#1119</a>).</dd>
 <dt>Open</dt>
 <dd>The <abbr title="Paleblood's loader: maps the executable and the game's own modules and binds every system import.">loader</abbr> that reads the files and builds their search index; most header words; why the row-name lookups exist in the retail build.</dd>
 </dl>
@@ -730,6 +716,14 @@ all built from a few templates, and Paleblood's replacements share one implement
   per upgrade level the row lists. Weapons can also be stepped through until one with a given
   property bit, and three set checks (goods, attire, weapons) build a small cache of set numbers on
   their first call.</li>
+<li><strong>Lists of ids</strong> (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1013">#1013</a>, by
+  <a href="https://github.com/FFwLo">@FFwLo</a>). The id lists the walks and map lookups build grow through
+  the engine's 32-bit id array <code>push_back</code>. The game has four compiled copies of it (one general,
+  one for attire ids, one for weapon ids, and a second general copy), which differ only in which
+  copy of the array's reallocation they call. All four now share one engine template (see
+  <a href="../engine/#containers-and-their-copies">Engine</a>): a full array grows to one and a half times its
+  count, an item that sits inside the array is read again from the new buffer, and when growth
+  leaves no buffer nothing is stored but the end still moves on by one.</li>
 <li><strong>Pairs of tables</strong> (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/733">#733</a>). The attack lookup picks AtkParam_Npc or AtkParam_Pc, and the
   behavior lookup BehaviorParam or BehaviorParam_PC, by a 0/1 argument.</li>
 <li><strong>Searches by content</strong> (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/733">#733</a>). The gem effect for a group at a level (the highest rank up
@@ -753,9 +747,14 @@ on invented tables built by the fixtures beside it (synthetic cases, never game 
 are recorded as <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr> in <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/687">#687</a>,
 <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/697">#697</a>,
 <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/714">#714</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/724">#724</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/730">#730</a>,
-<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/733">#733</a> and <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/823">#823</a>. None has been checked on frames
-recorded from a real game run, so none is <code>verified</code>. The row-name lookups did not run in the
-coverage boots #714 describes.</p>
+<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/733">#733</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/823">#823</a> and
+<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1013">#1013</a>. In
+<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1119">#1119</a>, 23 plain row-by-id lookups
+became <code>verified</code>: a <abbr title="Inputs recorded while the game ran, replayed by the harness.">capture</abbr> run recorded each of them in the game, every recorded and <abbr title="A generated input for a situation a recording does not reach.">edge case</abbr>
+passes, and an independent review checked each one path by path and ran its own mutants. All
+those copies compile to the same lookup and differ only in their table slot (and the extra
+stores some make). The other lookups have not been checked on recordings, so they stay
+<abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr>. The row-name lookups did not run in the coverage boots #714 describes.</p>
 </details>
 <h2 id="key-functions">Key functions</h2>
 <div class="wk-table is-stack"><table class="wk-stack">
