@@ -19,7 +19,7 @@
     d.setAttribute('data-theme', t); d.classList.add('wk-js'); }());
   </script>
   
-  <link rel="stylesheet" href="../../../stylesheets/wiki.css?v=d9646b693b"><link rel="stylesheet" href="../../../stylesheets/hunters.css?v=e4f3c59dfb"><link rel="stylesheet" href="../../../stylesheets/enemy.css?v=bb5d79dddf">
+  <link rel="stylesheet" href="../../../stylesheets/wiki.css?v=d9646b693b"><link rel="stylesheet" href="../../../stylesheets/hunters.css?v=e4f3c59dfb"><link rel="stylesheet" href="../../../stylesheets/enemy.css?v=670d11c465">
   
   
 </head>
@@ -417,21 +417,21 @@
         <div class="wk-toc-header"><b>On this page</b></div>
         <ol class="wk-toc-list" id="wk-toc-list">
           
-          <li><a href="#frame-by-frame" class="wk-toc-link">Frame by frame</a></li>
+          <li><a href="#overview" class="wk-toc-link">Overview</a></li>
+          
+          <li><a href="#where-you-find-it" class="wk-toc-link">Where you find it</a></li>
           
           <li><a href="#how-it-notices-you" class="wk-toc-link">How it notices you</a></li>
           
-          <li><a href="#why-it-gets-up" class="wk-toc-link">Why it gets up</a></li>
+          <li><a href="#how-it-keeps-track-of-you" class="wk-toc-link">How it keeps track of you</a></li>
           
-          <li><a href="#alert-levels-and-the-target-list" class="wk-toc-link">Alert levels and the target list</a></li>
+          <li><a href="#how-it-fights" class="wk-toc-link">How it fights</a></li>
           
-          <li><a href="#attacks" class="wk-toc-link">Attacks</a></li>
+          <li><a href="#tips" class="wk-toc-link">Tips</a></li>
           
-          <li><a href="#how-it-actually-works" class="wk-toc-link">How it actually works</a></li>
+          <li><a href="#did-you-know" class="wk-toc-link">Did you know?</a></li>
           
-          <li><a href="#fighting-it" class="wk-toc-link">Fighting it</a></li>
-          
-          <li><a href="#sources" class="wk-toc-link">Sources</a></li>
+          <li><a href="#what-we-dont-know-yet" class="wk-toc-link">What we don't know yet</a></li>
           
         </ol>
       </nav>
@@ -442,608 +442,303 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 17, 2026 15:03:47 UTC">November 17, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 18, 2026 03:07:12 UTC">November 18, 2026</span></p>
       
       
       <h1 id="the-clinic-beast">The Clinic Beast</h1>
-<p class="wk-lede">The first enemy a new hunter meets: a beast feeding on a body in the hall below
-the operating room of Iosefka's Clinic. This page explains how it notices you and why it gets up,
-using Paleblood's decompiled code and our own recorded runs. Paleblood now runs the start of the
-fight too: the beast's first attack lands and the hunter dies. How it chooses its attacks is, for
-now, read from the game's battle script and not yet confirmed in a Paleblood run.</p>
-
-<div class="wk-glance">
-<p><span class="wk-label">At a glance</span></p>
+<aside class="en-infobox">
+<p class="en-infobox-title">Clinic Beast</p>
+<p><a class="en-infobox-img" href="../../../assets/media/enemies/clinic-beast/hero.png"><img src="../../../assets/media/enemies/clinic-beast/hero.png" alt="The clinic beast standing at full height beside its feeding spot, eyes glowing, the hunter in front of it seen from behind" width="1920" height="1080" loading="lazy" decoding="async"></a></p>
+<p class="en-infobox-caption">Drawn by Paleblood's own renderer (local run, 2026-11-13). Full resolution: select the picture. <em>Bloodborne</em> © Sony Interactive Entertainment / FromSoftware.</p>
 <dl>
-<dt>First met</dt>
-<dd>Iosefka's Clinic, in the hall below the operating room, where it feeds beside an arched door. Paleblood runs reach it from a save in the clinic by walking down the stairs.</dd>
-<dt>AI code</dt>
-<dd>The perception code every enemy runs: the sight test <code>ai_sight_test</code> at <code>0x016a52b0</code> and the perception update <code>ai_perception_update</code> at <code>0x016a85c0</code>. Its hearing: the sound check <code>ai_hearing_check_sound</code> at <code>0x0169cef0</code> and the hearing test <code>ai_hearing_test</code> at <code>0x0169d160</code>. Of the 18 functions on this page, 13 are <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> and 5 are <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> and edge-tested at the revision below (<a href="#sources">sources</a>).<!-- number:ok --></dd>
-<dt>Verified at</dt>
-<dd>Paleblood <code>5fba104352d8093dfc64bf346a97681ad554afea</code>: <code>symbols/functions.csv</code>, <code>symbols/verification.csv</code> and <code>symbols/reviews.csv</code>.</dd>
-<dt>Still open</dt>
-<dd>How it picks its attacks in a Paleblood run. Its first attack is recorded (<a href="#attacks">Attacks</a>); the attack choice is read from the game's battle script and has not been watched in a run yet. Its hearing is decompiled but not yet checked against recordings.</dd>
+<dt>Also called</dt>
+<dd>Scourge beast, in most players' guides</dd>
+<dt>Where</dt>
+<dd>Iosefka's Clinic, the hall below the operating room</dd>
+<dt>Type</dt>
+<dd>Beast; the first enemy a new hunter meets</dd>
+<dt>Senses</dt>
+<dd>Smell, sight and hearing</dd>
+<dt>What we know</dt>
+<dd>How it notices you: confirmed in the game's code. How it attacks: partly seen, partly read from its script.</dd>
 </dl>
-</div>
-<figure class="en-hero">
-<p><img alt="The clinic beast standing at full height beside a feeding spot on the clinic floor, eyes glowing, the hunter in front of it seen from behind" decoding="async" height="1080" loading="lazy" src="../../../assets/media/enemies/clinic-beast/hero.png" width="1920" /></p>
-<figcaption>The beast standing up after noticing the hunter (frame 80 of the clip below). From a local Paleblood run on 2026-11-13: main at `bb1d71b` with pull requests #958 and #975 applied, both merged since. Drawn by Paleblood's own renderer at full resolution. <em>Bloodborne</em> © Sony Interactive Entertainment / FromSoftware.</figcaption>
-</figure>
-<p>Players' guides usually call it a scourge beast. This page calls it the clinic beast, because
-everything below was measured in this one encounter.</p>
-<h2 id="frame-by-frame">Frame by frame</h2>
-<div class="en-sync">
-<figure class="en-clip" data-fps="30" id="clip-clinic-beast">
-<video controls="controls" data-view="plain" height="1080" muted="muted" playsinline="playsinline" preload="metadata" src="../../../assets/media/enemies/clinic-beast/wake.webm" width="1920"></video>
-<figcaption>The hunter walks up behind the feeding beast. It turns its head, then rises to its full height (89 frames, silent). <span class="wk-badge wk-badge--observed">observed</span> From a local Paleblood run on 2026-11-13: main at `bb1d71b` with #958 and #975 applied. Drawn by Paleblood's own renderer at 1920×1080. <em>Bloodborne</em> © Sony Interactive Entertainment / FromSoftware.</figcaption>
-</figure>
-<p>The beast keeps feeding until the hunter is a few steps behind it. Then, within about two dozen
-frames, it turns its head and stands up. Each clip frame is one frame the renderer presented, and
-this run was slower than the real game, so read the order of events from the clip, not their
-duration. Keys: ← → step one frame, Space plays and pauses, L loops the current phase.</p>
-<h3 id="timeline-of-the-wake">Timeline of the wake</h3>
-<div class="en-timeline">
-<script type="application/json">
-{
-  "schema": "byrgenwerth.enemy.timeline/1",
-  "synthetic": false,
-  "title": "The wake: feeding, turning, rising, read frame by frame from the clip",
-  "fps": 30,
-  "clip": {
-    "player": "clip-clinic-beast"
-  },
-  "attacks": [
-    {
-      "id": "wake",
-      "name": "The wake",
-      "frames": 89,
-      "clip": {
-        "player": "clip-clinic-beast",
-        "start_frame": 0
-      },
-      "phases": [
-        {
-          "kind": "action",
-          "label": "Feeding",
-          "start": 0,
-          "end": 65,
-          "evidence": "observed",
-          "note": "Head down over the body on the floor while the hunter walks up behind it."
-        },
-        {
-          "kind": "action",
-          "label": "Turning",
-          "start": 65,
-          "end": 72,
-          "evidence": "observed",
-          "note": "The head lifts and swings round towards the hunter; the eyes catch the light."
-        },
-        {
-          "kind": "action",
-          "label": "Rising",
-          "start": 72,
-          "end": 89,
-          "evidence": "observed",
-          "note": "It pushes up off the floor and rears to its full height. The run ends a few frames later."
-        }
-      ],
-      "events": [
-        {
-          "frame": 80,
-          "label": "the frame shown at the top of the page"
-        }
-      ]
-    }
-  ],
-  "note": "Boundaries are read by eye, one frame at a time. Each clip frame is one frame the renderer presented; the run was slower than the real game, so read the order of events from the clip, not their duration.",
-  "sources": [
-    {
-      "record": "media review: clinic beast wake clip (2026-11-14)",
-      "revision": "bb1d71b23e7f44774c6251360df88ae1220e279d",
-      "note": "Local Paleblood run of 2026-11-13: main at this revision with PRs #958 and #975 applied (both merged since)."
-    }
-  ]
-}
-
-</script>
-<p class="en-nojs">The interactive timeline needs JavaScript. In words: feeding for frames 0 to 64, turning for 65 to 71, rising from 72 to the end.</p>
-</div>
-<p>The phase boundaries were read from the frames by eye. The clip shows what the beast does; the
-sections below explain why, as far as the code shows it.</p>
-</div>
+</aside>
+<h2 id="overview">Overview</h2>
+<p>The Clinic Beast is the first enemy a new hunter meets. It crouches over a body in the lower hall
+of Iosefka's Clinic and keeps feeding until it notices you, then rises and attacks. In Paleblood
+the whole meeting now plays out: its first attack lands, the hunter dies, and wakes in the
+Hunter's Dream.</p>
+<p>This page explains exactly how it works, from Paleblood's decompiled and <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> code and our own
+recorded runs. Each section starts with a sentence or two in plain words, then gives the precise
+rules. Small labels say how sure we are of each rule; the last section explains them. We call it
+the clinic beast because everything below was measured in this one encounter.</p>
+<h2 id="where-you-find-it">Where you find it</h2>
+<p>It feeds on a body beside an arched door, in the hall below the operating room where a new hunter
+wakes. You reach it by walking down the stairs. Our test runs start from a save inside the clinic
+and take that same route.</p>
 <h2 id="how-it-notices-you">How it notices you</h2>
-<h3 id="in-plain-words">In plain words</h3>
-<p>The beast has two senses that this page can explain: a <strong>nose</strong> and <strong>eyes</strong>. Hearing is in the
-same code but has not been decompiled yet.</p>
-<ul>
-<li><strong>Nose.</strong> Come close enough and it notices you, whichever way it is facing and whatever stands
-  between you. <span class="wk-badge wk-badge--verified"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></span></li>
-<li><strong>Eyes.</strong> Further away, it has to see you. You must be in a cone in front of it, neither too
-  close nor too far, with nothing solid in between. How far it can see depends on how dark it is
-  where <em>you</em> are standing. <span class="wk-badge wk-badge--verified"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></span></li>
-<li><strong>What happened.</strong> In our runs the hunter always came from behind. The eyes never fired. The
-  nose noticed the hunter at 3.5 metres. <span class="wk-badge wk-badge--observed">observed</span></li>
-</ul>
-<p>Both rules are <em><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></em>. Paleblood has <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> the sight test with readable C++, checked it
-against the original game code on 886 <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr> and 1,089 checks recorded from real runs, and an
-independent review session approved it (pull request #997).</p>
-<h3 id="the-nose-rule">The nose rule</h3>
-<p>The beast notices a character when the distance between them is shorter than its <strong>nose
-distance</strong> plus the sizes of both bodies. No angle is checked and no ray is cast, so walls do not
-block the nose. The nose distance is a number in each enemy's think data (its <em>NpcThinkParam</em>
-row). This wiki explains the rules and does not list the data values.
-<span class="wk-badge wk-badge--verified"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></span></p>
-<h3 id="the-sight-test-step-by-step">The sight test, step by step</h3>
-<p>If the nose has not noticed you, the eyes get their turn. Every step must pass:
-<span class="wk-badge wk-badge--verified"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></span></p>
+<p>The beast has a nose, eyes and ears. Its nose works in every direction and through walls, but only
+up close. Its eyes reach further, but only in front of it and only with a clear view.</p>
+<p>Every enemy in the game runs this same perception code; what differs is a handful of distances and
+angles in each enemy's own settings (its <em>think data</em>, the <code>NpcThinkParam</code> table). This wiki
+explains the rules, not the numbers in that table.</p>
+<h3 id="the-nose">The nose</h3>
+<p>It smells you once you are close enough, whichever way it faces and whatever stands between you.
+<span class="wk-badge wk-badge--verified">confirmed in the game's code</span></p>
+<p>The sight test <code>ai_sight_test</code> (<code>0x016a52b0</code>) checks the nose first. A character is <em>smelled</em> when
+the distance between them is shorter than the enemy's <strong>nose distance</strong> plus the body sizes
+(radii) of both characters. No angle is checked and no ray is cast, so walls do not block it.</p>
+<p>In our runs the beast smelled the hunter at <strong>3.48 m</strong>; the check before that, at 6.84 m, found
+nothing. So for this beast the nose reaches somewhere between those two distances.
+<span class="wk-badge wk-badge--observed">seen in our test runs</span></p>
+<h3 id="the-eyes-the-sight-test">The eyes: the sight test</h3>
+<p>If the nose finds nothing, the eyes get their turn. You must be in a cone in front of it, not too
+close and not too far, with nothing solid in between. Every step below must pass.
+<span class="wk-badge wk-badge--verified">confirmed in the game's code</span></p>
 <ol>
-<li><strong>Reach, chosen by darkness.</strong> The enemy's data holds three eye distances: one for light, one
-   for the dark and one for pitch dark. The test picks one by how dark it is around the <em>target</em>,
-   multiplies it by the target's visibility and the enemy's own sight scale, then adds both bodies'
-   sizes.</li>
-<li><strong>Measured from behind the eyes.</strong> The distance is not measured from where the beast stands.
-   It is measured from a point moved back along its facing, the <em>eye back offset</em>. So the tip of
-   the cone sits behind the beast's body.</li>
-<li><strong>Too close to see.</strong> Closer than the <em>begin distance</em>, measured from that point behind it,
-   the eyes see nothing. At that range only the nose can notice you.</li>
-<li><strong>Width.</strong> Lay the beast's facing and the line to you flat on the ground. The angle between
-   them must be within the <em>width angle</em>. The data stores half the cone, so the full cone is twice
-   that angle.</li>
+<li><strong>How far it sees depends on the dark where <em>you</em> stand.</strong> Its settings hold three eye
+   distances: for light, for dark and for pitch dark. The test picks one by how dark it is around
+   the target, multiplies it by the target's visibility and the enemy's own sight scale, and adds
+   both body sizes.</li>
+<li><strong>The eyes sit behind its body.</strong> Distances are not measured from where it stands, but from a
+   point moved back along its facing (the <em>eye back offset</em>). The tip of the cone is behind it.</li>
+<li><strong>Blind up close.</strong> Closer than the <em>begin distance</em> (measured from that point behind it), the
+   eyes see nothing. At that range only the nose can notice you.</li>
+<li><strong>Width.</strong> Flatten its facing and the line to you onto the ground: the angle between them must
+   be within the <em>width angle</em>. The setting stores half the cone, so the full cone is twice that.</li>
 <li><strong>Height.</strong> The line to you must not climb or drop more steeply than the <em>height angle</em>.</li>
-<li><strong>Line of sight.</strong> When the caller asks for it, a ray is cast through the physics world from
-   the beast's eye height to yours. If it hits anything, you are not seen. If no physics world is
-   loaded, the ray step is skipped and you count as seen.</li>
+<li><strong>Line of sight.</strong> When the caller asks for it, a ray is cast through the physics world from its
+   eye height to yours. If the ray hits anything, you are not seen. If no physics world is loaded,
+   this step is skipped and you count as seen.</li>
 </ol>
-<p>Then one override applies: a target marked unseeable is never noticed, whatever the test found.
-The test has three answers: not noticed, <em>smelled</em> (nose) or <em>seen</em> (eyes).</p>
-<figure class="en-schematic">
-<svg viewBox="0 0 400 290" role="img" aria-labelledby="clinic-beast-senses-title" xmlns="http://www.w3.org/2000/svg">
-<title id="clinic-beast-senses-title">Top-down sketch of the sight test: a nose circle around the beast, and an eye cone whose tip sits behind it, with a blind zone near the tip and a ray to a target in the cone</title>
-<path class="en-sch-eye" d="M156.9 174.8L77 72.4A200 200 0 0 1 323 72.4L243.1 174.8A70 70 0 0 0 156.9 174.8Z"/>
-<path class="en-sch-edge" d="M200 230L77 72.4M200 230L323 72.4"/>
-<path class="en-sch-begin" d="M156.9 174.8A70 70 0 0 1 243.1 174.8"/>
-<circle class="en-sch-nose" cx="200" cy="190" r="48"/>
-<path class="en-sch-offset" d="M200 190V230"/>
-<path class="en-sch-mark" d="M195 225l10 10m0 -10l-10 10"/>
-<path class="en-sch-ray" d="M200 190L300 95"/>
-<circle class="en-sch-target" cx="300" cy="95" r="6"/>
-<circle class="en-sch-target" cx="262" cy="258" r="6"/>
-<path class="en-sch-beast" d="M200 176L210 200L200 195L190 200Z"/>
-<text x="200" y="22" text-anchor="middle">eye reach (set by the darkness where you stand)</text>
-<path class="en-sch-offset" d="M236 170L262 186"/>
-<text x="265" y="190">eyes blind inside</text>
-<text x="265" y="203">the begin distance</text>
-<text x="200" y="250" text-anchor="middle">eye back offset</text>
-<text x="262" y="282" text-anchor="middle">behind it: only the nose can notice you</text>
-<text x="308" y="118">ray: blocked by</text>
-<text x="308" y="131">anything solid</text>
-<text x="40" y="200">nose: any direction,</text>
-<text x="40" y="213">through walls</text>
-<text x="88" y="120" text-anchor="end">width</text>
-<text x="88" y="133" text-anchor="end">angle</text>
-</svg>
-<figcaption>A sketch of the rules, not to scale: the real sizes are numbers in each enemy's data. The beast is the triangle, facing up.</figcaption>
-</figure>
-
-<h3 id="what-happened-in-our-runs">What happened in our runs</h3>
-<p>This comes from a recorded Paleblood run on 2026-11-13, in which every sight check the beast made
-was saved. <span class="wk-badge wk-badge--observed">observed</span></p>
-<ul>
-<li>On the walk down, every check of the hunter came back <em>not noticed</em>, down to 6.84 m. The hunter
-  was then about 120° away from the beast's facing, behind it, and out of reach of any forward
-  eye cone.</li>
-<li>The next check, at 3.48 m, came back <em>smelled</em>. By then the beast had already started to move
-  off its spot. The checks after it show its facing swinging round towards the hunter.</li>
-<li>In none of our runs did the beast's eyes see the hunter: every one approached from behind.</li>
-<li>In an earlier run, watched frame by frame, it was still feeding with the hunter 4.0 m behind
-  it and turned at about 3.6 m.</li>
-</ul>
-<p>The checks are spaced out in time (see <a href="#the-target-list">the target list</a>), so this run only
-narrows the nose's reach down to somewhere between 3.5 and 6.8 m. Paleblood's replacement of the
-sight test gave the same answer as the original code on every recorded check. Those recordings
-became part of its verification in pull request #997.</p>
-<div class="en-ranges">
-<script type="application/json">
-{
-  "schema": "byrgenwerth.enemy.ranges/1",
-  "synthetic": false,
-  "title": "The approach in a recorded run: where the beast's checks found the hunter",
-  "unit": "m",
-  "shapes": [
-    {
-      "id": "smelled",
-      "kind": "circle",
-      "radius": 3.48,
-      "evidence": "observed",
-      "label": "Smelled: the first check that noticed the hunter, 3.48 m"
-    },
-    {
-      "id": "band",
-      "kind": "ring",
-      "inner": 3.48,
-      "outer": 6.84,
-      "evidence": "observed",
-      "label": "The nose's reach ends somewhere in this band (not noticed at 6.84 m)"
-    }
-  ],
-  "track": [
-    {
-      "frame": 0,
-      "player": [
-        -17.51,
-        -12.81
-      ]
-    },
-    {
-      "frame": 30,
-      "player": [
-        -17.87,
-        -9.67
-      ]
-    },
-    {
-      "frame": 60,
-      "player": [
-        -14.53,
-        -7.02
-      ]
-    },
-    {
-      "frame": 90,
-      "player": [
-        -10.35,
-        -5.16
-      ]
-    },
-    {
-      "frame": 120,
-      "player": [
-        -5.82,
-        -3.58
-      ]
-    },
-    {
-      "frame": 150,
-      "player": [
-        -3.0,
-        -1.76
-      ]
-    }
-  ],
-  "track_evidence": "observed",
-  "probe": [
-    -5.82,
-    -3.58
-  ],
-  "note": "Top-down, the beast at the centre facing up (the way it faced while feeding), possibly mirrored left to right. Each step of the dot is one of the beast's sight checks of the hunter in the recorded run, one second of playback apiece; between checks the dot is interpolated. Distances are straight-line metres between the two characters. Drag the dot to see which band a position falls in.",
-  "sources": [
-    {
-      "function": "ai_sight_test",
-      "address": "0x016a52b0",
-      "revision": "628534595723b2f61cea786f6c088f8e68139aa0",
-      "pr": "#958, #997",
-      "record": "symbols/verification.csv: recorded 1089/1089, edge 886/886 (the recorded checks of this run among them); symbols/reviews.csv: approved (independent AI review session)"
-    },
-    {
-      "record": "Local Paleblood capture run of 2026-11-13 (main bb1d71b with #958 and #975 applied)",
-      "revision": "bb1d71b23e7f44774c6251360df88ae1220e279d"
-    }
-  ]
-}
-
-</script>
-<p class="en-nojs">The interactive range map needs JavaScript. In words: the hunter came from behind and to one side; the beast's checks found nothing at 6.84 m and smelled the hunter at 3.48 m.</p>
-</div>
-
-<h3 id="how-it-hears">How it hears</h3>
-<p><span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span> From the code and constructed
-tests only: Paleblood has <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> the hearing code (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1067">#1067</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1089">#1089</a>, <a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1103">#1103</a>) and checked
-it against the original on 1,642, 561 and 449 constructed cases, but not yet against recordings of
-a real run. Nothing below has been watched happening in a run.</p>
-<p>An enemy does not hear "noise" in general. Every sound the game files near an enemy carries a
-position, a range (how far it carries) and who made it, and the enemy checks each one in two steps.</p>
+<p>One override comes last: a target marked unseeable is never noticed. The test returns one of three
+answers: not noticed, <em>smelled</em> or <em>seen</em>. Paleblood's replacement of this test gives the original
+code's answer on 886 <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr> and on all 1,089 checks recorded in real runs of this encounter,
+and an independent review approved it (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/997">#997</a>).</p>
+<p>In none of our runs did its eyes see the hunter: every run came at it from behind. On the way down
+the stairs the hunter was about 120° off its facing, outside any forward cone.
+<span class="wk-badge wk-badge--observed">seen in our test runs</span></p>
+<h3 id="hearing">Hearing</h3>
+<p>It can hear sounds, but only those made by characters it is allowed to hear, and only within each
+sound's range; just beyond that, it hears in the direction its ear points.
+<span class="wk-badge wk-badge--edge-verified">in the game's code, tested on examples only</span></p>
+<p>The game files every sound with a position, a range (how far it carries) and who made it. An enemy
+checks each sound near it in two steps:</p>
 <ol>
-<li><strong>May it hear this maker at all?</strong> The sound check (<code>0x0169cef0</code>) looks at who made the sound.
-   A character's sound (the player, another enemy) counts only if that character still exists and
-   the listener's team is allowed to hear the maker's team: the game keeps a table of which teams
-   hear which. Some sounds use the attack tables instead, so they are heard by exactly the teams an
-   attack would hit. A big maker is heard from a little further away, because its body size is
+<li><strong>May it hear this maker?</strong> The sound check <code>ai_hearing_check_sound</code> (<code>0x0169cef0</code>) looks at who
+   made the sound. A character's sound (the player's, another enemy's) counts only if that character
+   still exists and the listener's team may hear the maker's team: the game keeps a table of which
+   teams hear which. Some sounds use the attack tables instead, so exactly the teams an attack would
+   hit can hear them. A big maker is heard from a little further away, because its body size is
    passed on. A sound made by an object counts while the object exists.</li>
-<li><strong>Is it close enough?</strong> The hearing test (<code>0x0169d160</code>) takes the sound's range, less a
-   sound-cut distance from the enemy's settings, and compares it with the gap between them: the
-   distance less both bodies' sizes. If the range is larger, the enemy hears it. Otherwise the
-   enemy's ear can reach a little further, but only in the directions its ear covers: a width
-   angle around its facing and a height angle (<code>0x0169da30</code> checks the height). A heard sound's
-   position is remembered unless the enemy already remembers one that is closer.</li>
+<li><strong>Is it close enough?</strong> The hearing test <code>ai_hearing_test</code> (<code>0x0169d160</code>) takes the sound's
+   range, less a <em>sound-cut</em> distance from the enemy's settings, and compares it with the gap
+   between them: the distance less both body sizes. If the range is larger, the sound is heard.
+   If not, the ear can still reach a little further, but only inside its own cone: a width angle
+   around its facing and a height angle (checked by <code>0x0169da30</code>). A heard sound's position is
+   remembered, unless the enemy already remembers a closer one.</li>
 </ol>
-<p>Two quirks show in the code. Body sizes widen the ear's cone slightly, because the direction to
-the sound is divided by the gap rather than by the true distance. And for a sound just outside the
-cone, the point on the cone's edge it is checked against gets its height by adding the sound's
-height to the ear's, so it sits higher than the sound.
-<span class="wk-badge wk-badge--edge-verified"><abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr></span></p>
-<p>Whether the clinic beast hears the hunter before it smells them is not known yet: the recordings
-that would show it are the next step.</p>
-<h2 id="why-it-gets-up">Why it gets up</h2>
-<p><span class="wk-badge wk-badge--inferred">inferred</span> Putting the run together with the code,
-the most likely chain is:</p>
+<p>Paleblood has <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> all three of these and checked them against the original on 1,642, 561 and
+449 constructed cases (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1103">#1103</a>,
+<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1089">#1089</a>,
+<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1067">#1067</a>), but not yet against recordings of
+a real run. Whether this beast hears you before it smells you is not known yet.</p>
+<h3 id="why-it-gets-up">Why it gets up</h3>
+<p>It does not get up when you enter the room. It gets up once it has noticed you, most likely by
+smell. <span class="wk-badge wk-badge--inferred">our reading of the code, not yet confirmed</span></p>
+<p>Putting our runs together with the code, the likely chain is:</p>
 <ol>
-<li>its nose notices the hunter, and the hunter gets an entry on its target list;</li>
-<li>its alert level climbs to <strong>battle</strong> (the next section);</li>
+<li>its nose notices the hunter, who gets an entry on its <em>target list</em> (next section);</li>
+<li>its alert level climbs to <strong>battle</strong>;</li>
 <li>the area's event logic, which has kept it in its feeding loop since the area loaded, sees that
-   level and plays the rising animation. In our reading, being hit lets it go too.</li>
+   level and plays the rising animation. In our reading, hitting it releases it too.</li>
 </ol>
-<p>The first step is code <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> in Paleblood plus recorded runs. The other two come from our
-static reading of code that is not in Paleblood source yet: the routine that raises an entry's
-level, and the event logic. Our runs do not fit a simpler trigger such as "the hunter entered the
-room". In the earlier run, the hunter stood well inside the room for many frames, and the beast
-reacted only at about 3.6 m.</p>
-<h2 id="alert-levels-and-the-target-list">Alert levels and the target list</h2>
-<h3 id="four-levels">Four levels</h3>
-<p>Each enemy carries a <em>target state</em>, which its scripts read to decide what to do. There are four
-levels. <span class="wk-badge wk-badge--verified"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></span> The script queries
-<code>IsCautionState</code>, <code>IsFindState</code> and <code>IsBattleState</code> test for levels 1, 2 and 3. <code>GetPrevTargetState</code>
-returns the level from the previous think. <code>IsChangeState</code> is true when the two differ.</p>
-<div class="en-states">
-<script type="application/json">
-{
-  "schema": "byrgenwerth.enemy.states/1",
-  "synthetic": false,
-  "title": "Alert levels: the target state the beast's scripts read",
-  "states": [
-    {
-      "id": "normal",
-      "label": "Normal",
-      "col": 0,
-      "row": 0,
-      "initial": true,
-      "evidence": "verified",
-      "summary": "Nothing on its target list. The level is worked out again every think, so it falls back here once the list holds nothing that gives a higher level (when entries are dropped is not traced yet).",
-      "source": "ai_perception_update 0x016a85c0; level numbers checked by the verified IsBattleState / IsCautionState / IsFindState bindings"
-    },
-    {
-      "id": "caution",
-      "label": "Caution",
-      "col": 1,
-      "row": 0,
-      "evidence": "verified",
-      "summary": "Level 1. The scripts ask for it with IsCautionState.",
-      "source": "ai_func_is_caution_state 0x0165bb30 (verified)"
-    },
-    {
-      "id": "find",
-      "label": "Find",
-      "col": 1,
-      "row": 1,
-      "evidence": "verified",
-      "summary": "Level 2. The scripts ask for it with IsFindState.",
-      "source": "ai_func_is_find_state 0x0165bb50 (verified)"
-    },
-    {
-      "id": "battle",
-      "label": "Battle",
-      "col": 2,
-      "row": 1,
-      "evidence": "verified",
-      "summary": "Level 3. The scripts ask for it with IsBattleState. For the clinic beast this is the level our reading says makes it get up.",
-      "source": "ai_func_is_battle_state 0x0165baf0 (verified)"
-    }
-  ],
-  "transitions": [
-    {
-      "from": "normal",
-      "to": "caution",
-      "label": "noticed",
-      "evidence": "inferred",
-      "condition": "Something noticed gets a new entry on the target list. Static reading of the routine that fills in a new entry (not replaced yet): it starts at caution or find depending on which sense noticed it.",
-      "source": "ai_target_list_refresh_noticed 0x016b2760 (verified); entry set-up 0x016b2af0 (static reading)"
-    },
-    {
-      "from": "normal",
-      "to": "find",
-      "label": "noticed",
-      "evidence": "inferred",
-      "condition": "As above: which sense gives which starting level is not traced yet.",
-      "source": "ai_target_list_refresh_noticed 0x016b2760 (verified); entry set-up 0x016b2af0 (static reading)"
-    },
-    {
-      "from": "caution",
-      "to": "find",
-      "label": "raised?",
-      "evidence": "unknown",
-      "condition": "How an entry's level rises is in the target-list ageing routine, which has not been read yet.",
-      "source": "0x016b17c0 (not yet read)"
-    },
-    {
-      "from": "find",
-      "to": "battle",
-      "label": "raised?",
-      "evidence": "unknown",
-      "condition": "As above: not traced yet.",
-      "source": "0x016b17c0 (not yet read)"
-    },
-    {
-      "from": "caution",
-      "to": "battle",
-      "label": "forced",
-      "evidence": "inferred",
-      "condition": "A 'force battle' request left in the perception's flags puts the main target's entry straight into battle, once. Replaced in Paleblood and tested on edge cases; who sends the request is not known.",
-      "source": "ai_perception_update 0x016a85c0 (replaced, edge-tested)"
-    }
-  ],
-  "sources": [
-    {
-      "function": "ai_perception_update",
-      "address": "0x016a85c0",
-      "revision": "628534595723b2f61cea786f6c088f8e68139aa0",
-      "pr": "#999",
-      "record": "symbols/verification.csv: edge 802/802"
-    },
-    {
-      "function": "ai_func_is_battle_state, ai_func_is_caution_state, ai_func_is_find_state",
-      "address": "0x0165baf0, 0x0165bb30, 0x0165bb50",
-      "revision": "628534595723b2f61cea786f6c088f8e68139aa0",
-      "pr": "#911, #988",
-      "record": "symbols/reviews.csv: approved (independent AI review session)"
-    },
-    {
-      "function": "ai_target_list_refresh_noticed",
-      "address": "0x016b2760",
-      "revision": "628534595723b2f61cea786f6c088f8e68139aa0",
-      "pr": "#958, #997",
-      "record": "symbols/verification.csv: recorded 6/6, edge 103/103; symbols/reviews.csv: approved (independent AI review session)"
-    }
-  ]
-}
-
-</script>
-<p class="en-nojs">The interactive state diagram needs JavaScript. In words: normal, caution, find and battle; a new target-list entry starts at caution or find; how an entry climbs to battle is not traced yet, apart from a "force battle" request.</p>
-</div>
-
-<p>The level is not stored and nudged up step by step. Each think, the perception update works it out
-again from the target list, in a fixed order of precedence.
-<span class="wk-badge wk-badge--verified"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></span> Two special kinds of list entry mean
-battle. Failing those, the main target's own level counts. Failing that, two other special kinds
-mean caution. With nothing on the list, the level is normal. What the special kinds stand for is
-not known yet. The level it replaces becomes the previous level, so <code>IsChangeState</code> is true for
-exactly one think after a change. The perception update is <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>: Paleblood's replacement
-gives the original's answer on 802 <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr> and on 1,493 calls recorded in a real run of this
-encounter (10 more recorded calls are set aside because the code they reach is still the
-original's and could not be replayed), and an independent review approved it (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1079">#1079</a>).</p>
+<p>Step 1 is <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr>, <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> code plus recorded runs. Steps 2 and 3 come from our reading of code
+that is not in Paleblood yet: the routine that raises an entry's level, and the event logic. A
+simpler trigger such as "the hunter entered the room" does not fit our runs: in one, the hunter
+stood well inside the room for many frames, and the beast kept feeding until the hunter was about
+3.6 m away. <span class="wk-badge wk-badge--observed">seen in our test runs</span></p>
+<h2 id="how-it-keeps-track-of-you">How it keeps track of you</h2>
+<p>Everything the beast has noticed goes on a list. From that list it works out how alarmed it is and
+who its main target is, again and again, rather than slowly getting angrier.</p>
+<h3 id="four-alert-levels">Four alert levels</h3>
+<p>Its scripts see one of four levels: normal, caution, find and battle.
+<span class="wk-badge wk-badge--verified">confirmed in the game's code</span></p>
+<p>The script questions <code>IsCautionState</code>, <code>IsFindState</code> and <code>IsBattleState</code> test for levels 1, 2 and 3;
+<code>GetPrevTargetState</code> returns the level from the previous think, and <code>IsChangeState</code> is true when the
+two differ.</p>
+<p>The level is not stored and nudged up. Each think, the perception update <code>ai_perception_update</code>
+(<code>0x016a85c0</code>) works it out again from the target list, in a fixed order: two special kinds of
+list entry mean battle; failing those, the main target's own level counts; failing that, two other
+special kinds mean caution; an empty list means normal. What the special kinds stand for is not
+known yet. The old level becomes the previous one, so <code>IsChangeState</code> is true for exactly one think
+after a change. Paleblood's replacement gives the original's answer on 802 <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr> and on 1,493
+calls recorded in this encounter (10 more recorded calls are set aside because the code they reach
+could not be replayed), and an independent review approved it
+(<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1079">#1079</a>).
+<span class="wk-badge wk-badge--verified">confirmed in the game's code</span></p>
 <h3 id="the-target-list">The target list</h3>
-<p>The target list is what the beast has noticed: characters, and places it should go and look at.</p>
+<p>The list holds characters it has noticed and places it means to go and look at.</p>
 <ul>
 <li><strong>Sensing about once a second.</strong> The list update senses the world about once a second, plus a
-  random extra of up to a fifth of a second. The sensing of the many characters is spread out so
-  they do not all sense on the same frame. <span class="wk-badge wk-badge--inferred">inferred</span>
-  (static reading; Paleblood still runs this routine as original code)</li>
-<li><strong>Forgetting.</strong> Each entry has a clock. When it runs out, the entry's <em>visible</em> flag is cleared
-  and the clock restarts from the enemy's sight forget time, a number in its data counted in 30ths
-  of a second. Remembered places get a fixed 20 seconds.
-  <span class="wk-badge wk-badge--inferred">inferred</span> (static reading)</li>
-<li><strong>Noticed again.</strong> When the sight test notices a character that is already on the list, its
-  entry's clock is reset, it is marked visible, and it is flagged as noticed this think. Anything
-  new gets a fresh entry at the front of the list.
-  <span class="wk-badge wk-badge--verified"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></span></li>
-<li><strong>The main target.</strong> The entry with the highest priority above −1 is the main target; among
-  equals, the first one wins. Every other entry standing for the same thing is marked as matching
-  it: the same character, or a place within half a metre. An entry that starts matching gets an
-  eight-second recheck timer if its old one had run out.
-  <span class="wk-badge wk-badge--verified"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></span></li>
-<li><strong>"Can it see its target?"</strong> The script question <code>IsVisibleTarget</code> does not look for itself. It
-  returns the visible flag that the sensing left on the current target.
-  <span class="wk-badge wk-badge--inferred">inferred</span> (the lookup it calls is <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>; the
-  script binding itself is <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> and edge-tested)</li>
-<li><strong>Target speed.</strong> Every frame it records how fast its target is coming towards it, keeps the
-  last 30 samples, and averages them with the newest weighted most.
-  <span class="wk-badge wk-badge--verified"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></span> What uses this speed is not traced yet.</li>
+  random extra of up to a fifth of a second, so many enemies do not all sense on the same frame.
+  <span class="wk-badge wk-badge--inferred">our reading of the code, not yet confirmed</span></li>
+<li><strong>Forgetting.</strong> Each entry has a clock. When it runs out, the entry is marked <em>not visible</em> and
+  the clock restarts from the enemy's <em>sight forget time</em> (counted in 30ths of a second).
+  Remembered places get a fixed 20 seconds.
+  <span class="wk-badge wk-badge--inferred">our reading of the code, not yet confirmed</span></li>
+<li><strong>Noticed again.</strong> When the sight test notices a character already on the list,
+  <code>ai_target_list_refresh_noticed</code> (<code>0x016b2760</code>) resets its clock, marks it visible and flags it as
+  noticed this think. Anything new gets a fresh entry at the front of the list.
+  <span class="wk-badge wk-badge--verified">confirmed in the game's code</span></li>
+<li><strong>Choosing the main target.</strong> The entry with the highest priority above −1 becomes the main
+  target; among equals, the first one wins. <code>ai_target_list_mark_main_matches</code> (<code>0x016b30a0</code>) marks
+  every other entry that stands for the same thing: the same character, or a place within
+  <strong>half a metre</strong>. An entry that starts matching gets an <strong>eight-second</strong> recheck timer if its old
+  one had run out. <span class="wk-badge wk-badge--verified">confirmed in the game's code</span></li>
+<li><strong>"Can it see its target?"</strong> The script question <code>IsVisibleTarget</code> (<code>0x0165ca50</code>) does not look
+  for itself: through <code>ai_perception_target_visible</code> (<code>0x016ad400</code>) it returns the visible flag the
+  sensing left on the current target.
+  <span class="wk-badge wk-badge--inferred">our reading of the code, not yet confirmed</span>
+  (the lookup is <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>; the script binding is <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> and tested on examples only)</li>
+<li><strong>How fast you are coming.</strong> Every frame <code>ai_target_speed_record_update</code> (<code>0x0162d840</code>) records
+  how fast its target approaches, keeps the last 30 samples and averages them with the newest
+  weighted most. <span class="wk-badge wk-badge--verified">confirmed in the game's code</span> What
+  uses this speed is not traced yet.</li>
 </ul>
-<h2 id="attacks">Attacks</h2>
-<h3 id="the-first-attack">The first attack</h3>
-<div class="en-sync">
-<figure class="en-clip" data-fps="30" id="clip-clinic-beast-attack">
-<video controls="controls" data-view="plain" height="1080" muted="muted" playsinline="playsinline" preload="metadata" src="../../../assets/media/enemies/clinic-beast/first-attack.webm" width="1920"></video>
-<figcaption>The hunter comes close; the beast lunges and its first attack lands, with a spray of blood (280 frames, silent). <span class="wk-badge wk-badge--observed">observed</span> From a local Paleblood run on 2026-11-14: main at `0ffc6fc` with [#1046](https://github.com/Yharnam-Hunters/Paleblood/pull/1046) applied (merged since). Drawn by Paleblood's own renderer at 1920×1080. <em>Bloodborne</em> © Sony Interactive Entertainment / FromSoftware.</figcaption>
+<h2 id="how-it-fights">How it fights</h2>
+<p>Once it has noticed you, it turns to face you and attacks. How it picks each attack comes from the
+game's own AI script: a dice roll weighted by how far away you are.</p>
+<figure class="en-figure">
+<p><a href="../../../assets/media/enemies/clinic-beast/first-attack.png"><img alt="The beast's attack landing in the clinic's lower hall: a dark furred shape with one glowing eye over the hooded hunter, a red spray of blood between them, the health bar near empty" decoding="async" height="1080" loading="lazy" src="../../../assets/media/enemies/clinic-beast/first-attack.png" width="1920" /></a></p>
+<figcaption>Its first attack landing (frame 3880 of a local Paleblood run on 2026-11-14). Drawn by Paleblood's own renderer at full resolution: select the picture. <em>Bloodborne</em> © Sony Interactive Entertainment / FromSoftware.</figcaption>
 </figure>
-</div>
-<figure class="wk-frame">
-<p><a class="wk-frame-link" href="../../../assets/media/enemies/clinic-beast/first-attack.png"><img alt="The beast's attack landing in the clinic's lower hall: a dark furred shape with one glowing eye over the hooded hunter, a red spray of blood between them, the HUD's health bar near empty" decoding="async" height="1080" loading="lazy" src="../../../assets/media/enemies/clinic-beast/first-attack.png" width="1920" /></a></p>
-<figcaption>The frame the attack lands (frame 3880 of the same run). Full resolution. <em>Bloodborne</em> © Sony Interactive Entertainment / FromSoftware.</figcaption>
-</figure>
-<p>Since 14 November Paleblood runs the whole encounter with no stop: the beast attacks, the hunter
-dies ("YOU DIED"), the loading screen shows and the hunter wakes in the Hunter's Dream
-(<a href="../../../runtime/#how-far-a-boot-gets">Runtime</a>). <span class="wk-badge wk-badge--observed">observed</span></p>
-<p>What a recorded run showed of its decisions: <span class="wk-badge wk-badge--observed">observed</span></p>
+<h3 id="what-our-runs-showed">What our runs showed</h3>
+<p><span class="wk-badge wk-badge--observed">seen in our test runs</span></p>
 <ul>
-<li>Before it notices you, the beast runs the same idle plan as every other character in the clinic:
-  a short plan that it renews over and over.</li>
-<li>When the hunter came close, it first switched to a separate "noticed" plan, and some seconds
+<li><strong>Before it notices you</strong> it runs the same idle plan as every other character in the clinic: a
+  short plan it renews over and over.</li>
+<li><strong>When the hunter came close</strong> it first switched to a separate "noticed" plan, and some seconds
   later started its own battle plan.</li>
-<li>With the hunter behind it, its battle plan's first decision was a one-second turn to face them.</li>
-<li>In our captured fight its think script used random whole numbers (the dice below), timers and
-  checks of the target's alert level. It did not check its own or the hunter's health.</li>
+<li><strong>With the hunter behind it</strong>, its battle plan's first decision was a one-second turn to face
+  them.</li>
+<li><strong>Its first attack</strong> is a lunge that lands with a spray of blood. Since 14 November Paleblood runs
+  the rest without a stop: the hunter dies ("YOU DIED"), the loading screen shows, and the hunter
+  wakes in the Hunter's Dream (<a href="../../../runtime/#how-far-a-boot-gets">Runtime</a>).</li>
+<li><strong>What its script looked at</strong> in our captured fight: random whole numbers (the dice below), timers
+  and the target's alert level. It never checked its own health or the hunter's.</li>
 </ul>
-<p>That is one run; the rest of its attack choice has not been watched yet.</p>
-<h3 id="how-it-chooses-read-from-the-games-script">How it chooses (read from the game's script)</h3>
-<p><span class="wk-badge wk-badge--inferred">read from the game's battle script (local study), not yet confirmed in a Paleblood run</span>
-This comes from a local study of the game's own AI script for this enemy, not from Paleblood
-running it; the native code that runs these plans is still being decompiled (<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1109">#1109</a> is its
-first part). Only the turn when you are behind it has been seen in a run (above).</p>
+<h3 id="how-it-chooses-its-attacks">How it chooses its attacks</h3>
+<p><span class="wk-badge wk-badge--hypothesis">read from the game's script, not yet confirmed in a run</span>
+This comes from a local study of the game's own AI script for this enemy, not from Paleblood running
+it; the native code that runs these plans (<em>goals</em>) is still being decompiled
+(<a href="https://github.com/Yharnam-Hunters/Paleblood/pull/1109">#1109</a> is its first part). Only the turn
+when you are behind it has been seen in a run. No script text is published here.</p>
 <ul>
-<li><strong>A weighted roll.</strong> Each time its battle plan restarts, the beast gives every move a weight
-  that depends on how far away you are, then rolls the dice over the total. Close up it favours its
-  quick opening swings; at mid range its two-hit lunge; far away it mostly circles or backs off
-  (about four times in ten) and otherwise closes the gap with a leaping attack or a run-in.</li>
-<li><strong>Combos.</strong> Most attacks start with one swing and roll again to decide how many follow-ups to
-  chain, up to four hits. It keeps turning towards you during the wind-up of most swings. One long
-  flurry mixes back and side hops into the chain; one heavy move has a cool-down of about twenty
-  seconds; in a few tight spots of the map it never uses its two widest moves.</li>
+<li><strong>A weighted roll by distance.</strong> Each time its battle plan restarts, it gives every move a weight
+  that depends on which distance band you are in, then rolls the dice over the total. Close up it
+  favours its quick opening swings; at mid range, its two-hit lunge; far away it mostly circles or
+  backs off (about four times in ten), and otherwise closes the gap with a leaping attack or a
+  run-in.</li>
+<li><strong>Follow-up chains.</strong> Most attacks start with one swing, then roll again to decide how many
+  follow-ups to chain, up to four hits. It keeps turning towards you during the wind-up of most
+  swings. One long flurry mixes back and side hops into the chain.</li>
+<li><strong>Cooldown and space.</strong> One heavy move has a cooldown of about twenty seconds. In a few tight
+  spots of the map it never uses its two widest moves.</li>
 <li><strong>Breathers.</strong> After every attack it decides on the spot, from your distance, what to do next:
-  very close it usually hops back or backs away a few metres; at mid range it strafes or edges
+  very close, it usually hops back or backs off a few metres; at mid range it strafes or edges
   closer; far away it closes in or, about one time in three, leaps at you.</li>
-<li><strong>Turning.</strong> If you are behind it, it spends its next decision just turning to face you rather
-  than attacking (seen once in a Paleblood run, above).</li>
+<li><strong>Turning.</strong> If you are behind it, its next decision is just a turn to face you rather than an
+  attack (seen once in a Paleblood run, above).</li>
 <li><strong>Reactions.</strong> It can answer gunfire with a side hop, and it has the common stagger and dodge
-  reactions that many enemies share.</li>
+  reactions many enemies share.</li>
 </ul>
-<p>The dice themselves are <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>. The scripts' <code>GetRandam_Int</code> turns a 20-bit random fraction into
-a whole number from min to max, each about equally likely, and the beast's script called it 35
-times in our captured fight. <span class="wk-badge wk-badge--verified"><abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></span></p>
-<h2 id="how-it-actually-works">How it actually works</h2>
-<h3 id="the-details">The details</h3>
-<p>In the order the game runs them, once per think for each enemy:</p>
-<ol>
-<li><code>ai_perception_update</code> (<code>0x016a85c0</code>) counts down a timer, runs the target-list update
-   (<code>0x016ab4c0</code>, still original code), then sets the level and target type from the list.</li>
-<li>Inside the list update, a sight sweep builds one sight query per nearby character and runs
-   <code>ai_sight_test</code> (<code>0x016a52b0</code>) on it. Each character noticed goes to
-   <code>ai_target_list_refresh_noticed</code> (<code>0x016b2760</code>). <code>ai_target_list_mark_main_matches</code>
-   (<code>0x016b30a0</code>) marks the entries that match the main target.</li>
-<li>The scripts read the result: <code>IsBattleState</code> and the other level queries, <code>IsVisibleTarget</code>
-   (<code>0x0165ca50</code>, through <code>ai_perception_target_visible</code> at <code>0x016ad400</code>) and the handle of the
-   current target (<code>ai_perception_current_handle</code>, <code>0x016acfa0</code>).</li>
-<li>Separately, every frame, <code>ai_target_speed_record_update</code> (<code>0x0162d840</code>) updates the speed
-   record.</li>
-<li>For each sound filed near it, the sound check <code>ai_hearing_check_sound</code> (<code>0x0169cef0</code>) and the
-   hearing test <code>ai_hearing_test</code> (<code>0x0169d160</code>, with the ear's height check at <code>0x0169da30</code>)
-   decide whether it hears the sound (<a href="#how-it-hears">How it hears</a>).</li>
-</ol>
-<p>The <a href="../../../systems/ai/">AI system page</a> describes the shared machinery these functions belong to.</p>
-<h3 id="open-questions">Open questions</h3>
+<p><strong>The dice themselves are confirmed.</strong> The script call <code>GetRandam_Int</code> (<code>0x01657b20</code>) turns a 20-bit
+random fraction into a whole number from min to max, each about equally likely. The beast's script
+called it 35 times in our captured fight.
+<span class="wk-badge wk-badge--verified">confirmed in the game's code</span></p>
+<h2 id="tips">Tips</h2>
+<p>Each tip follows from a rule above; the label says how solid that rule is.</p>
 <ul>
-<li><strong>Hearing in a run.</strong> The hearing code is decompiled and <abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr>, but no recording shows
-  yet whether the beast hears you before it smells you.</li>
+<li><strong>You cannot sneak right up to it.</strong> Its nose works in every direction, so it notices you a few
+  metres away whichever side you come from: about 3.5 m in our runs.
+  <span class="wk-badge wk-badge--verified">confirmed in the game's code</span></li>
+<li><strong>A wall hides you from its eyes, not its nose.</strong> The line-of-sight ray stops at solid things;
+  the nose check has no ray at all.
+  <span class="wk-badge wk-badge--verified">confirmed in the game's code</span></li>
+<li><strong>Hugging it does not hide you.</strong> Its eyes are blind up close, but its nose is not: in our runs it
+  smelled the hunter at about 3.5 m.
+  <span class="wk-badge wk-badge--verified">confirmed in the game's code</span>
+  <span class="wk-badge wk-badge--observed">seen in our test runs</span></li>
+<li><strong>Coming from behind buys a moment.</strong> Its first decision in our run was a one-second turn, not an
+  attack. <span class="wk-badge wk-badge--observed">seen in our test runs</span></li>
+<li><strong>Expect more than one hit.</strong> Most of its swings can chain into follow-ups, up to four hits, and it
+  keeps turning during the wind-up.
+  <span class="wk-badge wk-badge--hypothesis">read from the game's script, not yet confirmed in a run</span></li>
+<li><strong>Mind the leap at range.</strong> Backing far away does not make it safe: from far off it often closes
+  in, sometimes with a leap.
+  <span class="wk-badge wk-badge--hypothesis">read from the game's script, not yet confirmed in a run</span></li>
+</ul>
+<h2 id="did-you-know">Did you know?</h2>
+<ul>
+<li><strong>It waits for your scent.</strong> It keeps feeding while you walk around the room and only rises once
+  you are a few metres away. <span class="wk-badge wk-badge--observed">seen in our test runs</span></li>
+<li><strong>Its eyes are set behind its head.</strong> The sight cone is measured from a point behind its body, so
+  the tip of the cone sits behind it.
+  <span class="wk-badge wk-badge--verified">confirmed in the game's code</span></li>
+<li><strong>Darkness is judged where you stand, not where it stands.</strong> The sight range is picked from the
+  light around the <em>target</em>. <span class="wk-badge wk-badge--verified">confirmed in the game's code</span></li>
+<li><strong>It does not slowly get angrier.</strong> Its alert level is worked out afresh every think from what is
+  on its list, so it can change in a single step.
+  <span class="wk-badge wk-badge--verified">confirmed in the game's code</span></li>
+<li><strong>Its ear is a little wider than intended.</strong> The direction to a sound is divided by the gap
+  between the bodies rather than the true distance, which widens the ear's cone slightly.
+  <span class="wk-badge wk-badge--edge-verified">in the game's code, tested on examples only</span></li>
+<li><strong>…and a little higher.</strong> For a sound just outside the ear's cone, the point on the cone's edge it
+  is checked against gets its height by adding the sound's height to the ear's, so that point sits
+  higher than the sound. <span class="wk-badge wk-badge--edge-verified">in the game's code, tested on examples only</span></li>
+<li><strong>Big characters are louder.</strong> A large maker is heard from slightly further away, because its body
+  size counts towards the gap.
+  <span class="wk-badge wk-badge--edge-verified">in the game's code, tested on examples only</span></li>
+</ul>
+<h2 id="what-we-dont-know-yet">What we don't know yet</h2>
+<ul>
+<li><strong>Hearing in a real run.</strong> No recording shows yet whether it hears you before it smells you.</li>
 <li><strong>How the level climbs.</strong> The routine that raises an entry from caution to find to battle
   (<code>0x016b17c0</code>) has not been read.</li>
-<li><strong>The wake.</strong> Confirming the chain in <a href="#why-it-gets-up">Why it gets up</a> needs the event logic in
-  Paleblood source, and a run that records the nose result and the event's reaction on the same
-  frames.</li>
-<li><strong>Its attack choice in a run.</strong> The weighted roll, combos and breathers are read from the
-  game's script; a longer recorded fight is needed to confirm them.</li>
+<li><strong>The wake trigger.</strong> Confirming <a href="#why-it-gets-up">why it gets up</a> needs the event logic in
+  Paleblood and a run that records the nose result and the event's reaction on the same frames.</li>
+<li><strong>Its attack choice in a run.</strong> The weighted roll, chains and breathers come from its script; a
+  longer recorded fight is needed to confirm them.</li>
 <li><strong>Its identity in the game's data.</strong> Which of the game's character types this beast is has not
   been established in Paleblood source yet.</li>
 </ul>
-<h2 id="fighting-it">Fighting it</h2>
-<p>These follow only from the rules above:</p>
+<div class="en-clear"></div>
+
+<details class="note">
+<summary>For the curious: how we know this</summary>
+<p><strong>What the labels mean.</strong></p>
 <ul>
-<li><strong>Sneaking up from behind only gets you so close.</strong> The nose works in every direction, so the
-  beast notices you a few metres away whichever side you come from. In our runs it did so at about
-  3.5 m. See <a href="#the-nose-rule">the nose rule</a>.</li>
-<li><strong>Walls block its eyes, not its nose.</strong> A solid wall between you stops the line-of-sight ray,
-  but the nose ignores walls. See <a href="#the-sight-test-step-by-step">the sight test</a>.</li>
-<li><strong>Behind it buys you a moment.</strong> With you behind it, its first decision in our run was to turn
-  to face you rather than attack. See <a href="#attacks">Attacks</a>.</li>
+<li><em>Confirmed in the game's code</em> (<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>): Paleblood has <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> the original code with
+  readable C++, it gives the same answers as the original on <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr> and on calls recorded in
+  real runs, and an independent review approved it (<code>symbols/reviews.csv</code>).</li>
+<li><em>In the game's code, tested on examples only</em> (<abbr title="A replaced function that matches the original on every generated edge case, with no recording of it from the game yet.">edge-verified</abbr>): <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> and checked against the
+  original on constructed cases, not yet on recordings.</li>
+<li><em>Seen in our test runs</em> (observed): watched or recorded in a Paleblood run of this encounter.</li>
+<li><em>Our reading of the code, not yet confirmed</em> (inferred): read from code that Paleblood still
+  runs as the original, or pieced together from several findings.</li>
+<li><em>Read from the game's script, not yet confirmed in a run</em>: a local study of the game's own AI
+  script for this enemy. No script text is published.</li>
 </ul>
-<h2 id="sources">Sources</h2>
-<p>All the Paleblood pull requests below are by ThisIsAkill. Status is as of Paleblood
-<code>5fba104352d8093dfc64bf346a97681ad554afea</code>. <em>Verified</em> means <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr>, checked against recorded
-game runs and approved by an independent review session (<code>symbols/reviews.csv</code>). <em>Edge-<abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr></em>
-means <abbr title="A function with a C++ replacement registered in the hook table, which builds; not yet verified.">replaced</abbr> and checked on <abbr title="Generated inputs for situations a recording does not reach.">edge cases</abbr> only.</p>
+<p>The <a href="../../../systems/ai/">AI system page</a> describes the shared machinery these functions belong
+to. All the Paleblood pull requests below are by ThisIsAkill. Status is as of Paleblood
+<code>5fba104352d8093dfc64bf346a97681ad554afea</code> (<code>symbols/functions.csv</code>, <code>symbols/verification.csv</code>).</p>
 <div class="wk-table"><table>
 <thead>
 <tr>
 <th>Function</th>
 <th>Status</th>
-<th>Checks (<code>symbols/verification.csv</code>)</th>
+<th>Checks</th>
 <th>Pull requests</th>
 </tr>
 </thead>
@@ -1161,48 +856,45 @@ means <abbr title="A function with a C++ replacement registered in the hook tabl
 <div class="wk-table is-stack"><table class="wk-stack">
 <thead>
 <tr>
-<th>Media and runs</th>
+<th>Pictures and runs</th>
 <th>Details</th>
 <th>Evidence</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td data-label="Media and runs">Hero frame and wake clip</td>
-<td data-label="Details">Local Paleblood run on 2026-11-13, main <code>bb1d71b</code> with #958 and #975 applied; drawn by Paleblood's renderer at 1920×1080; the clip is silent; each item has its own media review</td>
+<td data-label="Pictures and runs">Infobox picture</td>
+<td data-label="Details">Local Paleblood run on 2026-11-13, main <code>bb1d71b</code> with #958 and #975 applied (both merged since); drawn by Paleblood's renderer at 1920×1080; its own media review</td>
 <td data-label="Evidence"><span class="wk-badge wk-badge--observed">observed</span></td>
 </tr>
 <tr>
-<td data-label="Media and runs">First-attack clip and frame</td>
-<td data-label="Details">Local Paleblood run on 2026-11-14, main <code>0ffc6fc</code> with #1046 applied (merged since); frames 3640 to 3919, the still is frame 3880; drawn by Paleblood's renderer at 1920×1080; the clip is silent; each item has its own media review</td>
+<td data-label="Pictures and runs">First-attack picture</td>
+<td data-label="Details">Local Paleblood run on 2026-11-14, main <code>0ffc6fc</code> with #1046 applied (merged since), frame 3880; drawn by Paleblood's renderer at 1920×1080; its own media review</td>
 <td data-label="Evidence"><span class="wk-badge wk-badge--observed">observed</span></td>
 </tr>
 <tr>
-<td data-label="Media and runs">Plans and script calls in the fight</td>
+<td data-label="Pictures and runs">Plans and script calls in the fight</td>
 <td data-label="Details">Recorded Paleblood <abbr title="Inputs recorded while the game ran, replayed by the harness.">capture</abbr> runs on 2026-11-14 that saved the beast's plan changes and its script's calls</td>
 <td data-label="Evidence"><span class="wk-badge wk-badge--observed">observed</span></td>
 </tr>
 <tr>
-<td data-label="Media and runs">Attack choice, combos, breathers, reactions</td>
-<td data-label="Details">A local study of the game's own AI script for this enemy; no script text is published</td>
-<td data-label="Evidence">read from the game's script, not yet confirmed in a run</td>
-</tr>
-<tr>
-<td data-label="Media and runs">Approach and sight results</td>
-<td data-label="Details">A recorded Paleblood <abbr title="Inputs recorded while the game ran, replayed by the harness.">capture</abbr> run on 2026-11-13 from the same tree, saving every sight check</td>
+<td data-label="Pictures and runs">Approach and sight results</td>
+<td data-label="Details">A recorded Paleblood <abbr title="Inputs recorded while the game ran, replayed by the harness.">capture</abbr> run on 2026-11-13, saving every sight check</td>
 <td data-label="Evidence"><span class="wk-badge wk-badge--observed">observed</span></td>
 </tr>
 <tr>
-<td data-label="Media and runs">Feeding at 4.0 m, turning at about 3.6 m</td>
+<td data-label="Pictures and runs">Feeding at 4.0 m, turning at about 3.6 m</td>
 <td data-label="Details">An earlier local run on 2026-11-13, watched frame by frame</td>
 <td data-label="Evidence"><span class="wk-badge wk-badge--observed">observed</span></td>
 </tr>
+<tr>
+<td data-label="Pictures and runs">Attack choice, chains, breathers, reactions</td>
+<td data-label="Details">A local study of the game's own AI script for this enemy; no script text is published</td>
+<td data-label="Evidence">read from the game's script, not yet confirmed in a run</td>
+</tr>
 </tbody>
 </table></div>
-<details class="caveat">
-<summary>What this page can and cannot claim</summary>
-<p><!-- Lines 1-28: the snippet's own last line links MEDIA_POLICY from one folder deep. -->
-Every claim in this section is labelled by the kind of evidence behind it.</p>
+<p>Every claim in this section is labelled by the kind of evidence behind it.</p>
 <div class="wk-table"><table>
 <thead>
 <tr>
@@ -1274,6 +966,6 @@ Every claim in this section is labelled by the kind of evidence behind it.</p>
 window.WK = {base: "../../..", searchIndex: "../../../search/search_index.json",
              drawerQuery: window.matchMedia('(max-width: 900px)')};
 </script>
-<script src="../../../javascripts/wiki.js?v=c570fe17af" defer></script><script src="../../../javascripts/hunters.js?v=28a0e867eb" defer></script><script src="../../../javascripts/enemy.js?v=e8213ed0e8" defer></script>
+<script src="../../../javascripts/wiki.js?v=c570fe17af" defer></script><script src="../../../javascripts/hunters.js?v=28a0e867eb" defer></script>
 </body>
 </html>

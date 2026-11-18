@@ -19,7 +19,7 @@
     d.setAttribute('data-theme', t); d.classList.add('wk-js'); }());
   </script>
   
-  <link rel="stylesheet" href="../../stylesheets/wiki.css?v=d9646b693b"><link rel="stylesheet" href="../../stylesheets/hunters.css?v=e4f3c59dfb"><link rel="stylesheet" href="../../stylesheets/enemy.css?v=bb5d79dddf">
+  <link rel="stylesheet" href="../../stylesheets/wiki.css?v=d9646b693b"><link rel="stylesheet" href="../../stylesheets/hunters.css?v=e4f3c59dfb"><link rel="stylesheet" href="../../stylesheets/enemy.css?v=670d11c465">
   
   
 </head>
@@ -434,7 +434,7 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 14, 2026 18:09:31 UTC">November 14, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 18, 2026 03:07:12 UTC">November 18, 2026</span></p>
       
       
       <h1 id="how-enemy-ai-works">How Enemy AI Works</h1>
@@ -545,26 +545,16 @@ others are not traced yet. Each one lists the evidence that would answer it.</p>
 enemy pages are given at 30 frames per second.</p>
 <h2 id="how-an-enemy-page-is-built">How an enemy page is built</h2>
 <p>An enemy gets its own page only once its AI code is decompiled and <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> in merged Paleblood
-source. Each page follows the same order, so pages can be compared:</p>
-<ol>
-<li><strong>Overview</strong>: what the enemy is and where it is met, with a frame drawn by Paleblood's renderer.</li>
-<li><strong>Frame by frame</strong>: one silent clip of an encounter from Paleblood's renderer, beside the
-   same frames drawn with Paleblood's debug overlay (hit shapes, detection cones, the current AI
-   state and the target line, read from the decompiled structures). The clip drives the diagrams
-   below it: an attack timeline whose playhead follows the clip and which moves the clip when
-   scrubbed, a state machine that lights the state the enemy is in, a range map showing where the
-   player is and which ranges are in force, and a chart that lights the attack chosen at each
-   decision. Step frame by frame, slow it down, or loop one phase.</li>
-<li><strong>More behaviour</strong>: further clips of other attacks and reactions.</li>
-<li><strong>Shared rules</strong>: anything the enemy shares with others links to the shared explanation here.</li>
-<li><strong>How it actually works</strong>: in plain words first, then the functions and fields, then the open
-   questions. Every rule carries its label: <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>, inferred, observed or hypothesis.</li>
-<li><strong>Fighting it</strong>: tactics, only where they follow from a mechanic shown above.</li>
-<li><strong>Sources</strong>: functions, pull requests, verification records and media records.</li>
-</ol>
-<p>The diagrams are drawn in the browser from data files that state the evidence behind every item.
-Clips are silent and shown at full resolution; <a href="../../MEDIA_POLICY/">Evidence &amp; Media Review</a> has the
-rules. The <a href="../enemy-directory/">Enemy Directory</a> lists the pages as they appear.
+source. Each page reads like a wiki article, in the same order so pages can be compared: a box of
+plain facts with a picture drawn by Paleblood's renderer, then <strong>Overview</strong>, <strong>Where you find
+it</strong>, <strong>How it notices you</strong>, <strong>How it keeps track of you</strong>, <strong>How it fights</strong>, <strong>Tips</strong>, <strong>Did
+you know?</strong> and <strong>What we don't know yet</strong>. Each section opens with a sentence or two anyone can
+follow, then gives the exact rules and the functions behind them. Every rule carries a label in
+plain words (confirmed in the game's code, tested on examples only, seen in our test runs, our
+reading of the code, or read from the game's script), and a closing section, <em>For the curious</em>,
+lists the functions, checks, pull requests and runs.</p>
+<p>Pictures are shown at full resolution; <a href="../../MEDIA_POLICY/">Evidence &amp; Media Review</a> has the
+rules. The <a href="../enemy-directory/">Enemy Directory</a> shows every page as a picture gallery.
 Related systems include <a href="../../systems/character/">Character</a>, <a href="../../systems/event/">Events</a>, and
 <a href="../../systems/physics/">Physics</a>.</p>
 <details class="caveat">
@@ -641,6 +631,6 @@ Related systems include <a href="../../systems/character/">Character</a>, <a hre
 window.WK = {base: "../..", searchIndex: "../../search/search_index.json",
              drawerQuery: window.matchMedia('(max-width: 900px)')};
 </script>
-<script src="../../javascripts/wiki.js?v=c570fe17af" defer></script><script src="../../javascripts/hunters.js?v=28a0e867eb" defer></script><script src="../../javascripts/enemy.js?v=e8213ed0e8" defer></script>
+<script src="../../javascripts/wiki.js?v=c570fe17af" defer></script><script src="../../javascripts/hunters.js?v=28a0e867eb" defer></script>
 </body>
 </html>

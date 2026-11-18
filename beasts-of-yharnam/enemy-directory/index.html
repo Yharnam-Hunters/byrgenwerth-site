@@ -19,7 +19,7 @@
     d.setAttribute('data-theme', t); d.classList.add('wk-js'); }());
   </script>
   
-  <link rel="stylesheet" href="../../stylesheets/wiki.css?v=d9646b693b"><link rel="stylesheet" href="../../stylesheets/hunters.css?v=e4f3c59dfb"><link rel="stylesheet" href="../../stylesheets/enemy.css?v=bb5d79dddf">
+  <link rel="stylesheet" href="../../stylesheets/wiki.css?v=d9646b693b"><link rel="stylesheet" href="../../stylesheets/hunters.css?v=e4f3c59dfb"><link rel="stylesheet" href="../../stylesheets/enemy.css?v=670d11c465">
   
   
 </head>
@@ -413,106 +413,38 @@
       
       
       
-      <nav class="wk-toc" id="wk-toc" aria-label="On this page">
-        <div class="wk-toc-header"><b>On this page</b></div>
-        <ol class="wk-toc-list" id="wk-toc-list">
-          
-          <li><a href="#pages" class="wk-toc-link">Pages</a></li>
-          
-          <li><a href="#profile-standard" class="wk-toc-link">Profile standard</a></li>
-          
-          <li><a href="#shared-evidence" class="wk-toc-link">Shared evidence</a></li>
-          
-        </ol>
-      </nav>
-      
       
       
 
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 14, 2026 18:09:31 UTC">November 14, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 18, 2026 03:07:12 UTC">November 18, 2026</span></p>
       
       
       <h1 id="enemy-directory">Enemy Directory</h1>
-<p class="wk-lede">Individual enemy pages appear here once Paleblood evidence ties an enemy met in the game to specific implementation findings. One does so far; no guessed profiles are shown.</p>
+<p class="wk-lede">Every enemy we have broken down so far. Pick one to see exactly how it works:
+how it notices you, how it keeps track of you and how it fights, worked out from Paleblood's
+decompiled code and our own test runs.</p>
 
-<div class="wk-glance">
-<p><span class="wk-label">At a glance</span></p>
-<dl>
-<dt>Pages</dt>
-<dd><a href="../enemies/clinic-beast/">The Clinic Beast</a>: how it notices you and why it gets up.</dd>
-<dt>What is verified</dt>
-<dd>The shared AI world step, the alert levels the scripts read, and how the main target is chosen.</dd>
-<dt>What is not</dt>
-<dd>Any enemy's attacks, or any enemy's identifier in the game's data.</dd>
-</dl>
+<div class="en-gallery">
+<a class="en-card" href="../enemies/clinic-beast/"><img src="../../assets/media/enemies/clinic-beast/hero.png" alt="The clinic beast standing at full height in the clinic&#x27;s lower hall, eyes glowing, the hunter in front of it seen from behind" width="1920" height="1080" decoding="async" style="object-position: 50% 50%"><span class="en-card-name">Clinic Beast</span></a>
 </div>
-<h2 id="pages">Pages</h2>
-<div class="wk-table is-stack"><table class="wk-stack">
-<thead>
-<tr>
-<th>Enemy</th>
-<th>First met</th>
-<th>What the page covers</th>
-<th>Still open</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td data-label="Enemy"><a href="../enemies/clinic-beast/">The Clinic Beast</a></td>
-<td data-label="First met">Iosefka's Clinic</td>
-<td data-label="What the page covers">Nose and sight rules, the recorded wake, alert levels and the target list</td>
-<td data-label="Still open">Its attacks: needs a recorded fight</td>
-</tr>
-</tbody>
-</table></div>
-<h2 id="profile-standard">Profile standard</h2>
-<p>Each entry identifies its evidence type and revision, then links to the relevant code and tests.
-Where supported, it can explain:</p>
-<div class="wk-table"><table>
-<thead>
-<tr>
-<th>Area</th>
-<th>Fields</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Identity</td>
-<td>Entity identifier, update functions</td>
-</tr>
-<tr>
-<td>Decisions</td>
-<td>State transitions, targeting inputs, attack choices, timing</td>
-</tr>
-<tr>
-<td>Body</td>
-<td>Animation links, collision</td>
-</tr>
-<tr>
-<td>Outcome</td>
-<td>Damage, recovery</td>
-</tr>
-</tbody>
-</table></div>
-<p>Each profile is a full page in the order described in
-<a href="../ai-and-behavior/#how-an-enemy-page-is-built">How Enemy AI Works</a>: silent clips from Paleblood's
-renderer, debug-overlay clips, an interactive attack timeline, state machine, range map and
-attack chart, a plain-words explanation, tactics and sources. Pages appear here in the order the
-game introduces the enemies, starting with Iosefka's Clinic and Central Yharnam, as each enemy's AI
-is <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr>.</p>
-<p>Every entry distinguishes four kinds of evidence: a recorded gameplay observation, static-analysis
-findings, synthetic Paleblood tests, and <abbr title="A replaced function that behaved exactly like the original on every recorded and edge case, with deliberately wrong variants failing, and passed an independent review.">verified</abbr> original-game behavior.</p>
-<p>Do not fill a field from genre convention or a gameplay impression. If the identifier or rule is
-unknown, say so and describe what evidence would establish it.</p>
-<h2 id="shared-evidence">Shared evidence</h2>
-<p><code>ai_hk_frame_update_0222bc10</code> verifies that a shared AI world is stepped once per frame with a
-fixed time step and can be used for debug drawing. It does not establish the world's internal
-behavior or identify an enemy. The <a href="../../systems/ai/">AI system page</a> has the details.</p>
-<p>See <a href="../ai-and-behavior/">How Enemy AI Works</a> for the current research boundary and
-<a href="../../great-ones/boss-directory/">Boss Directory</a> for the parallel profile standard.</p>
+
+<p>An enemy gets a page here only once Paleblood has decompiled and checked the code behind it, so
+the list grows in the order the game introduces its enemies, starting in Iosefka's Clinic and
+Central Yharnam. The pictures are drawn by Paleblood's own renderer. <a href="../ai-and-behavior/">How Enemy AI
+Works</a> explains what every enemy shares.</p>
+<details class="note">
+<summary>How these pages are written</summary>
+<p>Each page starts with a short overview and a box of plain facts, then explains the enemy's
+senses, how it keeps track of you and how it fights: first in a sentence or two, then the exact
+rules, with the functions behind them. Its tips and trivia follow only from those rules.</p>
+<p>Every rule carries a label saying how we know it: confirmed in the game's code, tested on
+examples only, seen in our test runs, our reading of the code, or read from the game's script.
+Nothing is filled in from guesswork or from other wikis, and no stat tables are published. If a
+rule is unknown, the page says so and names the evidence that would settle it.</p>
+</details>
 <details class="caveat">
 <summary>What this page can and cannot claim</summary>
 <p>Every claim in this section is labelled by the kind of evidence behind it.</p>
@@ -587,6 +519,6 @@ behavior or identify an enemy. The <a href="../../systems/ai/">AI system page</a
 window.WK = {base: "../..", searchIndex: "../../search/search_index.json",
              drawerQuery: window.matchMedia('(max-width: 900px)')};
 </script>
-<script src="../../javascripts/wiki.js?v=c570fe17af" defer></script><script src="../../javascripts/hunters.js?v=28a0e867eb" defer></script><script src="../../javascripts/enemy.js?v=e8213ed0e8" defer></script>
+<script src="../../javascripts/wiki.js?v=c570fe17af" defer></script><script src="../../javascripts/hunters.js?v=28a0e867eb" defer></script>
 </body>
 </html>
